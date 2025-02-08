@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import font from "@/lib/font";
-import ThemeRegistry from "@/components/ThemeRegistry";
-import Navbar from "@/components/Navbar";
+import font from "@/app/_lib/font";
+import ThemeRegistry from "@/app/_ui/ThemeRegistry";
+import Navbar from "@/app/_ui/Navbar";
+import Footer from "@/app/_ui/Footer";
+import {Box, Container} from "@mui/material";
 
 
 export const metadata: Metadata = {
@@ -15,11 +17,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pl">
       <body className={font.variable}>
         <ThemeRegistry>
-            <Navbar />
-            {children}
+            <Box display="flex" flexDirection="column" minHeight="100vh">
+                <Navbar />
+                <Container component="main" sx={{ flexGrow: 1, mt: 2 }}>
+                    {children}
+                </Container>
+                <Footer />
+            </Box>
         </ThemeRegistry>
       </body>
     </html>
