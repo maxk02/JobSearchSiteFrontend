@@ -1,6 +1,6 @@
 "use client";
 
-import {Typography, Toolbar} from "@mui/material";
+import {Typography, Toolbar, Container} from "@mui/material";
 
 export default function Footer() {
     return (
@@ -8,7 +8,12 @@ export default function Footer() {
         //     <Typography variant="body2">© {new Date().getFullYear()} znajdzprace.pl</Typography>
         // </Box>
         <Toolbar>
-            <Typography variant="body2">© {new Date().getFullYear()} znajdzprace.pl</Typography>
+            <Container
+                maxWidth="xl"
+                sx={{ display: 'flex', flexDirection: "row", alignItems: 'center', justifyContent: 'space-between' }}
+            >
+                <Typography variant="body2">© {new Date().getFullYear()} znajdzprace.pl</Typography>
+            </Container>
         </Toolbar>
     );
 }

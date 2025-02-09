@@ -20,9 +20,9 @@ export default function RootLayout({
     <html lang="pl">
       <body className={font.variable}>
         <ThemeRegistry>
-            <Box display="flex" flexDirection="column" minHeight="100vh">
+            <Box display="flex" flexDirection="column" minHeight="100vh" m={0} p={0}>
                 <Navbar />
-                <Container component="main" sx={{ flexGrow: 1, mt: 2 }}>
+                <Container component="main" sx={{ flexGrow: 1, m: 0, p: 0 }} maxWidth={false} disableGutters>
                     {children}
                 </Container>
                 <Footer />

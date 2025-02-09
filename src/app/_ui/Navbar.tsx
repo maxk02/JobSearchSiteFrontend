@@ -1,15 +1,20 @@
 "use client";
 
-import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import {AppBar, Toolbar, Typography, Button, Container} from "@mui/material";
 
 export default function Navbar() {
     return (
-        <AppBar color="primary" position="static">
+        <AppBar color="primary" position="static" sx={{ zIndex: 4 }}>
             <Toolbar>
-                <Typography variant="h5" sx={{ flexGrow: 1 }}>
-                    znajdzprace.pl
-                </Typography>
-                <Button color="inherit">Zaloguj się</Button>
+                <Container
+                    maxWidth="xl"
+                    sx={{ display: 'flex', flexDirection: "row", alignItems: 'center', justifyContent: 'space-between' }}
+                >
+                    <Typography variant="h5">
+                        znajdzprace.pl
+                    </Typography>
+                    <Button color="inherit">Zaloguj się</Button>
+                </Container>
             </Toolbar>
         </AppBar>
     );
