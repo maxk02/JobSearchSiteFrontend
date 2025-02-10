@@ -11,18 +11,18 @@ export const metadata: Metadata = {
   title: "znajdzprace.pl",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({children}: Readonly<{ children: React.ReactNode; }>) {
   return (
     <html lang="pl">
       <body className={font.variable}>
         <ThemeRegistry>
             <Box display="flex" flexDirection="column" minHeight="100vh" m={0} p={0}>
                 <Navbar />
-                <Container component="main" sx={{ flexGrow: 1, m: 0, p: 0 }} maxWidth={false} disableGutters>
+                <Container component="main"
+                           sx={{ flexGrow: 1, m: 0, px: 0, pt: 0, pb: 3 }}
+                           maxWidth={false}
+                           disableGutters
+                >
                     {children}
                 </Container>
                 <Footer />

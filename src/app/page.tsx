@@ -11,13 +11,15 @@ export default function HomePage() {
               <Box width="95%" margin="auto">
                   <Typography variant="h6" fontWeight="bold">NAJNOWSZE OFERTY PRACY</Typography>
 
-                  <JobCard />
-                  <JobCard />
-                  <JobCard />
-                  <JobCard />
-                  <JobCard />
-                  <JobCard />
-                  <JobCard />
+                  <Box display="flex" flexDirection="column" gap={4} mt={2}>
+                      <JobCard />
+                      <JobCard />
+                      <JobCard />
+                      <JobCard />
+                      <JobCard />
+                      <JobCard />
+                      <JobCard />
+                  </Box>
               </Box>
           </Container>
       </>

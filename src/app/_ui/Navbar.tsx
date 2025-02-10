@@ -1,6 +1,7 @@
 "use client";
 
 import {AppBar, Toolbar, Typography, Button, Container} from "@mui/material";
+import Link from "next/link";
 
 export default function Navbar() {
     return (
@@ -10,9 +11,13 @@ export default function Navbar() {
                     maxWidth="xl"
                     sx={{ display: 'flex', flexDirection: "row", alignItems: 'center', justifyContent: 'space-between' }}
                 >
-                    <Typography variant="h5">
-                        znajdzprace.pl
-                    </Typography>
+                    <Link href="/" passHref>
+                        <Button variant="text" sx={{ color: "white", textTransform: "none" }}>
+                            <Typography variant="h5">
+                                znajdzprace.pl
+                            </Typography>
+                        </Button>
+                    </Link>
                     <Button color="inherit">Zaloguj się</Button>
                 </Container>
             </Toolbar>
