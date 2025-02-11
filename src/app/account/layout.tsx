@@ -10,7 +10,7 @@ import {
     ListItemButton,
     ListItemText,
     Typography,
-    ListItemIcon
+    ListItemIcon, useTheme
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import {AccountBox, Description, History, ExitToApp} from "@mui/icons-material";
@@ -22,8 +22,10 @@ const navItems = [
     { text: "Wyloguj", icon: <ExitToApp /> },
 ];
 
-export default function Dashboard() {
+export default function AccountLayout({children}: Readonly<{ children: React.ReactNode; }>) {
     const [selected, setSelected] = useState("Mój profil");
+
+    const theme = useTheme();
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4 }}>
@@ -33,13 +35,20 @@ export default function Dashboard() {
                         <CardContent sx={{ p: 0, '&:last-child': { paddingBottom: 0 } }}>
                             <List>
                                 <ListItem>
-                                    <Typography variant="h6" gutterBottom marginBottom={0}>
-                                        Zarządzanie kontem
+                                    <Typography variant="h6" fontWeight={800} gutterBottom marginBottom={0}>
+                                        ZARZĄDZANIE KONTEM
                                     </Typography>
                                 </ListItem>
                                 {navItems.map((item) => (
                                     <ListItem key={item.text} disablePadding>
-                                        <ListItemButton selected={selected === item.text} onClick={() => setSelected(item.text)}>
+                                        <ListItemButton
+                                            selected={selected === item.text}
+                                            onClick={() => setSelected(item.text)}
+                                            sx={{
+                                                borderLeft: selected === item.text ?
+                                                    `4px solid ${theme.palette.primary.main}` : "4px solid transparent"
+                                            }}
+                                        >
                                             <ListItemIcon sx={{ minWidth: 36 }}>
                                                 {item.icon}
                                             </ListItemIcon>
@@ -54,13 +63,8 @@ export default function Dashboard() {
 
                 <Grid size={{ xs: 12, md: 8, lg: 9 }}>
                     <Card>
-                        <CardContent>
-                            <Typography variant="h5" gutterBottom>
-                                {selected}
-                            </Typography>
-                            <Typography variant="body1">
-                                Component {selected}.
-                            </Typography>
+                        <CardContent sx={{ '&:last-child': { paddingBottom: 2 } }}>
+                            {children}
                         </CardContent>
                     </Card>
                 </Grid>
