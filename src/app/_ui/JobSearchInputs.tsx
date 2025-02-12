@@ -13,7 +13,7 @@ export default function JobSearchInputs() {
             borderBottomStyle: "solid",
             borderBottomColor: "lightgray",
             textAlign: "center",
-            pt: 2, pb: 1, m: 0,
+            pt: 2, pb: 0, m: 0,
             position: "sticky",
             top: "0",
             "z-index": "2" }}

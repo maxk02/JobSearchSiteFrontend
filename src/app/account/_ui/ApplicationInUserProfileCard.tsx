@@ -64,21 +64,21 @@ export default function ApplicationInUserProfileCard() {
                                 </ListItem>
                             </List>
                             <List sx={{ mt: 1.7, pl: 0, pb: 1, pt: 1, borderLeft: `4px solid ${theme.palette.primary.main}` }}>
-                                <ListItem sx={{ px: 0, pb: 0, pt: 0 }}>
+                                <ListItem sx={{ px: 0, pb: 0, pt: 0, lineHeight: 1 }}>
                                     <ListItemIcon sx={{ color: theme.palette.primary.main, px: 0.5, lineHeight: 1, minWidth: 24 }}>
-                                        <PlayArrow />
+                                        <PlayArrow sx={{ fontSize: "1rem" }} />
                                     </ListItemIcon>
                                     <Typography lineHeight={1}>Status: odrzucona</Typography>
                                 </ListItem>
                                 <ListItem sx={{ px: 0, pb: 0 }}>
                                     <ListItemIcon sx={{ color: theme.palette.primary.main, px: 0.5, lineHeight: 1, minWidth: 24 }}>
-                                        <PlayArrow />
+                                        <PlayArrow sx={{ fontSize: "1rem" }} />
                                     </ListItemIcon>
                                     <Typography lineHeight={1}>CV: nieudostępnione</Typography>
                                 </ListItem>
                                 <ListItem sx={{ px: 0, pb: 0 }}>
                                     <ListItemIcon sx={{ color: theme.palette.primary.main, px: 0.5, lineHeight: 1, minWidth: 24 }}>
-                                        <PlayArrow />
+                                        <PlayArrow sx={{ fontSize: "1rem" }} />
                                     </ListItemIcon>
                                     <Typography lineHeight={1}>Pliki: udostępniono 3 pliki</Typography>
                                 </ListItem>
@@ -117,7 +117,6 @@ export default function ApplicationInUserProfileCard() {
                     </CardContent>
                 </Box>
             </Box>
-            {/*<Divider />*/}
 
             <Divider />
 

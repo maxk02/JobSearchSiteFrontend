@@ -10,16 +10,17 @@ import {
     ListItemButton,
     ListItemText,
     Typography,
-    ListItemIcon, useTheme
+    ListItemIcon, useTheme, Avatar
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import {AccountBox, Description, History, ExitToApp} from "@mui/icons-material";
+import {AccountBox, Description, History, Star, Settings} from "@mui/icons-material";
 
 const navItems = [
     { text: "Mój profil", icon: <AccountBox /> },
+    { text: "Zapisane", icon: <Star /> },
     { text: "Moje pliki", icon: <Description /> },
     { text: "Historia aplikacji", icon: <History /> },
-    { text: "Wyloguj", icon: <ExitToApp /> },
+    { text: "Ustawienia konta", icon: <Settings /> },
 ];
 
 export default function AccountLayout({children}: Readonly<{ children: React.ReactNode; }>) {
@@ -34,9 +35,12 @@ export default function AccountLayout({children}: Readonly<{ children: React.Rea
                     <Card>
                         <CardContent sx={{ p: 0, '&:last-child': { paddingBottom: 0 } }}>
                             <List>
-                                <ListItem>
-                                    <Typography variant="h6" fontWeight={800} gutterBottom marginBottom={0}>
-                                        ZARZĄDZANIE KONTEM
+                                <ListItem sx={{ pb: 0 }}>
+                                    <Avatar sx={{ height: 64, width: 64 }} />
+                                </ListItem>
+                                <ListItem sx={{ pt: 0.8 }}>
+                                    <Typography variant="body1" fontWeight={600} gutterBottom marginBottom={0}>
+                                        example@example.com
                                     </Typography>
                                 </ListItem>
                                 {navItems.map((item) => (
