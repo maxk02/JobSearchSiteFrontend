@@ -10,12 +10,12 @@ import {
     Menu,
     MenuItem,
     ListItemIcon,
-    useTheme,
+    useTheme, Avatar, Divider,
 } from "@mui/material";
 import Link from "next/link";
 import React from "react";
 import {
-    AccountBox,
+    AccountCircle, ContactPage,
     Description, ExitToApp,
     History,
     KeyboardArrowDown,
@@ -60,7 +60,7 @@ export default function Navbar() {
                                 aria-haspopup="true"
                                 aria-expanded={open ? 'true' : undefined}
                                 onClick={handleClick}
-                                startIcon={<AccountBox />}
+                                startIcon={<AccountCircle />}
                                 endIcon={open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
                                 sx={{
                                     color: theme.palette.primary.main,
@@ -69,6 +69,9 @@ export default function Navbar() {
                                     pr: 2,
                                     "& .MuiButton-endIcon": {
                                         marginLeft: 0.3,
+                                    },
+                                    "& .MuiButton-startIcon": {
+                                        fontSize: 26,
                                     }
                                 }}
                             >
@@ -80,46 +83,60 @@ export default function Navbar() {
                                 anchorEl={anchorEl}
                                 open={open}
                                 onClose={handleClose}
-                                // anchorOrigin={{
-                                //     vertical: 'top',
-                                //     horizontal: 'left',
-                                // }}
-                                // transformOrigin={{
-                                //     vertical: 'top',
-                                //     horizontal: 'left',
-                                // }}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'right',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                slotProps={{
+                                    paper: {
+                                        style: {
+                                            marginTop: 8
+                                        },
+                                    }
+                                }}
                             >
-                                <MenuItem onClick={handleClose}>
+                                <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", p: 2, pt: 1 }}>
+                                    <Avatar sx={{ height: 50, width: 50, mr: 1.5 }} />
+                                    <Typography variant="body1" fontWeight={600} gutterBottom marginBottom={0}>
+                                        example@example.com
+                                    </Typography>
+                                </Box>
+                                <Divider />
+                                <MenuItem onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
                                     <ListItemIcon>
-                                        <AccountBox />
+                                        <ContactPage />
                                     </ListItemIcon>
-                                    Mój profil
+                                    Mój profil i CV
                                 </MenuItem>
-                                <MenuItem onClick={handleClose}>
+                                <MenuItem onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
                                     <ListItemIcon>
                                         <Star />
                                     </ListItemIcon>
                                     Zapisane
                                 </MenuItem>
-                                <MenuItem onClick={handleClose}>
+                                <MenuItem onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
                                     <ListItemIcon>
                                         <Description />
                                     </ListItemIcon>
                                     Moje pliki
                                 </MenuItem>
-                                <MenuItem onClick={handleClose}>
+                                <MenuItem onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
                                     <ListItemIcon>
                                         <History />
                                     </ListItemIcon>
                                     Historia aplikacji
                                 </MenuItem>
-                                <MenuItem onClick={handleClose}>
+                                <MenuItem onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
                                     <ListItemIcon>
                                         <Settings />
                                     </ListItemIcon>
                                     Ustawienia konta
                                 </MenuItem>
-                                <MenuItem onClick={handleClose}>
+                                <MenuItem onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
                                     <ListItemIcon>
                                         <ExitToApp />
                                     </ListItemIcon>
