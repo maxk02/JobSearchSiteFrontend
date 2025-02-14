@@ -4,12 +4,14 @@ import {Typography, Toolbar, Container} from "@mui/material";
 
 export default function Footer() {
     return (
-        <Toolbar sx={{
-            backgroundColor: "white",
-            boxShadow: "none",
-            borderTopWidth: "1px",
-            borderTopStyle: "solid",
-            borderTopColor: "lightgray"}}
+        <Toolbar
+            sx={{
+                backgroundColor: "white",
+                boxShadow: "none",
+                borderTopWidth: "1px",
+                borderTopStyle: "solid",
+                borderTopColor: "lightgray"
+            }}
         >
             <Container
                 maxWidth="xl"
@@ -18,6 +20,7 @@ export default function Footer() {
                     flexDirection: "row",
                     alignItems: 'center',
                     justifyContent: 'space-between'}}
+                // disableGutters
             >
                 <Typography variant="body2">© {new Date().getFullYear()} znajdzprace.pl</Typography>
             </Container>

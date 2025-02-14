@@ -1,7 +1,7 @@
 import {Box, Typography} from "@mui/material";
 import ApplicationInUserProfileCard from "@/app/account/_ui/ApplicationInUserProfileCard";
 
-export default function ApplicationsPage() {
+export default function AccountApplicationsPage() {
     return (
         <>
             <Typography variant="h4" fontWeight={600} color="primary">Historia aplikacji</Typography>

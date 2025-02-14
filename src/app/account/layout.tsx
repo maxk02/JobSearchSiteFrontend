@@ -33,7 +33,7 @@ export default function AccountLayout({children}: Readonly<{ children: React.Rea
         <Container maxWidth="xl" sx={{ mt: 4 }}>
             <Grid container spacing={5}>
                 <Grid size={{ xs: 12, md: 4, lg: 3.7, xl: 3 }}>
-                    <Card sx={{ px: 2, pt: 1.5, pb: 1, position: "sticky", top: 20, zIndex: 1 }}>
+                    <Card sx={{ px: 1, pt: 1.5, pb: 1, position: "sticky", top: 20, zIndex: 1 }}>
                         <CardContent sx={{ p: 0, '&:last-child': { paddingBottom: 0 } }}>
                             <List>
                                 <ListItem sx={{ pb: 0 }}>
