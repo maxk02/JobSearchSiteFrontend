@@ -17,7 +17,7 @@ import Grid from "@mui/material/Grid2";
 import {Description, History, Star, Settings, ContactPage} from "@mui/icons-material";
 
 const navItems = [
-    { text: "Mój profil i CV", icon: <ContactPage /> },
+    { text: "Mój profil", icon: <ContactPage /> },
     { text: "Zapisane", icon: <Star /> },
     { text: "Moje pliki", icon: <Description /> },
     { text: "Historia aplikacji", icon: <History /> },
@@ -37,7 +37,7 @@ export default function AccountLayout({children}: Readonly<{ children: React.Rea
                         <CardContent sx={{ p: 0, '&:last-child': { paddingBottom: 0 } }}>
                             <List>
                                 <ListItem sx={{ pb: 0 }}>
-                                    <Avatar sx={{ height: 64, width: 64 }} />
+                                    <Avatar src="/avatar.jpg" sx={{ height: 64, width: 64 }} />
                                 </ListItem>
                                 <ListItem sx={{ pt: 0.8, pb: 1.5 }}>
                                     <Typography variant="body1" fontWeight={600} gutterBottom marginBottom={0}>

@@ -110,7 +110,7 @@ export default function Navbar() {
                                     <ListItemIcon>
                                         <ContactPage />
                                     </ListItemIcon>
-                                    Mój profil i CV
+                                    Mój profil
                                 </MenuItem>
                                 <MenuItem onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
                                     <ListItemIcon>
