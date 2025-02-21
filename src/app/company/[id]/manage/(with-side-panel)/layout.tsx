@@ -11,21 +11,19 @@ import {
     ListItemText,
     Typography,
     ListItemIcon,
-    Avatar, Box
+    Avatar, Box, Divider
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import {Description, History, Star, Settings, ContactPage} from "@mui/icons-material";
+import {Settings, Business, Dashboard, FileOpen, OpenInNew} from "@mui/icons-material";
 
 const navItems = [
-    { text: "Mój profil", icon: <ContactPage /> },
-    { text: "Zapisane", icon: <Star /> },
-    { text: "Moje pliki", icon: <Description /> },
-    { text: "Historia aplikacji", icon: <History /> },
-    { text: "Ustawienia konta", icon: <Settings /> },
+    { text: "Pulpit", icon: <Dashboard /> },
+    { text: "Profil firmy", icon: <Business /> },
+    { text: "Ustawienia konta firmowego", icon: <Settings /> },
 ];
 
-export default function AccountLayout({children}: Readonly<{ children: React.ReactNode; }>) {
-    const [selected, setSelected] = useState("Mój profil");
+export default function ManageCompanyLayout({children}: Readonly<{ children: React.ReactNode; }>) {
+    const [selected, setSelected] = useState("Profil firmy");
 
     return (
         <Container maxWidth="xl" sx={{ mt: 4 }}>
@@ -36,20 +34,17 @@ export default function AccountLayout({children}: Readonly<{ children: React.Rea
                             <List>
                                 <Box sx={{
                                         my: 1,
-                                        // border: "1px solid gray",
-                                        // borderRadius: 2,
-                                        // backgroundColor: "lightgray",
                                         display: "flex",
                                         flexDirection: "column",
                                         alignItems: "center"
                                     }}
                                 >
                                     <ListItem sx={{ pb: 0, pt: 1.3, alignItems: "center" }}>
-                                        <Avatar src="/avatar2.webp" sx={{ height: 64, width: 64 }} />
+                                        <Avatar variant="rounded" src="/company2.webp" sx={{ height: 64, width: 64 }} />
                                     </ListItem>
                                     <ListItem sx={{ pt: 0.8, alignItems: "center" }}>
                                         <Typography variant="body1" fontWeight={600} gutterBottom marginBottom={0}>
-                                            example@example.com
+                                            Firma1 Sp. z o o
                                         </Typography>
                                     </ListItem>
                                 </Box>
@@ -59,8 +54,6 @@ export default function AccountLayout({children}: Readonly<{ children: React.Rea
                                             selected={selected === item.text}
                                             onClick={() => setSelected(item.text)}
                                             sx={{
-                                                // borderLeft: selected === item.text ?
-                                                //     `4px solid ${theme.palette.primary.main}` : "4px solid transparent",
                                                 pl: 1.6,
                                                 py: 1.5,
                                                 pr: 3
@@ -70,9 +63,29 @@ export default function AccountLayout({children}: Readonly<{ children: React.Rea
                                                 {item.icon}
                                             </ListItemIcon>
                                             <ListItemText primary={item.text} />
+
                                         </ListItemButton>
                                     </ListItem>
                                 ))}
+                                <Divider sx={{ mt: 2 }} />
+                                <ListItem key="Oferty pracy" disablePadding sx={{ mt: 1 }}>
+                                    <ListItemButton
+                                        sx={{
+                                            pl: 1.6,
+                                            py: 1.5,
+                                            pr: 3
+                                        }}
+                                    >
+                                        <ListItemIcon sx={{ minWidth: 36 }}>
+                                            <FileOpen />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Oferty pracy" />
+                                        <ListItemIcon sx={{ minWidth: 24 }}>
+                                            <OpenInNew />
+                                        </ListItemIcon>
+
+                                    </ListItemButton>
+                                </ListItem>
                             </List>
                         </CardContent>
                     </Card>

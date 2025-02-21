@@ -25,11 +25,11 @@ export default function LoginPage() {
 
     return (
         <Container maxWidth="sm" sx={{ mt: 8 }}>
-            <Card sx={{ boxShadow: 1.5, p: 4 }}>
+            <Card sx={{ boxShadow: 1.5, px: 3, py: 6 }}>
                 <CardContent>
                     <Container maxWidth="xs">
                         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                            <Typography variant="h4" gutterBottom>
+                            <Typography variant="h4" mb={1.5}>
                                 Logowanie
                             </Typography>
                             <TextField
@@ -57,13 +57,13 @@ export default function LoginPage() {
                                 fullWidth
                                 variant="contained"
                                 color="primary"
-                                sx={{ mt: 2, mb: 1 }}
+                                sx={{ mt: 1.5, mb: 1, py: 1.5, width: "80%", fontSize: "1rem" }}
                                 onClick={handleLogin}
-                                size="large"
+                                // size="large"
                             >
                                 Zaloguj się
                             </Button>
-                            <Link href="#" variant="body2" sx={{ mt: 1 }}>
+                            <Link href="#" variant="body1" sx={{ mt: 1 }}>
                                 Zapomniałeś hasła?
                             </Link>
                         </Box>

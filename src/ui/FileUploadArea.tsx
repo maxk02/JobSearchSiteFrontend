@@ -15,7 +15,7 @@ const FileUploadArea: React.FC<FileUploadProps> = ({ onFileUpload }) => {
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         multiple: true,
-        accept: { p: ["image/*,application/pdf"] },
+        // accept: { p: ["image/*,application/pdf"] },
     });
 
     return (

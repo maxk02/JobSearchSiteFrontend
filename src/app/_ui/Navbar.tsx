@@ -51,7 +51,7 @@ export default function Navbar() {
                         </Box>
                     </Link>
                     <Box display="flex" flexDirection="row">
-                        <div>
+                        <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                             <Button
                                 size="large"
                                 variant="outlined"
@@ -143,7 +143,7 @@ export default function Navbar() {
                                     Wyloguj
                                 </MenuItem>
                             </Menu>
-                        </div>
+                        </Box>
                         <Box display="flex" flexDirection="column" alignItems=";eft" justifyContent="center">
                             <Typography fontWeight={450} lineHeight={1.2} fontSize={15} color="textSecondary">DLA PRACODAWCÓW</Typography>
                             <Typography lineHeight={1.2} color="primary" fontSize={15}>Załóż konto firmowe</Typography>

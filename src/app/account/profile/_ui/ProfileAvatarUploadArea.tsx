@@ -15,7 +15,7 @@ const ProfileAvatarUploadArea: React.FC<ProfileAvatarUploadProps> = ({ onFileUpl
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         multiple: false,
-        accept: { p: ["image/*"] },
+        // accept: { p: ["image/*"] },
     });
 
     return (

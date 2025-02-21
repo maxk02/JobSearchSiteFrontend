@@ -13,7 +13,7 @@ export default function AccountSettingsPage() {
 
     return (
         <>
-            <Typography variant="h4" fontWeight={600} color="primary">Mój profil</Typography>
+            <Typography variant="h4" fontWeight={600} color="primary">Profil firmy</Typography>
             <Typography mt={1}>Możesz zmienić tutaj ...</Typography>
 
 
@@ -33,7 +33,7 @@ export default function AccountSettingsPage() {
                                  transition: "background-color 0.3s"
                              }}
                         >
-                            <Avatar src="/avatar2.webp" sx={{ width: 128, height: 128, m: 0 }} />
+                            <Avatar variant="rounded" src="/company2.webp" sx={{ width: 128, height: 128, m: 0 }} />
                             <Typography textAlign="center">Obecne zdjęcie</Typography>
                         </Box>
                         <Box sx={{ width: 270, height: 250, mt: 1, ml: 2 }}>
@@ -41,10 +41,9 @@ export default function AccountSettingsPage() {
                         </Box>
                     </Box>
                     <Typography variant="h6" fontWeight={600} color="primary" mt={2}>Podstawowe dane</Typography>
-                    <Box display="flex" flexDirection="column" gap={1.5} mt={1} mb={2} width={350}>
-                        <TextField required label="Imię" variant="outlined" sx={{ width: "100%" }} />
-                        <TextField required label="Nazwisko" variant="outlined" sx={{ width: "100%" }} />
-                        <TextField label="Numer telefonu" variant="outlined" sx={{ width: "100%" }} />
+                    <Box display="flex" flexDirection="column" gap={1.5} mt={1} mb={2} width={500}>
+                        <TextField required label="Nazwa" variant="outlined" sx={{ width: "100%" }} />
+                        <TextField multiline rows={5} label="Krótki opis" variant="outlined" sx={{ width: "100%" }} />
                         <Button
                             variant="contained"
                             color="primary"
