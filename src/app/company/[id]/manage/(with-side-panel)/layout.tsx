@@ -14,11 +14,12 @@ import {
     Avatar, Box, Divider
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import {Settings, Business, Dashboard, FileOpen, OpenInNew} from "@mui/icons-material";
+import {Settings, Business, Dashboard, FileOpen, OpenInNew, Policy} from "@mui/icons-material";
 
 const navItems = [
     { text: "Pulpit", icon: <Dashboard /> },
     { text: "Profil firmy", icon: <Business /> },
+    { text: "Zarządzanie uprawnieniami", icon: <Policy /> },
     { text: "Ustawienia konta firmowego", icon: <Settings /> },
 ];
 
@@ -39,10 +40,10 @@ export default function ManageCompanyLayout({children}: Readonly<{ children: Rea
                                         alignItems: "center"
                                     }}
                                 >
-                                    <ListItem sx={{ pb: 0, pt: 1.3, alignItems: "center" }}>
+                                    <ListItem sx={{ pb: 0, pt: 1.3, pl: 1.7, alignItems: "center" }}>
                                         <Avatar variant="rounded" src="/company2.webp" sx={{ height: 64, width: 64 }} />
                                     </ListItem>
-                                    <ListItem sx={{ pt: 0.8, alignItems: "center" }}>
+                                    <ListItem sx={{ pt: 0.8, pl: 1.7, alignItems: "center" }}>
                                         <Typography variant="body1" fontWeight={600} gutterBottom marginBottom={0}>
                                             Firma1 Sp. z o o
                                         </Typography>
@@ -68,7 +69,7 @@ export default function ManageCompanyLayout({children}: Readonly<{ children: Rea
                                     </ListItem>
                                 ))}
                                 <Divider sx={{ mt: 2 }} />
-                                <ListItem key="Oferty pracy" disablePadding sx={{ mt: 1 }}>
+                                <ListItem key="Zarządzaj ofertami pracy" disablePadding sx={{ mt: 1 }}>
                                     <ListItemButton
                                         sx={{
                                             pl: 1.6,
@@ -79,7 +80,7 @@ export default function ManageCompanyLayout({children}: Readonly<{ children: Rea
                                         <ListItemIcon sx={{ minWidth: 36 }}>
                                             <FileOpen />
                                         </ListItemIcon>
-                                        <ListItemText primary="Oferty pracy" />
+                                        <ListItemText primary="Zarządzaj ofertami pracy" />
                                         <ListItemIcon sx={{ minWidth: 24 }}>
                                             <OpenInNew />
                                         </ListItemIcon>

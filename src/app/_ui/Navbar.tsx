@@ -98,6 +98,9 @@ export default function Navbar() {
                                         },
                                     }
                                 }}
+                                MenuListProps={{
+                                    sx: { paddingBottom: 0 }
+                                }}
                             >
                                 <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", p: 2, pt: 1 }}>
                                     <Avatar sx={{ height: 50, width: 50, mr: 1.5 }} />

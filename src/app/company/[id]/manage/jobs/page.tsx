@@ -1,21 +1,22 @@
 import {Box, Typography} from "@mui/material";
-import JobCard from "@/app/_ui/JobCard";
+import EditJobCard from "@/app/company/[id]/manage/jobs/_ui/EditJobCard";
 
 export default function ManageCompanyJobsPage() {
     return (
         <>
-            <Typography variant="h4" fontWeight={600} color="primary">Zapisane</Typography>
-            <Typography mt={0.5}>W tej zakładce znajdziesz oferty i wyszukiwania zapisane podczas korzystania z serwisu.</Typography>
+            <Typography variant="h4" fontWeight={600} color="primary">Zarządzanie ogłoszeniami</Typography>
+            <Typography mt={0.5}>W tej zakładce...</Typography>
 
 
             <Box display="flex" flexDirection="column" gap={4} mt={2}>
-                <JobCard />
-                <JobCard />
-                <JobCard />
-                <JobCard />
-                <JobCard />
-                <JobCard />
-                <JobCard />
+                <EditJobCard />
+                <EditJobCard />
+                <EditJobCard />
+                <EditJobCard />
+                <EditJobCard />
+                <EditJobCard />
+                <EditJobCard />
+                <EditJobCard />
             </Box>
 
         </>
