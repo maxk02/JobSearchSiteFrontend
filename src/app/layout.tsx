@@ -5,30 +5,39 @@ import ThemeRegistry from "@/app/_ui/ThemeRegistry";
 import Navbar from "@/app/_ui/Navbar";
 import Footer from "@/app/_ui/Footer";
 import {Box, Container} from "@mui/material";
+import {headers} from "next/headers";
 
 
 export const metadata: Metadata = {
   title: "znajdzprace.pl",
 };
 
-export default function RootLayout({children}: Readonly<{ children: React.ReactNode; }>) {
-  return (
+const hiddenLayoutPaths = ["/company/1/manage/folder/1/jobs"];
+
+export default async function RootLayout({children}: Readonly<{ children: React.ReactNode; }>) {
+
+    const headersList = await headers();
+    const pathname = headersList.get("x-current-path");
+    if (pathname === null) throw new Error();
+    const hideLayout = hiddenLayoutPaths.includes(pathname);
+
+    return (
     <html lang="pl">
       <body className={font.variable}>
         <ThemeRegistry>
             <Box display="flex" flexDirection="column" minHeight="100vh" m={0} p={0}>
-                <Navbar />
+                {!hideLayout && <Navbar />}
                 <Container component="main"
-                           sx={{ flexGrow: 1, m: 0, px: 0, pt: 0, pb: 3 }}
+                           sx={{ flexGrow: 1, m: 0, p: 0 }}
                            maxWidth={false}
                            disableGutters
                 >
                     {children}
                 </Container>
-                <Footer />
+                {!hideLayout && <Footer />}
             </Box>
         </ThemeRegistry>
       </body>
     </html>
-  );
+    );
 }

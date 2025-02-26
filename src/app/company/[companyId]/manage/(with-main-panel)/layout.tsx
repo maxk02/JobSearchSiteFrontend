@@ -14,7 +14,7 @@ import {
     Avatar, Box, Divider
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import {Settings, Business, Dashboard, FileOpen, OpenInNew, Policy} from "@mui/icons-material";
+import {Settings, Business, Dashboard, FileOpen, OpenInNew, Policy, ArrowForward} from "@mui/icons-material";
 
 const navItems = [
     { text: "Pulpit", icon: <Dashboard /> },
@@ -72,17 +72,16 @@ export default function ManageCompanyLayout({children}: Readonly<{ children: Rea
                                 <ListItem key="Zarządzaj ofertami pracy" disablePadding sx={{ mt: 1 }}>
                                     <ListItemButton
                                         sx={{
-                                            pl: 1.6,
+                                            px: 1.6,
                                             py: 1.5,
-                                            pr: 3
                                         }}
                                     >
                                         <ListItemIcon sx={{ minWidth: 36 }}>
                                             <FileOpen />
                                         </ListItemIcon>
                                         <ListItemText primary="Zarządzaj ofertami pracy" />
-                                        <ListItemIcon sx={{ minWidth: 24 }}>
-                                            <OpenInNew />
+                                        <ListItemIcon sx={{ minWidth: 24, pl: 3 }}>
+                                            <ArrowForward />
                                         </ListItemIcon>
 
                                     </ListItemButton>
