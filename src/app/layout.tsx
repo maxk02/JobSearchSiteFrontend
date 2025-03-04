@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "znajdzprace.pl",
 };
 
-const hiddenLayoutPaths = ["/company/1/manage/folder/1/jobs"];
+const hiddenLayoutPaths = ["/company/1/manage/folder/1/jobs", "/company/1/manage/folder/1/settings", "/company/1/manage/folder/1/create-job"];
 
 export default async function RootLayout({children}: Readonly<{ children: React.ReactNode; }>) {
 
