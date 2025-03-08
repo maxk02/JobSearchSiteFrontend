@@ -7,7 +7,7 @@ export default function HomePage() {
       <>
           <JobSearchInputs />
 
-          <Container sx={{ mt: 2 }}>
+          <Container sx={{ mt: 2, mb: 4 }}>
               <Box width="95%" margin="auto">
                   <Typography variant="h6" fontWeight="bold">NAJNOWSZE OFERTY PRACY</Typography>
 

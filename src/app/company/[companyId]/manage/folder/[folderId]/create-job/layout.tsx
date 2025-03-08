@@ -14,12 +14,7 @@ import {
 import Grid from "@mui/material/Grid2";
 import {
     ArrowBack,
-    ArrowUpward,
-    CreateNewFolder,
     Description,
-    Folder,
-    Home,
-    NoteAdd,
     Settings
 } from "@mui/icons-material";
 
@@ -28,22 +23,20 @@ const navItems0 = [
 ];
 
 const navItems2 = [
-    { text: "Tytuł", icon: <Description /> },
-    { text: "Opis", icon: <Settings /> },
-    { text: "Data wygaśnięcia", icon: <Settings /> },
+    { text: "Tytuł i opis", icon: <Description /> },
+    { text: "Przedział czasowy", icon: <Settings /> },
     { text: "Rodzaj zatrudnienia", icon: <Settings /> },
     { text: "Umowa zatrudnienia", icon: <Settings /> },
     { text: "Dane o wynagrodzeniu", icon: <Settings /> },
     { text: "Obowiązki", icon: <Settings /> },
     { text: "Wymogi", icon: <Settings /> },
-    { text: "Benefity", icon: <Settings /> },
 ];
 
 export default function CreateJobLayout({children}: Readonly<{ children: React.ReactNode; }>) {
     return (
-        <Container maxWidth="xl" sx={{ mt: 2.5, mb: 2.5 }}>
-            <Grid container spacing={3}>
-                <Grid size={{ xs: 12, md: 4, lg: 3.7, xl: 3 }}>
+        <Container maxWidth="lg" sx={{ mt: 2.5, mb: 2.5 }}>
+            <Grid container spacing={3.5}>
+                <Grid size={{ xs: 12, md: 4, lg: 3.7 }}>
                     <Box display="flex" flexDirection="column" gap={2}
                          sx={{
                              position: "sticky", top: 20, zIndex: 1,
@@ -100,8 +93,7 @@ export default function CreateJobLayout({children}: Readonly<{ children: React.R
                                                     pl: 1.5,
                                                     pt: 1,
                                                     pb: 0.5,
-                                                    pr: 1.5,
-                                                    textAlign: "right"
+                                                    pr: 1.5
                                                 }}
                                     >
                                         Nawigacja
@@ -112,8 +104,7 @@ export default function CreateJobLayout({children}: Readonly<{ children: React.R
                                                 sx={{
                                                     pl: 1.5,
                                                     py: 0.7,
-                                                    pr: 1.5,
-                                                    textAlign: "right"
+                                                    pr: 1.5
                                                 }}
                                             >
                                                 {/*<ListItemIcon sx={{ minWidth: 36 }}>*/}
@@ -130,7 +121,7 @@ export default function CreateJobLayout({children}: Readonly<{ children: React.R
                     </Box>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 8, lg: 8.3, xl: 9 }}>
+                <Grid size={{ xs: 12, md: 8, lg: 8.3 }}>
                     {children}
                 </Grid>
             </Grid>
