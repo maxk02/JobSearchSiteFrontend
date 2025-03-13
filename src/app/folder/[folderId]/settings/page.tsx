@@ -6,14 +6,31 @@ import {
     Breadcrumbs,
     Button,
     Card,
-    CardContent, Checkbox, FormControl, FormLabel, InputLabel,
-    Link, ListItemText, MenuItem, OutlinedInput, Paper, Select, SelectChangeEvent, Stack,
-    Tab, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow,
+    CardContent,
+    Checkbox,
+    FormControl,
+    FormLabel,
+    InputLabel,
+    Link,
+    ListItemText,
+    MenuItem,
+    OutlinedInput,
+    Paper,
+    Select,
+    SelectChangeEvent,
+    Tab,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TablePagination,
+    TableRow,
     Tabs,
     TextField,
     Typography
 } from "@mui/material";
-import React, {useState} from "react";
+import React from "react";
 import tabA11yProps from "@/lib/tabA11yProps";
 import CustomTabPanel from "@/ui/CustomTabPanel";
 import {AddModerator, OpenInNew, Refresh, RemoveModerator, Settings} from "@mui/icons-material";
@@ -197,23 +214,6 @@ export default function ManageCompanyJobsPage() {
                         </CustomTabPanel>
                         <CustomTabPanel value={value} index={1}>
                             <Box sx={{ pt: 1.5, pb: 2.5 }}>
-                                {/*<Typography variant="h6" fontWeight={600} color="primary">Lista uprawnień</Typography>*/}
-                                {/*<Stack direction="row" spacing={1} mt={0.6}>*/}
-                                {/*    {tagOptions.map((tag) => (*/}
-                                {/*        <Chip*/}
-                                {/*            sx={{*/}
-                                {/*                fontSize: "0.85rem",*/}
-                                {/*                height: "36px",*/}
-                                {/*                borderRadius: "18px"*/}
-                                {/*            }}*/}
-                                {/*            key={tag}*/}
-                                {/*            label={tag}*/}
-                                {/*            clickable*/}
-                                {/*            color={selectedTag === tag ? "primary" : "default"}*/}
-                                {/*            onClick={() => setSelectedTag(tag)}*/}
-                                {/*        />*/}
-                                {/*    ))}*/}
-                                {/*</Stack>*/}
                                 <Box display="flex" flexDirection="row" sx={{ alignItems: "center" }} mt={1}>
                                     <FormLabel>Wyszukiwanie:</FormLabel>
                                     <TextField label="Imię/nazwisko/email" variant="outlined" sx={{ ml: 1.3, width: 300 }} />

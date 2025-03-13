@@ -147,7 +147,7 @@ export default function Navbar() {
                                 </MenuItem>
                             </Menu>
                         </Box>
-                        <Box display="flex" flexDirection="column" alignItems=";eft" justifyContent="center">
+                        <Box display="flex" flexDirection="column" alignItems="left" justifyContent="center">
                             <Typography fontWeight={450} lineHeight={1.2} fontSize={15} color="textSecondary">DLA PRACODAWCÓW</Typography>
                             <Typography lineHeight={1.2} color="primary" fontSize={15}>Załóż konto firmowe</Typography>
                         </Box>

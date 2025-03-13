@@ -9,14 +9,15 @@ import {
     ListItemButton,
     ListItemText,
     ListItemIcon,
-    Box, Avatar, Typography
+    Box, Avatar, Typography, Button
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import {
     ArrowBack,
-    Description,
+    Description, Save,
     Settings
 } from "@mui/icons-material";
+import React from "react";
 
 const navItems0 = [
     { text: "Powrót do folderu", icon: <ArrowBack /> },
@@ -118,6 +119,21 @@ export default function CreateJobLayout({children}: Readonly<{ children: React.R
                                 </List>
                             </CardContent>
                         </Card>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            startIcon={<Save />}
+                            sx={{
+                                borderRadius: "50px",
+                                alignSelf: "center",
+                                // padding: '10px 20px',
+                                // fontSize: '1.1rem',
+                                // minWidth: '140px'
+                            }}
+                        >
+                            Zapisz
+                        </Button>
                     </Box>
                 </Grid>
 

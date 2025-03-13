@@ -30,7 +30,12 @@ export default function JobSearchInputs() {
                         color="primary"
                         startIcon={<SearchIcon />}
                         component={Link} href="/search"
-                        sx={{ flexGrow: 1, borderRadius: "0 50px 50px 0" }}
+                        sx={{
+                            flexGrow: 1,
+                            borderRadius: "0 50px 50px 0",
+                            fontSize: '1.1rem',
+                            "& .MuiButton-startIcon > :nth-of-type(1)": { fontSize: "1.5rem", lineHeight: 1 }
+                        }}
                     >
                         Szukaj
                     </Button>
