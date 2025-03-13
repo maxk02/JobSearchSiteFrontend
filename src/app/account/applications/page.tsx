@@ -1,5 +1,5 @@
-import {Box, Typography} from "@mui/material";
-import ApplicationInUserProfileCard from "@/app/account/_ui/ApplicationInUserProfileCard";
+import {Stack, Typography} from "@mui/material";
+import ApplicationInUserProfileCard from "@/app/account/applications/_ui/ApplicationInUserProfileCard";
 
 export default function AccountApplicationsPage() {
     return (
@@ -7,8 +7,7 @@ export default function AccountApplicationsPage() {
             <Typography variant="h4" fontWeight={600} color="primary">Historia aplikacji</Typography>
             <Typography mt={0.5}>W tej zakładce sprawdzisz status swoich aplikacji.</Typography>
 
-
-            <Box display="flex" flexDirection="column" gap={4} mt={2}>
+            <Stack gap={3} mt={2}>
                 <ApplicationInUserProfileCard />
                 <ApplicationInUserProfileCard />
                 <ApplicationInUserProfileCard />
@@ -17,7 +16,7 @@ export default function AccountApplicationsPage() {
                 <ApplicationInUserProfileCard />
                 <ApplicationInUserProfileCard />
                 <ApplicationInUserProfileCard />
-            </Box>
+            </Stack>
 
         </>
     );

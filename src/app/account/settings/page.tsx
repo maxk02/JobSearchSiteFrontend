@@ -1,8 +1,23 @@
 "use client";
 
 import {
-    Box, Button, Card, CardContent, FormControlLabel, FormGroup, Paper, Switch, Tab, Table, TableBody,
-    TableCell, TableContainer, TableHead, TableRow, Tabs, TextField, Typography
+    Box,
+    Button,
+    FormControlLabel,
+    FormGroup,
+    Paper,
+    Stack,
+    Switch,
+    Tab,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Tabs,
+    TextField,
+    Typography
 } from "@mui/material";
 import React from "react";
 import tabA11yProps from "@/lib/tabA11yProps";
@@ -21,73 +36,73 @@ export default function AccountSettingsPage() {
             <Typography mt={1}>Możesz zmienić tutaj dane konta i edytować ustawienia prywatności oraz powiadomień.</Typography>
 
 
-            <Card sx={{ mt: 2.5 }}>
-                <CardContent sx={{ px: 2.5, pt: 0.5, '&:last-child': { pb: 0 } }}>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                        <Tabs value={value} onChange={handleChange}>
-                            <Tab label="Powiadomienia" {...tabA11yProps(0)} />
-                            <Tab label="Bezpieczeństwo" {...tabA11yProps(1)} />
-                        </Tabs>
-                    </Box>
-                    <CustomTabPanel value={value} index={0}>
-                        <FormGroup sx={{ py: 1 }}>
+            <Paper sx={{ mt: 2 }}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <Tabs value={value} onChange={handleChange}>
+                        <Tab label="Powiadomienia" {...tabA11yProps(0)} />
+                        <Tab label="Bezpieczeństwo" {...tabA11yProps(1)} />
+                    </Tabs>
+                </Box>
+                <CustomTabPanel value={value} index={0}>
+                    <Box sx={{ px: 2, py: 1 }}>
+                        <FormGroup>
                             <FormControlLabel sx={{ my: 1 }} control={<Switch defaultChecked />} label="Powiadomienia o statusie aplikacji" />
                             <FormControlLabel sx={{ my: 1 }} control={<Switch defaultChecked />} label="Powiadomienia o statusie aplikacji" />
                             <FormControlLabel sx={{ my: 1 }} control={<Switch defaultChecked />} label="Powiadomienia o statusie aplikacji" />
                             <FormControlLabel sx={{ my: 1 }} control={<Switch defaultChecked />} label="Powiadomienia o statusie aplikacji" />
                             <FormControlLabel sx={{ my: 1 }} control={<Switch defaultChecked />} label="Powiadomienia o statusie aplikacji" />
                         </FormGroup>
-                    </CustomTabPanel>
-                    <CustomTabPanel value={value} index={1}>
-                        <Box sx={{ pt: 2, pb: 2.5 }}>
-                            <Typography variant="h6" fontWeight={600} color="primary">Zmiana hasła</Typography>
-                            <Box display="flex" flexDirection="column">
-                                <TextField label="Obecne hasło" variant="outlined" sx={{ mt: 1.5, width: 400 }} />
-                                <TextField label="Nowe hasło" variant="outlined" sx={{ mt: 2, width: 400 }} />
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    size="large"
-                                    // component={Link}
-                                    sx={{ borderRadius: "50px", width: "125px", mt: 2 }}
-                                >
-                                    Zmień
-                                </Button>
-                            </Box>
-                            <Typography variant="h6" fontWeight={600} color="primary" pt={3}>Historia sesji</Typography>
-                            <TableContainer component={Paper} sx={{ mt: 2, maxWidth: "fit-content" }}>
-                                <Table sx={{ tableLayout: "auto", maxWidth: "fit-content" }}>
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell>Data</TableCell>
-                                            <TableCell>Adres IP</TableCell>
-                                            <TableCell>Urządzenie</TableCell>
-                                            <TableCell>Status</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        <TableRow>
-                                            <TableCell>12.12.2024 23:14</TableCell>
-                                            <TableCell>192.168.0.1</TableCell>
-                                            <TableCell>ODJOJ24OIN</TableCell>
-                                            <TableCell sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                                <Typography>Aktywna</Typography>
-                                                <Button
-                                                    variant="outlined"
-                                                    color="error"
-                                                    sx={{ ml: 4 }}
-                                                >
-                                                    Zakończ
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        </Box>
-                    </CustomTabPanel>
-                </CardContent>
-            </Card>
+                    </Box>
+                </CustomTabPanel>
+                <CustomTabPanel value={value} index={1}>
+                    <Box sx={{ px: 2, pt: 1.3, pb: 2 }}>
+                        <Typography variant="h6" fontWeight={600} color="primary">Zmiana hasła</Typography>
+                        <Stack sx={{ gap: 1.5, mt: 1 }}>
+                            <TextField label="Obecne hasło" variant="outlined" sx={{ width: 400 }} />
+                            <TextField label="Nowe hasło" variant="outlined" sx={{ width: 400 }} />
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                size="large"
+                                // component={Link}
+                                sx={{ borderRadius: "50px", width: "125px" }}
+                            >
+                                Zmień
+                            </Button>
+                        </Stack>
+                        <Typography variant="h6" fontWeight={600} color="primary" pt={3}>Historia sesji</Typography>
+                        <TableContainer component={Paper} sx={{ mt: 1.7, maxWidth: "fit-content" }}>
+                            <Table sx={{ tableLayout: "auto", maxWidth: "fit-content" }}>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Data</TableCell>
+                                        <TableCell>Adres IP</TableCell>
+                                        <TableCell>Urządzenie</TableCell>
+                                        <TableCell>Status</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell>12.12.2024 23:14</TableCell>
+                                        <TableCell>192.168.0.1</TableCell>
+                                        <TableCell>ODJOJ24OIN</TableCell>
+                                        <TableCell sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                            <Typography>Aktywna</Typography>
+                                            <Button
+                                                variant="outlined"
+                                                color="error"
+                                                sx={{ ml: 4 }}
+                                            >
+                                                Zakończ
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Box>
+                </CustomTabPanel>
+            </Paper>
         </>
     );
 }

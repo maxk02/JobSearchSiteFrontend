@@ -28,7 +28,6 @@ const FileUploadArea: React.FC<FileUploadProps> = ({ onFileUpload }) => {
                 alignItems: "center",
                 justifyContent: "center",
                 border: "2px dashed #90caf9",
-                borderRadius: 2,
                 backgroundColor: isDragActive ? "#e3f2fd" : "#fafafa",
                 cursor: "pointer",
                 transition: "background-color 0.3s",

@@ -7,7 +7,7 @@ interface ProfileAvatarUploadProps {
     onFileUpload: (files: File[]) => void;
 }
 
-const ProfileAvatarUploadArea: React.FC<ProfileAvatarUploadProps> = ({ onFileUpload }) => {
+const ImageUploadArea: React.FC<ProfileAvatarUploadProps> = ({ onFileUpload }) => {
     const onDrop = useCallback((acceptedFiles: File[]) => {
         onFileUpload(acceptedFiles);
     }, [onFileUpload]);
@@ -45,4 +45,4 @@ const ProfileAvatarUploadArea: React.FC<ProfileAvatarUploadProps> = ({ onFileUpl
     );
 };
 
-export default ProfileAvatarUploadArea;
+export default ImageUploadArea;
