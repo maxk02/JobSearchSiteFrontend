@@ -1,5 +1,7 @@
-import {Box, Breadcrumbs, Link, Typography} from "@mui/material";
-import EditJobCard from "@/app/company/[companyId]/manage/folder/[folderId]/jobs/_ui/EditJobCard";
+import {Breadcrumbs, Link, Stack, Typography} from "@mui/material";
+import EditJobCard from "@/app/folder/[folderId]/jobs/_ui/EditJobCard";
+import MyDefaultSortingCard from "@/app/_ui/MyDefaultSortingCard";
+import MyDefaultPagination from "@/app/_ui/MyDefaultPagination";
 
 export default function ManageCompanyJobsPage() {
     return (
@@ -18,11 +20,12 @@ export default function ManageCompanyJobsPage() {
                 <Typography sx={{ color: 'text.primary' }}>Some folder 1</Typography>
             </Breadcrumbs>
 
-            <Typography variant="h4" fontWeight={600} color="primary" mt={1}>Some folder 1</Typography>
+            <Typography variant="h4" fontWeight={600} color="primary" mt={0.7}>Some folder 1</Typography>
 
-            <Typography variant="body1" mt={1}>Opis folderu</Typography>
+            <Typography variant="body1" mt={0.7}>Opis folderu</Typography>
 
-            <Box display="flex" flexDirection="column" gap={3} mt={2}>
+            <Stack gap={3} mt={2} sx={{ maxWidth: "850px" }}>
+                <MyDefaultSortingCard />
                 <EditJobCard />
                 <EditJobCard />
                 <EditJobCard />
@@ -31,7 +34,8 @@ export default function ManageCompanyJobsPage() {
                 <EditJobCard />
                 <EditJobCard />
                 <EditJobCard />
-            </Box>
+                <MyDefaultPagination />
+            </Stack>
 
         </>
     );

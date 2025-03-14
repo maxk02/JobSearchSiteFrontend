@@ -44,7 +44,7 @@ export default function AccountSettingsPage() {
                     </Tabs>
                 </Box>
                 <CustomTabPanel value={value} index={0}>
-                    <Box sx={{ px: 2, py: 1 }}>
+                    <Box sx={{ px: 2, py: 0.5 }}>
                         <FormGroup>
                             <FormControlLabel sx={{ my: 1 }} control={<Switch defaultChecked />} label="Powiadomienia o statusie aplikacji" />
                             <FormControlLabel sx={{ my: 1 }} control={<Switch defaultChecked />} label="Powiadomienia o statusie aplikacji" />
@@ -55,7 +55,7 @@ export default function AccountSettingsPage() {
                     </Box>
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={1}>
-                    <Box sx={{ px: 2, pt: 1.3, pb: 2 }}>
+                    <Box sx={{ px: 2, pt: 1.2, pb: 2 }}>
                         <Typography variant="h6" fontWeight={600} color="primary">Zmiana hasła</Typography>
                         <Stack sx={{ gap: 1.5, mt: 1 }}>
                             <TextField label="Obecne hasło" variant="outlined" sx={{ width: 400 }} />
@@ -70,7 +70,7 @@ export default function AccountSettingsPage() {
                                 Zmień
                             </Button>
                         </Stack>
-                        <Typography variant="h6" fontWeight={600} color="primary" pt={3}>Historia sesji</Typography>
+                        <Typography variant="h6" fontWeight={600} color="primary" pt={2}>Historia sesji</Typography>
                         <TableContainer component={Paper} sx={{ mt: 1.7, maxWidth: "fit-content" }}>
                             <Table sx={{ tableLayout: "auto", maxWidth: "fit-content" }}>
                                 <TableHead>

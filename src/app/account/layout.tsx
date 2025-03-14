@@ -10,13 +10,13 @@ export default async function AccountLayout({children}: Readonly<{ children: Rea
     if (pathname === null) throw new Error();
 
     return (
-        <Container maxWidth="xl" sx={{ mt: 4 }}>
+        <Container maxWidth="xl" sx={{ mt: 4, mb: 3 }}>
             <Grid container spacing={4}>
-                <Grid size={{ xs: 12, md: 4, lg: 3.7, xl: 3 }}>
+                <Grid size={{ xs: 12, md: 12, lg: 3.5, xl: 3 }}>
                     <AccountSideNavbar currentPath={pathname} />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 8, lg: 8.3, xl: 9 }}>
+                <Grid size={{ xs: 12, md: 12, lg: 8.5, xl: 9 }}>
                     {children}
                 </Grid>
             </Grid>

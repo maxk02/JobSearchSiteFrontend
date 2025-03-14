@@ -19,7 +19,7 @@ export default function MyDefaultSortingCard() {
     };
 
     return (
-        <Paper elevation={3} sx={{ px: 2, py: 1.5 }}>
+        <Paper elevation={3} sx={{ px: "7px", py: 1.5 }}>
             <Stack direction="row" spacing={1} sx={{ alignItems: "center", justifyContent: "space-between" }}>
                 <Button
                     ref={buttonRef}

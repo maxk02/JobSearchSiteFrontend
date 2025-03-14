@@ -12,14 +12,37 @@ export const metadata: Metadata = {
   title: "znajdzprace.pl",
 };
 
-const hiddenLayoutPaths = ["/company/1/manage/folder/1/jobs", "/company/1/manage/folder/1/settings", "/company/1/manage/folder/1/create-job"];
+type RoutePattern = {
+    regex: RegExp;
+    name: string;
+};
+
+const hiddenLayoutRoutePatterns: RoutePattern[] = [
+    { regex: /^\/folder\/\d+\/jobs$/, name: "/folder/id/jobs" },
+    { regex: /^\/folder\/\d+\/settings$/, name: "/folder/id/settings" },
+    { regex: /^\/company\/\d+\/manage\/create-job$/, name: "/folder/jobs" },
+];
+
+function evaluateRoutePatterns(pathname: string): boolean {
+    let match: boolean = false;
+
+    hiddenLayoutRoutePatterns.forEach((pattern) => {
+        const result: boolean = pattern.regex.test(pathname);
+
+        if (result)
+            match = true;
+    });
+
+    return match;
+}
 
 export default async function RootLayout({children}: Readonly<{ children: React.ReactNode; }>) {
 
     const headersList = await headers();
     const pathname = headersList.get("x-current-path");
     if (pathname === null) throw new Error();
-    const hideLayout = hiddenLayoutPaths.includes(pathname);
+
+    const hideLayout = evaluateRoutePatterns(pathname);
 
     return (
     <html lang="pl">

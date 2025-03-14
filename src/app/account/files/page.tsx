@@ -39,7 +39,7 @@ export default function AccountFilesPage() {
                         Dopuszczalny format plików: pdf
                     </Typography>
                     <Typography>
-                        Maksymalny dopuszczalny rozmiar plika: 10MB
+                        Maksymalny rozmiar pliku: 10MB
                     </Typography>
                     <Typography>
                         Maksymalnie możesz dodać: 15 plików
