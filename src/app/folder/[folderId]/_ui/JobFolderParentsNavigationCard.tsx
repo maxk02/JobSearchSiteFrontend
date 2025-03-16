@@ -4,8 +4,8 @@ import {List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper} from 
 import {ArrowUpward, Home} from "@mui/icons-material";
 
 const navItems = [
-    { text: "Powrót do góry hierarchii", icon: <Home /> },
-    { text: "Folder rodzicielski", icon: <ArrowUpward /> },
+    { id: 1, text: "Powrót do góry hierarchii", icon: <Home /> },
+    { id: 2, text: "Folder rodzicielski", icon: <ArrowUpward /> },
 ];
 
 interface JobFolderParentsNavigationCardProps {
@@ -13,7 +13,8 @@ interface JobFolderParentsNavigationCardProps {
     parentFolderId: string | null;
 }
 
-export default function JobFolderParentsNavigationCard() {
+export default function JobFolderParentsNavigationCard(
+    { rootFolderId, parentFolderId }: JobFolderParentsNavigationCardProps) {
     return (
         <Paper sx={{ px: 0, pt: 0, pb: 0, flexShrink: 0 }}>
             <List sx={{ p: 0 }}>

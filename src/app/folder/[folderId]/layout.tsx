@@ -23,7 +23,7 @@ export default function ManageCompanyLayout({children}: Readonly<{ children: Rea
                         <JobFolderCompanyNavigationCard />
                         <JobFolderViewsCard />
                         <JobFolderActionsCard />
-                        <JobFolderParentsNavigationCard />
+                        <JobFolderParentsNavigationCard rootFolderId={null} parentFolderId={null}  />
                         <JobFolderChildrenNavigationCard />
                     </Box>
                 </Grid>

@@ -42,14 +42,14 @@ export default async function RootLayout({children}: Readonly<{ children: React.
     const pathname = headersList.get("x-current-path");
     if (pathname === null) throw new Error();
 
-    const hideLayout = evaluateRoutePatterns(pathname);
+    const hideToolbars = evaluateRoutePatterns(pathname);
 
     return (
     <html lang="pl">
       <body className={font.variable}>
         <ThemeRegistry>
-            <Box display="flex" flexDirection="column" minHeight="100vh" m={0} p={0}>
-                {!hideLayout && <Navbar />}
+            <Box display="flex" flexDirection="column" minHeight="100vh" height="100vh" m={0} p={0}>
+                {!hideToolbars && <Navbar />}
                 <Container component="main"
                            sx={{ flexGrow: 1, m: 0, p: 0 }}
                            maxWidth={false}
@@ -57,7 +57,7 @@ export default async function RootLayout({children}: Readonly<{ children: React.
                 >
                     {children}
                 </Container>
-                {!hideLayout && <Footer />}
+                {!hideToolbars && <Footer />}
             </Box>
         </ThemeRegistry>
       </body>
