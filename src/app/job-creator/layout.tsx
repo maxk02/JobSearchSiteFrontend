@@ -1,22 +1,21 @@
 "use client";
 
 import {
-    Container,
+    Avatar,
+    Box,
+    Button,
     Card,
     CardContent,
+    Container,
     List,
     ListItem,
     ListItemButton,
-    ListItemText,
     ListItemIcon,
-    Box, Avatar, Typography, Button
+    ListItemText,
+    Typography
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import {
-    ArrowBack,
-    Description, Save,
-    Settings
-} from "@mui/icons-material";
+import {ArrowBack, Description, Preview, Save, Settings} from "@mui/icons-material";
 import React from "react";
 
 const navItems0 = [
@@ -31,13 +30,14 @@ const navItems2 = [
     { text: "Dane o wynagrodzeniu", icon: <Settings /> },
     { text: "Obowiązki", icon: <Settings /> },
     { text: "Wymogi", icon: <Settings /> },
+    { text: "Mile widziane", icon: <Settings /> },
 ];
 
 export default function CreateJobLayout({children}: Readonly<{ children: React.ReactNode; }>) {
     return (
-        <Container maxWidth="lg" sx={{ mt: 2.5, mb: 2.5 }}>
+        <Container maxWidth="xl" sx={{ mt: 2.5, mb: 2.5 }}>
             <Grid container spacing={3.5}>
-                <Grid size={{ xs: 12, md: 4, lg: 3.7 }}>
+                <Grid size={{ xs: 12, md: 12, lg: 3.3 }}>
                     <Box display="flex" flexDirection="column" gap={2}
                          sx={{
                              position: "sticky", top: 20, zIndex: 1,
@@ -123,13 +123,24 @@ export default function CreateJobLayout({children}: Readonly<{ children: React.R
                             variant="contained"
                             color="primary"
                             size="large"
+                            startIcon={<Preview />}
+                            sx={{
+                                borderRadius: "50px",
+                                alignSelf: "center",
+                                width: "150px",
+                            }}
+                        >
+                            Podgląd
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="large"
                             startIcon={<Save />}
                             sx={{
                                 borderRadius: "50px",
                                 alignSelf: "center",
-                                // padding: '10px 20px',
-                                // fontSize: '1.1rem',
-                                // minWidth: '140px'
+                                width: "150px",
                             }}
                         >
                             Zapisz
@@ -137,7 +148,7 @@ export default function CreateJobLayout({children}: Readonly<{ children: React.R
                     </Box>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 8, lg: 8.3 }}>
+                <Grid size={{ xs: 12, md: 12, lg: 8.7 }}>
                     {children}
                 </Grid>
             </Grid>
