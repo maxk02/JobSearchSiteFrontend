@@ -17,7 +17,7 @@ const wageUnits = [
 ];
 
 
-export default function JobSalaryDataCard() {
+export default function JobCreatorSalaryDataCard() {
     return (
         <Paper sx={{ mt: 2, py: 2, px: 1.5 }}>
             <Typography variant="h6" fontWeight={600} lineHeight={1} color="primary">Dane o wynagrodzeniu</Typography>

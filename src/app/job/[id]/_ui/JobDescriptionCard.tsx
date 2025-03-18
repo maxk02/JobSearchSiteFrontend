@@ -5,7 +5,7 @@ export default function JobDescriptionCard() {
         <Paper>
             <Stack direction="row" spacing={0} sx={{ alignItems: "stretch" }}>
                 <Box sx={{ py: 3, pl: 3, pr: 4, backgroundColor: "#2ca6a4", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <Typography variant="h5" fontWeight={600} lineHeight={1} sx={{ color: "white" }}>Opis stanowiska</Typography>
+                    <Typography variant="h5" fontWeight={600} lineHeight={1.2} sx={{ color: "white" }}>Z czym się zmierzysz?</Typography>
                 </Box>
                 <Stack sx={{ alignItems: "center", pr: 3, pl: 2, py: 2 }}>
                     <Typography>

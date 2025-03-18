@@ -15,7 +15,7 @@ const initialItems: ListItemType[] = [
 
 
 
-export default function JobNiceToHavesCard() {
+export default function JobCreatorNiceToHavesCard() {
 
     const [items, setItems] = useState<ListItemType[]>(initialItems);
     // // const [newItem, setNewItem] = useState<string>('');

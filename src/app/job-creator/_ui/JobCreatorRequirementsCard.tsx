@@ -15,7 +15,7 @@ const initialItems: ListItemType[] = [
 
 
 
-export default function JobRequirementsCard() {
+export default function JobCreatorRequirementsCard() {
 
     const [items, setItems] = useState<ListItemType[]>(initialItems);
     // // const [newItem, setNewItem] = useState<string>('');
