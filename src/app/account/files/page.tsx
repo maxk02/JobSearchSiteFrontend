@@ -29,7 +29,7 @@ export default function AccountFilesPage() {
             <Typography variant="h4" fontWeight={600} color="primary">Moje pliki</Typography>
             <Typography mt={0.5}>W tej zakładce znajdziesz...</Typography>
 
-            <Paper sx={{ mt: 2, p: 2 }}>
+            <Paper sx={{ mt: 2, p: 2, maxWidth: "900px" }}>
                 <Alert
                     severity="info"
                     icon={<Info />}
@@ -46,14 +46,14 @@ export default function AccountFilesPage() {
                     </Typography>
                 </Alert>
 
-                <Box sx={{ width: "100%", height: 280, mt: 2 }}>
+                <Box sx={{ maxWidth: "800px", height: 280, mt: 2 }}>
                     <FileUploadArea onFileUpload={handleFileUpload} />
                 </Box>
 
                 <Typography variant="h6" fontWeight={600} color="primary" mt={2}>Dodane pliki</Typography>
 
-                <TableContainer component={Paper} sx={{ mt: 1.7, maxWidth: "fit-content" }}>
-                    <Table sx={{ tableLayout: "auto", maxWidth: "fit-content" }}>
+                <TableContainer component={Paper} sx={{ mt: 1.7, maxWidth: "800px" }}>
+                    <Table sx={{ tableLayout: "auto" }}>
                         <TableHead>
                             <TableRow>
                                 <TableCell>Nazwa</TableCell>
@@ -68,13 +68,13 @@ export default function AccountFilesPage() {
                                 <TableCell>2.03MB</TableCell>
                                 <TableCell>12.12.2024 22:14</TableCell>
                                 <TableCell sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                    <Button
-                                        variant="outlined"
-                                        color="primary"
-                                        startIcon={<Edit />}
-                                    >
-                                        Edytuj nazwę
-                                    </Button>
+                                    {/*<Button*/}
+                                    {/*    variant="outlined"*/}
+                                    {/*    color="primary"*/}
+                                    {/*    startIcon={<Edit />}*/}
+                                    {/*>*/}
+                                    {/*    Edytuj nazwę*/}
+                                    {/*</Button>*/}
                                     <Button
                                         variant="outlined"
                                         color="primary"

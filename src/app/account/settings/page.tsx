@@ -36,7 +36,7 @@ export default function AccountSettingsPage() {
             <Typography mt={1}>Możesz zmienić tutaj dane konta i edytować ustawienia prywatności oraz powiadomień.</Typography>
 
 
-            <Paper sx={{ mt: 2 }}>
+            <Paper sx={{ mt: 2, maxWidth: "900px" }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs value={value} onChange={handleChange}>
                         <Tab label="Powiadomienia" {...tabA11yProps(0)} />

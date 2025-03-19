@@ -7,6 +7,7 @@ import SuggestedJobCard from "@/app/job/[id]/_ui/SuggestedJobCard";
 import JobListCard from "@/app/job/[id]/_ui/JobListCard";
 import {StarBorder, TaskAlt} from "@mui/icons-material";
 import React from "react";
+import JobCompanyDescriptionCard from "@/app/job/[id]/_ui/JobCompanyDescriptionCard";
 
 
 const items: string[] = [
@@ -16,12 +17,15 @@ const items: string[] = [
     "zdolności do myślenia analitycznego",
 ];
 
+const companyName: string = "Prominvest";
+const companyDescription: string = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse quis volutpat mauris, eget condimentum neque. Praesent turpis nibh, aliquam facilisis odio eu, dictum sodales nisl. Vivamus ac tristique justo, a finibus sapien. Vivamus facilisis aliquet nibh. Quisque dictum orci ac nisl suscipit tempus. Cras lobortis quam at mauris tempus, suscipit lacinia massa aliquam. Vestibulum eget tortor rutrum, pellentesque erat ac, auctor magna.";
+
 
 export default function JobPage() {
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 3 }}>
             <Grid container spacing={3}>
-                <Grid size={{ xs: 12, md: 12, lg: 8 }}>
+                <Grid size={{ xs: 12, md: 12, lg: 7.9 }}>
                     <Stack gap={2}>
                         <JobOverviewCard />
                         <JobDescriptionCard />
@@ -30,13 +34,15 @@ export default function JobPage() {
                         <JobListCard header="Wymogi" items={items} />
                         <JobListCard header="Mile widziane" items={items} />
 
+                        <JobCompanyDescriptionCard companyName={companyName} description={companyDescription} />
+
                         <Stack direction="row" sx={{ width: "100%", justifyContent: "space-evenly", alignItems: "center" }}>
                             <Button
                                 variant="contained"
                                 color="primary"
                                 startIcon={<TaskAlt />}
                                 sx={{
-                                    px: 6,
+                                    px: 8,
                                     borderRadius: "50px",
                                     fontSize: '1.1rem',
                                     "& .MuiButton-startIcon > :nth-of-type(1)": { fontSize: "1.5rem", lineHeight: 1 }
@@ -48,14 +54,14 @@ export default function JobPage() {
                             <Button
                                 size="large"
                                 startIcon={<StarBorder />}
-                                sx={{ }}
+                                sx={{ borderRadius: "50px" }}
                             >
                                 Zapisz
                             </Button>
                         </Stack>
                     </Stack>
                 </Grid>
-                <Grid size={{ xs: 12, md: 12, lg: 4 }}>
+                <Grid size={{ xs: 12, md: 12, lg: 4.1 }}>
                     <Stack sx={{ position: "sticky", top: 20, zIndex: 1 }}>
                         <JobActionsCard />
                         <Typography variant="h5" fontWeight={600} mt={2} color="primary">Podobne oferty</Typography>

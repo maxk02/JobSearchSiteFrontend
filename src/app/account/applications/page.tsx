@@ -7,7 +7,7 @@ export default function AccountApplicationsPage() {
             <Typography variant="h4" fontWeight={600} color="primary">Historia aplikacji</Typography>
             <Typography mt={0.5}>W tej zakładce sprawdzisz status swoich aplikacji.</Typography>
 
-            <Stack gap={3} mt={2}>
+            <Stack gap={3} mt={2} sx={{ maxWidth: "900px" }}>
                 <ApplicationInUserProfileCard />
                 <ApplicationInUserProfileCard />
                 <ApplicationInUserProfileCard />

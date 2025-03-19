@@ -3,12 +3,12 @@
 import {
     Box,
     Button,
-    Card,
     Chip,
     Divider,
     List,
     ListItem,
     ListItemIcon,
+    Paper,
     Stack,
     Typography,
     useTheme
@@ -22,12 +22,12 @@ export default function ApplicationInUserProfileCard() {
     const theme = useTheme();
 
     return (
-        <Card sx={{ width: "100%", textAlign: "left" }}>
+        <Paper sx={{ width: "100%", textAlign: "left" }}>
             <Box display="flex" flexDirection="row" width="100%">
                 <Box py={2.1} pl={3} pr={1}>
                     <Image src="/company2.webp" width="80" height="80" alt="" />
                 </Box>
-                <Stack sx={{ px: 2, pt: 2, pb: 1.5, flexGrow: 1 }}>
+                <Stack sx={{ px: 2, py: 2, flexGrow: 1 }}>
                     <Typography variant="h5" sx={{ fontWeight: 800, lineHeight: 1 }}>
                         Specjalista do spraw księgowości
                     </Typography>
@@ -55,7 +55,7 @@ export default function ApplicationInUserProfileCard() {
                         </ListItem>
                     </List>
 
-                    <List sx={{ mt: 1.3, pl: 0, pb: 0.3, pt: 0.3, borderLeft: `4px solid ${theme.palette.primary.main}` }}>
+                    <List sx={{ mt: 1.6, pl: 0, pb: 0.3, pt: 0.3, borderLeft: `4px solid ${theme.palette.primary.main}` }}>
                         <ListItem sx={{ px: 0, pb: 0, pt: 0, height: "32px" }}>
                             <ListItemIcon sx={{ color: theme.palette.primary.main, px: 0.5, lineHeight: 1, minWidth: 24 }}>
                                 <PlayArrow sx={{ fontSize: "1rem" }} />
@@ -73,9 +73,9 @@ export default function ApplicationInUserProfileCard() {
                         </ListItem>
                     </List>
 
-                    <Stack direction="row" mt={1} gap={1}>
+                    <Stack direction="row" mt={2} gap={1.3}>
                         <Button
-                            variant="text"
+                            variant="outlined"
                             color="primary"
                             startIcon={<Undo />}
                             size="medium"
@@ -84,7 +84,7 @@ export default function ApplicationInUserProfileCard() {
                             Wycofaj aplikację
                         </Button>
                         <Button
-                            variant="text"
+                            variant="outlined"
                             color="primary"
                             startIcon={<FilePresent />}
                             size="medium"
@@ -107,6 +107,6 @@ export default function ApplicationInUserProfileCard() {
                 </Typography>
             </Box>
 
-        </Card>
+        </Paper>
     );
 }

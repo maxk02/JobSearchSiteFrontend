@@ -23,7 +23,7 @@ export default function AccountApplicationsPage() {
                     <ApplicationInJobManagementCard />
                     <ApplicationInJobManagementCard />
                     <ApplicationInJobManagementCard />
-                    <Stack direction="row" sx={{ justifyContent: "center" }}>
+                    <Stack direction="row">
                         <MyDefaultPagination />
                     </Stack>
                 </Box>

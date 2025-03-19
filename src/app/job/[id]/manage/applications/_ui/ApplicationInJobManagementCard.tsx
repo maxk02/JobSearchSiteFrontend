@@ -4,19 +4,17 @@ import {
     Avatar,
     Box,
     Button,
-    Card,
     Chip,
     Divider,
     List,
-    ListItem, ListItemIcon, Stack,
-    Typography, useTheme
+    ListItem,
+    ListItemIcon,
+    Paper,
+    Stack,
+    Typography,
+    useTheme
 } from "@mui/material";
-import {
-    Add,
-    Download,
-    Edit,
-    PlayArrow
-} from "@mui/icons-material";
+import {Add, Download, Edit, PlayArrow} from "@mui/icons-material";
 // import Link from "next/link";
 
 
@@ -24,7 +22,7 @@ export default function ApplicationInJobManagementCard() {
     const theme = useTheme();
 
     return (
-        <Card sx={{ width: "100%", textAlign: "left" }}>
+        <Paper sx={{ width: "100%", textAlign: "left" }}>
             <Stack direction="row">
                 <Box py={2.1} pl={3} pr={1}>
                     <Avatar src="/avatar2.webp" sx={{ height: 80, width: 80 }} />
@@ -102,6 +100,6 @@ export default function ApplicationInJobManagementCard() {
                 </Typography>
             </Box>
 
-        </Card>
+        </Paper>
     );
 }

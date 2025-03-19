@@ -7,7 +7,7 @@ export default function AccountBookmarksPage() {
             <Typography variant="h4" fontWeight={600} color="primary">Zapisane</Typography>
             <Typography mt={0.5}>W tej zakładce znajdziesz oferty i wyszukiwania zapisane podczas korzystania z serwisu.</Typography>
 
-            <Stack gap={3} mt={2} sx={{ maxWidth: "950px" }}>
+            <Stack gap={3} mt={2} sx={{ maxWidth: "900px" }}>
                 <JobCard />
                 <JobCard />
                 <JobCard />

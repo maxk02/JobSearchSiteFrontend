@@ -13,7 +13,6 @@ export default function ApplicationSortingCard() {
             // color="primary"
             variant="outlined"
             sx={{
-                // Style the root Pagination component
                 '& .MuiPaginationItem-root': {
                     color: `${theme.palette.primary.main}`,
                     borderColor: `${theme.palette.primary.main}`

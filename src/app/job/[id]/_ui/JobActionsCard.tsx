@@ -11,8 +11,8 @@ export default function JobActionsCard() {
                     color="primary"
                     startIcon={<TaskAlt />}
                     sx={{
-                        // flexGrow: 1,
-                        width: "90%",
+                        px: 8,
+                        maxWidth: "90%",
                         borderRadius: "50px",
                         fontSize: '1.1rem',
                         "& .MuiButton-startIcon > :nth-of-type(1)": { fontSize: "1.5rem", lineHeight: 1 }
@@ -26,6 +26,9 @@ export default function JobActionsCard() {
                     <Button
                         size="large"
                         startIcon={<StarBorder />}
+                        sx={{
+                            borderRadius: "50px"
+                        }}
                     >
                         Zapisz
                     </Button>
