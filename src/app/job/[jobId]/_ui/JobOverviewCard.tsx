@@ -5,14 +5,6 @@ import Grid from "@mui/material/Grid2";
 import React from "react";
 
 
-const requirements: string[] = [
-    "wykształcenie wyższe kierunkowe",
-    "wykształcenie wyższe kierunkowe wykształcenie wyższe kierunkowe wykształcenie wyższe kierunkowe wykształcenie wyższe kierunkowe",
-    "min. 1 rok doświadczenia komercyjnego na podobnym stanowisku",
-    "zdolności do myślenia krytycznego",
-];
-
-
 export default function JobOverviewCard() {
     return (
         <Paper>

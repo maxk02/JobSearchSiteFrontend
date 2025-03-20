@@ -1,13 +1,13 @@
-import JobOverviewCard from "@/app/job/[id]/_ui/JobOverviewCard";
-import {Box, Button, Container, Stack, Typography} from "@mui/material";
+import {Button, Container, Stack, Typography} from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import JobDescriptionCard from "@/app/job/[id]/_ui/JobDescriptionCard";
-import JobActionsCard from "@/app/job/[id]/_ui/JobActionsCard";
-import SuggestedJobCard from "@/app/job/[id]/_ui/SuggestedJobCard";
-import JobListCard from "@/app/job/[id]/_ui/JobListCard";
 import {StarBorder, TaskAlt} from "@mui/icons-material";
 import React from "react";
-import JobCompanyDescriptionCard from "@/app/job/[id]/_ui/JobCompanyDescriptionCard";
+import JobOverviewCard from "./_ui/JobOverviewCard";
+import JobDescriptionCard from "./_ui/JobDescriptionCard";
+import JobListCard from "./_ui/JobListCard";
+import JobCompanyDescriptionCard from "./_ui/JobCompanyDescriptionCard";
+import JobActionsCard from "@/app/job/[jobId]/_ui/JobActionsCard";
+import SuggestedJobCard from "@/app/job/[jobId]/_ui/SuggestedJobCard";
 
 
 const items: string[] = [

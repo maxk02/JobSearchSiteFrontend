@@ -2,12 +2,8 @@
 
 import {Box, Container} from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import JobFolderCompanyNavigationCard from "@/app/folder/[folderId]/_ui/JobFolderCompanyNavigationCard";
-import JobFolderViewsCard from "@/app/folder/[folderId]/_ui/JobFolderViewsCard";
-import JobFolderActionsCard from "./_ui/JobFolderActionsCard";
-import JobFolderParentsNavigationCard from "./_ui/JobFolderParentsNavigationCard";
-import JobFolderChildrenNavigationCard from "./_ui/JobFolderChildrenNavigationCard";
-
+import ManageJobViewsCard from "@/app/job/[jobId]/manage/_ui/ManageJobViewsCard";
+import ManageJobCompanyNavigationCard from "@/app/job/[jobId]/manage/_ui/ManageJobCompanyNavigationCard";
 
 export default function ManageFolderLayout({children}: Readonly<{ children: React.ReactNode; }>) {
     return (
@@ -20,11 +16,8 @@ export default function ManageFolderLayout({children}: Readonly<{ children: Reac
                              maxHeight: "calc(100vh - 40px)", flex: 1
                         }}
                     >
-                        <JobFolderCompanyNavigationCard />
-                        <JobFolderViewsCard />
-                        <JobFolderActionsCard />
-                        <JobFolderParentsNavigationCard rootFolderId={null} parentFolderId={null}  />
-                        <JobFolderChildrenNavigationCard />
+                        <ManageJobCompanyNavigationCard />
+                        <ManageJobViewsCard />
                     </Box>
                 </Grid>
 

@@ -1,8 +1,8 @@
 import {Box, Container, Stack, Typography} from "@mui/material";
-import ApplicationInJobManagementCard from "@/app/job/[id]/manage/applications/_ui/ApplicationInJobManagementCard";
-import ApplicationFilteringCard from "@/app/job/[id]/manage/applications/_ui/ApplicationFilteringCard";
 import MyDefaultSortingCard from "@/app/_ui/MyDefaultSortingCard";
 import MyDefaultPagination from "@/app/_ui/MyDefaultPagination"
+import ApplicationInJobManagementCard from "./_ui/ApplicationInJobManagementCard";
+import ApplicationFilteringCard from "./_ui/ApplicationFilteringCard";
 
 export default function AccountApplicationsPage() {
     return (
@@ -24,7 +24,7 @@ export default function AccountApplicationsPage() {
                     <ApplicationInJobManagementCard />
                     <ApplicationInJobManagementCard />
                     <Stack direction="row">
-                        <MyDefaultPagination />
+                        <MyDefaultPagination totalPages={10} />
                     </Stack>
                 </Box>
             </Container>

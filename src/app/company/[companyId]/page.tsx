@@ -37,7 +37,7 @@ export default function CompanyPage() {
                     <JobCard />
                     <JobCard />
                     <Stack direction="row" sx={{ justifyContent: "center" }}>
-                        <MyDefaultPagination />
+                        <MyDefaultPagination totalPages={10} />
                     </Stack>
                 </Stack>
             </Container>
