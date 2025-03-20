@@ -37,7 +37,7 @@ export default function ManageJobViewsCard() {
                             selected={isActive(item.subpage)}
                             sx={{
                                 pl: 1.5,
-                                py: 1.2,
+                                py: 1,
                                 pr: 3
                             }}
                         >

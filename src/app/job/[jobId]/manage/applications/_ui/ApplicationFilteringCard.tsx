@@ -13,7 +13,7 @@ export default function ApplicationFilteringCard() {
             // position: "sticky", top: "0", zIndex: "2"
         }}>
 
-            <Typography variant="h6" fontWeight={600}>Filtrowanie</Typography>
+            <Typography variant="h6" color="primary" fontWeight={600}>Filtrowanie</Typography>
 
             <Box sx={{ display: "flex", flexDirection: "row", mt: 1 }}>
                 <TextField label="Słowa kluczowe" variant="outlined" sx={{ flexGrow: 3,

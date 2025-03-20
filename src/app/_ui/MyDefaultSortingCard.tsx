@@ -4,7 +4,13 @@ import {Button, IconButton, Menu, MenuItem, Paper, Stack, Typography, useTheme} 
 import {ArrowBack, ArrowForward, KeyboardArrowDown, KeyboardArrowUp} from "@mui/icons-material";
 import React, {useRef} from "react";
 
-export default function MyDefaultSortingCard() {
+
+interface MyDefaultSortingCardProps {
+    pxValue: number | string;
+}
+
+
+export default function MyDefaultSortingCard({ pxValue }: MyDefaultSortingCardProps) {
     const theme = useTheme();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -19,7 +25,7 @@ export default function MyDefaultSortingCard() {
     };
 
     return (
-        <Paper elevation={3} sx={{ px: "7px", py: 1.5 }}>
+        <Paper elevation={3} sx={{ px: pxValue, py: 1.5 }}>
             <Stack direction="row" spacing={1} sx={{ alignItems: "center", justifyContent: "space-between" }}>
                 <Button
                     ref={buttonRef}

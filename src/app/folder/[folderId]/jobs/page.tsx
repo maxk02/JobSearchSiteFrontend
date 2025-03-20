@@ -25,7 +25,7 @@ export default function ManageCompanyJobsPage() {
             <Typography variant="body1" mt={0.7}>Opis folderu</Typography>
 
             <Stack gap={3} mt={2} sx={{ maxWidth: "850px" }}>
-                <MyDefaultSortingCard />
+                <MyDefaultSortingCard pxValue="6px" />
                 <EditJobCard />
                 <EditJobCard />
                 <EditJobCard />
@@ -34,7 +34,7 @@ export default function ManageCompanyJobsPage() {
                 <EditJobCard />
                 <EditJobCard />
                 <EditJobCard />
-                <MyDefaultPagination />
+                <MyDefaultPagination totalPages={10} />
             </Stack>
 
         </>

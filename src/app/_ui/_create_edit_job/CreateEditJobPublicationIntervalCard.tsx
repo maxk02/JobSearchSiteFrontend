@@ -20,7 +20,7 @@ const expiryOptions = [
 ];
 
 
-export default function JobCreatorPublicationIntervalCard() {
+export default function CreateEditJobPublicationIntervalCard() {
     const [dateValue, setDateValue] = useState<Date | null>(new Date());
     const [timeValue, setTimeValue] = useState<Date | null>(new Date());
     const [customDateTimeEnabled, setCustomDateTimeEnabled] = useState<boolean>(false);
