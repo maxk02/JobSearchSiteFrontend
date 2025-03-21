@@ -3,10 +3,10 @@
 import {Avatar, Box, Button, FormLabel, Paper, Stack, TextField, Typography} from "@mui/material";
 import React from "react";
 import {Refresh} from "@mui/icons-material";
-import UserFolderClaimsConfigurationTable from "@/app/folder/[folderId]/settings/_ui/UserFolderClaimsConfigurationTab/UserFolderClaimsConfigurationTable";
+import CompanyClaimsConfigurationTable from "./CompanyClaimsConfigurationTable";
 
 
-export default function UserFolderClaimsConfigurationTab() {
+export default function CompanyClaimsConfigurationTab() {
     return (
         <Box sx={{ pt: 1.2, pb: 2, px: 2.1 }}>
             <Box display="flex" flexDirection="row" sx={{ alignItems: "center" }} mt={1}>
@@ -62,7 +62,7 @@ export default function UserFolderClaimsConfigurationTab() {
             </Stack>
 
             <Box sx={{ mt: 2 }}>
-                <UserFolderClaimsConfigurationTable />
+                <CompanyClaimsConfigurationTable />
             </Box>
         </Box>
     );

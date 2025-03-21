@@ -42,8 +42,7 @@ function evaluateRoutePatterns(pathname: string): boolean {
 export default async function RootLayout({children}: Readonly<{ children: React.ReactNode; }>) {
 
     const headersList = await headers();
-    const pathname = headersList.get("x-current-path");
-    if (pathname === null) throw new Error();
+    const pathname = headersList.get("x-current-path") || "/";
 
     const hideToolbars = evaluateRoutePatterns(pathname);
 

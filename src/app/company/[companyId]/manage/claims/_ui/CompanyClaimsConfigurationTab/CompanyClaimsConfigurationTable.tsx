@@ -20,36 +20,33 @@ interface Data {
     id: number;
     name: string;
     status: string;
-    source: string;
 }
 
 function createData(
     id: number,
     name: string,
     status: string,
-    source: string,
 ): Data {
     return {
         id,
         name,
         status,
-        source,
     };
 }
 
 const rows: Data[] = [
-    createData(1, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(2, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(3, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(4, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(5, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(6, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(7, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(8, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(9, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(10, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(11, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(12, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
+    createData(1, "Pełny dostęp (1)", "Aktywne"),
+    createData(2, "Pełny dostęp (1)", "Aktywne"),
+    createData(3, "Pełny dostęp (1)", "Aktywne"),
+    createData(4, "Pełny dostęp (1)", "Aktywne"),
+    createData(5, "Pełny dostęp (1)", "Aktywne"),
+    createData(6, "Pełny dostęp (1)", "Aktywne"),
+    createData(7, "Pełny dostęp (1)", "Aktywne"),
+    createData(8, "Pełny dostęp (1)", "Aktywne"),
+    createData(9, "Pełny dostęp (1)", "Aktywne"),
+    createData(10, "Pełny dostęp (1)", "Aktywne"),
+    createData(11, "Pełny dostęp (1)", "Aktywne"),
+    createData(12, "Pełny dostęp (1)", "Aktywne"),
 ];
 
 
@@ -132,7 +129,6 @@ export default function UserFolderClaimsConfigurationTable() {
                             </TableCell>
                             <TableCell>Uprawnienie (id)</TableCell>
                             <TableCell>Status</TableCell>
-                            <TableCell>Źródło</TableCell>
                             <TableCell sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                 <Button
                                     variant="outlined"
@@ -195,7 +191,6 @@ export default function UserFolderClaimsConfigurationTable() {
                                             {row.status}
                                         </Typography>
                                     </TableCell>
-                                    <TableCell>{row.source}</TableCell>
                                     <TableCell sx={{
                                         display: 'flex',
                                         flexDirection: 'row',

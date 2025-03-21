@@ -16,7 +16,7 @@ import CreateEditJobBasicInfoCard from "@/app/_ui/_create_edit_job/CreateEditJob
 
 export default function CreateJobPage() {
     return (
-        <Box sx={{ width: "780px", maxWidth: "780px" }}>
+        <Box sx={{ width: "800px", maxWidth: "800px" }}>
             <Typography variant="h4" fontWeight={600} color="primary">Nowa oferta pracy</Typography>
             <Typography mt={1}>O</Typography>
 

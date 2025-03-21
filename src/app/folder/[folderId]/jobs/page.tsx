@@ -3,7 +3,7 @@ import EditJobCard from "@/app/folder/[folderId]/jobs/_ui/EditJobCard";
 import MyDefaultSortingCard from "@/app/_ui/MyDefaultSortingCard";
 import MyDefaultPagination from "@/app/_ui/MyDefaultPagination";
 
-export default function ManageCompanyJobsPage() {
+export default function FolderJobsPage() {
     return (
         <>
             <Breadcrumbs aria-label="breadcrumb">

@@ -6,10 +6,10 @@ import tabA11yProps from "@/lib/tabA11yProps";
 import CustomTabPanel from "@/ui/CustomTabPanel";
 import GeneralTab from "./_ui/GeneralTab/GeneralTab";
 import FolderClaimsOverviewTab from "./_ui/FolderClaimsOverviewTab/FolderClaimsOverviewTab";
-import UserFolderClaimsConfigurationTab from "@/app/folder/[folderId]/settings/_ui/UserFolderClaimsConfigurationTab/UserFolderClaimsConfigurationTab";
+import FolderClaimsConfigurationTab from "./_ui/FolderClaimsConfigurationTab/FolderClaimsConfigurationTab";
 
 
-export default function ManageCompanyJobsPage() {
+export default function FolderSettingsPage() {
     const [value, setValue] = React.useState(0);
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -53,7 +53,7 @@ export default function ManageCompanyJobsPage() {
                         <FolderClaimsOverviewTab />
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={2}>
-                        <UserFolderClaimsConfigurationTab />
+                        <FolderClaimsConfigurationTab />
                     </CustomTabPanel>
                 </Paper>
             </Box>

@@ -8,10 +8,10 @@ export default function HomePage() {
           <JobSearchInputs />
 
           <Container sx={{ mt: 2, mb: 4 }}>
-              <Box width="95%" margin="auto">
+              <Box width="1000px" margin="auto">
                   <Typography variant="h6" fontWeight="bold">NAJNOWSZE OFERTY PRACY</Typography>
 
-                  <Box display="flex" flexDirection="column" gap={4} mt={2}>
+                  <Box display="flex" flexDirection="column" gap={3} mt={2}>
                       <JobCard />
                       <JobCard />
                       <JobCard />
