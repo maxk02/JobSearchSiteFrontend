@@ -1,7 +1,7 @@
 "use client";
 
 import {useState} from "react";
-import {Box, Button, Checkbox, Container, FormControlLabel, Link, Paper, TextField, Typography} from "@mui/material";
+import {Button, Checkbox, Container, FormControlLabel, Link, Paper, Stack, TextField, Typography} from "@mui/material";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -14,16 +14,22 @@ export default function LoginPage() {
 
     return (
         <Container maxWidth="sm" sx={{ mt: 8 }}>
-            <Paper sx={{ boxShadow: 1.5, px: 3, pt: 6, pb: 8 }}>
-                <Container maxWidth="xs">
-                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                        <Typography variant="h4" mb={1.5}>
-                            Logowanie
+            <Paper sx={{ width: "100%", px: 9, pt: 6, pb: 8 }}>
+                <Stack sx={{ width: "100%", alignItems: "center" }}>
+                    <Typography variant="h4" mb={1.5} sx={{ textAlign: "center" }}>
+                        Logowanie
+                    </Typography>
+                    <Stack direction="row" spacing={1} sx={{ justifyContent: "center" }}>
+                        <Typography>
+                            Zapomniałeś hasła?
                         </Typography>
+                        <Link href="#" variant="body1">
+                            Zresetuj hasło
+                        </Link>
+                    </Stack>
+                    <Stack sx={{ mt: 3, gap: 2, width: "100%", alignItems: "center" }}>
                         <TextField
-                            sx={{ mt: 4 }}
                             fullWidth
-                            margin="normal"
                             label="Email"
                             variant="outlined"
                             value={email}
@@ -31,7 +37,6 @@ export default function LoginPage() {
                         />
                         <TextField
                             fullWidth
-                            margin="normal"
                             label="Hasło"
                             type="password"
                             variant="outlined"
@@ -42,21 +47,18 @@ export default function LoginPage() {
                             control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />}
                             label="Zapamiętaj konto"
                         />
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            sx={{ mt: 1.5, mb: 1, py: 1.5, width: "80%", fontSize: "1rem" }}
-                            onClick={handleLogin}
-                            // size="large"
-                        >
-                            Zaloguj się
-                        </Button>
-                        <Link href="#" variant="body1" sx={{ mt: 1 }}>
-                            Zapomniałeś hasła?
-                        </Link>
-                    </Box>
-                </Container>
+                    </Stack>
+
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        sx={{ mt: 2.5, py: 1.5, width: "75%", fontSize: "1.02rem" }}
+                        onClick={handleLogin}
+                        size="large"
+                    >
+                        Zaloguj się
+                    </Button>
+                </Stack>
             </Paper>
         </Container>
     );
