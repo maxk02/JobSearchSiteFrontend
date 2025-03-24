@@ -5,7 +5,7 @@ import CompanyManagementSideNavbar from "@/app/company/[companyId]/_ui/CompanyMa
 
 export default function ManageCompanyLayout({children}: Readonly<{ children: React.ReactNode; }>) {
     return (
-        <Container maxWidth="xl" sx={{ mt: 4 }}>
+        <Container maxWidth="xl" sx={{ mt: 4, mb: 3 }}>
             <Grid container spacing={4}>
                 <Grid size={{ xs: 12, md: 4, lg: 3.7, xl: 3 }}>
                     <CompanyManagementSideNavbar />

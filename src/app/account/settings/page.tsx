@@ -20,7 +20,7 @@ import {
     Typography
 } from "@mui/material";
 import React from "react";
-import tabA11yProps from "@/lib/tabA11yProps";
+import tabA11yProps from "@/lib/components/tab/tabA11yProps";
 import CustomTabPanel from "@/ui/CustomTabPanel";
 
 export default function AccountSettingsPage() {

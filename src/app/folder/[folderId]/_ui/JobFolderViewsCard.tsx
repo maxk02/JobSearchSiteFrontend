@@ -2,24 +2,25 @@
 
 import {List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Typography} from "@mui/material";
 import {Description, Settings} from "@mui/icons-material";
-import {useParams, usePathname, useRouter} from 'next/navigation';
+import {useParams, usePathname} from 'next/navigation';
 
-const navItems = [
-    { text: "Zarządzanie ogłoszeniami", icon: <Description />, subpage: "jobs" },
-    { text: "Ustawienia folderu", icon: <Settings />, subpage: "settings" },
-];
+
+function isRouteActive(pathname: string, href: string) {
+    if (href === pathname) return true;
+    return pathname.startsWith(`${href}/`);
+}
+
 
 export default function JobFolderViewsCard() {
+
     const { folderId } = useParams();
 
-    const router = useRouter();
-    const pathname = usePathname();
+    const navItems = [
+        { text: "Zarządzanie ogłoszeniami", icon: <Description />, path: `/folder/${folderId}/jobs` },
+        { text: "Ustawienia folderu", icon: <Settings />, path: `/folder/${folderId}/settings` },
+    ];
 
-    const navigateTo = (subPage: string) => {
-        router.push(`/folder/${folderId}/${subPage}`);
-    };
-
-    const isActive = (subPage: string) => pathname === `/folder/${folderId}/${subPage}`;
+    const currentPath = usePathname();
 
     return (
         <Paper sx={{ px: 0, pt: 0, pb: 0, flexShrink: 0 }}>
@@ -32,8 +33,8 @@ export default function JobFolderViewsCard() {
                 {navItems.map((item) => (
                     <ListItem key={item.text} disablePadding>
                         <ListItemButton
-                            onClick={() => navigateTo(item.subpage)}
-                            selected={isActive(item.subpage)}
+                            selected={isRouteActive(currentPath, item.path)}
+                            href={item.path}
                             sx={{
                                 pl: 1.5,
                                 py: 1.2,

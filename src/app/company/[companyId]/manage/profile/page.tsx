@@ -16,7 +16,6 @@ export default function AccountSettingsPage() {
             <Typography variant="h4" fontWeight={600} color="primary">Profil firmy</Typography>
             <Typography mt={1}>Możesz zmienić tutaj ...</Typography>
 
-
             <Paper sx={{ mt: 2, px: 2, pt: 1.5, pb: 2.5 }}>
                 <Typography variant="h6" fontWeight={600} color="primary">Zdjęcie profilowe</Typography>
                 <Stack direction="row" sx={{ mt: 1, gap: 2 }}>

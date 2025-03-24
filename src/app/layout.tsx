@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import font from "@/app/_lib/font";
 import ThemeRegistry from "@/app/_ui/ThemeRegistry";
-import Navbar from "@/app/_ui/Navbar";
+import Navbar from "@/app/_ui/Navbar/Navbar";
 import Footer from "@/app/_ui/Footer";
 import {Box, Container} from "@mui/material";
 import {headers} from "next/headers";

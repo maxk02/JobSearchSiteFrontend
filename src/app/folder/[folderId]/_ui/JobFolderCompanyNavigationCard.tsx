@@ -13,11 +13,14 @@ import {
 } from "@mui/material";
 import {ArrowBack} from "@mui/icons-material";
 
-const navItems = [
-    { text: "Powrót do zarządzania firmą", icon: <ArrowBack /> },
-];
+
 
 export default function JobFolderCompanyNavigationCard() {
+
+    const navItems = [
+        { text: "Powrót do zarządzania firmą", icon: <ArrowBack />, path: `/company/1/manage` },
+    ];
+
     return (
         <Paper sx={{ px: 0, pt: 0, pb: 0, flexShrink: 0 }}>
             <Box sx={{
@@ -42,6 +45,7 @@ export default function JobFolderCompanyNavigationCard() {
                 {navItems.map((item) => (
                     <ListItem key={item.text} disablePadding>
                         <ListItemButton
+                            href={item.path}
                             sx={{
                                 pl: 1.5,
                                 py: 1.2,

@@ -2,7 +2,7 @@
 
 import {Box, Breadcrumbs, Link, Paper, Tab, Tabs, Typography} from "@mui/material";
 import React from "react";
-import tabA11yProps from "@/lib/tabA11yProps";
+import tabA11yProps from "@/lib/components/tab/tabA11yProps";
 import CustomTabPanel from "@/ui/CustomTabPanel";
 import GeneralTab from "./_ui/GeneralTab/GeneralTab";
 import FolderClaimsOverviewTab from "./_ui/FolderClaimsOverviewTab/FolderClaimsOverviewTab";
