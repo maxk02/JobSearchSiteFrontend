@@ -17,6 +17,14 @@ import {
 import React, {useState} from "react";
 import {Close} from "@mui/icons-material";
 
+
+
+const getRandomColor = () => {
+    const colors = ["#2A6376", "#8B3A62", "#C49A3A", "#6A8D73", "#4C6FA5"];
+    return colors[Math.floor(Math.random() * colors.length)];
+};
+
+
 interface DasboardSearchDialogItem {
     id: number;
     title: string;
@@ -59,6 +67,7 @@ export default function DashboardSearchDialog({ title, open, onClose, data, list
             maxWidth="sm"
             TransitionProps={{ onEntered: () => document.getElementById("search-input")?.focus() }}
             onTransitionEnter={handleOpen}
+            scroll="paper"
         >
             <DialogTitle sx={{ pb: 1, pr: 1.5 }}>
                 <Stack direction="row" spacing={2} sx={{ justifyContent: "space-between", alignItems: "center" }}>
@@ -95,13 +104,16 @@ export default function DashboardSearchDialog({ title, open, onClose, data, list
                                 }}
                             >
                                 <ListItemAvatar sx={{ minWidth: "40px", mr: 1.3 }}>
-                                    <Avatar>
+                                    <Avatar variant="rounded" sx={{ backgroundColor: getRandomColor() }}>
                                         {listItemIcon}
                                     </Avatar>
                                 </ListItemAvatar>
                                 <ListItemText
                                     primary={item.title}
                                     secondary={item.subtitle}
+                                    slotProps={{
+                                        primary: { color: "black" }
+                                    }}
                                 />
                             </ListItem>
                         ))

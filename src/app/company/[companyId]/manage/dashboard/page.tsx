@@ -18,30 +18,39 @@ const mockCounters = {
 
 
 const initialJobs = [
-    {id: 1, title: "Programista Java", subtitle: "Poznań, Wielkopolskie", path: "/job/1/manage"},
-    {id: 2, title: "Kierownik projektu", subtitle: "Warszawa, Mazowieckie", path: "/job/1/manage"},
-    {id: 3, title: "Analityk danych", subtitle: "Gdańsk, Pomorskie", path: "/job/1/manage"},
+    {id: 1, title: "Programista Java", subtitle: "Poznań > Dział IT", path: "/job/1/manage"},
+    {id: 2, title: "Kierownik projektu", subtitle: "Warszawa > Dział IT", path: "/job/1/manage"},
+    {id: 3, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
+    {id: 4, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
+    {id: 5, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
+    {id: 6, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
+    {id: 7, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
 ];
 
 
 const initialFolders = [
-    {id: 1, title: "Warszawa", path: "/folder/1/jobs" },
-    {id: 2, title: "Dział IT", path: "/folder/1/jobs" },
-    {id: 3, title: "Katowice", path: "/folder/1/jobs" },
+    {id: 1, title: "Poznań > Dział IT", path: "/folder/1/jobs" },
+    {id: 2, title: "Warszawa > Dział IT", path: "/folder/1/jobs" },
+    {id: 3, title: "Trójmiasto > Dział IT", path: "/folder/1/jobs" },
 ];
 
 
 const mockJobs = [
-    {id: 1, title: "Programista Java", subtitle: "Wszystkie oferty > Poznań > Dział IT"},
-    {id: 2, title: "Kierownik projektu", subtitle: "Wszystkie oferty > Warszawa > Dział IT"},
-    {id: 3, title: "Analityk danych", subtitle: "Wszystkie oferty > Trójmiasto > Dział IT"},
+    {id: 1, title: "Programista Java", subtitle: "Poznań > Dział IT"},
+    {id: 2, title: "Kierownik projektu", subtitle: "Warszawa > Dział IT"},
+    {id: 3, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
+    {id: 4, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
+    {id: 5, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
+    {id: 6, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
+    {id: 7, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
+    {id: 8, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
 ];
 
 
 const mockFolders = [
-    {id: 1, title: "Wszystkie oferty > Poznań > Dział IT"},
-    {id: 2, title: "Wszystkie oferty > Warszawa > Dział IT"},
-    {id: 3, title: "Wszystkie oferty > Trójmiasto > Dział IT"},
+    {id: 1, title: "Poznań > Dział IT"},
+    {id: 2, title: "Warszawa > Dział IT"},
+    {id: 3, title: "Trójmiasto > Dział IT"},
 ];
 
 
@@ -148,6 +157,7 @@ export default function CompanyDashboard() {
                         noItemsPlaceholderText="Brak ogłoszeń do wyświetlenia"
                         onDelete={() => {}}
                         onDeleteAll={() => {}}
+                        listItemAvatarIcon={<Work />}
                     />
                 </Grid>
                 <Grid size={{xs: 12, md: 6}}>
@@ -157,6 +167,7 @@ export default function CompanyDashboard() {
                         noItemsPlaceholderText="Brak folderów do wyświetlenia"
                         onDelete={() => {}}
                         onDeleteAll={() => {}}
+                        listItemAvatarIcon={<Folder />}
                     />
                 </Grid>
             </Grid>
