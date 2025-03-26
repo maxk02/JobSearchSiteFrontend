@@ -31,7 +31,7 @@ export default function CompanyManagementSideNavbar() {
         { text: "Pulpit", icon: <Dashboard />, path: `/company/${companyId}/manage/dashboard` },
         { text: "Profil firmy", icon: <Business />, path: `/company/${companyId}/manage/profile` },
         { text: "Zarządzanie uprawnieniami", icon: <Policy />, path: `/company/${companyId}/manage/claims` },
-        { text: "Ustawienia konta firmowego", icon: <Settings />, path: `/company/${companyId}/manage/settings` },
+        // { text: "Ustawienia konta firmowego", icon: <Settings />, path: `/company/${companyId}/manage/settings` },
     ];
 
     return (

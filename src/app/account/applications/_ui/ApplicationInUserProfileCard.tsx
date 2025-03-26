@@ -98,7 +98,7 @@ export default function ApplicationInUserProfileCard() {
 
             <Divider />
 
-            <Box display="flex" flexDirection="column" py={1} px={2} gap={0.5}>
+            <Box display="flex" flexDirection="column" py={1} px={2} gap={0.7}>
                 <Typography variant="body2" width="100%" color="text.secondary" textAlign="right">
                     Opublikowana: 24.04.2024
                 </Typography>
