@@ -31,7 +31,7 @@ interface LastVisitedCardProps {
     onDeleteAll: () => void;
 }
 
-export default function LastVisitedCard({ cardTitle, initialItems, noItemsPlaceholderText }: LastVisitedCardProps) {
+export default function DashboardLastVisitedCard({ cardTitle, initialItems, noItemsPlaceholderText }: LastVisitedCardProps) {
     const [items, setItems] = useState(initialItems);
 
     const clearItems = () => setItems([]);

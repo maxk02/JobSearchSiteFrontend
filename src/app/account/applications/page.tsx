@@ -23,6 +23,9 @@ export default function AccountApplicationsPage() {
             <Typography mt={0.5}>W tej zakładce sprawdzisz status swoich aplikacji.</Typography>
 
             <Stack direction="row" spacing={1} sx={{ mt: 1.5, alignItems: "center" }}>
+                <Typography variant="body1" color="text.secondary">
+                    Filtruj:
+                </Typography>
                 {chips.map((chip) => (
                     <Chip
                         variant="filled"

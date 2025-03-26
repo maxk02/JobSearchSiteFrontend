@@ -1,11 +1,12 @@
 "use client";
 
 import {Button, Paper, Typography} from "@mui/material";
-import {Add, Search} from "@mui/icons-material";
+import {Add, Folder, Search, Work} from "@mui/icons-material";
 import {useParams} from "next/navigation";
 import Grid from "@mui/material/Grid2";
-import React from "react";
-import LastVisitedCard from "@/app/company/[companyId]/manage/dashboard/_ui/LastVisitedCard";
+import React, {useState} from "react";
+import DashboardLastVisitedCard from "@/app/company/[companyId]/manage/dashboard/_ui/DashboardLastVisitedCard";
+import DashboardSearchDialog from "@/app/company/[companyId]/manage/dashboard/_ui/DashboardSearchDialog";
 
 
 const mockCounters = {
@@ -30,9 +31,41 @@ const initialFolders = [
 ];
 
 
+const mockJobs = [
+    {id: 1, title: "Programista Java", subtitle: "Wszystkie oferty > Poznań > Dział IT"},
+    {id: 2, title: "Kierownik projektu", subtitle: "Wszystkie oferty > Warszawa > Dział IT"},
+    {id: 3, title: "Analityk danych", subtitle: "Wszystkie oferty > Trójmiasto > Dział IT"},
+];
+
+
+const mockFolders = [
+    {id: 1, title: "Wszystkie oferty > Poznań > Dział IT"},
+    {id: 2, title: "Wszystkie oferty > Warszawa > Dział IT"},
+    {id: 3, title: "Wszystkie oferty > Trójmiasto > Dział IT"},
+];
+
+
 export default function CompanyDashboard() {
     const { companyId } = useParams();
 
+    const [jobSearchDialogOpen, setJobSearchDialogOpen] = useState(false);
+    const [folderSearchDialogOpen, setFolderSearchDialogOpen] = useState(false);
+
+    const handleOpenJobSearchDialog = () => {
+        setJobSearchDialogOpen(true);
+    };
+
+    const handleCloseJobSearchDialog = () => {
+        setJobSearchDialogOpen(false);
+    };
+
+    const handleOpenFolderSearchDialog = () => {
+        setFolderSearchDialogOpen(true);
+    };
+
+    const handleCloseFolderSearchDialog = () => {
+        setFolderSearchDialogOpen(false);
+    };
 
     return (
         <>
@@ -52,7 +85,7 @@ export default function CompanyDashboard() {
                     <Button
                         variant="text"
                         startIcon={<Search />}
-                        onClick={() => {}}
+                        onClick={handleOpenJobSearchDialog}
                         sx={{ py: 1.5, fontSize: "1.05em", boxShadow: 3, backgroundColor: 'white' }}
                         fullWidth
                     >
@@ -63,7 +96,7 @@ export default function CompanyDashboard() {
                     <Button
                         variant="text"
                         startIcon={<Search />}
-                        href={`/company/${companyId}/manage/employees`}
+                        onClick={handleOpenFolderSearchDialog}
                         sx={{ py: 1.5, fontSize: "1.05em", boxShadow: 3, backgroundColor: 'white' }}
                         fullWidth
                     >
@@ -109,7 +142,7 @@ export default function CompanyDashboard() {
 
             <Grid container spacing={3}>
                 <Grid size={{xs: 12, md: 6}}>
-                    <LastVisitedCard
+                    <DashboardLastVisitedCard
                         cardTitle="Ostatnio odwiedzane ogłoszenia"
                         initialItems={initialJobs}
                         noItemsPlaceholderText="Brak ogłoszeń do wyświetlenia"
@@ -118,7 +151,7 @@ export default function CompanyDashboard() {
                     />
                 </Grid>
                 <Grid size={{xs: 12, md: 6}}>
-                    <LastVisitedCard
+                    <DashboardLastVisitedCard
                         cardTitle="Ostatnio odwiedzane foldery"
                         initialItems={initialFolders}
                         noItemsPlaceholderText="Brak folderów do wyświetlenia"
@@ -127,6 +160,22 @@ export default function CompanyDashboard() {
                     />
                 </Grid>
             </Grid>
+
+            <DashboardSearchDialog
+                title="Wyszukiwanie ogłoszeń"
+                open={jobSearchDialogOpen}
+                onClose={handleCloseJobSearchDialog}
+                data={mockJobs}
+                listItemIcon={<Work />}
+            />
+
+            <DashboardSearchDialog
+                title="Wyszukiwanie folderów"
+                open={folderSearchDialogOpen}
+                onClose={handleCloseFolderSearchDialog}
+                data={mockFolders}
+                listItemIcon={<Folder />}
+            />
         </>
     );
 }
