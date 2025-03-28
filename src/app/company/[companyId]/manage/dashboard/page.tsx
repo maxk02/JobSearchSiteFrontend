@@ -7,6 +7,7 @@ import Grid from "@mui/material/Grid2";
 import React, {useState} from "react";
 import DashboardLastVisitedCard from "@/app/company/[companyId]/manage/dashboard/_ui/DashboardLastVisitedCard";
 import DashboardSearchDialog from "@/app/company/[companyId]/manage/dashboard/_ui/DashboardSearchDialog";
+import ChooseFolderDialog from "@/app/company/[companyId]/manage/dashboard/_ui/ChooseFolderDialog";
 
 
 const mockCounters = {
@@ -53,12 +54,27 @@ const mockFolders = [
     {id: 3, title: "Trójmiasto > Dział IT"},
 ];
 
+const mockFoldersForChooseFolder = [
+    {id: 1, title: "Dział IT"},
+    {id: 2, title: "Warszawa"},
+    {id: 3, title: "Trójmiasto"},
+    {id: 4, title: "Trójmiasto"},
+    {id: 5, title: "Trójmiasto"},
+    {id: 6, title: "Trójmiasto"},
+    {id: 7, title: "Trójmiasto"},
+    {id: 8, title: "Trójmiasto"},
+    {id: 9, title: "Trójmiasto"},
+    {id: 10, title: "Trójmiasto"},
+];
+
 
 export default function CompanyDashboard() {
     const { companyId } = useParams();
 
     const [jobSearchDialogOpen, setJobSearchDialogOpen] = useState(false);
     const [folderSearchDialogOpen, setFolderSearchDialogOpen] = useState(false);
+    const [chooseFolderDialogOpen, setChooseFolderDialogOpen] = useState(false);
+
 
     const handleOpenJobSearchDialog = () => {
         setJobSearchDialogOpen(true);
@@ -76,6 +92,14 @@ export default function CompanyDashboard() {
         setFolderSearchDialogOpen(false);
     };
 
+    const handleOpenChooseFolderDialog = () => {
+        setChooseFolderDialogOpen(true);
+    };
+
+    const handleCloseChooseFolderhDialog = () => {
+        setChooseFolderDialogOpen(false);
+    };
+
     return (
         <>
             <Grid container spacing={3} sx={{mb: 4}}>
@@ -83,7 +107,8 @@ export default function CompanyDashboard() {
                     <Button
                         variant="text"
                         startIcon={<Add />}
-                        href={`/company/${companyId}/create-job`}
+                        onClick={handleOpenChooseFolderDialog}
+                        // href={`/company/${companyId}/create-job`}
                         sx={{ py: 1.5, fontSize: "1.05em", boxShadow: 3, backgroundColor: 'white' }}
                         fullWidth
                     >
@@ -185,6 +210,14 @@ export default function CompanyDashboard() {
                 open={folderSearchDialogOpen}
                 onClose={handleCloseFolderSearchDialog}
                 data={mockFolders}
+                listItemIcon={<Folder />}
+            />
+
+            <ChooseFolderDialog
+                title="Wybierz folder"
+                open={chooseFolderDialogOpen}
+                onClose={handleCloseChooseFolderhDialog}
+                data={mockFoldersForChooseFolder}
                 listItemIcon={<Folder />}
             />
         </>

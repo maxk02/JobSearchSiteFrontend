@@ -3,17 +3,18 @@ import React from "react";
 import TabPanelProps from "@/lib/components/tab/tabPanelProps";
 
 export default function CustomTabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
+    const { children, value, index, sx, ...other } = props;
 
     return (
-        <div
+        <Box
             role="tabpanel"
             hidden={value !== index}
             id={`tabpanel-${index}`}
             aria-labelledby={`tab-${index}`}
+            sx={{ ...sx }}
             {...other}
         >
             {value === index && <Box>{children}</Box>}
-        </div>
+        </Box>
     );
 }

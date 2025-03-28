@@ -4,7 +4,7 @@ import {Avatar, Box, Button, Paper, Stack, TextField, Typography} from "@mui/mat
 import React, {useState} from "react";
 import ImageUploadArea from "@/app/_ui/ImageUploadArea";
 
-export default function AccountSettingsPage() {
+export default function CompanySettingsPage() {
     const [, setUploadedFiles] = useState<File[]>([]);
 
     const handleFileUpload = (files: File[]) => {

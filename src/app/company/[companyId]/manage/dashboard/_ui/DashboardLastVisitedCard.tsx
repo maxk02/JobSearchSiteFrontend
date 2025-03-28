@@ -49,7 +49,7 @@ export default function DashboardLastVisitedCard({ cardTitle, initialItems, noIt
     const handleDelete = (id: number) => setItems(items.filter(job => job.id !== id));
 
     return (
-        <Paper elevation={3} sx={{ width: "100%", height: "440px", display: "flex", flexDirection: "column" }}>
+        <Paper elevation={3} sx={{ width: "100%", height: "460px", display: "flex", flexDirection: "column" }}>
             <Typography variant="h6" sx={{ px: 2, pt: 2 }}>
                 {cardTitle}
             </Typography>

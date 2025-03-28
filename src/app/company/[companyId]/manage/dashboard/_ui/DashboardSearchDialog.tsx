@@ -25,7 +25,7 @@ const getRandomColor = () => {
 };
 
 
-interface DasboardSearchDialogItem {
+interface DashboardSearchDialogItem {
     id: number;
     title: string;
     subtitle?: string;
@@ -35,7 +35,7 @@ interface DashboardSearchDialogProps {
     title: string;
     open: boolean;
     onClose: () => void;
-    data: DasboardSearchDialogItem[];
+    data: DashboardSearchDialogItem[];
     listItemIcon: React.ReactNode;
 }
 

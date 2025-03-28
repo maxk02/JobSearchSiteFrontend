@@ -7,6 +7,7 @@ import CustomTabPanel from "@/ui/CustomTabPanel";
 import GeneralTab from "./_ui/GeneralTab/GeneralTab";
 import FolderClaimsOverviewTab from "./_ui/FolderClaimsOverviewTab/FolderClaimsOverviewTab";
 import FolderClaimsConfigurationTab from "./_ui/FolderClaimsConfigurationTab/FolderClaimsConfigurationTab";
+import StatsTab from "@/app/folder/[folderId]/settings/_ui/StatsTab/StatsTab";
 
 
 export default function FolderSettingsPage() {
@@ -43,6 +44,7 @@ export default function FolderSettingsPage() {
                             <Tab label="Ogólne" {...tabA11yProps(0)} />
                             <Tab label="Przegląd uprawnień" {...tabA11yProps(1)} />
                             <Tab label="Konfigurowanie uprawnień użytkownika" {...tabA11yProps(2)} />
+                            <Tab label="Statystyki" {...tabA11yProps(3)} />
                         </Tabs>
                     </Box>
 
@@ -54,6 +56,9 @@ export default function FolderSettingsPage() {
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={2}>
                         <FolderClaimsConfigurationTab />
+                    </CustomTabPanel>
+                    <CustomTabPanel value={value} index={3}>
+                        <StatsTab />
                     </CustomTabPanel>
                 </Paper>
             </Box>

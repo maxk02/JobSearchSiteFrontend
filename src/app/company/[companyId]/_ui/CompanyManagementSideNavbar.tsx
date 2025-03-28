@@ -12,7 +12,7 @@ import {
     Stack,
     Typography
 } from "@mui/material";
-import {ArrowForward, Business, Dashboard, FileOpen, Policy, Settings} from "@mui/icons-material";
+import {ArrowForward, Business, Dashboard, FileOpen, Policy, QueryStats} from "@mui/icons-material";
 import {useParams, usePathname} from "next/navigation";
 
 
@@ -31,7 +31,7 @@ export default function CompanyManagementSideNavbar() {
         { text: "Pulpit", icon: <Dashboard />, path: `/company/${companyId}/manage/dashboard` },
         { text: "Profil firmy", icon: <Business />, path: `/company/${companyId}/manage/profile` },
         { text: "Zarządzanie uprawnieniami", icon: <Policy />, path: `/company/${companyId}/manage/claims` },
-        // { text: "Ustawienia konta firmowego", icon: <Settings />, path: `/company/${companyId}/manage/settings` },
+        { text: "Statystyki", icon: <QueryStats />, path: `/company/${companyId}/manage/stats` },
     ];
 
     return (
