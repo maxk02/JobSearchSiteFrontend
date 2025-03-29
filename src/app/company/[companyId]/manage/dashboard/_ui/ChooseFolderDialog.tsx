@@ -26,12 +26,7 @@ import React, {useState} from "react";
 import {Close, Home} from "@mui/icons-material";
 import tabA11yProps from "@/lib/components/tab/tabA11yProps";
 import CustomTabPanel from "@/ui/CustomTabPanel";
-
-
-const getRandomColor = () => {
-    const colors = ["#2A6376", "#8B3A62", "#C49A3A", "#6A8D73", "#4C6FA5"];
-    return colors[Math.floor(Math.random() * colors.length)];
-};
+import {getItemColor} from "@/lib/listItemColors";
 
 
 interface ChooseFolderDialogItem {
@@ -81,14 +76,16 @@ export default function ChooseFolderDialog({title, open, onClose, data, listItem
             maxWidth="sm"
             TransitionProps={{onEntered: () => document.getElementById("search-input")?.focus()}}
         >
-            <DialogTitle sx={{pb: 0, pr: 1.5}}>
-                <Stack direction="row" sx={{justifyContent: "space-between", alignItems: "center"}}>
-                    <Typography variant="h5" sx={{ ml: 2.8, flexGrow: 1, textAlign: "center"}}>
+            <DialogTitle sx={{pb: 1, pr: 1.5}}>
+                <Stack direction="row" sx={{ alignItems: "center" }}>
+                    <Typography variant="h5" sx={{ flexGrow: 1 }}>
                         {title}
                     </Typography>
-                    <IconButton onClick={() => handleClose({}, "")}>
-                        <Close/>
-                    </IconButton>
+                    <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                        <IconButton onClick={() => handleClose({}, "")}>
+                            <Close />
+                        </IconButton>
+                    </Box>
                 </Stack>
             </DialogTitle>
             <DialogContent
@@ -100,7 +97,16 @@ export default function ChooseFolderDialog({title, open, onClose, data, listItem
                 }}
             >
                 <Box sx={{borderBottom: 1, borderColor: 'divider', height: '48px', maxHeight: '48px'}}>
-                    <Tabs value={value} onChange={handleChange}>
+                    <Tabs
+                        value={value}
+                        onChange={handleChange}
+                        sx={{
+                            width: "100%", // Ensure Tabs take full width
+                            "& .MuiTabs-flexContainer": {
+                                justifyContent: "space-evenly", // Evenly space the tab buttons
+                            },
+                        }}
+                    >
                         <Tab label="Szybki dostęp" {...tabA11yProps(0)} />
                         <Tab label="Nawigacja" {...tabA11yProps(1)} />
                     </Tabs>
@@ -131,7 +137,7 @@ export default function ChooseFolderDialog({title, open, onClose, data, listItem
                                     }}
                                 >
                                     <ListItemAvatar sx={{minWidth: "40px", mr: 1.3}}>
-                                        <Avatar variant="rounded" sx={{backgroundColor: getRandomColor()}}>
+                                        <Avatar variant="rounded" sx={{backgroundColor: getItemColor(item.id)}}>
                                             {listItemIcon}
                                         </Avatar>
                                     </ListItemAvatar>
@@ -182,7 +188,7 @@ export default function ChooseFolderDialog({title, open, onClose, data, listItem
                                     }}
                                 >
                                     <ListItemAvatar sx={{minWidth: "40px", mr: 1.3}}>
-                                        <Avatar variant="rounded" sx={{backgroundColor: getRandomColor()}}>
+                                        <Avatar variant="rounded" sx={{backgroundColor: getItemColor(item.id)}}>
                                             {listItemIcon}
                                         </Avatar>
                                     </ListItemAvatar>

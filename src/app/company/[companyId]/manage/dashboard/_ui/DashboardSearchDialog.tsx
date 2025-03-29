@@ -16,13 +16,7 @@ import {
 } from "@mui/material";
 import React, {useState} from "react";
 import {Close} from "@mui/icons-material";
-
-
-
-const getRandomColor = () => {
-    const colors = ["#2A6376", "#8B3A62", "#C49A3A", "#6A8D73", "#4C6FA5"];
-    return colors[Math.floor(Math.random() * colors.length)];
-};
+import {getItemColor} from "@/lib/listItemColors";
 
 
 interface DashboardSearchDialogItem {
@@ -104,7 +98,7 @@ export default function DashboardSearchDialog({ title, open, onClose, data, list
                                 }}
                             >
                                 <ListItemAvatar sx={{ minWidth: "40px", mr: 1.3 }}>
-                                    <Avatar variant="rounded" sx={{ backgroundColor: getRandomColor() }}>
+                                    <Avatar variant="rounded" sx={{ backgroundColor: getItemColor(item.id) }}>
                                         {listItemIcon}
                                     </Avatar>
                                 </ListItemAvatar>
