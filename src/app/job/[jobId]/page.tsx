@@ -8,6 +8,7 @@ import JobListCard from "./_ui/JobListCard";
 import JobCompanyDescriptionCard from "./_ui/JobCompanyDescriptionCard";
 import JobActionsCard from "@/app/job/[jobId]/_ui/JobActionsCard";
 import SuggestedJobCard from "@/app/job/[jobId]/_ui/SuggestedJobCard";
+import {getJobById} from "@/lib/api/jobs/jobsApi";
 
 
 const items: string[] = [
@@ -21,7 +22,9 @@ const companyName: string = "Prominvest";
 const companyDescription: string = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse quis volutpat mauris, eget condimentum neque. Praesent turpis nibh, aliquam facilisis odio eu, dictum sodales nisl. Vivamus ac tristique justo, a finibus sapien. Vivamus facilisis aliquet nibh. Quisque dictum orci ac nisl suscipit tempus. Cras lobortis quam at mauris tempus, suscipit lacinia massa aliquam. Vestibulum eget tortor rutrum, pellentesque erat ac, auctor magna.";
 
 
-export default function JobPage() {
+export default async function JobPage() {
+    const job = await getJobById(1);
+
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 3 }}>
             <Grid container spacing={3}>
