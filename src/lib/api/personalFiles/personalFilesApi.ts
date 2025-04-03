@@ -1,4 +1,4 @@
-import api from "@/lib/api/httpClient";
+import axiosClient from "@/lib/api/axiosClient";
 import {UpdateFileRequestDto} from "@/lib/api/personalFiles/personalFilesApiInterfaces";
 
 
@@ -6,7 +6,7 @@ export const uploadFile = async (formFile: File) => {
     const formData = new FormData();
     formData.append("file", formFile);
 
-    const response = await api.post("/personal-files", formData, {
+    const response = await axiosClient.post("/personal-files", formData, {
         headers: {"Content-Type": "multipart/form-data"},
     });
     return response.data;
@@ -14,12 +14,12 @@ export const uploadFile = async (formFile: File) => {
 
 
 export const deleteFile = async (id: number) => {
-    const response = await api.delete(`/personal-files/${id}`);
+    const response = await axiosClient.delete(`/personal-files/${id}`);
     return response.data;
 };
 
 
 export const updateFile = async (id: number, req: UpdateFileRequestDto) => {
-    const response = await api.patch(`/personal-files/${id}`, req);
+    const response = await axiosClient.patch(`/personal-files/${id}`, req);
     return response.data;
 };

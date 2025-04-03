@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import {Clear} from "@mui/icons-material";
 import React, {useState} from "react";
-import {getItemColor} from "@/lib/listItemColors";
+import {getItemColor} from "@/lib/functions/listItemColors";
 
 
 interface LastVisitedCardItem {

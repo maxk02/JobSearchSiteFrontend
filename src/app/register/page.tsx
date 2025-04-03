@@ -27,7 +27,7 @@ export default function RegisterPage() {
                             Zaloguj się
                         </Link>
                     </Stack>
-                    <Stack sx={{ mt: 4, gap: 2, width: "100%", alignItems: "center" }}>
+                    <Stack sx={{ mt: 3.5, gap: 2, width: "100%", alignItems: "center" }}>
                         <TextField
                             fullWidth
                             label="Email"
@@ -51,17 +51,16 @@ export default function RegisterPage() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            sx={{ mt: 2, py: 1.5, width: "75%", fontSize: "1.02rem" }}
+                            onClick={handleLogin}
+                            size="large"
+                        >
+                            Zarejestruj się
+                        </Button>
                     </Stack>
-
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        sx={{ mt: 5, py: 1.5, width: "75%", fontSize: "1.02rem" }}
-                        onClick={handleLogin}
-                        size="large"
-                    >
-                        Zarejestruj się
-                    </Button>
                 </Stack>
             </Paper>
         </Container>

@@ -1,4 +1,4 @@
-import {UserSessionDto} from "@/lib/api/account/accountApiDtos";
+import {AccountDataDto, UserSessionDto} from "@/lib/api/account/accountApiDtos";
 
 export interface ChangePasswordRequest {
     oldPassword: string;
@@ -25,13 +25,11 @@ export interface GetUserSessionsResponse {
 export interface LogInRequest {
     email: string;
     password: string;
-    device: string | null;
-    os: string | null;
-    client: string | null;
 }
 
-export interface LogInResponse {
-    token: string;
+export interface LogInResponseDto {
+    tokenId: string;
+    accountData: AccountDataDto;
 }
 
 export interface ResetPasswordRequest {

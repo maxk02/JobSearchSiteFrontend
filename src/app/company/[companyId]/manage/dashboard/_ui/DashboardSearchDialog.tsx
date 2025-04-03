@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import React, {useState} from "react";
 import {Close} from "@mui/icons-material";
-import {getItemColor} from "@/lib/listItemColors";
+import {getItemColor} from "@/lib/functions/listItemColors";
 
 
 interface DashboardSearchDialogItem {

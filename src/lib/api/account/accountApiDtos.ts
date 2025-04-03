@@ -1,7 +1,14 @@
+import {CompanyInfoDto} from "@/lib/api/companies/companiesApiDtos";
+
+
 export interface UserSessionDto {
-    tokenId: string;
+    token: string;
     firstTimeIssuedUtc: string;
-    lastDevice: string | null;
-    lastOs: string | null;
-    lastClient: string | null;
+}
+
+export interface AccountDataDto {
+    id: number;
+    email: string;
+    fullName: string;
+    companiesManaged: CompanyInfoDto[]
 }

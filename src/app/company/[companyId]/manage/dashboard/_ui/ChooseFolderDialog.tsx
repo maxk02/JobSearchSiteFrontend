@@ -26,7 +26,7 @@ import React, {useState} from "react";
 import {Close, Home} from "@mui/icons-material";
 import tabA11yProps from "@/lib/components/tab/tabA11yProps";
 import CustomTabPanel from "@/ui/CustomTabPanel";
-import {getItemColor} from "@/lib/listItemColors";
+import {getItemColor} from "@/lib/functions/listItemColors";
 
 
 interface ChooseFolderDialogItem {

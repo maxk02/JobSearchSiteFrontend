@@ -1,4 +1,4 @@
-import api from "@/lib/api/httpClient";
+import axiosClient from "@/lib/api/axiosClient";
 import {
     AddJobFolderRequest,
     GetChildFoldersResponse,
@@ -8,30 +8,30 @@ import {
 
 
 export const createJobFolder = async (req: AddJobFolderRequest) => {
-    const response = await api.post("/job-folders", req);
+    const response = await axiosClient.post("/job-folders", req);
     return response.data as number;
 };
 
 
 export const deleteJobFolder = async (id: number) => {
-    const response = await api.delete(`/job-folders/${id}`);
+    const response = await axiosClient.delete(`/job-folders/${id}`);
     return response.data;
 };
 
 
 export const getChildFolders = async (id: number) => {
-    const response = await api.get(`/job-folders/${id}/child-folders`);
+    const response = await axiosClient.get(`/job-folders/${id}/child-folders`);
     return response.data as GetChildFoldersResponse;
 };
 
 
 export const getJobs = async (id: number) => {
-    const response = await api.get(`/job-folders/${id}/jobs`);
+    const response = await axiosClient.get(`/job-folders/${id}/jobs`);
     return response.data as GetJobsResponse;
 };
 
 
 export const updateJobFolder = async (id: number, req: UpdateJobFolderRequestDto) => {
-    const response = await api.patch(`/job-folders/${id}`, req);
+    const response = await axiosClient.patch(`/job-folders/${id}`, req);
     return response.data;
 };

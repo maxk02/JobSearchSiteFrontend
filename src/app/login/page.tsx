@@ -1,15 +1,49 @@
 "use client";
 
-import {useState} from "react";
+import React from "react";
 import {Button, Checkbox, Container, FormControlLabel, Link, Paper, Stack, TextField, Typography} from "@mui/material";
+import {Controller, useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {LogInFormData, logInSchema} from "@/lib/schemas/logInSchema";
+import {logIn} from "@/lib/api/account/accountApi";
+import {LogInRequest} from "@/lib/api/account/accountApiInterfaces";
+import {useCurrentUserStore} from "@/lib/stores/currentUserStore";
+import {useRouter} from "next/navigation";
 
 export default function LoginPage() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [rememberMe, setRememberMe] = useState(false);
+    const { setAuth } = useCurrentUserStore();
 
-    const handleLogin = () => {
-        console.log({ email, password, rememberMe });
+    const router = useRouter();
+
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+        getValues,
+    } = useForm<LogInFormData>({
+        resolver: zodResolver(logInSchema),
+        defaultValues: {
+            email: '',
+            password: '',
+            rememberMe: false,
+        },
+    });
+
+    const onSubmit = async (data: LogInFormData) => {
+        const logInRequest: LogInRequest = {
+            email: data.email,
+            password: data.password,
+        };
+
+        const logInResult = await logIn(logInRequest);
+
+        if (logInResult.success) {
+            setAuth(logInResult.data.tokenId, logInResult.data.accountData);
+            router.push("/");
+        }
+        else {
+            console.log(`Failed (${logInResult.status})`)
+        }
     };
 
     return (
@@ -27,37 +61,63 @@ export default function LoginPage() {
                             Zresetuj hasło
                         </Link>
                     </Stack>
-                    <Stack sx={{ mt: 3, gap: 2, width: "100%", alignItems: "center" }}>
-                        <TextField
-                            fullWidth
-                            label="Email"
-                            variant="outlined"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <TextField
-                            fullWidth
-                            label="Hasło"
-                            type="password"
-                            variant="outlined"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <FormControlLabel
-                            control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />}
-                            label="Zapamiętaj konto"
-                        />
-                    </Stack>
-
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        sx={{ mt: 2.5, py: 1.5, width: "75%", fontSize: "1.02rem" }}
-                        onClick={handleLogin}
-                        size="large"
-                    >
-                        Zaloguj się
-                    </Button>
+                    <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
+                        <Stack sx={{ mt: 3.5, gap: 2, width: "100%", alignItems: "center" }}>
+                            <Controller
+                                name="email"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        label="Email"
+                                        fullWidth
+                                        required
+                                        error={!!errors.email}
+                                        helperText={errors.email?.message}
+                                    />
+                                )}
+                            />
+                            <Controller
+                                name="password"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        label="Hasło"
+                                        fullWidth
+                                        required
+                                        error={!!errors.password}
+                                        helperText={errors.password?.message}
+                                    />
+                                )}
+                            />
+                            <Controller
+                                name="rememberMe"
+                                control={control}
+                                render={({ field }) => (
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                {...field}
+                                                checked={field.value}
+                                                onChange={(e) => field.onChange(e.target.checked)}
+                                            />
+                                        }
+                                        label="Zapamiętaj konto"
+                                    />
+                                )}
+                            />
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                sx={{ mt: 0.5, py: 1.5, width: "75%", fontSize: "1.02rem" }}
+                                size="large"
+                            >
+                                Zaloguj się
+                            </Button>
+                        </Stack>
+                    </form>
                 </Stack>
             </Paper>
         </Container>
