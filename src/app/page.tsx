@@ -1,9 +1,15 @@
+"use client";
+
 import JobCard from "@/app/_ui/JobCard";
 import JobSearchInputs from "@/app/_ui/JobSearchInputs/JobSearchInputs";
 import {Box, Container, Typography} from "@mui/material";
+import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
+import {useState} from "react";
 
 export default function HomePage() {
-  return (
+    const [jobCards, setJobCards] = useState<JobCardDto[]>([]);
+
+    return (
       <>
           <JobSearchInputs />
 
@@ -23,5 +29,5 @@ export default function HomePage() {
               </Box>
           </Container>
       </>
-  );
+    );
 }

@@ -1,8 +1,9 @@
-import axiosClient from "@/lib/api/axiosClient"
 import {
     ChangePasswordRequest,
     ConfirmEmailRequest,
     CreateAccountRequest,
+    ExtendSessionResponse,
+    GetUserSessionsResponse,
     LogInRequest,
     LogInResponseDto,
     ResetPasswordRequest,
@@ -13,55 +14,45 @@ import fetchData from "@/lib/api/fetchData";
 
 
 export const changePassword = async (req: ChangePasswordRequest) => {
-    const response = await axiosClient.post("/account/change-password", {params: req});
-    return response.data;
+    return await fetchData<ChangePasswordRequest>("/account/change-password", "POST", req);
 };
 
 export const confirmEmail = async (req: ConfirmEmailRequest) => {
-    const response = await axiosClient.post("/account/confirm-email", {params: req});
-    return response.data;
+    return await fetchData<ConfirmEmailRequest>("/account/confirm-email", "POST", req);
 };
 
 export const createAccount = async (req: CreateAccountRequest) => {
-    const response = await axiosClient.post("/account", req);
-    return response.data;
+    return await fetchData<CreateAccountRequest>("/account", "POST", req);
 };
 
 export const deleteAccount = async () => {
-    const response = await axiosClient.delete("/account");
-    return response.data;
+    return await fetchData<unknown>("/account", "DELETE");
 };
 
 export const extendSession = async () => {
-    const response = await axiosClient.post("/account/extend-session");
-    return response.data;
+    return await fetchData<unknown, ExtendSessionResponse>("/account/extend-session", "POST");
 };
 
 export const getSessions = async () => {
-    const response = await axiosClient.get("/account/sessions");
-    return response.data;
+    return await fetchData<unknown, GetUserSessionsResponse>("/account/sessions", "GET");
 };
 
 export const logIn = async (req: LogInRequest) => {
-    return await fetchData<LogInRequest, LogInResponseDto>("/account/login", req, "POST");
+    return await fetchData<LogInRequest, LogInResponseDto>("/account/login", "POST", req);
 };
 
 export const logOut = async () => {
-    const response = await axiosClient.post("/account/logout");
-    return response.data;
+    return await fetchData<unknown>("/account/logout", "POST");
 };
 
 export const resetPassword = async (req: ResetPasswordRequest) => {
-    const response = await axiosClient.post("/account/reset-password", {params: req});
-    return response.data;
+    return await fetchData<ResetPasswordRequest>("/account/reset-password", "POST", req);
 };
 
 export const sendEmailConfirmationLink = async (req: SendEmailConfirmationLinkRequest) => {
-    const response = await axiosClient.post("/account/send-email-confirmation-link", {params: req});
-    return response.data;
+    return await fetchData<SendEmailConfirmationLinkRequest>("/account/send-email-confirmation-link", "POST", req);
 };
 
 export const sendPasswordResetLink = async (req: SendPasswordResetLinkRequest) => {
-    const response = await axiosClient.post("/account/send-password-reset-link", {params: req});
-    return response.data;
+    return await fetchData<SendPasswordResetLinkRequest>("/account/send-password-reset-link", "POST", req);
 };

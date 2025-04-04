@@ -5,11 +5,13 @@ import {
     ListItemText,
     MenuItem,
     OutlinedInput,
-    Select, SelectChangeEvent,
+    Select,
+    SelectChangeEvent,
     Typography
 } from "@mui/material";
 import React, {useState} from "react";
-
+import {Control, Controller} from "react-hook-form";
+import {SearchJobFormData} from "@/lib/schemas/searchJobSchema";
 
 
 interface WithIdAndName {
@@ -18,99 +20,96 @@ interface WithIdAndName {
 }
 
 interface JobSearchSelectOptionsInputProps<T extends WithIdAndName> {
-    name: string;
+    labelName: string;
+    controllerName: keyof SearchJobFormData;
     columnsNo: number;
     items: T[];
+    control: Control<SearchJobFormData>;
 }
 
 
 export default function JobSearchSelectOptionsInput<T extends WithIdAndName>(props: JobSearchSelectOptionsInputProps<T>) {
 
-    const {name, columnsNo, items } = props;
-
+    const {labelName, controllerName, columnsNo, items, control } = props;
 
     const [selected, setSelected] = useState<T["id"][]>([]);
-    // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const handleChange = (event: SelectChangeEvent<T["id"][]>) => {
         const value = event.target.value as T["id"][];
         setSelected(value);
     };
 
-    // const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    //     setAnchorEl(event.currentTarget);
-    // };
-    //
-    // const handleClose = () => {
-    //     setAnchorEl(null);
-    // };
-
     return (
         <FormControl sx={{width: "100%"}}>
-            <InputLabel id="select-job-category-label" size="small">{name}</InputLabel>
-            <Select
-                labelId="select-job-category-label"
-                id="select-job-category"
-                multiple
-                fullWidth
-                value={selected}
-                onChange={handleChange}
-                input={<OutlinedInput label={name} />}
-                size="small"
-                variant="outlined"
-                sx={{
-                    borderRadius: "50px",
-                    '& .MuiOutlinedInput-notchedOutline': {
-                        borderRadius: "50px",
-                    },
-                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                        borderRadius: "50px",
-                    },
-                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                        borderRadius: "50px",
-                    },
-                }}
-                renderValue={
-                    (selectedIds) => (
-                        <Typography
-                            variant="body2"
-                            mt={0.25}
-                            sx={{
-                                width: "fit-content",
-                                textOverflow: "ellipsis",
-                            }}
-                        >
-                            Wybrano elementów: {selectedIds.length}
-                        </Typography>
-                    )}
-                MenuProps={{
-                    PaperProps: {
-                        sx: {
-                            mt: 3,
-                            // width: '80%',
-                            // minWidth: '1000px',
-                            maxHeight: '400px',
-                            borderRadius: 2,
-                            '& .MuiMenu-list': {
-                                display: 'grid',
-                                gridTemplateColumns: `repeat(${columnsNo}, 1fr)`,
-                                gap: 0.5,
-                                p: 1,
+            <InputLabel id={`select-job-${controllerName}-label`} size="small">{labelName}</InputLabel>
+            <Controller
+                name={controllerName}
+                control={control}
+                render={({ field }) => (
+                    <Select
+                        {...field}
+                        labelId={`select-job-${controllerName}-label`}
+                        id={`select-job-${controllerName}`}
+                        multiple
+                        fullWidth
+                        value={selected}
+                        onChange={handleChange}
+                        input={<OutlinedInput label={labelName} />}
+                        size="small"
+                        variant="outlined"
+                        sx={{
+                            borderRadius: "50px",
+                            '& .MuiOutlinedInput-notchedOutline': {
+                                borderRadius: "50px",
                             },
-                        },
-                    },
-                }}
-            >
-                {items.map((item) => (
-                    <MenuItem key={item.id} value={item.id} sx={{px: 1, py: 0.5}}>
-                        <Checkbox
-                            checked={selected.indexOf(item.id) > -1}
-                            sx={{py: 0.5}}
-                        />
-                        <ListItemText primary={item.name}/>
-                    </MenuItem>
-                ))}
-            </Select>
+                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                                borderRadius: "50px",
+                            },
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                borderRadius: "50px",
+                            },
+                        }}
+                        renderValue={
+                            (selectedIds) => (
+                                <Typography
+                                    variant="body2"
+                                    mt={0.25}
+                                    sx={{
+                                        width: "fit-content",
+                                        textOverflow: "ellipsis",
+                                    }}
+                                >
+                                    Wybrano elementów: {selectedIds.length}
+                                </Typography>
+                            )}
+                        MenuProps={{
+                            PaperProps: {
+                                sx: {
+                                    mt: 3,
+                                    maxHeight: '400px',
+                                    borderRadius: 2,
+                                    '& .MuiMenu-list': {
+                                        display: 'grid',
+                                        gridTemplateColumns: `repeat(${columnsNo}, 1fr)`,
+                                        gap: 0.5,
+                                        p: 1,
+                                    },
+                                },
+                            },
+                        }}
+                    >
+                        {items.map((item) => (
+                            <MenuItem key={item.id} value={item.id} sx={{px: 1, py: 0.5}}>
+                                <Checkbox
+                                    checked={selected.indexOf(item.id) > -1}
+                                    sx={{py: 0.5}}
+                                />
+                                <ListItemText primary={item.name}/>
+                            </MenuItem>
+                        ))}
+                    </Select>
+                )}
+            />
         </FormControl>
     );
 }

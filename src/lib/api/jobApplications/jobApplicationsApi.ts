@@ -1,4 +1,4 @@
-import axiosClient from "@/lib/api/axiosClient";
+import fetchData from "@/lib/api/fetchData";
 import {
     AddJobApplicationRequest,
     AddJobApplicationResponse,
@@ -8,28 +8,22 @@ import {
     UpdateJobApplicationRequestDto
 } from "@/lib/api/jobApplications/jobApplicationsApiInterfaces";
 
-
 export const addJobApplication = async (req: AddJobApplicationRequest) => {
-    const response = await axiosClient.post("/job-applications", {params: req});
-    return response.data as AddJobApplicationResponse;
+    return await fetchData<AddJobApplicationRequest, AddJobApplicationResponse>("/job-applications", "POST", req);
 };
 
 export const deleteJobApplication = async (id: number) => {
-    const response = await axiosClient.delete(`/job-applications/${id}`);
-    return response.data;
+    return await fetchData<unknown>(`/job-applications/${id}`, "DELETE");
 };
 
 export const getApplicationsForJobId = async (req: GetApplicationsForJobIdRequest) => {
-    const response = await axiosClient.get("/job-applications", {params: req});
-    return response.data as GetApplicationsForJobIdResponse;
+    return await fetchData<GetApplicationsForJobIdRequest, GetApplicationsForJobIdResponse>("/job-applications", "GET", req);
 };
 
 export const updateJobApplication = async (id: number, req: UpdateJobApplicationRequestDto) => {
-    const response = await axiosClient.patch(`/job-applications/${id}`, {params: req});
-    return response.data;
+    return await fetchData<UpdateJobApplicationRequestDto>(`/job-applications/${id}`, "PATCH", req);
 };
 
 export const updateJobApplicationFiles = async (id: number, req: UpdateJobApplicationFilesRequestDto) => {
-    const response = await axiosClient.put(`/job-applications/${id}/files`, {params: req});
-    return response.data;
+    return await fetchData<UpdateJobApplicationFilesRequestDto>(`/job-applications/${id}/files`, "PUT", req);
 };

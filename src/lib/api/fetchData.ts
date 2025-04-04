@@ -13,10 +13,11 @@ type ApiResult<T> =
         status: number
     };
 
-export default async function fetchData<TRequest, TResponse>(
+export default async function fetchData<TRequest = unknown, TResponse = unknown>(
     endpoint: string,
+    method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH",
     data?: TRequest,
-    method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH" = "GET"
+    headers?: Record<string, string>
 ): Promise<ApiResult<TResponse>> {
     try {
         const response = await axiosClient({
@@ -24,6 +25,7 @@ export default async function fetchData<TRequest, TResponse>(
             method,
             data: method !== "GET" ? data : undefined,
             params: method === "GET" ? data : undefined,
+            headers: headers,
         });
 
         return { success: true, data: response.data, status: response.status };

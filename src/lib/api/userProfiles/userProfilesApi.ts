@@ -1,4 +1,4 @@
-import axiosClient from "@/lib/api/axiosClient";
+import fetchData from "@/lib/api/fetchData";
 import {
     AddUserProfileRequest,
     GetBookmarkedCompaniesResponse,
@@ -8,80 +8,65 @@ import {
     GetUserProfileByIdResponse,
     UpdateUserProfileRequestDto
 } from "./userProfilesApiInterfaces";
-import {PaginationSpec} from "@/lib/api/sharedDtos";
+import { PaginationSpec } from "@/lib/api/sharedDtos";
 
 
 export const addCompanyBookmark = async (userId: number, companyId: number) => {
-    const response = await axiosClient.post(
-        `/user-profiles/${userId}/bookmarks/companies/${companyId}`
-    );
-    return response.data;
+    return await fetchData<unknown>(`/user-profiles/${userId}/bookmarks/companies/${companyId}`, "POST");
 };
-
 
 export const addJobBookmark = async (userId: number, jobId: number) => {
-    const response = await axiosClient.post(
-        `/user-profiles/${userId}/bookmarks/jobs/${jobId}`
-    );
-    return response.data;
+    return await fetchData<unknown>(`/user-profiles/${userId}/bookmarks/jobs/${jobId}`, "POST");
 };
-
 
 export const addUserProfile = async (req: AddUserProfileRequest) => {
-    const response = await axiosClient.post("/user-profiles", req);
-    return response.data;
+    return await fetchData<AddUserProfileRequest>("/user-profiles", "POST", req);
 };
-
 
 export const deleteCompanyBookmark = async (userId: number, companyId: number) => {
-    const response = await axiosClient.delete(
-        `/user-profiles/${userId}/bookmarks/companies/${companyId}`
-    );
-    return response.data;
+    return await fetchData<unknown>(`/user-profiles/${userId}/bookmarks/companies/${companyId}`, "DELETE");
 };
-
 
 export const deleteJobBookmark = async (userId: number, jobId: number) => {
-    const response = await axiosClient.delete(
-        `/user-profiles/${userId}/bookmarks/jobs/${jobId}`
-    );
-    return response.data;
+    return await fetchData<unknown>(`/user-profiles/${userId}/bookmarks/jobs/${jobId}`, "DELETE");
 };
 
+export const getBookmarkedCompanies = async (id: number, paginationSpec: PaginationSpec) => {
+    return await fetchData<PaginationSpec, GetBookmarkedCompaniesResponse>(
+        `/user-profiles/${id}/bookmarks/companies`,
+        "GET",
+        paginationSpec
+    );
+};
 
-export const getBookmarkedCompanies =
-    async (id: number, paginationSpec: PaginationSpec) => {
-        const response = await axiosClient.get(`/user-profiles/${id}/bookmarks/companies`, {params: paginationSpec});
-        return response.data as GetBookmarkedCompaniesResponse;
-    };
-
-
-export const getBookmarkedJobs =
-    async (id: number, paginationSpec: PaginationSpec) => {
-        const response = await axiosClient.get(`/user-profiles/${id}/bookmarks/jobs`, {params: paginationSpec});
-        return response.data as GetBookmarkedJobsResponse;
-    };
-
+export const getBookmarkedJobs = async (id: number, paginationSpec: PaginationSpec) => {
+    return await fetchData<PaginationSpec, GetBookmarkedJobsResponse>(
+        `/user-profiles/${id}/bookmarks/jobs`,
+        "GET",
+        paginationSpec
+    );
+};
 
 export const getJobApplications = async (id: number, paginationSpec: PaginationSpec) => {
-    const response = await axiosClient.get(`/user-profiles/${id}/job-applications`, {params: paginationSpec});
-    return response.data as GetJobApplicationsResponse;
+    return await fetchData<PaginationSpec, GetJobApplicationsResponse>(
+        `/user-profiles/${id}/job-applications`,
+        "GET",
+        paginationSpec
+    );
 };
-
 
 export const getPersonalFiles = async (id: number, paginationSpec: PaginationSpec) => {
-    const response = await axiosClient.get(`/user-profiles/${id}/personal-files`, {params: paginationSpec});
-    return response.data as GetPersonalFilesResponse;
+    return await fetchData<PaginationSpec, GetPersonalFilesResponse>(
+        `/user-profiles/${id}/personal-files`,
+        "GET",
+        paginationSpec
+    );
 };
-
 
 export const getUserProfileById = async (id: number) => {
-    const response = await axiosClient.get(`/user-profiles/${id}`);
-    return response.data as GetUserProfileByIdResponse;
+    return await fetchData<unknown, GetUserProfileByIdResponse>(`/user-profiles/${id}`, "GET");
 };
 
-
 export const updateUserProfile = async (id: number, req: UpdateUserProfileRequestDto) => {
-    const response = await axiosClient.patch(`/user-profiles/${id}`, {params: req});
-    return response.data;
+    return await fetchData<UpdateUserProfileRequestDto>(`/user-profiles/${id}`, "PATCH", req);
 };
