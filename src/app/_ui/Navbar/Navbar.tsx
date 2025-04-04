@@ -9,7 +9,7 @@ import ForEmployersMenuButton from "@/app/_ui/Navbar/ForEmployersMenuButton";
 import {useCurrentUserStore} from "@/lib/stores/currentUserStore";
 
 export default function Navbar() {
-    const { isAuthenticated, user } = useCurrentUserStore();
+    const { user } = useCurrentUserStore();
 
     return (
         <AppBar position="static" sx={{ zIndex: 4, backgroundColor: "white", boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.08)" }}>
@@ -19,7 +19,7 @@ export default function Navbar() {
                     maxWidth="xl"
                     sx={{ display: 'flex', flexDirection: "row", alignItems: 'center', justifyContent: "space-between" }}
                 >
-                    <Link href="/public" passHref>
+                    <Link href="/" passHref>
                         <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                             <SiteLogo />
                         </Box>

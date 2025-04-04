@@ -9,6 +9,7 @@ export interface UserSessionDto {
 export interface AccountDataDto {
     id: number;
     email: string;
-    fullName: string;
+    fullName: string | null;
+    avatarLink: string | null;
     companiesManaged: CompanyInfoDto[]
 }

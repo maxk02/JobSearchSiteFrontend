@@ -1,5 +1,5 @@
 import JobCard from "@/app/_ui/JobCard";
-import JobSearchInputs from "@/app/_ui/JobSearchInputs";
+import JobSearchInputs from "@/app/_ui/JobSearchInputs/JobSearchInputs";
 import {Box, Container, Typography} from "@mui/material";
 
 export default function HomePage() {

@@ -9,12 +9,13 @@ export default function AccountApplicationsPage() {
     return (
         <>
             <Box sx={{ maxWidth: 1000 }}>
-                <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
-                    <Work color="primary" sx={{ fontSize: "1.85rem" }} />
-                    <Typography variant="h5" fontWeight={600} color="primary">Specjalista ds księgowości</Typography>
-                </Stack>
-                <Typography variant="h4" fontWeight={600} mt={1} color="primary">Aplikacje</Typography>
-                <Typography mt={0.5}>W tej zakładce sprawdzisz status aplikacji na to stanowisko.</Typography>
+                {/*<Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>*/}
+                {/*    <Work color="primary" sx={{ fontSize: "1.85rem" }} />*/}
+                {/*    <Typography variant="h5" fontWeight={600} color="primary">Specjalista ds księgowości</Typography>*/}
+                {/*</Stack>*/}
+                <Typography variant="h6" fontWeight={600} color="primary">Specjalista ds księgowości</Typography>
+                <Typography variant="h4" fontWeight={600} mt={0.5} color="primary">Aplikacje</Typography>
+                {/*<Typography mt={0.5}>W tej zakładce sprawdzisz status aplikacji na to stanowisko.</Typography>*/}
 
                 <ApplicationFilteringCard />
 

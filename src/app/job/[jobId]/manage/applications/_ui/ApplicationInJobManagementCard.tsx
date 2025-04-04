@@ -37,13 +37,7 @@ export default function ApplicationInJobManagementCard() {
                     </Typography>
 
                     <Stack direction="row" spacing={1} sx={{ mt: 1.6, alignItems: "center" }}>
-                        <Typography variant="body2">Tagi publiczne:</Typography>
-                        <Chip label="Do przeglądu" variant="filled" onDelete={() => {}} />
-                        <Chip icon={<Add />} label="Dodaj tag" variant="outlined" sx={{ borderStyle: "dashed" }} />
-                    </Stack>
-
-                    <Stack direction="row" spacing={1} sx={{ mt: 1.3, alignItems: "center" }}>
-                        <Typography variant="body2">Tagi prywatne:</Typography>
+                        {/*<Typography variant="body2">Tagi:</Typography>*/}
                         <Chip label="Do przeglądu" variant="filled" onDelete={() => {}} />
                         <Chip icon={<Add />} label="Dodaj tag" variant="outlined" sx={{ borderStyle: "dashed" }} />
                     </Stack>

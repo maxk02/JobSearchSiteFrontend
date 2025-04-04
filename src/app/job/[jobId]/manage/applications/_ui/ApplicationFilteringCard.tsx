@@ -39,7 +39,7 @@ export default function ApplicationFilteringCard() {
             </Box>
 
             <Stack direction="row" spacing={1} sx={{ ml: 0.3, mt: 1.2, alignItems: "center" }}>
-                <Typography variant="body2">Ma zawierać tagi publiczne:</Typography>
+                <Typography variant="body2">Ma mieć tagi:</Typography>
                 <Chip label="Do przeglądu" variant="filled" onDelete={() => {}} />
                 <Chip label="Do przeglądu" variant="filled" onDelete={() => {}} />
                 <Chip label="Do przeglądu" variant="filled" onDelete={() => {}} />
@@ -47,17 +47,7 @@ export default function ApplicationFilteringCard() {
             </Stack>
 
             <Stack direction="row" spacing={1} sx={{ ml: 0.3, mt: 1.2, alignItems: "center" }}>
-                <Typography variant="body2">Wyklucz tagi publiczne:</Typography>
-                <Chip icon={<Add />} label="Dodaj tag" variant="outlined" onClick={() => {}} sx={{ borderStyle: "dashed" }} />
-            </Stack>
-
-            <Stack direction="row" spacing={1} sx={{ ml: 0.3, mt: 1.2, alignItems: "center" }}>
-                <Typography variant="body2">Ma zawierać tagi prywatne:</Typography>
-                <Chip icon={<Add />} label="Dodaj tag" variant="outlined" onClick={() => {}} sx={{ borderStyle: "dashed" }} />
-            </Stack>
-
-            <Stack direction="row" spacing={1} sx={{ ml: 0.3, mt: 1.2, alignItems: "center" }}>
-                <Typography variant="body2">Wyklucz tagi prywatne:</Typography>
+                <Typography variant="body2">Wyklucz tagi:</Typography>
                 <Chip icon={<Add />} label="Dodaj tag" variant="outlined" onClick={() => {}} sx={{ borderStyle: "dashed" }} />
             </Stack>
 

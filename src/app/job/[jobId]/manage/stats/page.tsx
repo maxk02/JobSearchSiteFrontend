@@ -37,9 +37,9 @@ export default function JobStatsPage() {
     return (
         <>
             <Typography variant="h4" fontWeight={600} color="primary">Statystyki</Typography>
-            <Typography mt={1}>Tutaj możesz obejrzeć statystyki tego ogłoszenia pracy.</Typography>
+            {/*<Typography mt={1}>Tutaj możesz obejrzeć statystyki tego ogłoszenia pracy.</Typography>*/}
 
-            <Stack sx={{ maxWidth: 800, mt: 2 }}>
+            <Stack sx={{ maxWidth: 800, mt: 1.5 }}>
                 <StatsDateRangePaperButton options={timePeriods} />
 
                 <Paper sx={{ p: 2, mt: 2, maxWidth: "800px" }}>

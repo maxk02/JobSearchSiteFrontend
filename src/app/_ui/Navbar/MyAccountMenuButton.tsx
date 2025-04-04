@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar, Box, Button, Divider, ListItemIcon, Menu, MenuItem, Typography, useTheme } from "@mui/material";
+import {Avatar, Box, Button, Divider, ListItemIcon, Menu, MenuItem, Typography, useTheme} from "@mui/material";
 import {
     AccountCircle,
     ContactPage,
@@ -15,74 +15,86 @@ import {
     Star
 } from "@mui/icons-material";
 import React from "react";
-import { useCurrentUserStore } from "@/lib/stores/currentUserStore";
+import {useCurrentUserStore} from "@/lib/stores/currentUserStore";
 import Link from "next/link";
+import Image from "next/image";
+
 
 export default function MyAccountMenuButton() {
-    const { isAuthenticated } = useCurrentUserStore();
+
+    const { isAuthenticated, user, clearAuth } = useCurrentUserStore();
+
+    const loggedInItems = [
+        { text: "Mój profil", icon: <ContactPage />, path: "/account/profile" },
+        { text: "Zapisane", icon: <Star />, path: "/account/bookmarks" },
+        { text: "Moje pliki", icon: <Description />, path: "/account/files" },
+        { text: "Historia aplikacji", icon: <History />, path: "/account/applications" },
+        { text: "Ustawienia konta", icon: <Settings />, path: "/account/settings" },
+    ];
+
+    const notLoggedInItems = [
+        { text: "Zaloguj się", icon: <Login />, path: "/login" },
+        { text: "Załóż konto", icon: <HowToReg />, path: "/register" },
+    ];
+
     const theme = useTheme();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
     };
 
+    const handleLogOut = () => {
+        clearAuth();
+        handleClose();
+    }
+
     const menuItems = isAuthenticated ? [
         <Box key="user-info" sx={{ display: "flex", flexDirection: "row", alignItems: "center", p: 2, pt: 1 }}>
-            <Avatar sx={{ height: 50, width: 50, mr: 1.5 }} />
-            <Typography variant="body1" fontWeight={600} gutterBottom marginBottom={0}>
-                example@example.com
-            </Typography>
+            <Avatar sx={{ height: 50, width: 50, mr: 1.5 }}>
+                {user?.avatarLink && <Image src={user.avatarLink} alt="User's avatar" />}
+            </Avatar>
+            {user?.fullName &&
+                <Typography variant="body1" fontWeight={600} gutterBottom>
+                    {user?.fullName}
+                </Typography>
+            }
         </Box>,
         <Divider key="divider-1" />,
-        <MenuItem key="profile" onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
-            <ListItemIcon><ContactPage /></ListItemIcon>
-            Mój profil
-        </MenuItem>,
-        <MenuItem key="saved" onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
-            <ListItemIcon><Star /></ListItemIcon>
-            Zapisane
-        </MenuItem>,
-        <MenuItem key="files" onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
-            <ListItemIcon><Description /></ListItemIcon>
-            Moje pliki
-        </MenuItem>,
-        <MenuItem key="history" onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
-            <ListItemIcon><History /></ListItemIcon>
-            Historia aplikacji
-        </MenuItem>,
-        <MenuItem key="settings" onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
-            <ListItemIcon><Settings /></ListItemIcon>
-            Ustawienia konta
-        </MenuItem>,
-        <MenuItem key="logout" onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
+        loggedInItems.map((item) => (
+            <Link key={item.text} href={item.path} passHref legacyBehavior>
+                <MenuItem onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    {item.text}
+                </MenuItem>
+            </Link>
+        )),
+        <MenuItem key="Wyloguj" onClick={handleLogOut} sx={{ py: 2, pr: 4, pl: 2 }}>
             <ListItemIcon><ExitToApp /></ListItemIcon>
             Wyloguj
-        </MenuItem>,
+        </MenuItem>
     ] : [
         <Box key="guest-info" sx={{ display: "flex", flexDirection: "row", alignItems: "center", p: 2, pt: 1 }}>
             <Avatar sx={{ height: 50, width: 50, mr: 1.5 }} />
-            <Typography variant="body1" fontWeight={600} gutterBottom marginBottom={0}>
+            <Typography variant="body1" fontWeight={600} gutterBottom>
                 Zaloguj się lub załóż konto
             </Typography>
         </Box>,
         <Divider key="divider-2" />,
-        <Link key="login" href="/login" passHref legacyBehavior>
-            <MenuItem key="login" onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
-                <ListItemIcon><Login /></ListItemIcon>
-                <Typography>Zaloguj się</Typography>
-            </MenuItem>
-        </Link>,
-        <Link key="register" href="/register" passHref legacyBehavior>
-            <MenuItem onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
-                <ListItemIcon><HowToReg /></ListItemIcon>
-                Załóż konto
-            </MenuItem>
-        </Link>,
+        notLoggedInItems.map((item) => (
+            <Link key={item.text} href={item.path} passHref legacyBehavior>
+                <MenuItem onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    {item.text}
+                </MenuItem>
+            </Link>
+        )),
     ];
 
     return (
