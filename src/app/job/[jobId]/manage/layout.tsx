@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid2";
 import ManageJobViewsCard from "@/app/job/[jobId]/manage/_ui/ManageJobViewsCard";
 import ManageJobCompanyNavigationCard from "@/app/job/[jobId]/manage/_ui/ManageJobCompanyNavigationCard";
 import React from "react";
-import CreateEditJobNavigationCard from "@/app/_ui/_create_edit_job/CreateEditJobNavigationCard";
+import CreateEditJobNavigationCard from "@/app/_ui/CreateEditJob/CreateEditJobNavigationCard";
 import EditJobButtons from "@/app/job/[jobId]/manage/edit/_ui/EditJobButtons";
 import {useParams, usePathname} from "next/navigation";
 

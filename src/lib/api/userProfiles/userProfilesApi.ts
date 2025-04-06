@@ -5,68 +5,68 @@ import {
     GetBookmarkedJobsResponse,
     GetJobApplicationsResponse,
     GetPersonalFilesResponse,
-    GetUserProfileByIdResponse,
+    GetUserProfileResponse,
     UpdateUserProfileRequestDto
 } from "./userProfilesApiInterfaces";
 import { PaginationSpec } from "@/lib/api/sharedDtos";
 
 
-export const addCompanyBookmark = async (userId: number, companyId: number) => {
-    return await fetchData<unknown>(`/user-profiles/${userId}/bookmarks/companies/${companyId}`, "POST");
+export const addCompanyBookmark = async (companyId: number) => {
+    return await fetchData<unknown>(`/user/bookmarks/companies/${companyId}`, "POST");
 };
 
-export const addJobBookmark = async (userId: number, jobId: number) => {
-    return await fetchData<unknown>(`/user-profiles/${userId}/bookmarks/jobs/${jobId}`, "POST");
+export const addJobBookmark = async (jobId: number) => {
+    return await fetchData<unknown>(`/user/bookmarks/jobs/${jobId}`, "POST");
 };
 
 export const addUserProfile = async (req: AddUserProfileRequest) => {
-    return await fetchData<AddUserProfileRequest>("/user-profiles", "POST", req);
+    return await fetchData<AddUserProfileRequest>("/user", "POST", req);
 };
 
-export const deleteCompanyBookmark = async (userId: number, companyId: number) => {
-    return await fetchData<unknown>(`/user-profiles/${userId}/bookmarks/companies/${companyId}`, "DELETE");
+export const deleteCompanyBookmark = async (companyId: number) => {
+    return await fetchData<unknown>(`/user/bookmarks/companies/${companyId}`, "DELETE");
 };
 
-export const deleteJobBookmark = async (userId: number, jobId: number) => {
-    return await fetchData<unknown>(`/user-profiles/${userId}/bookmarks/jobs/${jobId}`, "DELETE");
+export const deleteJobBookmark = async (jobId: number) => {
+    return await fetchData<unknown>(`/user/bookmarks/jobs/${jobId}`, "DELETE");
 };
 
-export const getBookmarkedCompanies = async (id: number, paginationSpec: PaginationSpec) => {
+export const getBookmarkedCompanies = async (paginationSpec: PaginationSpec) => {
     return await fetchData<PaginationSpec, GetBookmarkedCompaniesResponse>(
-        `/user-profiles/${id}/bookmarks/companies`,
+        `/user/bookmarks/companies`,
         "GET",
         paginationSpec
     );
 };
 
-export const getBookmarkedJobs = async (id: number, paginationSpec: PaginationSpec) => {
+export const getBookmarkedJobs = async (paginationSpec: PaginationSpec) => {
     return await fetchData<PaginationSpec, GetBookmarkedJobsResponse>(
-        `/user-profiles/${id}/bookmarks/jobs`,
+        `/user/bookmarks/jobs`,
         "GET",
         paginationSpec
     );
 };
 
-export const getJobApplications = async (id: number, paginationSpec: PaginationSpec) => {
+export const getJobApplications = async (paginationSpec: PaginationSpec) => {
     return await fetchData<PaginationSpec, GetJobApplicationsResponse>(
-        `/user-profiles/${id}/job-applications`,
+        `/user/job-applications`,
         "GET",
         paginationSpec
     );
 };
 
-export const getPersonalFiles = async (id: number, paginationSpec: PaginationSpec) => {
+export const getPersonalFiles = async (paginationSpec: PaginationSpec) => {
     return await fetchData<PaginationSpec, GetPersonalFilesResponse>(
-        `/user-profiles/${id}/personal-files`,
+        `/user/personal-files`,
         "GET",
         paginationSpec
     );
 };
 
-export const getUserProfileById = async (id: number) => {
-    return await fetchData<unknown, GetUserProfileByIdResponse>(`/user-profiles/${id}`, "GET");
+export const getUserProfile = async () => {
+    return await fetchData<unknown, GetUserProfileResponse>(`/user`, "GET");
 };
 
-export const updateUserProfile = async (id: number, req: UpdateUserProfileRequestDto) => {
-    return await fetchData<UpdateUserProfileRequestDto>(`/user-profiles/${id}`, "PATCH", req);
+export const updateUserProfile = async (req: UpdateUserProfileRequestDto) => {
+    return await fetchData<UpdateUserProfileRequestDto>(`/user`, "PATCH", req);
 };

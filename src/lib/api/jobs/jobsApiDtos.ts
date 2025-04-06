@@ -1,5 +1,4 @@
 import {LocationDto} from "@/lib/api/locations/locationsApiDtos";
-import {UnitOfTime} from "@/lib/api/sharedEnums";
 
 export interface JobCardDto {
     id: number;
@@ -10,7 +9,8 @@ export interface JobCardDto {
     dateTimePublishedUtc: string;
     dateTimeExpiringUtc: string;
     salaryInfo: JobSalaryInfoDto | null;
-    employmentTypeIds: number[] | null;
+    employmentOptionIds: number[] | null;
+    contractTypeIds: number[] | null;
 }
 
 export interface JobDetailedDto {
@@ -28,12 +28,13 @@ export interface JobDetailedDto {
     niceToHaves: string[];
     salaryInfo: JobSalaryInfoDto | null;
     employmentTypeIds: number[] | null;
+    contractTypeIds: number[] | null;
 }
 
 export interface JobSalaryInfoDto {
     minimum: number | null;
     maximum: number | null;
-    currencyCode: string;
-    unitOfTime: UnitOfTime;
+    currency: string;
+    unitOfTime: string;
     isAfterTaxes: boolean | null;
 }

@@ -3,7 +3,7 @@
 import {Box, Container} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import React from "react";
-import CreateEditJobNavigationCard from "@/app/_ui/_create_edit_job/CreateEditJobNavigationCard";
+import CreateEditJobNavigationCard from "@/app/_ui/CreateEditJob/CreateEditJobNavigationCard";
 import CreateJobCompanyNavigationCard from "@/app/company/[companyId]/create-job/_ui/CreateJobCompanyNavigationCard";
 import CreateJobButtons from "@/app/company/[companyId]/create-job/_ui/CreateJobButtons";
 

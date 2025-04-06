@@ -2,15 +2,15 @@
 
 import {Box, Typography} from "@mui/material";
 import React from "react";
-import CreateEditJobBasicInfoCard from "@/app/_ui/_create_edit_job/CreateEditJobBasicInfoCard";
-import CreateEditJobPublicationIntervalCard from "@/app/_ui/_create_edit_job/CreateEditJobPublicationIntervalCard";
-import CreateEditJobEmploymentTypeCard from "@/app/_ui/_create_edit_job/CreateEditJobEmploymentTypeCard";
-import CreateEditJobContractTypeCard from "@/app/_ui/_create_edit_job/CreateEditJobContractTypeCard";
-import CreateEditJobSalaryDataCard from "@/app/_ui/_create_edit_job/CreateEditJobSalaryDataCard";
-import CreateEditJobResponsibilitiesCard from "@/app/_ui/_create_edit_job/CreateEditJobResponsibilitiesCard";
-import CreateEditJobRequirementsCard from "@/app/_ui/_create_edit_job/CreateEditJobRequirementsCard";
-import CreateEditJobNiceToHavesCard from "@/app/_ui/_create_edit_job/CreateEditJobNiceToHavesCard";
-import CreateEditJobLocationCard from "@/app/_ui/_create_edit_job/CreateEditJobLocationCard";
+import CreateEditJobBasicInfoCard from "@/app/_ui/CreateEditJob/CreateEditJobBasicInfoCard";
+import CreateEditJobPublicationIntervalCard from "@/app/_ui/CreateEditJob/CreateEditJobPublicationIntervalCard";
+import CreateEditJobEmploymentTypeCard from "@/app/_ui/CreateEditJob/CreateEditJobEmploymentTypeCard";
+import CreateEditJobContractTypeCard from "@/app/_ui/CreateEditJob/CreateEditJobContractTypeCard";
+import CreateEditJobSalaryDataCard from "@/app/_ui/CreateEditJob/CreateEditJobSalaryDataCard";
+import CreateEditJobResponsibilitiesCard from "@/app/_ui/CreateEditJob/CreateEditJobResponsibilitiesCard";
+import CreateEditJobRequirementsCard from "@/app/_ui/CreateEditJob/CreateEditJobRequirementsCard";
+import CreateEditJobNiceToHavesCard from "@/app/_ui/CreateEditJob/CreateEditJobNiceToHavesCard";
+import CreateEditJobLocationCard from "@/app/_ui/CreateEditJob/CreateEditJobLocationCard";
 
 
 export default function CreateJobPage() {

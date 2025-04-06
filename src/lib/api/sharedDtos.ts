@@ -4,7 +4,8 @@ export interface PaginationSpec {
 }
 
 export interface PaginationResponse {
-    totalCount: number;
     currentPage: number;
     pageSize: number;
+    totalCount: number;
+    totalPages: number;
 }

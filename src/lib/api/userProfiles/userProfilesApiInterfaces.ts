@@ -6,37 +6,29 @@ import {PersonalFileInfoDto} from "@/lib/api/personalFiles/personalFIlesApiDtos"
 
 
 export interface AddCompanyBookmarkRequest {
-    userId: number;
     companyId: number;
 }
 
 export interface AddJobBookmarkRequest {
-    userId: number;
     jobId: number;
 }
 
 export interface AddUserProfileRequest {
-    accountId: number;
     firstName: string;
-    middleName: string | null;
     lastName: string;
-    dateOfBirth: string | null;
     email: string;
     phone: string | null;
 }
 
 export interface DeleteCompanyBookmarkRequest {
-    userId: number;
     companyId: number;
 }
 
 export interface DeleteJobBookmarkRequest {
-    userId: number;
     jobId: number;
 }
 
 export interface GetBookmarkedCompaniesRequest {
-    userId: number;
     paginationSpec: PaginationSpec;
 }
 
@@ -46,7 +38,6 @@ export interface GetBookmarkedCompaniesResponse {
 }
 
 export interface GetBookmarkedJobsRequest {
-    userId: number;
     paginationSpec: PaginationSpec;
 }
 
@@ -56,7 +47,6 @@ export interface GetBookmarkedJobsResponse {
 }
 
 export interface GetJobApplicationsRequest {
-    id: number;
     paginationSpec: PaginationSpec;
 }
 
@@ -66,7 +56,6 @@ export interface GetJobApplicationsResponse {
 }
 
 export interface GetPersonalFilesRequest {
-    id: number;
     paginationSpec: PaginationSpec;
 }
 
@@ -75,24 +64,16 @@ export interface GetPersonalFilesResponse {
     paginationResponse: PaginationResponse;
 }
 
-export interface GetUserProfileByIdRequest {
-    id: number;
-}
-
-export interface GetUserProfileByIdResponse {
+export interface GetUserProfileResponse {
     firstName: string;
-    middleName: string | null;
     lastName: string;
-    dateOfBirth: string | null;
     email: string;
     phone: string | null;
 }
 
 export interface UpdateUserProfileRequestDto {
     firstName: string | null;
-    middleName: string | null;
     lastName: string | null;
-    dateOfBirth: string | null;
     email: string | null;
     phone: string | null;
 }

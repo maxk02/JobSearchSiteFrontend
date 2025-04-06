@@ -1,6 +1,3 @@
-"use client";
-
-
 import {Box, Button, Container, TextField} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
@@ -16,15 +13,17 @@ import {GetJobsRequest} from "@/lib/api/jobs/jobsApiInterfaces";
 import {getJobs} from "@/lib/api/jobs/jobsApi";
 import {useRouter} from "next/navigation";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
+import {PaginationResponse} from "@/lib/api/sharedDtos";
 
 
 
 export interface JobSearchInputsProps {
     setJobCards: (newJobCards: JobCardDto[]) => void;
+    setPagination: (newPagination: PaginationResponse) => void;
 }
 
 
-export default function JobSearchInputs({ setJobCards }: JobSearchInputsProps) {
+export default function JobSearchInputs({ setJobCards, setPagination }: JobSearchInputsProps) {
 
     const router  = useRouter();
 
@@ -53,7 +52,7 @@ export default function JobSearchInputs({ setJobCards }: JobSearchInputsProps) {
             contractTypeIds: data.jobContractTypes,
             employmentTypeIds: [...data.employmentTimeOptions, ...data.employmentMobilityOptions],
             mustHaveSalaryRecord: null,
-            countryIds: null
+            countryIds: null //todo
         }
 
 
@@ -61,7 +60,7 @@ export default function JobSearchInputs({ setJobCards }: JobSearchInputsProps) {
 
         if (getJobsResult.success) {
             setJobCards(getJobsResult.data.jobCards)
-            //pagination
+            setPagination(getJobsResult.data.paginationResponse)
             router.push("/");
         }
         else {
