@@ -14,3 +14,19 @@ export const jobContractTypes: JobContractType[] = [
     { id: 7, countryId: 1, namePl: "Umowa o staż/praktykę" },
     { id: 8, countryId: 1, namePl: "Umowa na zastępstwo" }
 ];
+
+export const jobContractTypesByCountry: Record<number, JobContractType[]> = {};
+export const jobContractTypeIdsByCountry: Record<number, number[]> = {};
+
+// filling
+for (const jct of jobContractTypes) {
+    if (!jobContractTypesByCountry[jct.countryId]) {
+        jobContractTypesByCountry[jct.countryId] = [];
+    }
+    jobContractTypesByCountry[jct.countryId].push(jct);
+
+    if (!jobContractTypeIdsByCountry[jct.countryId]) {
+        jobContractTypeIdsByCountry[jct.countryId] = [];
+    }
+    jobContractTypeIdsByCountry[jct.countryId].push(jct.id);
+}

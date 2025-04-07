@@ -7,17 +7,17 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import React from "react";
 import {Controller, useFormContext} from "react-hook-form";
 import {CreateEditJobFormData} from "@/lib/schemas/createEditJobSchema";
-import {jobContractTypes} from "@/lib/seededData/jobContractTypes";
+import {employmentOptions} from "@/lib/seededData/employmentOptions";
 
 
 
-export default function CreateEditJobContractTypeCard() {
+export default function CreateEditJobEmploymentOptionCard() {
 
     const { control, formState: { errors } } = useFormContext<CreateEditJobFormData>();
 
     return (
         <Paper sx={{ mt: 2, pt: 2, pb: 1, px: 1.5 }}>
-            <Typography variant="h6" fontWeight={600} lineHeight={1} color="primary">Umowa zatrudnienia</Typography>
+            <Typography variant="h6" fontWeight={600} lineHeight={1} color="primary">Rodzaj zatrudnienia</Typography>
             <Box mt={1.5} display="flex" flexDirection="column">
                 <Alert
                     severity="info"
@@ -33,11 +33,11 @@ export default function CreateEditJobContractTypeCard() {
                     <FormControl>
                         <FormGroup>
                             <Controller
-                                name="jobContractTypes"
+                                name="employmentOptions"
                                 control={control}
                                 render={({ field }) => (
                                     <>
-                                        {jobContractTypes.map((item) => (
+                                        {employmentOptions.map((item) => (
                                             <FormControlLabel
                                                 key={item.id}
                                                 control={
@@ -59,9 +59,9 @@ export default function CreateEditJobContractTypeCard() {
                             />
                         </FormGroup>
                     </FormControl>
-                    {errors.jobContractTypes && (
+                    {errors.employmentOptions && (
                         <Typography color="error" variant="caption" sx={{ mt: 1 }}>
-                            {errors.jobContractTypes.message}
+                            {errors.employmentOptions.message}
                         </Typography>
                     )}
                 </Box>

@@ -1,13 +1,11 @@
-"use client";
-
 import {Avatar, Box, Divider, IconButton, List, ListItem, Paper, Stack, Typography} from "@mui/material";
 import Image from "next/image";
 import {StarBorderOutlined} from "@mui/icons-material";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
-import formatSalaryInfoText from "@/app/_ui/_lib/formatSalaryInfoText";
-import formatLocationText from "@/app/_ui/_lib/formatLocationText";
 import {jobContractTypes} from "@/lib/seededData/jobContractTypes";
 import {employmentOptions} from "@/lib/seededData/employmentOptions";
+import formatSalaryInfoText from "@/app/_ui/_functions/formatSalaryInfoText";
+import formatLocationText from "@/app/_ui/_functions/formatLocationText";
 
 
 export interface JobCardProps {

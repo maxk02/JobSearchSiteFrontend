@@ -157,6 +157,7 @@ export default function JobSearchInputs({ setJobCards, setPagination }: JobSearc
                                         .map((jc) => ({ id: jc.id, name: jc.namePl }))
                                 }
                                 control={control}
+                                errors={errors}
                             />
                         </Grid>
                         <Grid size={3}>
@@ -169,6 +170,7 @@ export default function JobSearchInputs({ setJobCards, setPagination }: JobSearc
                                         .map((jct) => ({ id: jct.id, name: jct.namePl }))
                                 }
                                 control={control}
+                                errors={errors}
                             />
                         </Grid>
                         <Grid size={3}>
@@ -182,6 +184,7 @@ export default function JobSearchInputs({ setJobCards, setPagination }: JobSearc
                                         .map((et) => ({ id: et.id, name: et.namePl }))
                                 }
                                 control={control}
+                                errors={errors}
                             />
                         </Grid>
                         <Grid size={3}>
@@ -195,6 +198,7 @@ export default function JobSearchInputs({ setJobCards, setPagination }: JobSearc
                                         .map((et) => ({ id: et.id, name: et.namePl }))
                                 }
                                 control={control}
+                                errors={errors}
                             />
                         </Grid>
                     </Grid>

@@ -10,7 +10,7 @@ import {
     Typography
 } from "@mui/material";
 import React, {useState} from "react";
-import {Control, Controller} from "react-hook-form";
+import {Control, Controller, FieldErrors} from "react-hook-form";
 import {SearchJobFormData} from "@/lib/schemas/searchJobSchema";
 
 
@@ -25,12 +25,13 @@ interface JobSearchSelectOptionsInputProps<T extends WithIdAndName> {
     columnsNo: number;
     items: T[];
     control: Control<SearchJobFormData>;
+    errors: FieldErrors<SearchJobFormData>;
 }
 
 
 export default function JobSearchSelectOptionsInput<T extends WithIdAndName>(props: JobSearchSelectOptionsInputProps<T>) {
 
-    const {labelName, controllerName, columnsNo, items, control } = props;
+    const {labelName, controllerName, columnsNo, items, control, errors } = props;
 
     const [selected, setSelected] = useState<T["id"][]>([]);
 
@@ -56,6 +57,7 @@ export default function JobSearchSelectOptionsInput<T extends WithIdAndName>(pro
                         onChange={handleChange}
                         input={<OutlinedInput label={labelName} />}
                         size="small"
+                        error={!!errors[controllerName]}
                         variant="outlined"
                         sx={{
                             borderRadius: "50px",
@@ -67,6 +69,16 @@ export default function JobSearchSelectOptionsInput<T extends WithIdAndName>(pro
                             },
                             '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                                 borderRadius: "50px",
+                            },
+                            // enlargement
+                            height: "40px",
+                            "& .MuiSelect-select": {
+                                padding: "10px 14px",
+                                display: "flex",
+                                alignItems: "center",
+                            },
+                            "& .MuiTypography-root": {
+                                lineHeight: "1.5",
                             },
                         }}
                         renderValue={

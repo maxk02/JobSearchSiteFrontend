@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import {Delete, Download, Edit, Info} from "@mui/icons-material";
 import React, {useState} from "react";
-import FileUploadArea from "@/ui/FileUploadArea";
+import FileUploadArea from "@/app/_ui/FileUploadArea";
 
 export default function AccountFilesPage() {
     const [, setUploadedFiles] = useState<File[]>([]);

@@ -4,13 +4,11 @@ import {Box, Typography} from "@mui/material";
 import React from "react";
 import CreateEditJobBasicInfoCard from "@/app/_ui/CreateEditJob/CreateEditJobBasicInfoCard";
 import CreateEditJobPublicationIntervalCard from "@/app/_ui/CreateEditJob/CreateEditJobPublicationIntervalCard";
-import CreateEditJobEmploymentTypeCard from "@/app/_ui/CreateEditJob/CreateEditJobEmploymentTypeCard";
+import CreateEditJobEmploymentOptionCard from "@/app/_ui/CreateEditJob/CreateEditJobEmploymentOptionCard";
 import CreateEditJobContractTypeCard from "@/app/_ui/CreateEditJob/CreateEditJobContractTypeCard";
 import CreateEditJobSalaryDataCard from "@/app/_ui/CreateEditJob/CreateEditJobSalaryDataCard";
-import CreateEditJobResponsibilitiesCard from "@/app/_ui/CreateEditJob/CreateEditJobResponsibilitiesCard";
-import CreateEditJobRequirementsCard from "@/app/_ui/CreateEditJob/CreateEditJobRequirementsCard";
-import CreateEditJobNiceToHavesCard from "@/app/_ui/CreateEditJob/CreateEditJobNiceToHavesCard";
 import CreateEditJobLocationCard from "@/app/_ui/CreateEditJob/CreateEditJobLocationCard";
+import CreateEditJobListCard from "@/app/_ui/CreateEditJob/CreateEditJobListCard";
 
 
 export default function CreateJobPage() {
@@ -26,17 +24,18 @@ export default function CreateJobPage() {
 
             <CreateEditJobPublicationIntervalCard />
 
-            <CreateEditJobEmploymentTypeCard />
+            <CreateEditJobEmploymentOptionCard />
 
             <CreateEditJobContractTypeCard />
 
             <CreateEditJobSalaryDataCard />
 
-            <CreateEditJobResponsibilitiesCard />
+            <CreateEditJobListCard cardTitle="Obowiązki" fieldName="responsibilities" />
 
-            <CreateEditJobRequirementsCard />
+            <CreateEditJobListCard cardTitle="Wymogi" fieldName="requirements" />
 
-            <CreateEditJobNiceToHavesCard />
+            <CreateEditJobListCard cardTitle="Mile widziane" fieldName="niceToHaves" />
+
         </Box>
     );
 }

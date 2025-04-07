@@ -9,3 +9,5 @@ export const companyClaims: CompanyClaim[] = [
     { id: 3, namePl: "Dostęp do statystyk" },
     { id: 4, namePl: "Edycja profilu" },
 ];
+
+export const companyClaimIds: number[] = companyClaims.map(c => c.id);

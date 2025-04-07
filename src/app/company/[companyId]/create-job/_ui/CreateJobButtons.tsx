@@ -1,5 +1,5 @@
 import {Button, Stack} from "@mui/material";
-import {Add, Preview} from "@mui/icons-material";
+import {Done, Preview} from "@mui/icons-material";
 import React from "react";
 
 export default function CreateJobButtons() {
@@ -22,7 +22,7 @@ export default function CreateJobButtons() {
                 variant="contained"
                 color="primary"
                 size="large"
-                startIcon={<Add />}
+                startIcon={<Done />}
                 sx={{
                     borderRadius: "50px",
                     alignSelf: "center",

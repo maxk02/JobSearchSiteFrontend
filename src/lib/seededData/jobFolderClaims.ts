@@ -12,3 +12,5 @@ export const jobFolderClaims: JobFolderClaim[] = [
     { id: 6, namePl: "Dostęp do ogłoszeń" },
     { id: 7, namePl: "Zarządzanie aplikacjami" },
 ];
+
+export const jobFolderClaimIds: number[] = jobFolderClaims.map(jfc => jfc.id);

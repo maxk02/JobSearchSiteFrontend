@@ -10,24 +10,25 @@ import {LocalizationProvider, TimePicker} from "@mui/x-date-pickers";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFnsV3";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import React, {useState} from "react";
+import {Controller, useFormContext} from "react-hook-form";
+import {CreateEditJobFormData} from "@/lib/schemas/createEditJobSchema";
 
 
 const expiryOptions = [
-    { title: "0-4 dni", description: "Wartość: 10 kredytów" },
-    { title: "5-30 dni", description: "Wartość: 20 kredytów" },
-    { title: "31-60 dni", description: "Wartość: 30 kredytów" },
-    { title: "61-90 dni", description: "Wartość: 40 kredytów" },
+    { id: 1, title: "0-4 dni", description: "Wartość: 10 kredytów" },
+    { id: 2, title: "5-30 dni", description: "Wartość: 20 kredytów" },
+    { id: 3, title: "31-60 dni", description: "Wartość: 30 kredytów" },
+    { id: 4, title: "61-90 dni", description: "Wartość: 40 kredytów" },
 ];
 
 
 export default function CreateEditJobPublicationIntervalCard() {
-    const [dateValue, setDateValue] = useState<Date | null>(new Date());
-    const [timeValue, setTimeValue] = useState<Date | null>(new Date());
+
+    const { control, formState: { errors } } = useFormContext<CreateEditJobFormData>();
     const [customDateTimeEnabled, setCustomDateTimeEnabled] = useState<boolean>(false);
 
     const handleCustomDateTimeSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = event.target.checked;
-        setCustomDateTimeEnabled(newValue);
+        setCustomDateTimeEnabled(event.target.checked);
     };
 
     return (
@@ -47,59 +48,89 @@ export default function CreateEditJobPublicationIntervalCard() {
 
                 <Box sx={{ pt: 0.4, pb: 0.4, maxWidth: "500px" }}>
                     <FormControl>
-                        {/*<FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>*/}
-                        <RadioGroup
-                            aria-labelledby="demo-radio-buttons-group-label"
-                            name="radio-buttons-group"
-                        >
-                            <Stack direction="column" spacing={0.3}>
-                                {expiryOptions.map((item, index) => (
-                                    <Stack direction="row" alignItems="center" key={index}>
-                                        <FormControlLabel
-                                            value="option1"
-                                            control={<Radio/>}
-                                            label={undefined}
-                                            sx={{ mr: 0 }}
-                                        />
-                                        <Stack direction="row" alignItems="center" flexWrap="wrap">
-                                            <Typography sx={{ mr: 0.8 }} lineHeight={1}>
-                                                {item.title}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary" lineHeight={1} sx={{ p: 0 }}>
-                                                {item.description}
-                                            </Typography>
-                                        </Stack>
+                        <Controller
+                            name="timeRangeOption"
+                            control={control}
+                            render={({ field }) => (
+                                <RadioGroup
+                                    aria-labelledby="time-range-options"
+                                    value={field.value}
+                                    onChange={(e) => field.onChange(Number(e.target.value))}
+                                >
+                                    <Stack direction="column" spacing={0.3}>
+                                        {expiryOptions.map((item) => (
+                                            <Stack direction="row" alignItems="center" key={item.id}>
+                                                <FormControlLabel
+                                                    value={item.id}
+                                                    control={<Radio />}
+                                                    label={undefined}
+                                                    sx={{ mr: 0 }}
+                                                />
+                                                <Stack direction="row" alignItems="center" flexWrap="wrap">
+                                                    <Typography sx={{ mr: 0.8 }} lineHeight={1}>
+                                                        {item.title}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary" lineHeight={1}>
+                                                        {item.description}
+                                                    </Typography>
+                                                </Stack>
+                                            </Stack>
+                                        ))}
                                     </Stack>
-                                ))}
-                            </Stack>
-                        </RadioGroup>
+                                </RadioGroup>
+                            )}
+                        />
                     </FormControl>
+                    {errors.timeRangeOption && (
+                        <Typography color="error" variant="caption" sx={{ mt: 1 }}>
+                            {errors.timeRangeOption.message}
+                        </Typography>
+                    )}
                 </Box>
 
                 <Box display="flex" flexDirection="column" gap={2} sx={{ maxWidth: "650px", mt: 0.5 }}>
                     <FormGroup>
-                        <FormControlLabel control={<Switch defaultChecked={false} onChange={handleCustomDateTimeSwitchChange} />}
-                                          label="Ustaw wcześniejszą date i czas"
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={customDateTimeEnabled}
+                                    onChange={handleCustomDateTimeSwitchChange}
+                                />
+                            }
+                            label="Ustaw wcześniejszą datę i czas"
                         />
                     </FormGroup>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <Box display="flex" flexDirection="row" flexWrap="wrap" gap={1.5}>
-                            <DatePicker
-                                label="Wybierz datę"
-                                value={dateValue}
-                                onChange={(newValue: Date | null) => setDateValue(newValue)}
-                                sx={{ flex: "1 1 auto" }}
-                                disabled={!customDateTimeEnabled}
-                            />
-                            <TimePicker
-                                label="Wybierz czas"
-                                value={timeValue}
-                                onChange={(newValue: Date | null) => setTimeValue(newValue)}
-                                sx={{ flex: "1 1 auto" }}
-                                disabled={!customDateTimeEnabled}
+                            <Controller
+                                name="dateTimeExpiringUtc"
+                                control={control}
+                                render={({ field }) => (
+                                    <>
+                                        <DatePicker
+                                            label="Wybierz datę"
+                                            value={field.value}
+                                            onChange={(newValue) => field.onChange(newValue)}
+                                            sx={{ flex: "1 1 auto" }}
+                                            disabled={!customDateTimeEnabled}
+                                        />
+                                        <TimePicker
+                                            label="Wybierz czas"
+                                            value={field.value}
+                                            onChange={(newValue) => field.onChange(newValue)}
+                                            sx={{ flex: "1 1 auto" }}
+                                            disabled={!customDateTimeEnabled}
+                                        />
+                                    </>
+                                )}
                             />
                         </Box>
                     </LocalizationProvider>
+                    {errors.dateTimeExpiringUtc && (
+                        <Typography color="error" variant="caption" sx={{ mt: 1 }}>
+                            {errors.dateTimeExpiringUtc.message}
+                        </Typography>
+                    )}
                 </Box>
             </Box>
         </Paper>

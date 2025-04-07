@@ -1,5 +1,3 @@
-"use client";
-
 import {
     Avatar,
     Box,
@@ -24,8 +22,8 @@ import {
 } from "@mui/material";
 import React, {useState} from "react";
 import {Close, Home} from "@mui/icons-material";
-import tabA11yProps from "@/lib/components/tab/tabA11yProps";
-import CustomTabPanel from "@/ui/CustomTabPanel";
+import tabA11yProps from "@/app/_ui/_lib/_components/tab/tabA11yProps";
+import CustomTabPanel from "@/app/_ui/CustomTabPanel";
 import {getItemColor} from "@/lib/functions/listItemColors";
 
 

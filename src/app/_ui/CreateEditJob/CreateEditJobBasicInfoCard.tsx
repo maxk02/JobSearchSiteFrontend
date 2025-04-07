@@ -1,15 +1,69 @@
 "use client";
 
-import {Box, Paper, TextField, Typography} from "@mui/material";
+import {Box, MenuItem, Paper, TextField, Typography} from "@mui/material";
 import React from "react";
+import {Controller, useFormContext} from "react-hook-form";
+import {CreateEditJobFormData} from "@/lib/schemas/createEditJobSchema";
+import {jobCategories} from "@/lib/seededData/jobCategories";
+
 
 export default function CreateEditJobBasicInfoCard() {
+
+    const { control, formState: { errors } } = useFormContext<CreateEditJobFormData>();
+
     return(
         <Paper sx={{ mt: 2, py: 2, px: 1.5 }}>
             <Typography variant="h6" fontWeight={600} lineHeight={1} color="primary">Tytuł i opis</Typography>
             <Box display="flex" flexDirection="column" gap={1.5} mt={1.5}>
-                <TextField required label="Tytuł" variant="outlined" sx={{ maxWidth: "500px" }} />
-                <TextField multiline rows={5} label="Krótki opis" variant="outlined" sx={{ maxWidth: "650px" }} />
+                <Controller
+                    name="title"
+                    control={control}
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            label="Tytuł"
+                            required
+                            error={!!errors.title}
+                            helperText={errors.title?.message}
+                            sx={{ width: "500px", maxWidth: "500px" }}
+                        />
+                    )}
+                />
+                <Controller
+                    name="category"
+                    control={control}
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            select
+                            required
+                            label="Kategoria"
+                            // defaultValue={jobCategories[0].id}
+                            sx={{ minWidth: "320px", maxWidth: "400px" }}
+                        >
+                            {jobCategories.map((item) => (
+                                <MenuItem key={item.id} value={item.id}>
+                                    {item.namePl}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    )}
+                />
+                <Controller
+                    name="description"
+                    control={control}
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            multiline
+                            rows={5}
+                            label="Krótki opis"
+                            error={!!errors.description}
+                            helperText={errors.description?.message}
+                            sx={{ width: "650px", maxWidth: "650px" }}
+                        />
+                    )}
+                />
             </Box>
         </Paper>
     );

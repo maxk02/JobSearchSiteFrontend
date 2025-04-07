@@ -20,8 +20,8 @@ import {
     Typography
 } from "@mui/material";
 import React from "react";
-import tabA11yProps from "@/lib/components/tab/tabA11yProps";
-import CustomTabPanel from "@/ui/CustomTabPanel";
+import tabA11yProps from "@/app/_ui/_lib/_components/tab/tabA11yProps";
+import CustomTabPanel from "@/app/_ui/CustomTabPanel";
 
 export default function AccountSettingsPage() {
     const [value, setValue] = React.useState(0);

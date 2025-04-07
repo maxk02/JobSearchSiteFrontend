@@ -2,8 +2,8 @@
 
 import {Box, Breadcrumbs, Link, Paper, Tab, Tabs, Typography} from "@mui/material";
 import React from "react";
-import tabA11yProps from "@/lib/components/tab/tabA11yProps";
-import CustomTabPanel from "@/ui/CustomTabPanel";
+import tabA11yProps from "@/app/_ui/_lib/_components/tab/tabA11yProps";
+import CustomTabPanel from "@/app/_ui/CustomTabPanel";
 import GeneralTab from "./_ui/GeneralTab/GeneralTab";
 import FolderClaimsOverviewTab from "./_ui/FolderClaimsOverviewTab/FolderClaimsOverviewTab";
 import FolderClaimsConfigurationTab from "./_ui/FolderClaimsConfigurationTab/FolderClaimsConfigurationTab";

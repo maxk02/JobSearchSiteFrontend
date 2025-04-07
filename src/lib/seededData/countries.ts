@@ -9,3 +9,5 @@ export const countries: Country[] = [
     { id: 2, code: "FRA", namePL: "Francja" },
     { id: 3, code: "DEU", namePL: "Niemcy" }
 ];
+
+export const countryIds: number[] = countries.map(c => c.id);

@@ -14,3 +14,12 @@ export const employmentOptions: EmploymentOption[] = [
     { id: 5, type: "Mobility", namePl: "Hybrydowo" },
     { id: 6, type: "Mobility", namePl: "Z wyjazdami" },
 ];
+
+export const employmentOptionIds: number[] =
+    employmentOptions.map(eo => eo.id);
+
+export const employmentTimeOptionIds: number[] =
+    employmentOptions.filter(eo => eo.type === "EmploymentTime").map(eo => eo.id);
+
+export const employmentMobilityOptionIds: number[] =
+    employmentOptions.filter(eo => eo.type === "Mobility").map(eo => eo.id);

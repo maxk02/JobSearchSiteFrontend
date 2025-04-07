@@ -3,6 +3,8 @@
 import {Box, MenuItem, Paper, TextField, Typography} from "@mui/material";
 import React from "react";
 import ReactCountryFlag from "react-country-flag";
+import {useFormContext} from "react-hook-form";
+import {CreateEditJobFormData} from "@/lib/schemas/createEditJobSchema";
 
 
 const countries = [
@@ -13,6 +15,9 @@ const countries = [
 
 
 export default function CreateEditJobLocationCard() {
+
+    const { control, formState: { errors } } = useFormContext<CreateEditJobFormData>();
+
     return(
         <Paper sx={{ mt: 2, py: 2, px: 1.5 }}>
             <Typography variant="h6" fontWeight={600} lineHeight={1} color="primary">Lokalizacja</Typography>

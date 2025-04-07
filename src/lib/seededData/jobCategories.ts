@@ -49,3 +49,5 @@ export const jobCategories: JobCategory[] = [
     { id: 43, namePl: "Zakupy" },
     { id: 44, namePl: "Franczyza" }
 ];
+
+export const jobCategoryIds: number[] = jobCategories.map(jc => jc.id);

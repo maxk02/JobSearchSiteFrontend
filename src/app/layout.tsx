@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import font from "@/app/_lib/font";
+import font from "@/app/_ui/_lib/font";
 import ThemeRegistry from "@/app/_ui/ThemeRegistry";
 import Navbar from "@/app/_ui/Navbar/Navbar";
 import Footer from "@/app/_ui/Footer";
@@ -21,7 +21,7 @@ const hiddenLayoutRoutePatterns: RoutePattern[] = [
     { regex: /^\/folder\/\d+\/.*$/, name: "/folder/id/jobs" },
     // { regex: /^\/folder\/\d+\/jobs$/, name: "/folder/id/jobs" },
     // { regex: /^\/folder\/\d+\/settings$/, name: "/folder/id/settings" },
-    { regex: /^\/company\/\d+\/manage\/create-job$/, name: "/company/id/manage/create-job" },
+    { regex: /^\/company\/\d+\/create-job$/, name: "/company/id/create-job" },
     { regex: /^\/job-creator$/, name: "/job-creator" },
     { regex: /^\/job\/\d+\/manage.*$/, name: "/job/id/manage" },
 ];

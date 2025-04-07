@@ -10,7 +10,7 @@ export interface AddJobRequest {
     dateTimeExpiringUtc: string;
     responsibilities: string[];
     requirements: string[];
-    advantages: string[];
+    niceToHaves: string[];
     jobSalaryInfoDto: JobSalaryInfoDto | null;
     employmentTypeIds: number[];
     contractTypeIds: number[];
