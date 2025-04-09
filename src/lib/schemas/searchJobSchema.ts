@@ -1,33 +1,22 @@
-import { z } from 'zod';
-import {jobCategories} from "@/lib/seededData/jobCategories";
-import {jobContractTypes} from "@/lib/seededData/jobContractTypes";
-import {employmentOptions} from "@/lib/seededData/employmentOptions";
-
-
-const allowedJobCategoryIds = jobCategories.map(jc => jc.id);
-
-const allowedJobContractTypeIds = jobContractTypes.map(jct => jct.id);
-
-const allowedEmploymentTimeOptions = employmentOptions
-    .filter((et) => et.type === "EmploymentTime")
-    .map(et => et.id);
-
-const allowedEmploymentMobilityOptions = employmentOptions
-    .filter((et) => et.type === "Mobility")
-    .map(et => et.id);
+import {z} from 'zod';
+import {jobCategoryIds} from "@/lib/seededData/jobCategories";
+import {jobContractTypeIdsByCountry} from "@/lib/seededData/jobContractTypes";
+import {employmentMobilityOptionIds, employmentTimeOptionIds} from "@/lib/seededData/employmentOptions";
+import {countryIds} from "@/lib/seededData/countries";
 
 
 export const searchJobSchema = z.object({
-    searchQuery: z.string().max(70),
-    location: z.string().max(70),
-    jobCategories: z.array(z.number())
-        .refine((arr) => arr.every(num => allowedJobCategoryIds.includes(num))),
-    jobContractTypes: z.array(z.number())
-        .refine((arr) => arr.every(num => allowedJobContractTypeIds.includes(num))),
-    employmentTimeOptions: z.array(z.number())
-        .refine((arr) => arr.every(num => allowedEmploymentTimeOptions.includes(num))),
-    employmentMobilityOptions: z.array(z.number())
-        .refine((arr) => arr.every(num => allowedEmploymentMobilityOptions.includes(num))),
+    query: z.string().max(70),
+    locationId: z.number(),
+    countryId: z.number().refine(num => countryIds.includes(num)),
+    categoryIds: z.array(z.number())
+        .refine((arr) => arr.every(num => jobCategoryIds.includes(num))),
+    contractTypeIds: z.array(z.number())
+        .refine((arr) => arr.every(num => jobContractTypeIdsByCountry[1].includes(num))),
+    employmentTimeOptionIds: z.array(z.number())
+        .refine((arr) => arr.every(num => employmentTimeOptionIds.includes(num))),
+    employmentMobilityOptionIds: z.array(z.number())
+        .refine((arr) => arr.every(num => employmentMobilityOptionIds.includes(num))),
 });
 
 export type SearchJobFormData = z.infer<typeof searchJobSchema>;

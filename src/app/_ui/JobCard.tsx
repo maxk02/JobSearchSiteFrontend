@@ -1,3 +1,5 @@
+"use client";
+
 import {Avatar, Box, Collapse, Divider, IconButton, List, ListItem, Paper, Stack, Typography} from "@mui/material";
 import Image from "next/image";
 import {ExpandLess, ExpandMore, StarBorder, StarBorderOutlined} from "@mui/icons-material";
@@ -7,21 +9,31 @@ import {employmentOptions} from "@/lib/seededData/employmentOptions";
 import formatSalaryInfoText from "@/app/_ui/_functions/formatSalaryInfoText";
 import formatLocationText from "@/app/_ui/_functions/formatLocationText";
 import {useState} from "react";
+import {addJobBookmark, deleteJobBookmark} from "@/lib/api/userProfiles/userProfilesApi";
 
 
 export interface JobCardProps {
     item: JobCardDto;
-    addJobBookmark: (id: number) => void;
-    deleteJobBookmark: (id: number) => void;
 }
 
-export default function JobCard({ item, addJobBookmark, deleteJobBookmark }: JobCardProps) {
+export default function JobCard({ item }: JobCardProps) {
 
+    const [isBookmarked, setIsBookmarked] = useState(item.isBookmarked);
     const [isLocationsExpanded, setIsLocationsExpanded] = useState(false);
 
     const toggleLocations = () => {
         setIsLocationsExpanded(!isLocationsExpanded);
     };
+
+    const toggleBookmark = async () => {
+        const result = isBookmarked ? await deleteJobBookmark(item.id) : await addJobBookmark(item.id);
+
+        if (result.success) {
+            setIsBookmarked(!isBookmarked);
+        } else {
+            console.log(`Toggle bookmark failed (${result.status})`);
+        }
+    }
 
     return (
         <Paper sx={{ width: "100%", textAlign: "left" }}>
@@ -94,10 +106,7 @@ export default function JobCard({ item, addJobBookmark, deleteJobBookmark }: Job
                 <Box sx={{ px: 2, py: 1 }}>
                     <IconButton
                         sx={{ lineHeight: 1 }}
-                        onClick={
-                            item.isBookmarked ? () => addJobBookmark
-                                : () => deleteJobBookmark
-                        }
+                        onClick={toggleBookmark}
                     >
                         { item.isBookmarked ? <StarBorderOutlined /> : <StarBorder /> }
                     </IconButton>

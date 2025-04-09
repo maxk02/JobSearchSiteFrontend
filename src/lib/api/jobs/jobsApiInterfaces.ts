@@ -32,9 +32,8 @@ export interface GetJobByIdResponse {
 export interface GetJobsRequest {
     query: string;
     paginationSpec: PaginationSpec;
-    mustHaveSalaryRecord: boolean | null;
-    employmentTypeIds: number[] | null;
-    countryIds: number[] | null;
+    employmentOptionIds: number[] | null;
+    locationId: number | null;
     categoryIds: number[] | null;
     contractTypeIds: number[] | null;
 }
