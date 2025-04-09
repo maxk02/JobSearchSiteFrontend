@@ -11,19 +11,13 @@ import CreateEditJobLocationCard from "@/app/_ui/CreateEditJob/CreateEditJobLoca
 import CreateEditJobBasicInfoCard from "@/app/_ui/CreateEditJob/CreateEditJobBasicInfoCard";
 import {FormProvider, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {
-    CreateEditJobFormData,
-    createEditJobSchema,
-    jobSalaryInfoSchema,
-    listItemSchema
-} from "@/lib/schemas/createEditJobSchema";
-import {jobCategoryIds} from "@/lib/seededData/jobCategories";
+import {CreateEditJobFormData, createEditJobSchema} from "@/lib/schemas/createEditJobSchema";
 import CreateEditJobListCard from "@/app/_ui/CreateEditJob/CreateEditJobListCard";
 import Grid from "@mui/material/Grid2";
 import CreateJobNavigationCard from "@/app/company/[companyId]/create-job/_ui/CreateJobNavigationCard";
 import CreateEditJobNavigationCard from "@/app/_ui/CreateEditJob/CreateEditJobNavigationCard";
 import CreateJobButtons from "@/app/company/[companyId]/create-job/_ui/CreateJobButtons";
-import {AddJobRequest, UpdateJobRequestDto} from "@/lib/api/jobs/jobsApiInterfaces";
+import {AddJobRequest} from "@/lib/api/jobs/jobsApiInterfaces";
 import {addJob} from "@/lib/api/jobs/jobsApi";
 import {useRouter} from "next/navigation";
 import {useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";

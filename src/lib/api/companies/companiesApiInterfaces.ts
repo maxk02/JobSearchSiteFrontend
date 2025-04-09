@@ -1,5 +1,6 @@
 import {CompanyInfoDto} from "@/lib/api/companies/companiesApiDtos";
 import {PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
+import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 
 
 export interface AddCompanyRequest {
@@ -14,10 +15,6 @@ export interface AddCompanyResponse {
     id: number;
 }
 
-export interface DeleteCompanyRequest {
-    id: number;
-}
-
 export interface GetCompaniesRequest {
     countryId: number;
     query: string;
@@ -29,10 +26,6 @@ export interface GetCompaniesResponse {
     paginationResponse: PaginationResponse;
 }
 
-export interface GetCompanyByIdRequest {
-    id: number;
-}
-
 export interface GetCompanyByIdResponse {
     company: CompanyInfoDto | null;
 }
@@ -41,4 +34,14 @@ export interface UpdateCompanyRequestDto {
     name: string | null;
     description: string | null;
     isPublic: boolean | null;
+}
+
+//
+export interface GetCompanyJobsRequest {
+    paginationSpec: PaginationSpec;
+}
+
+export interface GetCompanyJobsResponse {
+    jobCards: JobCardDto[];
+    paginationResponse: PaginationResponse;
 }

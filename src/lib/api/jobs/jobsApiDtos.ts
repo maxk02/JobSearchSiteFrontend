@@ -11,6 +11,7 @@ export interface JobCardDto {
     salaryInfo: JobSalaryInfoDto | null;
     employmentOptionIds: number[] | null;
     contractTypeIds: number[] | null;
+    isBookmarked: boolean;
 }
 
 export interface JobDetailedDto {
@@ -29,6 +30,7 @@ export interface JobDetailedDto {
     salaryInfo: JobSalaryInfoDto | null;
     employmentTypeIds: number[] | null;
     contractTypeIds: number[] | null;
+    isBookmarked: boolean;
 }
 
 export interface JobSalaryInfoDto {

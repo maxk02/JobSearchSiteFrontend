@@ -5,6 +5,8 @@ import {
     GetCompaniesRequest,
     GetCompaniesResponse,
     GetCompanyByIdResponse,
+    GetCompanyJobsRequest,
+    GetCompanyJobsResponse,
     UpdateCompanyRequestDto
 } from "@/lib/api/companies/companiesApiInterfaces";
 
@@ -26,4 +28,9 @@ export const getCompanies = async (req: GetCompaniesRequest) => {
 
 export const getCompanyById = async (id: number) => {
     return await fetchData<unknown, GetCompanyByIdResponse>(`/companies/${id}`, "GET");
+};
+
+//
+export const getCompanyJobs = async (id: number, req: GetCompanyJobsRequest) => {
+    return await fetchData<GetCompanyJobsRequest, GetCompanyJobsResponse>(`company/${id}/jobs`, "GET", req);
 };

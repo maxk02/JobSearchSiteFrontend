@@ -1,19 +1,28 @@
-import {Avatar, Box, Divider, IconButton, List, ListItem, Paper, Stack, Typography} from "@mui/material";
+import {Avatar, Box, Collapse, Divider, IconButton, List, ListItem, Paper, Stack, Typography} from "@mui/material";
 import Image from "next/image";
-import {StarBorderOutlined} from "@mui/icons-material";
+import {ExpandLess, ExpandMore, StarBorder, StarBorderOutlined} from "@mui/icons-material";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 import {jobContractTypes} from "@/lib/seededData/jobContractTypes";
 import {employmentOptions} from "@/lib/seededData/employmentOptions";
 import formatSalaryInfoText from "@/app/_ui/_functions/formatSalaryInfoText";
 import formatLocationText from "@/app/_ui/_functions/formatLocationText";
+import {useState} from "react";
 
 
 export interface JobCardProps {
     item: JobCardDto;
     addJobBookmark: (id: number) => void;
+    deleteJobBookmark: (id: number) => void;
 }
 
-export default function JobCard({ item, addJobBookmark }: JobCardProps) {
+export default function JobCard({ item, addJobBookmark, deleteJobBookmark }: JobCardProps) {
+
+    const [isLocationsExpanded, setIsLocationsExpanded] = useState(false);
+
+    const toggleLocations = () => {
+        setIsLocationsExpanded(!isLocationsExpanded);
+    };
+
     return (
         <Paper sx={{ width: "100%", textAlign: "left" }}>
             <Stack direction="row">
@@ -34,11 +43,31 @@ export default function JobCard({ item, addJobBookmark }: JobCardProps) {
                     <Typography fontWeight="600" lineHeight={1} mt={1.3}>
                         {item.companyName}
                     </Typography>
-                    {item.locations.map((item) => (
-                        <Typography key={item.id} lineHeight={1} mt={1.3}>
-                            {formatLocationText(item)}
+
+                    {item.locations.length === 1 ? (
+                        <Typography lineHeight={1} mt={1.3}>
+                            {formatLocationText(item.locations[0])}
                         </Typography>
-                    ))}
+                    ) : (
+                        <>
+                            <Box sx={{ display: "flex", alignItems: "center", mt: 1.3, cursor: "pointer" }} onClick={toggleLocations}>
+                                <Typography lineHeight={1}>
+                                    Dostępna w {item.locations.length} lokalizacjach
+                                </Typography>
+                                <IconButton size="small" sx={{ ml: 0.5, p: 0 }}>
+                                    {isLocationsExpanded ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
+                                </IconButton>
+                            </Box>
+                            <Collapse in={isLocationsExpanded}>
+                                {item.locations.map((location) => (
+                                    <Typography key={location.id} lineHeight={1} mt={1.3}>
+                                        {formatLocationText(location)}
+                                    </Typography>
+                                ))}
+                            </Collapse>
+                        </>
+                    )}
+
                     <List sx={{ m: 0, p: 0, display: "flex", flexDirection: "row" }}>
                         <ListItem sx={{ m: 0, px: 0, pt: 1.3, pb: 0, width: "auto",
                             "&::after": { content: '"●"', mx: 0.5, fontSize: "0.7rem", color: "text.secondary" } }}
@@ -63,8 +92,14 @@ export default function JobCard({ item, addJobBookmark }: JobCardProps) {
                     </List>
                 </Stack>
                 <Box sx={{ px: 2, py: 1 }}>
-                    <IconButton sx={{ lineHeight: 1 }} onClick={() => addJobBookmark}>
-                        <StarBorderOutlined />
+                    <IconButton
+                        sx={{ lineHeight: 1 }}
+                        onClick={
+                            item.isBookmarked ? () => addJobBookmark
+                                : () => deleteJobBookmark
+                        }
+                    >
+                        { item.isBookmarked ? <StarBorderOutlined /> : <StarBorder /> }
                     </IconButton>
                 </Box>
             </Stack>
