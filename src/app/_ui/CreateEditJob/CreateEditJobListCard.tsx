@@ -23,7 +23,7 @@ interface CreateEditJobListCardProps {
     fieldName: keyof CreateEditJobFormData;
 }
 
-export default function CreateEditJobListCard({ cardTitle, fieldName }: CreateEditJobListCardProps) {
+export default function CreateEditJobListCard({cardTitle, fieldName}: CreateEditJobListCardProps) {
 
     const {watch, setValue, formState: {errors}} = useFormContext<CreateEditJobFormData>();
     const items = watch(fieldName) as ListItemType[] || [];
@@ -51,8 +51,8 @@ export default function CreateEditJobListCard({ cardTitle, fieldName }: CreateEd
             ? Math.max(...items.map(r => r.id)) + 1
             : 1;
 
-        const newItem = { id: newId, text: newText };
-        setValue(fieldName, [...items, newItem], { shouldValidate: true });
+        const newItem = {id: newId, text: newText};
+        setValue(fieldName, [...items, newItem], {shouldValidate: true});
         setAddDialogOpen(false);
         setNewText("");
     };
@@ -92,7 +92,6 @@ export default function CreateEditJobListCard({ cardTitle, fieldName }: CreateEd
     };
 
 
-
     const handleDialogClose = () => {
         setEditDialogOpen(false);
         setDeleteDialogOpen(false);
@@ -102,43 +101,31 @@ export default function CreateEditJobListCard({ cardTitle, fieldName }: CreateEd
 
 
     return (
-        <Paper sx={{ mt: 2, pt: 2, pb: (items.length > 0 ? 1.5 : 2), px: 1.5 }}>
+        <Paper sx={{mt: 2, pt: 2, pb: (items.length > 0 ? 1.5 : 2), px: 1.5}}>
             <Typography variant="h6" fontWeight={600} lineHeight={1} color="primary">{cardTitle}</Typography>
             <Box mt={1.5} display="flex" flexDirection="column">
                 <Alert
                     severity="info"
-                    icon={<Info />}
-                    sx={{ maxWidth: "500px" }}
+                    icon={<Info/>}
+                    sx={{maxWidth: "500px"}}
                 >
                     <Typography>
                         Ta sekcja jest opcjonalna. Możesz dodać do 10 elementów.
                     </Typography>
                 </Alert>
 
-                <Button
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    startIcon={<Add />}
-                    onClick={handleAddStart}
-                    disabled={items.length >= 10}
-                    sx={{ borderRadius: "50px", width: "fit-content", mt: 1.5 }}
-                >
-                    Dodaj
-                </Button>
-
                 {errors[fieldName] && (
-                    <Typography color="error" sx={{ mt: 1 }}>
+                    <Typography color="error" sx={{mt: 1}}>
                         {errors[fieldName].message}
                     </Typography>
                 )}
 
-                {items.length > 0 &&
-                    <Box sx={{maxWidth: "650px", mt: 2}}>
-                        <Typography sx={{fontWeight: 600, lineHeight: 1}}>
-                            Dodano obiektów: {items.length}
-                        </Typography>
+                <Box sx={{maxWidth: "650px", mt: 1.7}}>
+                    <Typography sx={{fontWeight: 600, lineHeight: 1}}>
+                        {items.length > 0 ? `Dodano elementów: ${items.length}` : `Brak elementów`}
+                    </Typography>
 
+                    {items.length > 0 &&
                         <List sx={{mt: 1, p: 0, '& > :last-child': {pb: 0}}}>
                             {items.map((item) => (
                                 <ListItem key={item.id}
@@ -165,9 +152,22 @@ export default function CreateEditJobListCard({ cardTitle, fieldName }: CreateEd
                                     </Box>
                                 </ListItem>
                             ))}
-                        </List>
-                    </Box>
-                }
+                        </List>}
+
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        startIcon={<Add/>}
+                        onClick={handleAddStart}
+                        disabled={items.length >= 10}
+                        sx={{borderRadius: "50px", width: "fit-content", mt: 1.7}}
+                    >
+                        Dodaj
+                    </Button>
+
+                </Box>
+
             </Box>
 
             <Dialog open={addDialogOpen} onClose={handleDialogClose} maxWidth="sm" fullWidth>

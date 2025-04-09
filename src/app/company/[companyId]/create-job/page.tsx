@@ -11,57 +11,74 @@ import CreateEditJobLocationCard from "@/app/_ui/CreateEditJob/CreateEditJobLoca
 import CreateEditJobBasicInfoCard from "@/app/_ui/CreateEditJob/CreateEditJobBasicInfoCard";
 import {FormProvider, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {CreateEditJobFormData, createEditJobSchema} from "@/lib/schemas/createEditJobSchema";
+import {
+    CreateEditJobFormData,
+    createEditJobSchema,
+    jobSalaryInfoSchema,
+    listItemSchema
+} from "@/lib/schemas/createEditJobSchema";
 import {jobCategoryIds} from "@/lib/seededData/jobCategories";
 import CreateEditJobListCard from "@/app/_ui/CreateEditJob/CreateEditJobListCard";
 import Grid from "@mui/material/Grid2";
-import CreateJobCompanyNavigationCard from "@/app/company/[companyId]/create-job/_ui/CreateJobCompanyNavigationCard";
+import CreateJobNavigationCard from "@/app/company/[companyId]/create-job/_ui/CreateJobNavigationCard";
 import CreateEditJobNavigationCard from "@/app/_ui/CreateEditJob/CreateEditJobNavigationCard";
 import CreateJobButtons from "@/app/company/[companyId]/create-job/_ui/CreateJobButtons";
-import {AddJobRequest} from "@/lib/api/jobs/jobsApiInterfaces";
+import {AddJobRequest, UpdateJobRequestDto} from "@/lib/api/jobs/jobsApiInterfaces";
 import {addJob} from "@/lib/api/jobs/jobsApi";
 import {useRouter} from "next/navigation";
+import {useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
 
 
 export default function CreateJobPage() {
 
     const router = useRouter();
 
+    const { info } = useCreateEditJobStateStore();
+
     const methods = useForm<CreateEditJobFormData>({
         resolver: zodResolver(createEditJobSchema),
         defaultValues: {
             title: '',
-            category: jobCategoryIds[0],
+            category: 1,
             description: '',
-            timeRangeOption: 0,
+            timeRangeOption: 1,
             dateTimeExpiringUtc: new Date(),
-            employmentOptions: [],
-            jobContractTypes: [],
+            isPublic: true,
+            employmentOptionIds: [],
+            jobContractTypeIds: [],
+            locationIds: [],
+            salaryInfo: undefined,
+            responsibilities: [],
+            requirements: [],
+            niceToHaves: [],
         },
         mode: 'onChange'
     });
 
     const onSubmit = async (data: CreateEditJobFormData) => {
+
+        if (!info) throw new Error();
+
         const createJobRequest: AddJobRequest = {
-            jobFolderId: 0,
+            jobFolderId: info.folderId,
             categoryId: data.category,
             title: data.title,
-            description: data.description || '',
-            isPublic: true,
+            description: data.description || null,
+            isPublic: data.isPublic,
             dateTimeExpiringUtc: data.dateTimeExpiringUtc.toISOString(),
             responsibilities: data.responsibilities?.map(item => item.text) || [],
             requirements: data.requirements?.map(item => item.text) || [],
             niceToHaves: data.niceToHaves?.map(item => item.text) || [],
-            jobSalaryInfoDto: data.salaryInfo ? {
+            salaryInfo: data.salaryInfo ? {
                 minimum: data.salaryInfo.minWage || null,
                 maximum: data.salaryInfo.maxWage || null,
                 currency: 'PLN',
                 unitOfTime: data.salaryInfo.wageTimeUnit,
-                isAfterTaxes: data.salaryInfo.isAfterTaxes === 1 ? true : false
+                isAfterTaxes: data.salaryInfo.isAfterTaxes,
             } : null,
-            employmentTypeIds: data.employmentOptions,
-            contractTypeIds: data.jobContractTypes,
-            locationIds: [],
+            employmentOptionIds: data.employmentOptionIds,
+            contractTypeIds: data.jobContractTypeIds,
+            locationIds: data.locationIds,
         }
 
         const createJobResult = await addJob(createJobRequest);
@@ -77,6 +94,7 @@ export default function CreateJobPage() {
 
     return (
         <Container maxWidth="xl" sx={{ mt: 2.5, mb: 2.5 }}>
+            {info !== null ?
             <Grid container spacing={3.5}>
                 <Grid size={{ xs: 12, md: 12, lg: 3.3 }}>
                     <Box display="flex" flexDirection="column" gap={2}
@@ -85,7 +103,11 @@ export default function CreateJobPage() {
                              maxHeight: "calc(100vh - 40px)", flex: 1
                          }}
                     >
-                        <CreateJobCompanyNavigationCard />
+                        <CreateJobNavigationCard
+                            companyName={info.companyName}
+                            companyLogoLink={info.companyLogoLink}
+                            returnTo={info.source}
+                            returnToId={{ "company": info.companyId, "folder": info.folderId }[info.source]} />
                         <CreateEditJobNavigationCard />
                         <CreateJobButtons />
                     </Box>
@@ -102,6 +124,7 @@ export default function CreateJobPage() {
                         <FormProvider {...methods}>
 
                             <form onSubmit={methods.handleSubmit(onSubmit)}>
+
                                 <CreateEditJobBasicInfoCard />
 
                                 <CreateEditJobLocationCard />
@@ -119,12 +142,16 @@ export default function CreateJobPage() {
                                 <CreateEditJobListCard cardTitle="Wymogi" fieldName="requirements" />
 
                                 <CreateEditJobListCard cardTitle="Mile widziane" fieldName="niceToHaves" />
+
                             </form>
 
                         </FormProvider>
                     </Box>
                 </Grid>
-            </Grid>
+            </Grid> :
+            <Typography>
+                Błąd
+            </Typography>}
         </Container>
     );
 }

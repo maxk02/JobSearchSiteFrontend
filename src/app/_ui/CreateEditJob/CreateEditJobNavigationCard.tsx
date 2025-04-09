@@ -4,7 +4,7 @@ import {Description, Settings} from "@mui/icons-material";
 
 
 const navItems = [
-    { text: "Tytuł i opis", icon: <Description /> },
+    { text: "Informacje podstawowe", icon: <Description /> },
     { text: "Przedział czasowy", icon: <Settings /> },
     { text: "Rodzaj zatrudnienia", icon: <Settings /> },
     { text: "Umowa zatrudnienia", icon: <Settings /> },

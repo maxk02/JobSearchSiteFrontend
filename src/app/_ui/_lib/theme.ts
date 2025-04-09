@@ -14,6 +14,19 @@ const theme = createTheme({
     typography: {
         fontFamily: "Roboto, Arial, sans-serif",
     },
+    components: {
+        MuiButtonBase: {
+            styleOverrides: {
+                root: {
+                    a: {
+                        all: "unset",
+                        color: "inherit",
+                        textDecoration: "none",
+                    }
+                }
+            }
+        }
+    }
 }, plPL);
 
 export default theme;

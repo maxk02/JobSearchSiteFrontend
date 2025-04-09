@@ -1,6 +1,6 @@
 "use client";
 
-import {Box, MenuItem, Paper, TextField, Typography} from "@mui/material";
+import {Box, FormControlLabel, FormGroup, MenuItem, Paper, Switch, TextField, Typography} from "@mui/material";
 import React from "react";
 import {Controller, useFormContext} from "react-hook-form";
 import {CreateEditJobFormData} from "@/lib/schemas/createEditJobSchema";
@@ -13,7 +13,7 @@ export default function CreateEditJobBasicInfoCard() {
 
     return(
         <Paper sx={{ mt: 2, py: 2, px: 1.5 }}>
-            <Typography variant="h6" fontWeight={600} lineHeight={1} color="primary">Tytuł i opis</Typography>
+            <Typography variant="h6" fontWeight={600} lineHeight={1} color="primary">Informacje podstawowe</Typography>
             <Box display="flex" flexDirection="column" gap={1.5} mt={1.5}>
                 <Controller
                     name="title"
@@ -49,6 +49,24 @@ export default function CreateEditJobBasicInfoCard() {
                         </TextField>
                     )}
                 />
+                <FormGroup>
+                    <Controller
+                        name="isPublic"
+                        control={control}
+                        render={({ field }) => (
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        {...field}
+                                        checked={field.value}
+                                        onChange={(e) => field.onChange(e.target.checked)}
+                                    />
+                                }
+                                label="Widoczność po utworzeniu"
+                            />
+                        )}
+                    />
+                </FormGroup>
                 <Controller
                     name="description"
                     control={control}

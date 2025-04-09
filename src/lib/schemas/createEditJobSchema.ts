@@ -14,8 +14,8 @@ export const jobSalaryInfoSchema = z.object({
     minWage: z.number().min(1).max(1000000).optional(),
     maxWage: z.number().min(1).max(1000000).optional(),
     wageTimeUnit: z.enum(unitsOfTime),
-    isAfterTaxes: z.number().min(0).max(1),
-});
+    isAfterTaxes: z.boolean(),
+}).optional();
 
 export const createEditJobSchema = z.object({
     title: z.string().min(1, 'Nazwa jest wymagana').max(60, 'Zbyt długa nazwa stanowiska'),
@@ -23,11 +23,13 @@ export const createEditJobSchema = z.object({
     description: z.string().min(30).max(500).optional(),
     timeRangeOption: z.number().min(1).max(4),
     dateTimeExpiringUtc: z.date().min(new Date()),
-    employmentOptions: z.array(z.number())
+    isPublic: z.boolean(),
+    employmentOptionIds: z.array(z.number())
         .refine((arr) => arr.every(num => employmentOptionIds.includes(num))),
-    jobContractTypes: z.array(z.number())
+    jobContractTypeIds: z.array(z.number())
         .refine((arr) => arr.every(num => jobContractTypeIdsByCountry[1].includes(num))),
-    salaryInfo: jobSalaryInfoSchema.optional(),
+    locationIds: z.array(z.number().min(1).max(1000000)),
+    salaryInfo: jobSalaryInfoSchema,
     responsibilities: z.array(listItemSchema).max(10).optional(),
     requirements: z.array(listItemSchema).max(10).optional(),
     niceToHaves: z.array(listItemSchema).max(10).optional(),

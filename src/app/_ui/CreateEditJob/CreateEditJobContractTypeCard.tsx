@@ -33,7 +33,7 @@ export default function CreateEditJobContractTypeCard() {
                     <FormControl>
                         <FormGroup>
                             <Controller
-                                name="jobContractTypes"
+                                name="jobContractTypeIds"
                                 control={control}
                                 render={({ field }) => (
                                     <>
@@ -59,9 +59,9 @@ export default function CreateEditJobContractTypeCard() {
                             />
                         </FormGroup>
                     </FormControl>
-                    {errors.jobContractTypes && (
+                    {errors.jobContractTypeIds && (
                         <Typography color="error" variant="caption" sx={{ mt: 1 }}>
-                            {errors.jobContractTypes.message}
+                            {errors.jobContractTypeIds.message}
                         </Typography>
                     )}
                 </Box>

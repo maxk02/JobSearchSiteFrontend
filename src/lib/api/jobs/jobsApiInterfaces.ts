@@ -5,14 +5,14 @@ export interface AddJobRequest {
     jobFolderId: number;
     categoryId: number;
     title: string;
-    description: string;
+    description: string | null;
     isPublic: boolean;
     dateTimeExpiringUtc: string;
     responsibilities: string[];
     requirements: string[];
     niceToHaves: string[];
-    jobSalaryInfoDto: JobSalaryInfoDto | null;
-    employmentTypeIds: number[];
+    salaryInfo: JobSalaryInfoDto | null;
+    employmentOptionIds: number[];
     contractTypeIds: number[];
     locationIds: number[];
 }
@@ -50,12 +50,12 @@ export interface UpdateJobRequestDto {
     title: string | null;
     description: string | null;
     isPublic: boolean | null;
-    newDateTimeExpiringUtc: string | null;
+    dateTimeExpiringUtc: string | null;
     responsibilities: string[] | null;
     requirements: string[] | null;
-    advantages: string[] | null;
+    niceToHaves: string[] | null;
     salaryInfo: JobSalaryInfoDto | null;
-    employmentTypeIds: number[] | null;
+    employmentOptionIds: number[] | null;
     contractTypeIds: number[] | null;
     locationIds: number[] | null;
 }
