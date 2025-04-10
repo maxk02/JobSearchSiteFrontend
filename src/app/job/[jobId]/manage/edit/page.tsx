@@ -1,7 +1,7 @@
 "use client";
 
 import {Box, Typography} from "@mui/material";
-import React from "react";
+import React, {useEffect} from "react";
 import CreateEditJobBasicInfoCard from "@/app/_ui/CreateEditJob/CreateEditJobBasicInfoCard";
 import CreateEditJobPublicationIntervalCard from "@/app/_ui/CreateEditJob/CreateEditJobPublicationIntervalCard";
 import CreateEditJobEmploymentOptionCard from "@/app/_ui/CreateEditJob/CreateEditJobEmploymentOptionCard";
@@ -13,20 +13,20 @@ import {FormProvider, useForm} from "react-hook-form";
 import {useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
 import {CreateEditJobFormData, createEditJobSchema} from "@/lib/schemas/createEditJobSchema";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {jobCategoryIds} from "@/lib/seededData/jobCategories";
 import {UpdateJobRequestDto} from "@/lib/api/jobs/jobsApiInterfaces";
-import {updateJob} from "@/lib/api/jobs/jobsApi";
+import {getJobById, updateJob} from "@/lib/api/jobs/jobsApi";
 import {useParams, useRouter} from "next/navigation";
 
 
 export default function EditJobPage() {
 
     const router = useRouter();
+
     const { jobIdParam } = useParams();
 
     const jobId = jobIdParam as unknown as number;
 
-    const { info } = useCreateEditJobStateStore();
+    const { contextInfo } = useCreateEditJobStateStore();
 
     const methods = useForm<CreateEditJobFormData>({
         resolver: zodResolver(createEditJobSchema),
@@ -48,20 +48,61 @@ export default function EditJobPage() {
         mode: 'onChange'
     });
 
+    const { reset, formState: {touchedFields} } = methods;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await getJobById(jobId);
+            if (result.success && result.data.job.managementInfo !== null) {
+                reset({
+                    title: result.data.job.title,
+                    category: result.data.job.categoryId,
+                    description: result.data.job.description,
+                    timeRangeOption: result.data.job.managementInfo.timeRangeOptionId,
+                    dateTimeExpiringUtc: new Date(result.data.job.dateTimeExpiringUtc),
+                    isPublic: result.data.job.managementInfo.isPublic,
+                    employmentOptionIds: result.data.job.employmentTypeIds ?? [],
+                    jobContractTypeIds: result.data.job.contractTypeIds ?? [],
+                    locationIds: result.data.job.locations.map(l => l.id),
+                    salaryInfo: result.data.job.salaryInfo,
+                    responsibilities: result.data.job.responsibilities,
+                    requirements: result.data.job.requirements,
+                    niceToHaves: result.data.job.niceToHaves,
+                });
+            }
+            else {
+                console.log("Job fetching error", jobId);
+            }
+        }
+
+        fetchData();
+    });
+
     const onSubmit = async (data: CreateEditJobFormData) => {
 
-        if (!info) throw new Error();
+        if (!contextInfo) throw new Error();
+
+        const onlyTouchedData: { [K in keyof CreateEditJobFormData]: CreateEditJobFormData[K] | null } = {
+            ...data,
+        };
+
+        (Object.keys(data) as (keyof CreateEditJobFormData)[]).forEach((field) => {
+            if (!touchedFields[field]) {
+                onlyTouchedData[field] = null;
+            }
+        });
 
         const updateJobRequest: UpdateJobRequestDto = {
-            jobFolderId: info.folderId,
+            folderId: contextInfo.folderId,
             categoryId: data.category,
             title: data.title,
             description: data.description || null,
             isPublic: data.isPublic,
+            timeRangeOptionId: data.timeRangeOption,
             dateTimeExpiringUtc: data.dateTimeExpiringUtc.toISOString(),
-            responsibilities: data.responsibilities?.map(item => item.text) || [],
-            requirements: data.requirements?.map(item => item.text) || [],
-            niceToHaves: data.niceToHaves?.map(item => item.text) || [],
+            responsibilities: data.responsibilities,
+            requirements: data.requirements,
+            niceToHaves: data.niceToHaves,
             salaryInfo: data.salaryInfo ? {
                 minimum: data.salaryInfo.minWage || null,
                 maximum: data.salaryInfo.maxWage || null,
@@ -78,7 +119,6 @@ export default function EditJobPage() {
 
         if (updateJobResult.success) {
 
-            router.push("/");
         }
         else {
             console.log(`Failed (${updateJobResult.status})`)

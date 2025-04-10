@@ -1,5 +1,5 @@
 import {
-    AddJobRequest,
+    AddJobRequest, AddJobResponse,
     DeleteJobRequest,
     GetJobByIdRequest,
     GetJobByIdResponse,
@@ -11,7 +11,7 @@ import fetchData from "@/lib/api/fetchData";
 
 
 export const addJob = async (req: AddJobRequest) => {
-    return await fetchData<AddJobRequest>("/jobs", "POST", req);
+    return await fetchData<AddJobRequest, AddJobResponse>("/jobs", "POST", req);
 };
 
 
@@ -28,7 +28,6 @@ export const getJobs = async (req: GetJobsRequest) => {
 export const getJobById = async (id: number) => {
     return await fetchData<GetJobByIdRequest, GetJobByIdResponse>(`/jobs/${id}`, "GET");
 };
-
 
 export const updateJob = async (id: number, req: UpdateJobRequestDto) => {
     return await fetchData<UpdateJobRequestDto>(`/jobs/${id}`, "PATCH", req);

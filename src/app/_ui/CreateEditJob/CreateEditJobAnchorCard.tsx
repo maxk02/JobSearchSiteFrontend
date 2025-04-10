@@ -15,7 +15,7 @@ const navItems = [
 ];
 
 
-export default function CreateEditJobNavigationCard() {
+export default function CreateEditJobAnchorCard() {
     return (
         <Paper sx={{ px: 0, pt: 0, pb: 0, flexShrink: 0 }}>
             <List sx={{ p: 0 }}>

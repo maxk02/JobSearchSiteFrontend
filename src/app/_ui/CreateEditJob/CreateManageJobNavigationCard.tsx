@@ -23,7 +23,7 @@ interface CreateJobNavigationCardProps {
     returnToId: number;
 }
 
-export default function CreateJobNavigationCard({ returnTo, returnToId, companyName, companyLogoLink }: CreateJobNavigationCardProps) {
+export default function CreateManageJobNavigationCard({ returnTo, returnToId, companyName, companyLogoLink }: CreateJobNavigationCardProps) {
 
     const navItems = [
         {
@@ -43,7 +43,7 @@ export default function CreateJobNavigationCard({ returnTo, returnToId, companyN
             }}
             >
                 <ListItem sx={{ pl: 1.5, pr: 0.75, py: 0.5, alignItems: "center", flex: "0 0 fit-content" }}>
-                    <Avatar variant="rounded" src="/company2.webp" sx={{ height: 35, width: 35 }}>
+                    <Avatar variant="rounded" sx={{ height: 35, width: 35 }}>
                         {companyLogoLink && <Image src={companyLogoLink} alt="Company logo"></Image>}
                     </Avatar>
                 </ListItem>

@@ -12,7 +12,7 @@ interface CreateEditJobCreationInfo {
 }
 
 interface CreateEditJobState {
-    info: CreateEditJobCreationInfo | null;
+    contextInfo: CreateEditJobCreationInfo | null;
     setState: (info: CreateEditJobCreationInfo) => void;
     clearState: () => void;
 }
@@ -20,8 +20,8 @@ interface CreateEditJobState {
 export const useCreateEditJobStateStore = create<CreateEditJobState>()(
     (set) => ({
         navigation: null,
-        info: null,
-        setState: (info) => set({ info: info }),
-        clearState: () => set({ info: null }),
+        contextInfo: null,
+        setState: (info) => set({ contextInfo: info }),
+        clearState: () => set({ contextInfo: null }),
     })
 );

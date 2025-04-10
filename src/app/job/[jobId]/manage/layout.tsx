@@ -3,11 +3,13 @@
 import {Box, Container} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import ManageJobViewsCard from "@/app/job/[jobId]/manage/_ui/ManageJobViewsCard";
-import ManageJobCompanyNavigationCard from "@/app/job/[jobId]/manage/_ui/ManageJobCompanyNavigationCard";
-import React from "react";
-import CreateEditJobNavigationCard from "@/app/_ui/CreateEditJob/CreateEditJobNavigationCard";
+import React, {useState} from "react";
+import CreateEditJobAnchorCard from "@/app/_ui/CreateEditJob/CreateEditJobAnchorCard";
 import EditJobButtons from "@/app/job/[jobId]/manage/edit/_ui/EditJobButtons";
 import {useParams, usePathname} from "next/navigation";
+import CreateManageJobNavigationCard from "@/app/_ui/CreateEditJob/CreateManageJobNavigationCard";
+import {useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
+import CreateManageJobFolderChosenCard from "@/app/_ui/CreateEditJob/CreateManageJobFolderChosenCard";
 
 
 export default function ManageJobLayout({children}: Readonly<{ children: React.ReactNode; }>) {
@@ -16,6 +18,8 @@ export default function ManageJobLayout({children}: Readonly<{ children: React.R
     const pathname = usePathname();
 
     const isActive = () => pathname === `/job/${jobId}/manage/edit`;
+
+    const { contextInfo } = useCreateEditJobStateStore();
 
     return (
         <Container maxWidth="xl" sx={{ mt: 2.5, mb: 2.5 }}>
@@ -27,12 +31,24 @@ export default function ManageJobLayout({children}: Readonly<{ children: React.R
                              maxHeight: "calc(100vh - 40px)", flex: 1
                         }}
                     >
-                        <ManageJobCompanyNavigationCard />
+                        {contextInfo &&
+                            <CreateManageJobNavigationCard
+                                companyName={contextInfo.companyName}
+                                companyLogoLink={contextInfo.companyLogoLink}
+                                returnTo={contextInfo.source}
+                                returnToId={{ "company": contextInfo.companyId, "folder": contextInfo.folderId }[contextInfo.source]}
+                            />}
                         <ManageJobViewsCard />
 
                         {isActive() &&
                             <>
-                                <CreateEditJobNavigationCard />
+                                {contextInfo?.folderId && contextInfo.folderName &&
+                                    <CreateManageJobFolderChosenCard
+                                        folderId={contextInfo.folderId}
+                                        folderName={contextInfo.folderName}
+                                    />
+                                }
+                                <CreateEditJobAnchorCard />
                                 <EditJobButtons />
                             </>
                         }

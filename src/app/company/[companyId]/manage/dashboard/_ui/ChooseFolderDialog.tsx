@@ -72,7 +72,8 @@ export default function ChooseFolderDialog({title, open, onClose, data, listItem
             onClose={handleClose}
             fullWidth
             maxWidth="sm"
-            TransitionProps={{onEntered: () => document.getElementById("search-input")?.focus()}}
+            TransitionProps={{onEntered: () =>
+                    document.getElementById("manage-company-dashboard-job-search-input")?.focus()}}
         >
             <DialogTitle sx={{pb: 1, pr: 1.5}}>
                 <Stack direction="row" sx={{ alignItems: "center" }}>

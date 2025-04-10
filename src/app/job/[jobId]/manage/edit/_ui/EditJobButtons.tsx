@@ -22,6 +22,7 @@ export default function EditJobButtons() {
                 variant="contained"
                 color="primary"
                 size="large"
+                type="submit"
                 startIcon={<Save />}
                 sx={{
                     borderRadius: "50px",

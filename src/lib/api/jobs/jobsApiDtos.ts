@@ -1,10 +1,10 @@
-import {LocationDto} from "@/lib/api/locations/locationsApiDtos";
+import {StringLocationDto} from "@/lib/api/locations/locationsApiDtos";
 
 export interface JobCardDto {
     id: number;
     companyLogoLink: string | null;
     companyName: string;
-    locations: LocationDto[];
+    locations: StringLocationDto[];
     title: string;
     dateTimePublishedUtc: string;
     dateTimeExpiringUtc: string;
@@ -12,13 +12,15 @@ export interface JobCardDto {
     employmentOptionIds: number[] | null;
     contractTypeIds: number[] | null;
     isBookmarked: boolean;
+
+    managementInfo: JobManagementInfoDto | null;
 }
 
 export interface JobDetailedDto {
     id: number;
     companyLogoLink: string | null;
     companyName: string;
-    locations: LocationDto[];
+    locations: StringLocationDto[];
     categoryId: number;
     title: string;
     description: string | null;
@@ -31,6 +33,14 @@ export interface JobDetailedDto {
     employmentTypeIds: number[] | null;
     contractTypeIds: number[] | null;
     isBookmarked: boolean;
+
+    managementInfo: JobManagementInfoDto | null;
+}
+
+export interface JobManagementInfoDto {
+    folderId: number;
+    isPublic: boolean;
+    timeRangeOptionId: number;
 }
 
 export interface JobSalaryInfoDto {

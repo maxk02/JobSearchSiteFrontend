@@ -17,6 +17,10 @@ export interface AddJobRequest {
     locationIds: number[];
 }
 
+export interface AddJobResponse {
+    id: number;
+}
+
 export interface DeleteJobRequest {
     id: number;
 }
@@ -44,10 +48,11 @@ export interface GetJobsResponse {
 }
 
 export interface UpdateJobRequestDto {
-    jobFolderId: number | null;
-    categoryId: number | null;
     title: string | null;
+    folderId: number | null;
+    categoryId: number | null;
     description: string | null;
+    timeRangeOptionId: number | null;
     isPublic: boolean | null;
     dateTimeExpiringUtc: string | null;
     responsibilities: string[] | null;

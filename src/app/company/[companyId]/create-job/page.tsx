@@ -14,20 +14,21 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {CreateEditJobFormData, createEditJobSchema} from "@/lib/schemas/createEditJobSchema";
 import CreateEditJobListCard from "@/app/_ui/CreateEditJob/CreateEditJobListCard";
 import Grid from "@mui/material/Grid2";
-import CreateJobNavigationCard from "@/app/company/[companyId]/create-job/_ui/CreateJobNavigationCard";
-import CreateEditJobNavigationCard from "@/app/_ui/CreateEditJob/CreateEditJobNavigationCard";
+import CreateManageJobNavigationCard from "@/app/_ui/CreateEditJob/CreateManageJobNavigationCard";
+import CreateEditJobAnchorCard from "@/app/_ui/CreateEditJob/CreateEditJobAnchorCard";
 import CreateJobButtons from "@/app/company/[companyId]/create-job/_ui/CreateJobButtons";
 import {AddJobRequest} from "@/lib/api/jobs/jobsApiInterfaces";
 import {addJob} from "@/lib/api/jobs/jobsApi";
 import {useRouter} from "next/navigation";
 import {useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
+import CreateManageJobFolderChosenCard from "@/app/_ui/CreateEditJob/CreateManageJobFolderChosenCard";
 
 
 export default function CreateJobPage() {
 
     const router = useRouter();
 
-    const { info } = useCreateEditJobStateStore();
+    const { contextInfo } = useCreateEditJobStateStore();
 
     const methods = useForm<CreateEditJobFormData>({
         resolver: zodResolver(createEditJobSchema),
@@ -51,18 +52,18 @@ export default function CreateJobPage() {
 
     const onSubmit = async (data: CreateEditJobFormData) => {
 
-        if (!info) throw new Error();
+        if (!contextInfo) throw new Error();
 
         const createJobRequest: AddJobRequest = {
-            jobFolderId: info.folderId,
+            jobFolderId: contextInfo.folderId,
             categoryId: data.category,
             title: data.title,
             description: data.description || null,
             isPublic: data.isPublic,
             dateTimeExpiringUtc: data.dateTimeExpiringUtc.toISOString(),
-            responsibilities: data.responsibilities?.map(item => item.text) || [],
-            requirements: data.requirements?.map(item => item.text) || [],
-            niceToHaves: data.niceToHaves?.map(item => item.text) || [],
+            responsibilities: data.responsibilities ?? [],
+            requirements: data.requirements ?? [],
+            niceToHaves: data.niceToHaves ?? [],
             salaryInfo: data.salaryInfo ? {
                 minimum: data.salaryInfo.minWage || null,
                 maximum: data.salaryInfo.maxWage || null,
@@ -78,8 +79,7 @@ export default function CreateJobPage() {
         const createJobResult = await addJob(createJobRequest);
 
         if (createJobResult.success) {
-
-            router.push("/");
+            router.push(`/job/${createJobResult.data.id}/manage/edit`);
         }
         else {
             console.log(`Failed (${createJobResult.status})`)
@@ -88,7 +88,7 @@ export default function CreateJobPage() {
 
     return (
         <Container maxWidth="xl" sx={{ mt: 2.5, mb: 2.5 }}>
-            {info !== null ?
+
             <Grid container spacing={3.5}>
                 <Grid size={{ xs: 12, md: 12, lg: 3.3 }}>
                     <Box display="flex" flexDirection="column" gap={2}
@@ -97,12 +97,20 @@ export default function CreateJobPage() {
                              maxHeight: "calc(100vh - 40px)", flex: 1
                          }}
                     >
-                        <CreateJobNavigationCard
-                            companyName={info.companyName}
-                            companyLogoLink={info.companyLogoLink}
-                            returnTo={info.source}
-                            returnToId={{ "company": info.companyId, "folder": info.folderId }[info.source]} />
-                        <CreateEditJobNavigationCard />
+                        {contextInfo &&
+                        <CreateManageJobNavigationCard
+                            companyName={contextInfo.companyName}
+                            companyLogoLink={contextInfo.companyLogoLink}
+                            returnTo={contextInfo.source}
+                            returnToId={{ "company": contextInfo.companyId, "folder": contextInfo.folderId }[contextInfo.source]}
+                        />}
+                        {contextInfo?.folderId && contextInfo.folderName &&
+                            <CreateManageJobFolderChosenCard
+                                folderId={contextInfo.folderId}
+                                folderName={contextInfo.folderName}
+                            />
+                        }
+                        <CreateEditJobAnchorCard />
                         <CreateJobButtons />
                     </Box>
                 </Grid>
@@ -142,10 +150,7 @@ export default function CreateJobPage() {
                         </FormProvider>
                     </Box>
                 </Grid>
-            </Grid> :
-            <Typography>
-                Błąd
-            </Typography>}
+            </Grid>
         </Container>
     );
 }
