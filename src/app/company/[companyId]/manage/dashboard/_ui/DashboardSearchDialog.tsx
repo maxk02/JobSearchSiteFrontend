@@ -27,6 +27,7 @@ interface DashboardSearchDialogProps {
     title: string;
     open: boolean;
     onClose: () => void;
+    onSubmit: (id: number) => void;
     data: DashboardSearchDialogItem[];
     listItemIcon: React.ReactNode;
 }

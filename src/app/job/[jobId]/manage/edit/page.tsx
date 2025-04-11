@@ -26,7 +26,7 @@ export default function EditJobPage() {
 
     const jobId = jobIdParam as unknown as number;
 
-    const { contextInfo } = useCreateEditJobStateStore();
+    const { createEditJobSource } = useCreateEditJobStateStore();
 
     const methods = useForm<CreateEditJobFormData>({
         resolver: zodResolver(createEditJobSchema),
@@ -80,7 +80,7 @@ export default function EditJobPage() {
 
     const onSubmit = async (data: CreateEditJobFormData) => {
 
-        if (!contextInfo) throw new Error();
+        if (!createEditJobSource) throw new Error();
 
         const onlyTouchedData: { [K in keyof CreateEditJobFormData]: CreateEditJobFormData[K] | null } = {
             ...data,
@@ -93,7 +93,7 @@ export default function EditJobPage() {
         });
 
         const updateJobRequest: UpdateJobRequestDto = {
-            folderId: contextInfo.folderId,
+            folderId: createEditJobSource.folderId,
             categoryId: data.category,
             title: data.title,
             description: data.description || null,

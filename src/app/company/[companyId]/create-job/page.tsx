@@ -28,7 +28,7 @@ export default function CreateJobPage() {
 
     const router = useRouter();
 
-    const { contextInfo } = useCreateEditJobStateStore();
+    const { createEditJobSource } = useCreateEditJobStateStore();
 
     const methods = useForm<CreateEditJobFormData>({
         resolver: zodResolver(createEditJobSchema),
@@ -52,10 +52,10 @@ export default function CreateJobPage() {
 
     const onSubmit = async (data: CreateEditJobFormData) => {
 
-        if (!contextInfo) throw new Error();
+        if (!createEditJobSource) throw new Error();
 
         const createJobRequest: AddJobRequest = {
-            jobFolderId: contextInfo.folderId,
+            jobFolderId: createEditJobSource.folderId,
             categoryId: data.category,
             title: data.title,
             description: data.description || null,
@@ -97,17 +97,17 @@ export default function CreateJobPage() {
                              maxHeight: "calc(100vh - 40px)", flex: 1
                          }}
                     >
-                        {contextInfo &&
+                        {createEditJobSource &&
                         <CreateManageJobNavigationCard
-                            companyName={contextInfo.companyName}
-                            companyLogoLink={contextInfo.companyLogoLink}
-                            returnTo={contextInfo.source}
-                            returnToId={{ "company": contextInfo.companyId, "folder": contextInfo.folderId }[contextInfo.source]}
+                            companyName={createEditJobSource.companyName}
+                            companyLogoLink={createEditJobSource.companyLogoLink}
+                            returnTo={createEditJobSource.source}
+                            returnToId={{ "company": createEditJobSource.companyId, "folder": createEditJobSource.folderId }[createEditJobSource.source]}
                         />}
-                        {contextInfo?.folderId && contextInfo.folderName &&
+                        {createEditJobSource?.folderId && createEditJobSource.folderName &&
                             <CreateManageJobFolderChosenCard
-                                folderId={contextInfo.folderId}
-                                folderName={contextInfo.folderName}
+                                folderId={createEditJobSource.folderId}
+                                folderName={createEditJobSource.folderName}
                             />
                         }
                         <CreateEditJobAnchorCard />

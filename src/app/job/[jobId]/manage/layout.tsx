@@ -3,7 +3,7 @@
 import {Box, Container} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import ManageJobViewsCard from "@/app/job/[jobId]/manage/_ui/ManageJobViewsCard";
-import React, {useState} from "react";
+import React from "react";
 import CreateEditJobAnchorCard from "@/app/_ui/CreateEditJob/CreateEditJobAnchorCard";
 import EditJobButtons from "@/app/job/[jobId]/manage/edit/_ui/EditJobButtons";
 import {useParams, usePathname} from "next/navigation";
@@ -19,7 +19,7 @@ export default function ManageJobLayout({children}: Readonly<{ children: React.R
 
     const isActive = () => pathname === `/job/${jobId}/manage/edit`;
 
-    const { contextInfo } = useCreateEditJobStateStore();
+    const { createEditJobSource } = useCreateEditJobStateStore();
 
     return (
         <Container maxWidth="xl" sx={{ mt: 2.5, mb: 2.5 }}>
@@ -31,21 +31,21 @@ export default function ManageJobLayout({children}: Readonly<{ children: React.R
                              maxHeight: "calc(100vh - 40px)", flex: 1
                         }}
                     >
-                        {contextInfo &&
+                        {createEditJobSource &&
                             <CreateManageJobNavigationCard
-                                companyName={contextInfo.companyName}
-                                companyLogoLink={contextInfo.companyLogoLink}
-                                returnTo={contextInfo.source}
-                                returnToId={{ "company": contextInfo.companyId, "folder": contextInfo.folderId }[contextInfo.source]}
+                                companyName={createEditJobSource.companyName}
+                                companyLogoLink={createEditJobSource.companyLogoLink}
+                                returnTo={createEditJobSource.source}
+                                returnToId={{ "company": createEditJobSource.companyId, "folder": createEditJobSource.folderId }[createEditJobSource.source]}
                             />}
                         <ManageJobViewsCard />
 
                         {isActive() &&
                             <>
-                                {contextInfo?.folderId && contextInfo.folderName &&
+                                {createEditJobSource?.folderId && createEditJobSource.folderName &&
                                     <CreateManageJobFolderChosenCard
-                                        folderId={contextInfo.folderId}
-                                        folderName={contextInfo.folderName}
+                                        folderId={createEditJobSource.folderId}
+                                        folderName={createEditJobSource.folderName}
                                     />
                                 }
                                 <CreateEditJobAnchorCard />

@@ -1,27 +1,26 @@
 import {create} from 'zustand';
 
 
-interface CreateEditJobCreationInfo {
-    source: "company" | "folder";
-    companyId: number;
-    companyName: string;
-    companyLogoLink: string | null;
-    folderId: number;
-    folderName: string;
-    countryId: number;
+interface FromFolder {
+    source: "folder";
+    id: number;
+    name: string;
+}
+
+interface FromCompany {
+    source: "company";
 }
 
 interface CreateEditJobState {
-    contextInfo: CreateEditJobCreationInfo | null;
-    setState: (info: CreateEditJobCreationInfo) => void;
-    clearState: () => void;
+    createEditJobSource: FromCompany | FromFolder;
+    setCreateEditJobSource: (info: FromCompany | FromFolder) => void;
+    resetCreateEditJobSource: () => void;
 }
 
 export const useCreateEditJobStateStore = create<CreateEditJobState>()(
     (set) => ({
-        navigation: null,
-        contextInfo: null,
-        setState: (info) => set({ contextInfo: info }),
-        clearState: () => set({ contextInfo: null }),
+        createEditJobSource: { source: "company" },
+        setCreateEditJobSource: (source) => set({ createEditJobSource: source }),
+        resetCreateEditJobSource: () => set({ createEditJobSource: { source: "company" } }),
     })
 );

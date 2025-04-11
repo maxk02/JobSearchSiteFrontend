@@ -2,12 +2,13 @@
 
 import {Button, Paper, Typography} from "@mui/material";
 import {Add, Folder, Search, Work} from "@mui/icons-material";
-import {useParams} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import Grid from "@mui/material/Grid2";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import DashboardLastVisitedCard from "@/app/company/[companyId]/manage/dashboard/_ui/DashboardLastVisitedCard";
 import DashboardSearchDialog from "@/app/company/[companyId]/manage/dashboard/_ui/DashboardSearchDialog";
-import ChooseFolderDialog from "@/app/company/[companyId]/manage/dashboard/_ui/ChooseFolderDialog";
+import ChooseFolderDialog from "@/app/_ui/ChooseFolderDialog";
+import {useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
 
 
 const mockCounters = {
@@ -71,32 +72,71 @@ const mockFoldersForChooseFolder = [
 export default function CompanyDashboard() {
     const { companyId } = useParams();
 
+    const router = useRouter();
+
     const [jobSearchDialogOpen, setJobSearchDialogOpen] = useState(false);
     const [folderSearchDialogOpen, setFolderSearchDialogOpen] = useState(false);
     const [chooseFolderDialogOpen, setChooseFolderDialogOpen] = useState(false);
+
+    const [chooseFolderDialogMode, setChooseFolderDialogMode] = useState<"createJob" | "folder">("createJob");
+
+    const { setCreateEditJobSource } = useCreateEditJobStateStore();
+
+    useEffect(() => {
+        const fetchLastJobs = async () => {
+
+        }
+
+        const fetchLastFolders = async () => {
+
+        }
+
+        fetchLastJobs();
+        fetchLastFolders();
+    })
 
 
     const handleOpenJobSearchDialog = () => {
         setJobSearchDialogOpen(true);
     };
 
-    const handleCloseJobSearchDialog = () => {
-        setJobSearchDialogOpen(false);
-    };
-
     const handleOpenFolderSearchDialog = () => {
         setFolderSearchDialogOpen(true);
     };
 
-    const handleCloseFolderSearchDialog = () => {
-        setFolderSearchDialogOpen(false);
+    const handleSearchDialogSubmit = (dest: "job" | "folder", id: number) => {
+        switch (dest) {
+            case "job":
+                setCreateEditJobSource({ source: "company" });
+                router.push(`/job/${encodeURIComponent(id)}/manage/stats`);
+                break;
+            case "folder":
+                router.push(`/folder/${encodeURIComponent(id)}/manage/jobs`);
+                break;
+        }
     };
 
-    const handleOpenChooseFolderDialog = () => {
+    const handleChooseFolderDialogSubmit = (dest: "createJob" | "folder", id: number) => {
+        switch (dest) {
+            case "createJob":
+                setCreateEditJobSource({ source: "folder", id: id, name: "folder" });
+                router.push(`/company/${companyId}/create-job`);
+                break;
+            case "folder":
+                router.push(`/folder/${encodeURIComponent(id)}/manage/jobs`);
+                break;
+        }
+    };
+
+
+    const handleOpenChooseFolderDialog = (mode: "createJob" | "folder") => {
+        setChooseFolderDialogMode(mode);
         setChooseFolderDialogOpen(true);
     };
 
-    const handleCloseChooseFolderhDialog = () => {
+    const handleCloseDialogs = () => {
+        setJobSearchDialogOpen(false);
+        setFolderSearchDialogOpen(false);
         setChooseFolderDialogOpen(false);
     };
 
@@ -107,8 +147,7 @@ export default function CompanyDashboard() {
                     <Button
                         variant="text"
                         startIcon={<Add />}
-                        onClick={handleOpenChooseFolderDialog}
-                        // href={`/company/${companyId}/create-job`}
+                        onClick={() => handleOpenChooseFolderDialog("createJob")}
                         sx={{ py: 1.5, fontSize: "1.05em", boxShadow: 3, backgroundColor: 'white' }}
                         fullWidth
                     >
@@ -200,7 +239,8 @@ export default function CompanyDashboard() {
             <DashboardSearchDialog
                 title="Wyszukiwanie ogłoszeń"
                 open={jobSearchDialogOpen}
-                onClose={handleCloseJobSearchDialog}
+                onClose={handleCloseDialogs}
+                onSubmit={(id: number) => handleSearchDialogSubmit("job", id)}
                 data={mockJobs}
                 listItemIcon={<Work />}
             />
@@ -208,7 +248,8 @@ export default function CompanyDashboard() {
             <DashboardSearchDialog
                 title="Wyszukiwanie folderów"
                 open={folderSearchDialogOpen}
-                onClose={handleCloseFolderSearchDialog}
+                onClose={handleCloseDialogs}
+                onSubmit={(id: number) => handleSearchDialogSubmit("folder", id)}
                 data={mockFolders}
                 listItemIcon={<Folder />}
             />
@@ -216,7 +257,8 @@ export default function CompanyDashboard() {
             <ChooseFolderDialog
                 title="Wybierz folder"
                 open={chooseFolderDialogOpen}
-                onClose={handleCloseChooseFolderhDialog}
+                onClose={handleCloseDialogs}
+                onSubmit={(id: number) => handleChooseFolderDialogSubmit(chooseFolderDialogMode, id)}
                 data={mockFoldersForChooseFolder}
                 listItemIcon={<Folder />}
             />

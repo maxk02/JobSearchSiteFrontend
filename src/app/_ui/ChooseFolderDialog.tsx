@@ -36,6 +36,7 @@ interface ChooseFolderDialogProps {
     title: string;
     open: boolean;
     onClose: () => void;
+    onSubmit: (id: number) => void;
     data: ChooseFolderDialogItem[];
     listItemIcon: React.ReactNode;
 }
@@ -158,7 +159,7 @@ export default function ChooseFolderDialog({title, open, onClose, data, listItem
 
                 <CustomTabPanel value={value} index={1}>
                     <Breadcrumbs aria-label="breadcrumb" sx={{mt: 1.3}}>
-                        <Link underline="hover" color="inherit" href="/"
+                        <Link underline="hover" color="inherit" href="/public"
                               sx={{display: "flex", alignItems: "center", fontSize: "1.2em"}}>
                             <Home fontSize="inherit"/>
                             {/*Udostępnione foldery*/}
