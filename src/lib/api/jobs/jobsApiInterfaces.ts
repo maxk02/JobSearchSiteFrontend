@@ -33,6 +33,14 @@ export interface GetJobByIdResponse {
     job: JobDetailedDto;
 }
 
+export interface GetJobManagementInfoResponse {
+    companyId: number;
+    companyName: string;
+    companyLogoLink: string | null;
+    folderId: number;
+    folderName: string;
+}
+
 export interface GetJobsRequest {
     query: string;
     paginationSpec: PaginationSpec;

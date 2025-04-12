@@ -21,7 +21,7 @@ import {
     Typography,
 } from "@mui/material";
 import React, {useState} from "react";
-import {Close, Home} from "@mui/icons-material";
+import {Close, Folder, Home} from "@mui/icons-material";
 import tabA11yProps from "@/app/_ui/_lib/_components/tab/tabA11yProps";
 import CustomTabPanel from "@/app/_ui/CustomTabPanel";
 import {getItemColor} from "@/lib/functions/listItemColors";
@@ -36,19 +36,41 @@ interface ChooseFolderDialogProps {
     title: string;
     open: boolean;
     onClose: () => void;
-    onSubmit: (id: number) => void;
-    data: ChooseFolderDialogItem[];
-    listItemIcon: React.ReactNode;
+    onSubmit: (id: number, name: string) => void;
 }
 
-export default function ChooseFolderDialog({title, open, onClose, data, listItemIcon}: ChooseFolderDialogProps) {
+const data = [
+    {id: 1, title: "Dział IT"},
+    {id: 2, title: "Warszawa"},
+    {id: 3, title: "Trójmiasto"},
+    {id: 4, title: "Trójmiasto"},
+    {id: 5, title: "Trójmiasto"},
+    {id: 6, title: "Trójmiasto"},
+    {id: 7, title: "Trójmiasto"},
+    {id: 8, title: "Trójmiasto"},
+    {id: 9, title: "Trójmiasto"},
+    {id: 10, title: "Trójmiasto"},
+];
 
-    const [value, setValue] = React.useState(0);
+export default function ChooseFolderDialog({title, open, onClose, onSubmit}: ChooseFolderDialogProps) {
 
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue);
+    const [tabIndex, setTabIndex] = React.useState<number>(0);
+    const [chosenFolder, setChosenFolder] = React.useState<ChooseFolderDialogItem | null>(null);
+
+    const handleChangeTabIndex = (event: React.SyntheticEvent, newValue: number) => {
+        setTabIndex(newValue);
     };
 
+    const handleChooseFolderButtonClick = (event: React.SyntheticEvent) => {
+        if (chosenFolder !== null) {
+            handleChooseFolder(event, chosenFolder);
+        }
+    };
+
+    const handleChooseFolder = (event: React.SyntheticEvent, folder: ChooseFolderDialogItem) => {
+        onClose();
+        onSubmit(folder.id, folder.title);
+    };
 
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -90,16 +112,16 @@ export default function ChooseFolderDialog({title, open, onClose, data, listItem
             </DialogTitle>
             <DialogContent
                 sx={{
-                    height: value === 1 ? "500px" : "554.8px",
-                    maxHeight: value === 1 ? "500px" : "554.8px",
+                    height: tabIndex === 1 ? "500px" : "554.8px",
+                    maxHeight: tabIndex === 1 ? "500px" : "554.8px",
                     pb: 1,
                     overflow: "hidden"
                 }}
             >
                 <Box sx={{borderBottom: 1, borderColor: 'divider', height: '48px', maxHeight: '48px'}}>
                     <Tabs
-                        value={value}
-                        onChange={handleChange}
+                        value={tabIndex}
+                        onChange={handleChangeTabIndex}
                         sx={{
                             width: "100%", // Ensure Tabs take full width
                             "& .MuiTabs-flexContainer": {
@@ -111,7 +133,7 @@ export default function ChooseFolderDialog({title, open, onClose, data, listItem
                         <Tab label="Nawigacja" {...tabA11yProps(1)} />
                     </Tabs>
                 </Box>
-                <CustomTabPanel value={value} index={0}>
+                <CustomTabPanel value={tabIndex} index={0}>
                     <TextField
                         id="manage-company-dashboard-job-search-input"
                         sx={{mt: 1.5}}
@@ -128,25 +150,29 @@ export default function ChooseFolderDialog({title, open, onClose, data, listItem
                             filteredResults.map((item, index) => (
                                 <ListItem
                                     key={item.id}
-                                    component="a"
-                                    href={`/job/${item.id}/manage/`}
                                     disableGutters
-                                    sx={{
-                                        pt: index !== 0 ? 1.2 : 0.5,
-                                        pb: 1.2
-                                    }}
+                                    sx={{ p: 0 }}
                                 >
-                                    <ListItemAvatar sx={{minWidth: "40px", mr: 1.3}}>
-                                        <Avatar variant="rounded" sx={{backgroundColor: getItemColor(item.id)}}>
-                                            {listItemIcon}
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primary={item.title}
-                                        slotProps={{
-                                            primary: {color: "black"}
+                                    <ListItemButton
+                                        disableGutters
+                                        sx={{
+                                            pt: index !== 0 ? 1.2 : 0.5,
+                                            pb: 1.2
                                         }}
-                                    />
+                                        onClick={(event) => handleChooseFolder(event, item)}
+                                    >
+                                        <ListItemAvatar sx={{minWidth: "40px", mr: 1.3}}>
+                                            <Avatar variant="rounded" sx={{backgroundColor: getItemColor(item.id)}}>
+                                                <Folder />
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            primary={item.title}
+                                            slotProps={{
+                                                primary: {color: "black"}
+                                            }}
+                                        />
+                                    </ListItemButton>
                                 </ListItem>
                             ))
                         ) : (
@@ -157,7 +183,7 @@ export default function ChooseFolderDialog({title, open, onClose, data, listItem
                     </List>
                 </CustomTabPanel>
 
-                <CustomTabPanel value={value} index={1}>
+                <CustomTabPanel value={tabIndex} index={1}>
                     <Breadcrumbs aria-label="breadcrumb" sx={{mt: 1.3}}>
                         <Link underline="hover" color="inherit" href="/public"
                               sx={{display: "flex", alignItems: "center", fontSize: "1.2em"}}>
@@ -184,12 +210,11 @@ export default function ChooseFolderDialog({title, open, onClose, data, listItem
                                 <ListItemButton
                                     sx={{py: 1.2}}
                                     disableGutters
-                                    onClick={() => {
-                                    }}
+                                    onClick={() => setChosenFolder(item)}
                                 >
                                     <ListItemAvatar sx={{minWidth: "40px", mr: 1.3}}>
                                         <Avatar variant="rounded" sx={{backgroundColor: getItemColor(item.id)}}>
-                                            {listItemIcon}
+                                            <Folder />
                                         </Avatar>
                                     </ListItemAvatar>
                                     <ListItemText
@@ -205,10 +230,14 @@ export default function ChooseFolderDialog({title, open, onClose, data, listItem
                 </CustomTabPanel>
             </DialogContent>
             {
-                value === 1 &&
+                tabIndex === 1 &&
                 <DialogActions sx={{px: 2, pb: 1, pt: 0.5}}>
-                    <Button onClick={() => {
-                    }} sx={{fontSize: "1.1em"}}>Wybierz obecny folder</Button>
+                    <Button
+                        onClick={handleChooseFolderButtonClick}
+                        sx={{fontSize: "1.1em"}}
+                    >
+                        Wybierz ten folder
+                    </Button>
                 </DialogActions>
             }
         </Dialog>

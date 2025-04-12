@@ -16,6 +16,11 @@ export interface GetJobsResponse {
     jobs: JobCardDto[];
 }
 
+export interface GetJobFolderResponse {
+    id: number;
+    name: string | null;
+}
+
 export interface UpdateJobFolderRequestDto {
     name: string | null;
     description: string | null;

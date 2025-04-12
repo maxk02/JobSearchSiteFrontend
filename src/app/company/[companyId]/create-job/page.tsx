@@ -1,7 +1,7 @@
 "use client";
 
 import {Box, Container, Typography} from "@mui/material";
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 import CreateEditJobPublicationIntervalCard from "@/app/_ui/CreateEditJob/CreateEditJobPublicationIntervalCard";
 import CreateEditJobEmploymentOptionCard from "@/app/_ui/CreateEditJob/CreateEditJobEmploymentOptionCard";
@@ -19,20 +19,45 @@ import CreateEditJobAnchorCard from "@/app/_ui/CreateEditJob/CreateEditJobAnchor
 import CreateJobButtons from "@/app/company/[companyId]/create-job/_ui/CreateJobButtons";
 import {AddJobRequest} from "@/lib/api/jobs/jobsApiInterfaces";
 import {addJob} from "@/lib/api/jobs/jobsApi";
-import {useRouter} from "next/navigation";
-import {useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
+import {useParams, useRouter} from "next/navigation";
 import CreateManageJobFolderChosenCard from "@/app/_ui/CreateEditJob/CreateManageJobFolderChosenCard";
+import {getCompanyById} from "@/lib/api/companies/companiesApi";
+import {useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
 
 
 export default function CreateJobPage() {
 
     const router = useRouter();
 
-    const { createEditJobSource } = useCreateEditJobStateStore();
+    const { companyIdParam } = useParams();
+
+    const companyId = companyIdParam as unknown as number;
+
+    const storeData = useCreateEditJobStateStore();
+
+    const [companyName, setCompanyName] = useState<string | null>(storeData.company?.name ?? null);
+    const [companyLogoLink, setCompanyLogoLink] = useState<string | null>(storeData.company?.logoLink ?? null);
+
+    useEffect(() => {
+
+        const fetchCompany = async () => {
+            const result = await getCompanyById(companyId);
+
+            if (result.success && result.data.company !== null) {
+                setCompanyName(result.data.company.name);
+                setCompanyLogoLink(result.data.company.logoLink);
+            }
+        };
+
+        if (companyName === null || companyLogoLink === null) {
+            fetchCompany();
+        }
+    });
 
     const methods = useForm<CreateEditJobFormData>({
         resolver: zodResolver(createEditJobSchema),
         defaultValues: {
+            jobFolderId: 0,
             title: '',
             category: 1,
             description: '',
@@ -52,10 +77,8 @@ export default function CreateJobPage() {
 
     const onSubmit = async (data: CreateEditJobFormData) => {
 
-        if (!createEditJobSource) throw new Error();
-
         const createJobRequest: AddJobRequest = {
-            jobFolderId: createEditJobSource.folderId,
+            jobFolderId: data.jobFolderId,
             categoryId: data.category,
             title: data.title,
             description: data.description || null,
@@ -89,43 +112,38 @@ export default function CreateJobPage() {
     return (
         <Container maxWidth="xl" sx={{ mt: 2.5, mb: 2.5 }}>
 
-            <Grid container spacing={3.5}>
-                <Grid size={{ xs: 12, md: 12, lg: 3.3 }}>
-                    <Box display="flex" flexDirection="column" gap={2}
-                         sx={{
-                             position: "sticky", top: 20, zIndex: 1,
-                             maxHeight: "calc(100vh - 40px)", flex: 1
-                         }}
-                    >
-                        {createEditJobSource &&
-                        <CreateManageJobNavigationCard
-                            companyName={createEditJobSource.companyName}
-                            companyLogoLink={createEditJobSource.companyLogoLink}
-                            returnTo={createEditJobSource.source}
-                            returnToId={{ "company": createEditJobSource.companyId, "folder": createEditJobSource.folderId }[createEditJobSource.source]}
-                        />}
-                        {createEditJobSource?.folderId && createEditJobSource.folderName &&
-                            <CreateManageJobFolderChosenCard
-                                folderId={createEditJobSource.folderId}
-                                folderName={createEditJobSource.folderName}
-                            />
-                        }
-                        <CreateEditJobAnchorCard />
-                        <CreateJobButtons />
-                    </Box>
-                </Grid>
+            <FormProvider {...methods}>
 
-                <Grid size={{ xs: 12, md: 12, lg: 8.7 }}>
-                    <Box sx={{ width: "800px", maxWidth: "800px" }}>
-                        <Typography variant="h4" fontWeight={600} color="primary">Nowa oferta pracy</Typography>
-                        <Typography mt={0.7} sx={{ fontSize: "1.05em" }}>
-                            Dodaj więcej informacji o ofercie, aby zwiększyć jej widoczność i przyciągnąć idealnych kandydatów. Im dokładniej opiszesz stanowisko, firmę i oczekiwania, tym lepiej Twoja oferta będzie dopasowana do właściwych osób.
-                        </Typography>
+                <form onSubmit={methods.handleSubmit(onSubmit)}>
 
+                    <Grid container spacing={3.5}>
+                        <Grid size={{ xs: 12, md: 12, lg: 3.3 }}>
+                            <Box display="flex" flexDirection="column" gap={2}
+                                 sx={{
+                                     position: "sticky", top: 20, zIndex: 1,
+                                     maxHeight: "calc(100vh - 40px)", flex: 1
+                                 }}
+                            >
+                                {companyName && companyLogoLink &&
+                                    <CreateManageJobNavigationCard
+                                        companyName={companyName}
+                                        companyLogoLink={companyLogoLink}
+                                        returnTo={storeData.source}
+                                        returnToId={storeData.folder && storeData.source === "folder" ? storeData.folder.id : companyId}
+                                    />
+                                }
+                                <CreateManageJobFolderChosenCard />
+                                <CreateEditJobAnchorCard />
+                                <CreateJobButtons />
+                            </Box>
+                        </Grid>
 
-                        <FormProvider {...methods}>
-
-                            <form onSubmit={methods.handleSubmit(onSubmit)}>
+                        <Grid size={{ xs: 12, md: 12, lg: 8.7 }}>
+                            <Box sx={{ width: "800px", maxWidth: "800px" }}>
+                                <Typography variant="h4" fontWeight={600} color="primary">Nowa oferta pracy</Typography>
+                                <Typography mt={0.7} sx={{ fontSize: "1.05em" }}>
+                                    Dodaj więcej informacji o ofercie, aby zwiększyć jej widoczność i przyciągnąć idealnych kandydatów. Im dokładniej opiszesz stanowisko, firmę i oczekiwania, tym lepiej Twoja oferta będzie dopasowana do właściwych osób.
+                                </Typography>
 
                                 <CreateEditJobBasicInfoCard />
 
@@ -145,12 +163,14 @@ export default function CreateJobPage() {
 
                                 <CreateEditJobListCard cardTitle="Mile widziane" fieldName="niceToHaves" />
 
-                            </form>
 
-                        </FormProvider>
-                    </Box>
-                </Grid>
-            </Grid>
+                            </Box>
+                        </Grid>
+                    </Grid>
+
+                </form>
+
+            </FormProvider>
         </Container>
     );
 }

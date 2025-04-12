@@ -1,48 +1,79 @@
 import {Avatar, Box, Button, ListItem, Paper, Stack, Typography} from "@mui/material";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Folder} from "@mui/icons-material";
 import {getItemColor} from "@/lib/functions/listItemColors";
+import {StoreFolder, useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
+import {useFormContext} from "react-hook-form";
+import {CreateEditJobFormData} from "@/lib/schemas/createEditJobSchema";
+import ChooseFolderDialog from "@/app/_ui/ChooseFolderDialog";
 
 
-interface CreateManageJobFolderChosenCardProps {
-    folderId: number;
-    folderName: string;
-}
+// interface CreateManageJobFolderChosenCardProps {
+//     folderId: number;
+//     folderName: string;
+// }
 
-export default function CreateManageJobFolderChosenCard({ folderId, folderName }: CreateManageJobFolderChosenCardProps) {
+export default function CreateManageJobFolderChosenCard() {
+
+    // const { setValue } = useFormContext<CreateEditJobFormData>();
+
+    const storeData = useCreateEditJobStateStore();
+
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [folderChosen, setFolderChosen] = useState<StoreFolder | undefined>(storeData.folder);
+
+    useEffect(() => {
+        if (!folderChosen) {
+            setIsDialogOpen(true);
+        }
+    }, [folderChosen]);
+
+    const handleChooseFolderDialogSubmit = (id: number, name: string) => {
+        setFolderChosen({id: id, name: name});
+        // setValue("jobFolderId", id);
+        setIsDialogOpen(false);
+    };
 
     return (
-        <Paper sx={{ p: 0, flexShrink: 0 }}>
-            <Box sx={{
-                p: 1,
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-            }}
-            >
-                <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
-                    <Avatar
-                        variant="rounded"
-                        sx={{
-                            height: 40,
-                            width: 40,
-                            backgroundColor: getItemColor(folderId),
-                        }}
-                    >
-                        <Folder />
-                    </Avatar>
-                    <Typography variant="body1" fontWeight={600} gutterBottom marginBottom={0}
-                                sx={{ flex: "none" }}
-                    >
-                        {folderName}
-                    </Typography>
-                </Stack>
+        <>
+            <Paper sx={{ p: 0, flexShrink: 0 }}>
+                <Box sx={{
+                    p: 1,
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                }}
+                >
+                    <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+                        <Avatar
+                            variant="rounded"
+                            sx={{
+                                height: 40,
+                                width: 40,
+                                backgroundColor: getItemColor(folderChosen?.id ?? 0),
+                            }}
+                        >
+                            <Folder />
+                        </Avatar>
+                        <Typography variant="body1" fontWeight={600} gutterBottom marginBottom={0}
+                                    sx={{ flex: "none" }}
+                        >
+                            {folderChosen?.name ?? "Nie wybrano folderu"}
+                        </Typography>
+                    </Stack>
 
-                <Button variant="text">
-                    Zmień
-                </Button>
-            </Box>
-        </Paper>
+                    <Button variant="text" onClick={() => setIsDialogOpen(true)}>
+                        Zmień
+                    </Button>
+                </Box>
+            </Paper>
+            <ChooseFolderDialog
+                title="Wybierz folder by rozpocząć"
+                open={isDialogOpen}
+                onClose={() => setIsDialogOpen(false)}
+                onSubmit={(id: number, name: string) => {handleChooseFolderDialogSubmit(id, name)}}
+            />
+        </>
     );
 }

@@ -3,7 +3,7 @@ import {AxiosError} from "axios";
 
 
 type ApiResult<T> =
-    | { success: true; data: T; status: number }
+    | { success: true; data: NonNullable<T>; status: number }
     | {
         success: false;
         error: {

@@ -1,7 +1,7 @@
 import fetchData from "@/lib/api/fetchData";
 import {
     AddJobFolderRequest,
-    GetChildFoldersResponse,
+    GetChildFoldersResponse, GetJobFolderResponse,
     GetJobsResponse,
     UpdateJobFolderRequestDto
 } from "@/lib/api/jobFolders/jobFoldersApiInterfaces";
@@ -12,6 +12,10 @@ export const createJobFolder = async (req: AddJobFolderRequest) => {
 
 export const deleteJobFolder = async (id: number) => {
     return await fetchData<unknown>(`/job-folders/${id}`, "DELETE");
+};
+
+export const getFolder = async (id: number) => {
+    return await fetchData<unknown, GetJobFolderResponse>(`/job-folders/${id}`, "GET");
 };
 
 export const getChildFolders = async (id: number) => {

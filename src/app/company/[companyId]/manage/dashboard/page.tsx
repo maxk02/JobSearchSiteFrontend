@@ -55,19 +55,6 @@ const mockFolders = [
     {id: 3, title: "Trójmiasto > Dział IT"},
 ];
 
-const mockFoldersForChooseFolder = [
-    {id: 1, title: "Dział IT"},
-    {id: 2, title: "Warszawa"},
-    {id: 3, title: "Trójmiasto"},
-    {id: 4, title: "Trójmiasto"},
-    {id: 5, title: "Trójmiasto"},
-    {id: 6, title: "Trójmiasto"},
-    {id: 7, title: "Trójmiasto"},
-    {id: 8, title: "Trójmiasto"},
-    {id: 9, title: "Trójmiasto"},
-    {id: 10, title: "Trójmiasto"},
-];
-
 
 export default function CompanyDashboard() {
     const { companyId } = useParams();
@@ -80,7 +67,7 @@ export default function CompanyDashboard() {
 
     const [chooseFolderDialogMode, setChooseFolderDialogMode] = useState<"createJob" | "folder">("createJob");
 
-    const { setCreateEditJobSource } = useCreateEditJobStateStore();
+    const { setCreateEditJobState } = useCreateEditJobStateStore();
 
     useEffect(() => {
         const fetchLastJobs = async () => {
@@ -107,7 +94,7 @@ export default function CompanyDashboard() {
     const handleSearchDialogSubmit = (dest: "job" | "folder", id: number) => {
         switch (dest) {
             case "job":
-                setCreateEditJobSource({ source: "company" });
+                setCreateEditJobState("company");
                 router.push(`/job/${encodeURIComponent(id)}/manage/stats`);
                 break;
             case "folder":
@@ -116,10 +103,10 @@ export default function CompanyDashboard() {
         }
     };
 
-    const handleChooseFolderDialogSubmit = (dest: "createJob" | "folder", id: number) => {
+    const handleChooseFolderDialogSubmit = (dest: "createJob" | "folder", id: number, name: string) => {
         switch (dest) {
             case "createJob":
-                setCreateEditJobSource({ source: "folder", id: id, name: "folder" });
+                setCreateEditJobState("folder", { id: id, name: name });
                 router.push(`/company/${companyId}/create-job`);
                 break;
             case "folder":
@@ -258,9 +245,7 @@ export default function CompanyDashboard() {
                 title="Wybierz folder"
                 open={chooseFolderDialogOpen}
                 onClose={handleCloseDialogs}
-                onSubmit={(id: number) => handleChooseFolderDialogSubmit(chooseFolderDialogMode, id)}
-                data={mockFoldersForChooseFolder}
-                listItemIcon={<Folder />}
+                onSubmit={(id: number, name: string) => handleChooseFolderDialogSubmit(chooseFolderDialogMode, id, name)}
             />
         </>
     );

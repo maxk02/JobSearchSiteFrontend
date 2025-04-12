@@ -1,26 +1,41 @@
-import {create} from 'zustand';
+import { create } from 'zustand';
 
+export interface StoreFolder {
+    id: number;
+    name: string | null;
+}
 
-interface FromFolder {
-    source: "folder";
+export interface StoreCompany {
     id: number;
     name: string;
+    logoLink: string | null;
 }
 
-interface FromCompany {
-    source: "company";
+export interface CreateEditJobState {
+    source: "company" | "folder";
+    company: StoreCompany | undefined;
+    folder: StoreFolder | undefined;
+    setCreateEditJobCompanyState: (company: StoreCompany) => void;
+    setCreateEditJobState: (source: "company" | "folder", folder?: StoreFolder) => void;
+    resetCreateEditJobState: () => void;
 }
 
-interface CreateEditJobState {
-    createEditJobSource: FromCompany | FromFolder;
-    setCreateEditJobSource: (info: FromCompany | FromFolder) => void;
-    resetCreateEditJobSource: () => void;
-}
-
-export const useCreateEditJobStateStore = create<CreateEditJobState>()(
-    (set) => ({
-        createEditJobSource: { source: "company" },
-        setCreateEditJobSource: (source) => set({ createEditJobSource: source }),
-        resetCreateEditJobSource: () => set({ createEditJobSource: { source: "company" } }),
-    })
-);
+export const useCreateEditJobStateStore = create<CreateEditJobState>((set) => ({
+    source: "company",
+    company: undefined,
+    folder: undefined,
+    setCreateEditJobCompanyState: (company) =>
+        set({
+            company: company,
+        }),
+    setCreateEditJobState: (source, folder) =>
+        set({
+            source,
+            folder: folder
+        }),
+    resetCreateEditJobState: () =>
+        set({
+            source: "company",
+            folder: undefined,
+        }),
+}));

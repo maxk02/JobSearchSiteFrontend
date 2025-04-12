@@ -9,44 +9,40 @@ import CreateEditJobContractTypeCard from "@/app/_ui/CreateEditJob/CreateEditJob
 import CreateEditJobSalaryDataCard from "@/app/_ui/CreateEditJob/CreateEditJobSalaryDataCard";
 import CreateEditJobLocationCard from "@/app/_ui/CreateEditJob/CreateEditJobLocationCard";
 import CreateEditJobListCard from "@/app/_ui/CreateEditJob/CreateEditJobListCard";
-import {FormProvider, useForm} from "react-hook-form";
-import {useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
-import {CreateEditJobFormData, createEditJobSchema} from "@/lib/schemas/createEditJobSchema";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {UpdateJobRequestDto} from "@/lib/api/jobs/jobsApiInterfaces";
-import {getJobById, updateJob} from "@/lib/api/jobs/jobsApi";
-import {useParams, useRouter} from "next/navigation";
+import {useFormContext} from "react-hook-form";
+import {CreateEditJobFormData} from "@/lib/schemas/createEditJobSchema";
+import {getJobById} from "@/lib/api/jobs/jobsApi";
+import {useParams} from "next/navigation";
 
 
 export default function EditJobPage() {
-
-    const router = useRouter();
 
     const { jobIdParam } = useParams();
 
     const jobId = jobIdParam as unknown as number;
 
-    const { createEditJobSource } = useCreateEditJobStateStore();
+    // const methods = useForm<CreateEditJobFormData>({
+    //     resolver: zodResolver(createEditJobSchema),
+    //     defaultValues: {
+    //         jobFolderId: 0,
+    //         title: '',
+    //         category: 1,
+    //         description: '',
+    //         timeRangeOption: 1,
+    //         dateTimeExpiringUtc: new Date(),
+    //         isPublic: true,
+    //         employmentOptionIds: [],
+    //         jobContractTypeIds: [],
+    //         locationIds: [],
+    //         salaryInfo: undefined,
+    //         responsibilities: [],
+    //         requirements: [],
+    //         niceToHaves: [],
+    //     },
+    //     mode: 'onChange'
+    // });
 
-    const methods = useForm<CreateEditJobFormData>({
-        resolver: zodResolver(createEditJobSchema),
-        defaultValues: {
-            title: '',
-            category: 1,
-            description: '',
-            timeRangeOption: 1,
-            dateTimeExpiringUtc: new Date(),
-            isPublic: true,
-            employmentOptionIds: [],
-            jobContractTypeIds: [],
-            locationIds: [],
-            salaryInfo: undefined,
-            responsibilities: [],
-            requirements: [],
-            niceToHaves: [],
-        },
-        mode: 'onChange'
-    });
+    const methods = useFormContext<CreateEditJobFormData>();
 
     const { reset, formState: {touchedFields} } = methods;
 
@@ -55,6 +51,7 @@ export default function EditJobPage() {
             const result = await getJobById(jobId);
             if (result.success && result.data.job.managementInfo !== null) {
                 reset({
+                    jobFolderId: 0,
                     title: result.data.job.title,
                     category: result.data.job.categoryId,
                     description: result.data.job.description,
@@ -78,85 +75,76 @@ export default function EditJobPage() {
         fetchData();
     });
 
-    const onSubmit = async (data: CreateEditJobFormData) => {
-
-        if (!createEditJobSource) throw new Error();
-
-        const onlyTouchedData: { [K in keyof CreateEditJobFormData]: CreateEditJobFormData[K] | null } = {
-            ...data,
-        };
-
-        (Object.keys(data) as (keyof CreateEditJobFormData)[]).forEach((field) => {
-            if (!touchedFields[field]) {
-                onlyTouchedData[field] = null;
-            }
-        });
-
-        const updateJobRequest: UpdateJobRequestDto = {
-            folderId: createEditJobSource.folderId,
-            categoryId: data.category,
-            title: data.title,
-            description: data.description || null,
-            isPublic: data.isPublic,
-            timeRangeOptionId: data.timeRangeOption,
-            dateTimeExpiringUtc: data.dateTimeExpiringUtc.toISOString(),
-            responsibilities: data.responsibilities,
-            requirements: data.requirements,
-            niceToHaves: data.niceToHaves,
-            salaryInfo: data.salaryInfo ? {
-                minimum: data.salaryInfo.minWage || null,
-                maximum: data.salaryInfo.maxWage || null,
-                currency: 'PLN',
-                unitOfTime: data.salaryInfo.wageTimeUnit,
-                isAfterTaxes: data.salaryInfo.isAfterTaxes,
-            } : null,
-            employmentOptionIds: data.employmentOptionIds,
-            contractTypeIds: data.jobContractTypeIds,
-            locationIds: data.locationIds,
-        }
-
-        const updateJobResult = await updateJob(jobId, updateJobRequest);
-
-        if (updateJobResult.success) {
-
-        }
-        else {
-            console.log(`Failed (${updateJobResult.status})`)
-        }
-    };
+    // const onSubmit = async (data: CreateEditJobFormData) => {
+    //
+    //     const onlyTouchedData: { [K in keyof CreateEditJobFormData]: CreateEditJobFormData[K] | null } = {
+    //         ...data,
+    //     };
+    //
+    //     (Object.keys(data) as (keyof CreateEditJobFormData)[]).forEach((field) => {
+    //         if (!touchedFields[field]) {
+    //             onlyTouchedData[field] = null;
+    //         }
+    //     });
+    //
+    //     const updateJobRequest: UpdateJobRequestDto = {
+    //         folderId: data.jobFolderId,
+    //         categoryId: data.category,
+    //         title: data.title,
+    //         description: data.description || null,
+    //         isPublic: data.isPublic,
+    //         timeRangeOptionId: data.timeRangeOption,
+    //         dateTimeExpiringUtc: data.dateTimeExpiringUtc.toISOString(),
+    //         responsibilities: data.responsibilities,
+    //         requirements: data.requirements,
+    //         niceToHaves: data.niceToHaves,
+    //         salaryInfo: data.salaryInfo ? {
+    //             minimum: data.salaryInfo.minWage || null,
+    //             maximum: data.salaryInfo.maxWage || null,
+    //             currency: 'PLN',
+    //             unitOfTime: data.salaryInfo.wageTimeUnit,
+    //             isAfterTaxes: data.salaryInfo.isAfterTaxes,
+    //         } : null,
+    //         employmentOptionIds: data.employmentOptionIds,
+    //         contractTypeIds: data.jobContractTypeIds,
+    //         locationIds: data.locationIds,
+    //     }
+    //
+    //     const updateJobResult = await updateJob(jobId, updateJobRequest);
+    //
+    //     if (updateJobResult.success) {
+    //     }
+    //     else {
+    //         console.log(`Failed (${updateJobResult.status})`)
+    //     }
+    // };
 
     return (
         <Box sx={{ width: "800px", maxWidth: "800px" }}>
+
             <Typography variant="h4" fontWeight={600} color="primary">Edycja oferty pracy</Typography>
             <Typography mt={0.7} sx={{ fontSize: "1.05em" }}>
                 Dodaj więcej informacji o ofercie, aby zwiększyć jej widoczność i przyciągnąć idealnych kandydatów. Im dokładniej opiszesz stanowisko, firmę i oczekiwania, tym lepiej Twoja oferta będzie dopasowana do właściwych osób.
             </Typography>
 
-            <FormProvider {...methods}>
+            <CreateEditJobBasicInfoCard />
 
-                <form onSubmit={methods.handleSubmit(onSubmit)}>
+            <CreateEditJobLocationCard />
 
-                    <CreateEditJobBasicInfoCard />
+            <CreateEditJobPublicationIntervalCard />
 
-                    <CreateEditJobLocationCard />
+            <CreateEditJobEmploymentOptionCard />
 
-                    <CreateEditJobPublicationIntervalCard />
+            <CreateEditJobContractTypeCard />
 
-                    <CreateEditJobEmploymentOptionCard />
+            <CreateEditJobSalaryDataCard />
 
-                    <CreateEditJobContractTypeCard />
+            <CreateEditJobListCard cardTitle="Obowiązki" fieldName="responsibilities" />
 
-                    <CreateEditJobSalaryDataCard />
+            <CreateEditJobListCard cardTitle="Wymogi" fieldName="requirements" />
 
-                    <CreateEditJobListCard cardTitle="Obowiązki" fieldName="responsibilities" />
+            <CreateEditJobListCard cardTitle="Mile widziane" fieldName="niceToHaves" />
 
-                    <CreateEditJobListCard cardTitle="Wymogi" fieldName="requirements" />
-
-                    <CreateEditJobListCard cardTitle="Mile widziane" fieldName="niceToHaves" />
-
-                </form>
-
-            </FormProvider>
         </Box>
     );
 }

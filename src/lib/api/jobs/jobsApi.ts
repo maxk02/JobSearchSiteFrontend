@@ -2,7 +2,7 @@ import {
     AddJobRequest, AddJobResponse,
     DeleteJobRequest,
     GetJobByIdRequest,
-    GetJobByIdResponse,
+    GetJobByIdResponse, GetJobManagementInfoResponse,
     GetJobsRequest,
     GetJobsResponse,
     UpdateJobRequestDto
@@ -27,6 +27,10 @@ export const getJobs = async (req: GetJobsRequest) => {
 
 export const getJobById = async (id: number) => {
     return await fetchData<GetJobByIdRequest, GetJobByIdResponse>(`/jobs/${id}`, "GET");
+};
+
+export const getJobManagementInfo = async (id: number) => {
+    return await fetchData<unknown, GetJobManagementInfoResponse>(`/jobs/${id}/management-info`, "GET");
 };
 
 export const updateJob = async (id: number, req: UpdateJobRequestDto) => {
