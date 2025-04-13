@@ -8,20 +8,20 @@ import {GetJobsRequest} from "@/lib/api/jobs/jobsApiInterfaces";
 import {getJobs} from "@/lib/api/jobs/jobsApi";
 
 
-export interface SearchQueryParams {
-    query: string,
-    page: number,
-    countryId: number,
-    locationId: number,
-    categoryIds: number[],
-    contractTypeIds: number[],
-    employmentOptionIds: number[],
+export interface TypedJobSearchParams {
+    query: string;
+    page: number;
+    countryId: number;
+    locationId: number;
+    categoryIds: number[];
+    contractTypeIds: number[];
+    employmentOptionIds: number[];
 }
 
 
-export function parseQueryParams(
+export function parseSearchParams(
     searchParams: { [key: string]: string | string[] | undefined }
-): SearchQueryParams {
+): TypedJobSearchParams {
     return {
         query: (searchParams.query as string) || "",
         page: parseInt(searchParams.page as string) || 1,
@@ -46,8 +46,9 @@ export function parseQueryParams(
 }
 
 
-async function fetchJobs(params: SearchQueryParams) {
+async function fetchJobs(params: TypedJobSearchParams) {
     const request: GetJobsRequest = {
+        companyIds: null,
         query: params.query,
         paginationSpec: {
             pageNumber: params.page,
@@ -56,7 +57,7 @@ async function fetchJobs(params: SearchQueryParams) {
         locationIds: [params.locationId],
         categoryIds: params.categoryIds,
         contractTypeIds: params.contractTypeIds,
-        employmentOptionIds: params.employmentOptionIds,
+        employmentOptionIds: params.employmentOptionIds
     };
 
     const jobCardsResult = await getJobs(request);
@@ -75,7 +76,7 @@ async function fetchJobs(params: SearchQueryParams) {
 
 export default async function HomePage({searchParams}: { searchParams: { [key: string]: string | string[] | undefined } }) {
 
-    const typedSearchParams = parseQueryParams(searchParams);
+    const typedSearchParams = parseSearchParams(searchParams);
 
     const { jobCards, pagination } = await fetchJobs(typedSearchParams);
 

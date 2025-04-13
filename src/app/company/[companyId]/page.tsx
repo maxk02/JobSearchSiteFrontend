@@ -1,101 +1,105 @@
-"use client";
-
 import {Container, Stack, Typography} from "@mui/material";
-import React, {useEffect, useState} from "react";
+import React from "react";
 import MyDefaultPagination from "@/app/_ui/MyDefaultPagination";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
-import {PaginationResponse} from "@/lib/api/sharedDtos";
 import JobCard from "@/app/_ui/JobCard";
-import {addJobBookmark, deleteJobBookmark} from "@/lib/api/userProfiles/userProfilesApi";
-import {useParams} from "next/navigation";
-import {getCompanyById, getCompanyJobs} from "@/lib/api/companies/companiesApi";
-import {CompanyInfoDto} from "@/lib/api/companies/companiesApiDtos";
+import {redirect} from "next/navigation";
+import {getCompanyById} from "@/lib/api/companies/companiesApi";
+import {GetJobsRequest} from "@/lib/api/jobs/jobsApiInterfaces";
+import {getJobs} from "@/lib/api/jobs/jobsApi";
 
 
-export default function CompanyPage() {
+async function fetchCompanyJobs(id: number, params: TypedCompanySearchParams) {
+    const request: GetJobsRequest = {
+        categoryIds: null,
+        contractTypeIds: null,
+        employmentOptionIds: null,
+        locationIds: null,
+        query: "",
+        paginationSpec: {
+            pageNumber: params.page,
+            pageSize: 10,
+        },
+        companyIds: [id]
+    };
 
-    const params = useParams();
-    const { companyIdFromPath } = params;
-    const companyId = companyIdFromPath as unknown as number;
+    const jobCardsResult = await getJobs(request);
 
-    const [company, setCompany] = useState<CompanyInfoDto | null>(null);
-    const [jobCards, setJobCards] = useState<JobCardDto[]>([]);
-    const [pagination, setPagination] = useState<PaginationResponse>({
-        currentPage: 1,
-        pageSize: 10,
-        totalCount: 0,
-        totalPages: 1
-    });
-
-    const setCurrentPage = (page: number) => {
-        setPagination(prevPagination => ({
-            ...prevPagination,
-            currentPage: page,
-        }))
+    if (!jobCardsResult.success) {
+        console.error(`Failed to fetch jobs (${jobCardsResult.status})`);
+        return { jobCards: [], pagination: { currentPage: 1, pageSize: 15, totalCount: 0, totalPages: 1 } };
     }
 
-    useEffect(() => {
-        async function fetchData() {
-            const companyResult = await getCompanyById(companyId);
-            const jobCardsResult = 
-                await getCompanyJobs(companyId,
-                    { paginationSpec: { pageNumber: pagination?.currentPage, pageSize: pagination?.pageSize } });
-            
-
-            if (companyResult.success && jobCardsResult.success) {
-                setCompany(companyResult.data.company);
-                setJobCards(jobCardsResult.data.jobCards);
-                setPagination(jobCardsResult.data.paginationResponse);
-            }
-            else {
-                console.log(`Failed (${companyResult.status}) (${jobCardsResult.status})`);
-            }
-        }
-
-        fetchData();
-    }, [companyId, pagination?.currentPage, pagination?.pageSize]);
+    return {
+        jobCards: jobCardsResult.data.jobCards,
+        pagination: jobCardsResult.data.paginationResponse,
+    };
+}
 
 
+async function fetchCompany(id: number) {
 
-    const toggleBookmark = (id: number) => {
-        setJobCards((prevItems) =>
-            prevItems.map((item) =>
-                item.id === id ? { ...item, bookmarked: !item.isBookmarked } : item
-            )
-        );
+    const companyResult = await getCompanyById(id);
+
+    if (!companyResult.success) {
+        console.error(`Failed to fetch jobs (${companyResult.status})`);
+        return null;
     }
 
-    const addBookmark = async (id: number) => {
+    return companyResult.data.company;
+}
 
-        const addBookmarkResult = await addJobBookmark(id);
 
-        if (addBookmarkResult.success) {
-            toggleBookmark(id);
-        }
-        else {
-            console.log(`Add bookmark failed (${addBookmarkResult.status})`);
-        }
+export interface TypedCompanySearchParams {
+    page: number;
+}
+
+export function parseSearchParams(
+    companySearchParams: { [key: string]: string | string[] | undefined }
+): TypedCompanySearchParams {
+    return {
+        page: parseInt(companySearchParams.page as string, 10) || 1,
+    };
+}
+
+export function parseParams( companyParams: { companyId: string } ) {
+    return {
+        companyId: parseInt(companyParams.companyId as string, 10) || undefined
+    };
+}
+
+export interface CompanyPageProps {
+    params: { companyId: string };
+    searchParams: { [key: string]: string | string[] | undefined };
+}
+
+export default async function CompanyPage({ params, searchParams }: CompanyPageProps) {
+
+    const typedParams = parseParams(params);
+
+    if (!typedParams.companyId) {
+        redirect('/');
     }
 
-    const deleteBookmark = async (id: number) => {
+    const typedSearchParams = parseSearchParams(searchParams);
 
-        const deleteBookmarkResult = await deleteJobBookmark(id);
+    const company = await fetchCompany(typedParams.companyId);
 
-        if (deleteBookmarkResult.success) {
-            toggleBookmark(id);
-        }
-        else {
-            console.log(`Delete bookmark failed (${deleteBookmarkResult.status})`)
-        }
+    if (!company) {
+        redirect('/');
     }
+
+    const { jobCards, pagination } = await fetchCompanyJobs(typedParams.companyId, typedSearchParams);
 
     return (
         <>
             <Container maxWidth="lg" sx={{ mt: 4 }}>
-                <Typography component="h1" variant="h3" color="primary" sx={{ fontWeight: 600 }}>{company?.name}</Typography>
-                <Typography sx={{ mt: 1, maxWidth: "800px", fontSize: "1.08em" }}>
-                    {company?.description}
-                </Typography>
+                <Typography component="h1" variant="h3" color="primary" sx={{ fontWeight: 600 }}>{company.name}</Typography>
+                {company.description &&
+                    <Typography sx={{ mt: 1, maxWidth: "800px", fontSize: "1.08em" }}>
+                        {company.description}
+                    </Typography>
+                }
             </Container>
 
             <Stack
@@ -119,15 +123,12 @@ export default function CompanyPage() {
                         <JobCard
                             key={jobCard.id}
                             item={jobCard}
-                            addJobBookmark={() => addBookmark(jobCard.id)}
-                            deleteJobBookmark={() => deleteBookmark(jobCard.id)}
                         />
                     ))}
                     <Stack direction="row" sx={{ justifyContent: "center" }}>
                         <MyDefaultPagination
                             totalPages={pagination.totalPages}
                             currentPage={pagination.currentPage}
-                            setCurrentPage={setCurrentPage}
                         />
                     </Stack>
                 </Stack>

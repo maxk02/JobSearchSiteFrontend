@@ -48,6 +48,7 @@ export default async function JobPage({ params }: { params: { jobId: string } })
     const job = await fetchJob(id);
 
     const request: GetJobsRequest = {
+        companyIds: null,
         query: job.title,
         paginationSpec: {
             pageNumber: 1,
@@ -56,7 +57,7 @@ export default async function JobPage({ params }: { params: { jobId: string } })
         locationIds: job.locations.map(dto => dto.id),
         categoryIds: [job.categoryId],
         contractTypeIds: job.contractTypeIds,
-        employmentOptionIds: job.employmentTypeIds,
+        employmentOptionIds: job.employmentTypeIds
     };
 
     const suggestedJobs = await fetchSuggestedJobs(request);
@@ -81,12 +82,12 @@ export default async function JobPage({ params }: { params: { jobId: string } })
                         { job.companyDescription &&
                             <JobCompanyDescriptionCard companyName={job.companyName} description={job.companyDescription} /> }
 
-                        <JobBottomActionsCard />
+                        <JobBottomActionsCard item={job} />
                     </Stack>
                 </Grid>
                 <Grid size={{ xs: 12, md: 12, lg: 4.1 }}>
                     <Stack sx={{ position: "sticky", top: 20, zIndex: 1 }}>
-                        <JobSideActionsCard />
+                        <JobSideActionsCard item={job} />
                         {
                             suggestedJobs.jobCards.length > 0 &&
                             <>
