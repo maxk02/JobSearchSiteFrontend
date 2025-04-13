@@ -1,6 +1,11 @@
 import {Box, Paper, Stack, Typography} from "@mui/material";
 
-export default function JobDescriptionCard() {
+
+export interface JobDescriptionCardProps {
+    text: string;
+}
+
+export default function JobDescriptionCard({ text }: JobDescriptionCardProps) {
     return (
         <Paper>
             <Stack direction="row" spacing={0} sx={{ alignItems: "stretch" }}>
@@ -9,7 +14,7 @@ export default function JobDescriptionCard() {
                 </Box>
                 <Stack sx={{ alignItems: "center", pr: 3, pl: 2, py: 2 }}>
                     <Typography>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse quis volutpat mauris, eget condimentum neque. Praesent turpis nibh, aliquam facilisis odio eu, dictum sodales nisl. Vivamus ac tristique justo, a finibus sapien. Vivamus facilisis aliquet nibh. Quisque dictum orci ac nisl suscipit tempus. Cras lobortis quam at mauris tempus, suscipit lacinia massa aliquam. Vestibulum eget tortor rutrum, pellentesque erat ac, auctor magna.
+                        {text}
                     </Typography>
                 </Stack>
             </Stack>

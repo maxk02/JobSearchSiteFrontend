@@ -1,79 +1,106 @@
-import {Button, Container, Stack, Typography} from "@mui/material";
+import {Container, Stack, Typography} from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import {StarBorder, TaskAlt} from "@mui/icons-material";
 import React from "react";
 import JobOverviewCard from "./_ui/JobOverviewCard";
 import JobDescriptionCard from "./_ui/JobDescriptionCard";
 import JobListCard from "./_ui/JobListCard";
 import JobCompanyDescriptionCard from "./_ui/JobCompanyDescriptionCard";
-import JobActionsCard from "@/app/job/[jobId]/_ui/JobActionsCard";
+import JobSideActionsCard from "@/app/job/[jobId]/_ui/JobSideActionsCard";
 import SuggestedJobCard from "@/app/job/[jobId]/_ui/SuggestedJobCard";
-import {getJobById} from "@/lib/api/jobs/jobsApi";
+import {getJobById, getJobs} from "@/lib/api/jobs/jobsApi";
+import JobBottomActionsCard from "@/app/job/[jobId]/_ui/JobBottomActionsCard";
+import {GetJobsRequest} from "@/lib/api/jobs/jobsApiInterfaces";
+import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 
 
-const items: string[] = [
-    "wykształcenie wyższe kierunkowe",
-    "wykształcenie wyższe kierunkowe wykształcenie wyższe kierunkowe wykształcenie wyższe kierunkowe wykształcenie wyższe kierunkowe",
-    "min. 1 rok doświadczenia komercyjnego na podobnym stanowisku",
-    "zdolności do myślenia analitycznego",
-];
+async function fetchJob(id: number) {
 
-const companyName: string = "Prominvest";
-const companyDescription: string = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse quis volutpat mauris, eget condimentum neque. Praesent turpis nibh, aliquam facilisis odio eu, dictum sodales nisl. Vivamus ac tristique justo, a finibus sapien. Vivamus facilisis aliquet nibh. Quisque dictum orci ac nisl suscipit tempus. Cras lobortis quam at mauris tempus, suscipit lacinia massa aliquam. Vestibulum eget tortor rutrum, pellentesque erat ac, auctor magna.";
+    const jobResult = await getJobById(id);
+
+    if (!jobResult.success) {
+        console.error(`Failed to fetch a job (${jobResult.status})`);
+        throw new Error(`Failed to fetch a job (${id})`);
+    }
+
+    return jobResult.data.job;
+}
+
+async function fetchSuggestedJobs(request: GetJobsRequest) {
+
+    const jobCardsResult = await getJobs(request);
+
+    if (!jobCardsResult.success) {
+        console.error(`Failed to fetch jobs (${jobCardsResult.status})`);
+        return { jobCards: [], pagination: { currentPage: 1, pageSize: 4, totalCount: 0, totalPages: 1 } };
+    }
+
+    return {
+        jobCards: jobCardsResult.data.jobCards,
+        pagination: jobCardsResult.data.paginationResponse,
+    };
+}
 
 
-export default async function JobPage() {
-    const job = await getJobById(1);
+export default async function JobPage({ params }: { params: { jobId: string } }) {
+
+    const id = parseInt(params.jobId, 10);
+
+    const job = await fetchJob(id);
+
+    const request: GetJobsRequest = {
+        query: job.title,
+        paginationSpec: {
+            pageNumber: 1,
+            pageSize: 4,
+        },
+        locationIds: job.locations.map(dto => dto.id),
+        categoryIds: [job.categoryId],
+        contractTypeIds: job.contractTypeIds,
+        employmentOptionIds: job.employmentTypeIds,
+    };
+
+    const suggestedJobs = await fetchSuggestedJobs(request);
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 3 }}>
             <Grid container spacing={3}>
                 <Grid size={{ xs: 12, md: 12, lg: 7.9 }}>
                     <Stack gap={2}>
-                        <JobOverviewCard />
-                        <JobDescriptionCard />
+                        <JobOverviewCard job={job} />
+                        { job.description && <JobDescriptionCard text={job.description} /> }
 
-                        <JobListCard header="Obowiązki" items={items} />
-                        <JobListCard header="Wymogi" items={items} />
-                        <JobListCard header="Mile widziane" items={items} />
+                        { job.responsibilities.length > 0 &&
+                            <JobListCard header="Obowiązki" items={job.responsibilities} /> }
 
-                        <JobCompanyDescriptionCard companyName={companyName} description={companyDescription} />
+                        { job.requirements.length > 0 &&
+                            <JobListCard header="Wymogi" items={job.requirements} /> }
 
-                        <Stack direction="row" sx={{ width: "100%", justifyContent: "space-evenly", alignItems: "center" }}>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                startIcon={<TaskAlt />}
-                                sx={{
-                                    px: 8,
-                                    borderRadius: "50px",
-                                    fontSize: '1.1rem',
-                                    "& .MuiButton-startIcon > :nth-of-type(1)": { fontSize: "1.5rem", lineHeight: 1 }
-                                }}
-                            >
-                                Aplikuj teraz
-                            </Button>
+                        { job.niceToHaves.length > 0 &&
+                            <JobListCard header="Mile widziane" items={job.niceToHaves} /> }
 
-                            <Button
-                                size="large"
-                                startIcon={<StarBorder />}
-                                sx={{ borderRadius: "50px" }}
-                            >
-                                Zapisz
-                            </Button>
-                        </Stack>
+                        { job.companyDescription &&
+                            <JobCompanyDescriptionCard companyName={job.companyName} description={job.companyDescription} /> }
+
+                        <JobBottomActionsCard />
                     </Stack>
                 </Grid>
                 <Grid size={{ xs: 12, md: 12, lg: 4.1 }}>
                     <Stack sx={{ position: "sticky", top: 20, zIndex: 1 }}>
-                        <JobActionsCard />
-                        <Typography variant="h5" fontWeight={600} mt={2} color="primary">Podobne oferty</Typography>
-                        <Stack gap={2} mt={1.5}>
-                            <SuggestedJobCard />
-                            <SuggestedJobCard />
-                            <SuggestedJobCard />
-                            <SuggestedJobCard />
-                        </Stack>
+                        <JobSideActionsCard />
+                        {
+                            suggestedJobs.jobCards.length > 0 &&
+                            <>
+                                <Typography variant="h5" fontWeight={600} mt={2} color="primary">Podobne oferty</Typography>
+                                <Stack gap={2} mt={1.5}>
+                                    {suggestedJobs.jobCards.map((jobCard: JobCardDto) => (
+                                        <SuggestedJobCard
+                                            key={jobCard.id}
+                                            item={jobCard}
+                                        />
+                                    ))}
+                                </Stack>
+                            </>
+                        }
                     </Stack>
                 </Grid>
             </Grid>

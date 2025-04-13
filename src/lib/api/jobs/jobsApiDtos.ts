@@ -20,6 +20,7 @@ export interface JobDetailedDto {
     id: number;
     companyLogoLink: string | null;
     companyName: string;
+    companyDescription: string | null;
     locations: StringLocationDto[];
     categoryId: number;
     title: string;

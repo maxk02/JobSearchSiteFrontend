@@ -23,3 +23,9 @@ export const employmentTimeOptionIds: number[] =
 
 export const employmentMobilityOptionIds: number[] =
     employmentOptions.filter(eo => eo.type === "Mobility").map(eo => eo.id);
+
+export const employmentTimeOptions: EmploymentOption[] =
+    employmentOptions.filter(eo => eo.type === "EmploymentTime");
+
+export const employmentMobilityOptions: EmploymentOption[] =
+    employmentOptions.filter(eo => eo.type === "Mobility");

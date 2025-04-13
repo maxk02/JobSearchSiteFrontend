@@ -45,7 +45,7 @@ export interface GetJobsRequest {
     query: string;
     paginationSpec: PaginationSpec;
     employmentOptionIds: number[] | null;
-    locationId: number | null;
+    locationIds: number[] | null;
     categoryIds: number[] | null;
     contractTypeIds: number[] | null;
 }

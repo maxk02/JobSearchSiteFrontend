@@ -2,7 +2,7 @@
 
 import {Avatar, Box, Collapse, Divider, IconButton, List, ListItem, Paper, Stack, Typography} from "@mui/material";
 import Image from "next/image";
-import {ExpandLess, ExpandMore, StarBorder, StarBorderOutlined} from "@mui/icons-material";
+import {ExpandLess, ExpandMore, Star, StarBorder} from "@mui/icons-material";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 import {jobContractTypes} from "@/lib/seededData/jobContractTypes";
 import {employmentOptions} from "@/lib/seededData/employmentOptions";
@@ -11,6 +11,16 @@ import formatLocationText from "@/app/_ui/_functions/formatLocationText";
 import {useState} from "react";
 import {addJobBookmark, deleteJobBookmark} from "@/lib/api/userProfiles/userProfilesApi";
 
+
+
+const formatPolishDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    const formatter = new Intl.DateTimeFormat('pl-PL', {
+        day: 'numeric',
+        month: 'long',
+    });
+    return formatter.format(date);
+};
 
 export interface JobCardProps {
     item: JobCardDto;
@@ -108,14 +118,14 @@ export default function JobCard({ item }: JobCardProps) {
                         sx={{ lineHeight: 1 }}
                         onClick={toggleBookmark}
                     >
-                        { item.isBookmarked ? <StarBorderOutlined /> : <StarBorder /> }
+                        { item.isBookmarked ? <Star /> : <StarBorder /> }
                     </IconButton>
                 </Box>
             </Stack>
             <Divider />
             <Box sx={{ py: 1, px: 2 }}>
                 <Typography variant="body2" width="100%" color="text.secondary" textAlign="right">
-                    Opublikowana: {item.dateTimePublishedUtc}
+                    Ważna do: {formatPolishDate(item.dateTimeExpiringUtc)}
                 </Typography>
             </Box>
         </Paper>

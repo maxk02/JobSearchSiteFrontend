@@ -3,30 +3,44 @@ import Image from "next/image";
 import {AccessTime, Description, HomeWork, PieChart, PinDrop} from "@mui/icons-material";
 import Grid from "@mui/material/Grid2";
 import React from "react";
+import {JobDetailedDto} from "@/lib/api/jobs/jobsApiDtos";
+import {jobContractTypes} from "@/lib/seededData/jobContractTypes";
+import {
+    employmentMobilityOptionIds,
+    employmentMobilityOptions,
+    employmentTimeOptionIds, employmentTimeOptions
+} from "@/lib/seededData/employmentOptions";
 
 
-export default function JobOverviewCard() {
+const formatPolishDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    const formatter = new Intl.DateTimeFormat('pl-PL', {
+        day: 'numeric',
+        month: 'long',
+    });
+    return formatter.format(date);
+};
+
+export interface JobOverviewCardProps {
+    job: JobDetailedDto;
+}
+
+export default function JobOverviewCard({job} : JobOverviewCardProps) {
     return (
         <Paper>
             <Stack direction="row">
                 <Box py={2.1} pl={3} pr={1}>
                     <Avatar variant="rounded" sx={{ height: 80, width: 80 }}>
-                        <Image src="/company2.webp" width="80" height="80" alt="" />
+                        {job.companyLogoLink && <Image src={job.companyLogoLink} width="80" height="80" alt="" />}
                     </Avatar>
                 </Box>
                 <Stack sx={{ py: 2, px: 1.8, flexGrow: 1, justifyContent: "center" }}>
                     <Typography variant="h5" sx={{ fontWeight: 800, lineHeight: 1 }}>
-                        Specjalista do spraw księgowości
+                        {job.title}
                     </Typography>
-                    {/*<Typography fontWeight="bold" color="textSecondary" lineHeight={1} mt={1.3}>*/}
-                    {/*    31 920-49 560 zł netto (+VAT) / mies.*/}
-                    {/*</Typography>*/}
                     <Typography lineHeight={1} mt={1} sx={{ fontSize: "1.02em" }}>
-                        Alab laboratoria Sp z o o
+                        {job.companyName}
                     </Typography>
-                    {/*<Typography lineHeight={1} mt={1.3}>*/}
-                    {/*    Warszawa, Mazowieckie*/}
-                    {/*</Typography>*/}
                 </Stack>
             </Stack>
             <Divider />
@@ -48,85 +62,71 @@ export default function JobOverviewCard() {
                                 <AccessTime color="primary" />
                             </Avatar>
                             <Stack gap={0.5}>
-                                <Typography lineHeight={1} sx={{ fontSize: "0.95em" }}>ważna jeszcze 10 dni</Typography>
-                                <Typography lineHeight={1} color="textSecondary" sx={{ fontSize: "0.95em" }}>do 20 marca</Typography>
+                                {/*<Typography lineHeight={1} sx={{ fontSize: "0.95em" }}>ważna jeszcze 10 dni</Typography>*/}
+                                <Typography lineHeight={1} sx={{ fontSize: "0.95em" }}>
+                                    `Ważna do: ${formatPolishDate(job.dateTimeExpiringUtc)}`
+                                </Typography>
                             </Stack>
                         </ListItem>
                     </Grid>
+                    {job.contractTypeIds && job.contractTypeIds.length > 0 &&
                     <Grid size={{ xs: 12, md: 12, lg: 6 }}>
                         <ListItem sx={{ px: 3, display: "flex", flexDirection: "row", gap: 1.5 }}>
                             <Avatar variant="rounded" sx={{ height: 45, width: 45,
                                 backgroundColor: "#dde2e9" }}>
                                 <Description color="primary" />
                             </Avatar>
-                            <Typography lineHeight={1.25} sx={{ fontSize: "0.95em" }}>umowa o pracę, umowa zlecenie, kontrakt b2b</Typography>
+                                <Typography lineHeight={1.25} sx={{ fontSize: "0.95em" }}>
+                                    {
+                                        jobContractTypes
+                                            .filter(jct => (job.contractTypeIds ?? []).includes(jct.id))
+                                            .map(jct => jct.namePl)
+                                            .join(',')
+                                    }
+                                </Typography>
                         </ListItem>
                     </Grid>
-                    <Grid size={{ xs: 12, md: 12, lg: 6 }}>
-                        <ListItem sx={{ px: 3, display: "flex", flexDirection: "row", gap: 1.5 }}>
-                            <Avatar variant="rounded" sx={{ height: 45, width: 45,
-                                backgroundColor: "#dde2e9" }}>
-                                <HomeWork color="primary" />
-                            </Avatar>
-                            <Typography lineHeight={1.25} sx={{ fontSize: "0.95em" }}>w biurze, zdalnie, hybrydowo</Typography>
-                        </ListItem>
-                    </Grid>
-                    <Grid size={{ xs: 12, md: 12, lg: 6 }}>
-                        <ListItem sx={{ px: 3, display: "flex", flexDirection: "row", gap: 1.5 }}>
-                            <Avatar variant="rounded" sx={{ height: 45, width: 45,
-                                backgroundColor: "#dde2e9" }}>
-                                <PieChart color="primary" />
-                            </Avatar>
-                            <Typography lineHeight={1.25} sx={{ fontSize: "0.95em" }}>pełny etat, częściowy etat, projekt</Typography>
-                        </ListItem>
-                    </Grid>
+                    }
+                    {
+                        employmentMobilityOptionIds.filter(id => (job.employmentTypeIds ?? []).includes(id)) &&
+                        <Grid size={{ xs: 12, md: 12, lg: 6 }}>
+                            <ListItem sx={{ px: 3, display: "flex", flexDirection: "row", gap: 1.5 }}>
+                                <Avatar variant="rounded" sx={{ height: 45, width: 45,
+                                    backgroundColor: "#dde2e9" }}>
+                                    <HomeWork color="primary" />
+                                </Avatar>
+                                <Typography lineHeight={1.25} sx={{ fontSize: "0.95em" }}>
+                                    {
+                                        employmentMobilityOptions
+                                            .filter(eo => (job.contractTypeIds ?? []).includes(eo.id))
+                                            .map(eo => eo.namePl)
+                                            .join(',')
+                                    }
+                                </Typography>
+                            </ListItem>
+                        </Grid>
+                    }
+                    {
+                        employmentTimeOptionIds.filter(id => (job.employmentTypeIds ?? []).includes(id)) &&
+                        <Grid size={{ xs: 12, md: 12, lg: 6 }}>
+                            <ListItem sx={{ px: 3, display: "flex", flexDirection: "row", gap: 1.5 }}>
+                                <Avatar variant="rounded" sx={{ height: 45, width: 45,
+                                    backgroundColor: "#dde2e9" }}>
+                                    <PieChart color="primary" />
+                                </Avatar>
+                                <Typography lineHeight={1.25} sx={{ fontSize: "0.95em" }}>
+                                    {
+                                        employmentTimeOptions
+                                            .filter(eo => (job.contractTypeIds ?? []).includes(eo.id))
+                                            .map(eo => eo.namePl)
+                                            .join(',')
+                                    }
+                                </Typography>
+                            </ListItem>
+                        </Grid>
+                    }
                 </Grid>
             </List>
-            {/*<Divider />*/}
-            {/*<Stack sx={{ py: 1.5, px: 3 }}>*/}
-            {/*    <Stack direction="row" sx={{ backgroundColor: "#f0f0f0", borderRadius: "10px" }}>*/}
-            {/*        <Typography variant="h6" fontWeight={600} lineHeight={1} color="primary">Opis projektu</Typography>*/}
-            {/*        <Typography mt={0.7}>*/}
-            {/*            wepojfpofjopwejfopejfopjwfopjeop*/}
-            {/*        </Typography>*/}
-            {/*    </Stack>*/}
-
-            {/*    <Typography variant="h6" fontWeight={600} lineHeight={1} mt={2.2} color="primary">Obowiązki</Typography>*/}
-            {/*    <List sx={{ py: 0.1, mt: 0.4 }}>*/}
-            {/*        {requirements.map((requirement, index) => (*/}
-            {/*            <ListItem key={index} sx={{ pl: 0, py: 0.2 }}>*/}
-            {/*                <ListItemIcon sx={{ minWidth: "32px" }}>*/}
-            {/*                    <CheckCircleOutline color="primary" />*/}
-            {/*                </ListItemIcon>*/}
-            {/*                <ListItemText primary={requirement} />*/}
-            {/*            </ListItem>*/}
-            {/*        ))}*/}
-            {/*    </List>*/}
-
-            {/*    <Typography variant="h6" fontWeight={600} lineHeight={1} mt={1.8} color="primary">Wymogi</Typography>*/}
-            {/*    <List sx={{ py: 0.1, mt: 0.4 }}>*/}
-            {/*        {requirements.map((requirement, index) => (*/}
-            {/*            <ListItem key={index} sx={{ pl: 0, py: 0.2 }}>*/}
-            {/*                <ListItemIcon sx={{ minWidth: "32px" }}>*/}
-            {/*                    <CheckCircleOutline color="primary" />*/}
-            {/*                </ListItemIcon>*/}
-            {/*                <ListItemText primary={requirement} />*/}
-            {/*            </ListItem>*/}
-            {/*        ))}*/}
-            {/*    </List>*/}
-
-            {/*    <Typography variant="h6" fontWeight={600} lineHeight={1} mt={1.8} color="primary">Mile widziane</Typography>*/}
-            {/*    <List sx={{ py: 0.1, mt: 0.4 }}>*/}
-            {/*        {requirements.map((requirement, index) => (*/}
-            {/*            <ListItem key={index} sx={{ pl: 0, py: 0.2 }}>*/}
-            {/*                <ListItemIcon sx={{ minWidth: "32px" }}>*/}
-            {/*                    <CheckCircleOutline color="primary" />*/}
-            {/*                </ListItemIcon>*/}
-            {/*                <ListItemText primary={requirement} />*/}
-            {/*            </ListItem>*/}
-            {/*        ))}*/}
-            {/*    </List>*/}
-            {/*</Stack>*/}
         </Paper>
     );
 }

@@ -53,7 +53,7 @@ async function fetchJobs(params: SearchQueryParams) {
             pageNumber: params.page,
             pageSize: 15,
         },
-        locationId: params.locationId,
+        locationIds: [params.locationId],
         categoryIds: params.categoryIds,
         contractTypeIds: params.contractTypeIds,
         employmentOptionIds: params.employmentOptionIds,
