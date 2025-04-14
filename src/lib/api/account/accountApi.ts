@@ -33,6 +33,10 @@ export const extendSession = async () => {
     return await fetchData<unknown, ExtendSessionResponse>("/account/extend-session", "POST");
 };
 
+export const terminateSession = async (token: string) => {
+    return await fetchData<unknown>(`/account/sessions/${token}`, "DELETE");
+};
+
 export const getSessions = async () => {
     return await fetchData<unknown, GetUserSessionsResponse>("/account/sessions", "GET");
 };

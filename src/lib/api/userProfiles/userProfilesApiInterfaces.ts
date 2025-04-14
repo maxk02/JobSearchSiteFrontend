@@ -71,12 +71,14 @@ export interface GetUserProfileResponse {
     email: string;
     phone: string | null;
     avatarLink: string | null;
+    isReceivingApplicationStatusUpdates: boolean;
 }
 
 export interface UpdateUserProfileRequestDto {
     firstName: string | null;
     lastName: string | null;
     phone: string | null;
+    isReceivingApplicationStatusUpdates: boolean;
 }
 
 export interface UploadAvatarResponse {

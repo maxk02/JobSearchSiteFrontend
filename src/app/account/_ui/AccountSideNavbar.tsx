@@ -1,3 +1,5 @@
+"use client";
+
 import {
     Avatar,
     List,
@@ -10,13 +12,18 @@ import {
     Typography
 } from "@mui/material";
 import {ContactPage, Description, History, Settings, Star} from "@mui/icons-material";
+import {usePathname} from "next/navigation";
+import {useEffect, useState} from "react";
+import {getUserProfile} from "@/lib/api/userProfiles/userProfilesApi";
+import Image from "next/image";
+
 
 const navItems = [
-    { text: "Mój profil", icon: <ContactPage />, link: "/account/profile" },
-    { text: "Zapisane", icon: <Star />, link: "/account/bookmarks" },
-    { text: "Moje pliki", icon: <Description />, link: "/account/files" },
-    { text: "Historia aplikacji", icon: <History />, link: "/account/applications" },
-    { text: "Ustawienia konta", icon: <Settings />, link: "/account/settings" },
+    { text: "Mój profil", icon: <ContactPage />, path: "/account/profile" },
+    { text: "Zapisane", icon: <Star />, path: "/account/bookmarks" },
+    { text: "Moje pliki", icon: <Description />, path: "/account/files" },
+    { text: "Historia aplikacji", icon: <History />, path: "/account/applications" },
+    { text: "Ustawienia konta", icon: <Settings />, path: "/account/settings" },
 ];
 
 function isRouteActive(pathname: string, href: string) {
@@ -24,28 +31,45 @@ function isRouteActive(pathname: string, href: string) {
     return pathname.startsWith(`${href}/`);
 }
 
-type AccountSideNavbarProps = {
-    currentPath: string;
-}
 
-export default function AccountSideNavbar({ currentPath }: AccountSideNavbarProps) {
+export default function AccountSideNavbar() {
 
+    const currentPath = usePathname();
 
+    const [userName, setUserName] = useState<string | null>(null);
+    const [avatarLink, setAvatarLink] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchAccountData = async () => {
+
+            const result = await getUserProfile();
+
+            if (result.success) {
+                setUserName(`${result.data.firstName} ${result.data.lastName}`);
+                setAvatarLink(result.data.avatarLink);
+            }
+
+        };
+
+        fetchAccountData();
+    });
 
     return (
         <Paper sx={{ px: 1, py: 0.5, position: "sticky", top: 20, zIndex: 1 }}>
             <Stack sx={{ gap: 0.7, mt: 1.5, pt: 1.5, pb: 0.5, px: 1.8 }}>
-                <Avatar src="/avatar2.webp" sx={{ height: 64, width: 64 }} />
+                <Avatar sx={{ height: 64, width: 64 }}>
+                    {avatarLink && <Image width={64} height={64} src={avatarLink} alt="User's avatar image" />}
+                </Avatar>
                 <Typography variant="body1" fontWeight={600} gutterBottom marginBottom={0}>
-                    example@example.com
+                    {userName}
                 </Typography>
             </Stack>
             <List>
                 {navItems.map((item) => (
                     <ListItem key={item.text} disablePadding>
                         <ListItemButton
-                            selected={isRouteActive(currentPath, item.link)}
-                            href={item.link}
+                            selected={isRouteActive(currentPath, item.path)}
+                            href={item.path}
                             sx={{
                                 pl: 1.6,
                                 py: 1.5,

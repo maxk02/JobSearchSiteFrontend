@@ -3,7 +3,11 @@ import {CompanyInfoDto} from "@/lib/api/companies/companiesApiDtos";
 
 export interface UserSessionDto {
     token: string;
+    isCurrent: boolean;
     firstTimeIssuedUtc: string;
+    clientDeviceName: string;
+    clientOs: string;
+    clientBrowser: string;
 }
 
 export interface AccountDataDto {

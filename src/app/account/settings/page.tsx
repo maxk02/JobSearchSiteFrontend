@@ -17,17 +17,35 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Controller, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ChangePasswordFormData, changePasswordSchema} from "@/lib/schemas/changePasswordSchema";
-import {changePassword, deleteAccount} from "@/lib/api/account/accountApi";
+import {changePassword, deleteAccount, terminateSession} from "@/lib/api/account/accountApi";
 import {ChangePasswordRequest} from "@/lib/api/account/accountApiInterfaces";
 import {useRouter} from "next/navigation";
+import {UserSessionDto} from "@/lib/api/account/accountApiDtos";
+import {getUserProfile, updateUserProfile} from "@/lib/api/userProfiles/userProfilesApi";
+import {UpdateUserProfileRequestDto} from "@/lib/api/userProfiles/userProfilesApiInterfaces";
 
 export default function AccountSettingsPage() {
 
+    const [userSessions, setUserSessions] = useState<UserSessionDto[]>([]);
+    const [isReceivingApplicationStatusUpdates, setIsReceivingApplicationStatusUpdates] = useState<boolean>(true);
+
     const router = useRouter();
+
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            const result = await getUserProfile();
+
+            if (result.success) {
+                setIsReceivingApplicationStatusUpdates(result.data.isReceivingApplicationStatusUpdates);
+            }
+        };
+
+        fetchUserProfile();
+    });
 
     const {handleSubmit, control, formState: {errors}} = useForm<ChangePasswordFormData>({
         resolver: zodResolver(changePasswordSchema),
@@ -60,7 +78,41 @@ export default function AccountSettingsPage() {
             router.push("/");
         }
 
-    }
+    };
+
+    const handleTerminateSession = async (token: string, isCurrent: boolean) => {
+        const result = await terminateSession(token);
+
+        if (!result.success) {
+            console.log("Failed to terminate session");
+            return;
+        }
+
+        if (isCurrent) {
+            router.push("/");
+        }
+        else {
+            setUserSessions(prevSessions => prevSessions.filter(s => s.token !== token));
+        }
+    };
+
+    const handleToggleApplicationStatusUpdates = async (currentVal: boolean) => {
+
+        const request: UpdateUserProfileRequestDto = {
+            firstName: null,
+            lastName: null,
+            phone: null,
+            isReceivingApplicationStatusUpdates: !currentVal,
+
+        };
+
+        const result = await updateUserProfile(request);
+
+        if (result.success) {
+            setIsReceivingApplicationStatusUpdates(!currentVal);
+        }
+
+    };
 
     return (
         <>
@@ -78,12 +130,9 @@ export default function AccountSettingsPage() {
                             sx={{my: 0.5}}
                             control={<Switch defaultChecked/>}
                             label="Chcę otrzymywać powiadomienia o statusie aplikacji"
-                            onChange={() => {}}
+                            value={isReceivingApplicationStatusUpdates}
+                            onChange={(_, checked) => handleToggleApplicationStatusUpdates(checked)}
                         />
-                        {/*<FormControlLabel*/}
-                        {/*    sx={{mt: 0.2}}*/}
-                        {/*    control={<Switch defaultChecked/>}*/}
-                        {/*    label="Chcę otrzymywać powiadomienia o statusie aplikacji"/>*/}
                     </FormGroup>
 
                     <Typography variant="h6" fontWeight={600} mt={1.5} color="primary">Zmiana hasła</Typography>
@@ -126,7 +175,6 @@ export default function AccountSettingsPage() {
                             >
                                 Zmień
                             </Button>
-
                         </Stack>
                     </form>
 
@@ -136,26 +184,29 @@ export default function AccountSettingsPage() {
                         <Table sx={{tableLayout: "auto", width: "750px", maxWidth: "750px"}}>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Data</TableCell>
-                                    <TableCell>Adres IP</TableCell>
+                                    <TableCell>Data pierwszego logowania</TableCell>
                                     <TableCell>Klient</TableCell>
                                     <TableCell></TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                <TableRow>
-                                    <TableCell sx={{textOverflow: "ellipsis"}}>12.12.2024 23:14</TableCell>
-                                    <TableCell>192.168.0.1</TableCell>
-                                    <TableCell>Firefox 32.1, Windows 10, IDJIJ43D72</TableCell>
-                                    <TableCell sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                                        <Button
-                                            variant="outlined"
-                                            color="error"
-                                        >
-                                            Zakończ
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
+                                {userSessions.map((item) => (
+                                    <TableRow key={item.token}>
+                                        <TableCell>{item.firstTimeIssuedUtc}</TableCell>
+                                        <TableCell>
+                                            {[item.clientDeviceName, item.clientOs, item.clientBrowser].join(',')}
+                                        </TableCell>
+                                        <TableCell sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                                            <Button
+                                                variant="outlined"
+                                                color="error"
+                                                onClick={() => handleTerminateSession(item.token, item.isCurrent)}
+                                            >
+                                                Zakończ
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
                             </TableBody>
                         </Table>
                     </TableContainer>

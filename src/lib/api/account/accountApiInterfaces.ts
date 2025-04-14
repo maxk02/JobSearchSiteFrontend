@@ -25,6 +25,9 @@ export interface GetUserSessionsResponse {
 export interface LogInRequest {
     email: string;
     password: string;
+    clientDeviceName: string;
+    clientOs: string;
+    clientBrowser: string;
 }
 
 export interface LogInResponseDto {
