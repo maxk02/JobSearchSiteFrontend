@@ -75,6 +75,9 @@ export interface GetUserProfileResponse {
 export interface UpdateUserProfileRequestDto {
     firstName: string | null;
     lastName: string | null;
-    email: string | null;
     phone: string | null;
+}
+
+export interface UploadAvatarResponse {
+    link: string;
 }

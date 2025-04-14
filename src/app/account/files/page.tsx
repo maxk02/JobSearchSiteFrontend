@@ -50,13 +50,13 @@ export default function AccountFilesPage() {
             const errorMessages = rejectedFiles.map((file: FileRejection) => {
                 const reasons = file.errors.map((e) => {
                     if (e.code === "file-too-large") {
-                        return `Nie można dodać plik \"${file.file.name}\": plik jest za duży (max 10MB).`;
+                        return `Nie można dodać pliku \"${file.file.name}\": plik jest za duży (max 10MB).`;
                     }
                     if (e.code === "file-invalid-type") {
-                        return `Nie można dodać plik \"${file.file.name}\": niedozwolony format (tylko PDF).`;
+                        return `Nie można dodać pliku \"${file.file.name}\": niedozwolony format (tylko PDF).`;
                     }
                     if (e.code === "too-many-files") {
-                        return `Nie można dodać plik \"${file.file.name}\": nrzekroczono limit plików (max 15).`;
+                        return `Nie można dodać pliku \"${file.file.name}\": nrzekroczono limit plików (max 15).`;
                     }
                     return `${file.file.name}: ${e.message}`;
                 });

@@ -6,9 +6,10 @@ import {
     GetJobApplicationsResponse, GetPersonalFilesRequest,
     GetPersonalFilesResponse,
     GetUserProfileResponse,
-    UpdateUserProfileRequestDto
+    UpdateUserProfileRequestDto, UploadAvatarResponse
 } from "./userProfilesApiInterfaces";
 import { PaginationSpec } from "@/lib/api/sharedDtos";
+import {UploadFileResponse} from "@/lib/api/personalFiles/personalFilesApiInterfaces";
 
 
 export const addCompanyBookmark = async (companyId: number) => {
@@ -69,4 +70,8 @@ export const getUserProfile = async () => {
 
 export const updateUserProfile = async (req: UpdateUserProfileRequestDto) => {
     return await fetchData<UpdateUserProfileRequestDto>(`/user`, "PATCH", req);
+};
+
+export const uploadAvatar = async (formData: FormData) => {
+    return await fetchData<FormData, UploadAvatarResponse>(`/user/avatar`, "PUT", formData, { "Content-Type": "multipart/form-data" });
 };

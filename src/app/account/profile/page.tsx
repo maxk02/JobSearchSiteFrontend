@@ -1,24 +1,109 @@
 "use client";
 
-import {Avatar, Box, Button, Paper, Stack, TextField, Typography} from "@mui/material";
-import React, {useState} from "react";
-import ImageUploadArea from "@/app/_ui/ImageUploadArea";
+import {Alert, Avatar, Box, Button, Paper, Stack, TextField, Typography} from "@mui/material";
+import React, {useEffect, useState} from "react";
+import {Controller, useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {UserProfileFormData, userProfileSchema} from "@/lib/schemas/userProfileSchema";
+import {UpdateUserProfileRequestDto} from "@/lib/api/userProfiles/userProfilesApiInterfaces";
+import {updateUserProfile, uploadAvatar} from "@/lib/api/userProfiles/userProfilesApi";
+import Image from "next/image";
+import {Info} from "@mui/icons-material";
+import FileUploadArea from "@/app/_ui/FileUploadArea";
+import {FileRejection} from "react-dropzone";
 
-export default function AccountSettingsPage() {
-    const [, setUploadedFiles] = useState<File[]>([]);
+export default function AccountProfilePage() {
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [avatarLink, setAvatarLink] = useState<string | null>(null);
 
-    const handleFileUpload = (files: File[]) => {
-        setUploadedFiles((prevFiles) => [...prevFiles, ...files]);
+    const {handleSubmit, control, formState: {errors}} = useForm<UserProfileFormData>({
+        resolver: zodResolver(userProfileSchema),
+        defaultValues: {
+            firstName: '',
+            lastName: '',
+        },
+        mode: 'onChange'
+    });
+
+    const onBasicDataSubmit = async (data: UserProfileFormData) => {
+
+        const request: UpdateUserProfileRequestDto = {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            phone: data.phone
+
+        };
+
+        const result = await updateUserProfile(request);
+
+        if (result.success) {
+
+        }
     };
+
+    const handleAvatarUpload = async (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
+        setErrorMessage(null);
+
+        if (rejectedFiles[0]) {
+            const reasons = rejectedFiles[0].errors.map((e) => {
+                if (e.code === "file-too-large") {
+                    return `Nie można dodać pliku \"${rejectedFiles[0].file.name}\": plik jest za duży (max 10MB).`;
+                }
+                if (e.code === "file-invalid-type") {
+                    return `Nie można dodać pliku \"${rejectedFiles[0].file.name}\": niedozwolony format (tylko PDF).`;
+                }
+                if (e.code === "too-many-files") {
+                    return `Nie można dodać pliku \"${rejectedFiles[0].file.name}\": nrzekroczono limit plików (max 15).`;
+                }
+                return `${rejectedFiles[0].file.name}: ${e.message}`;
+            });
+            setErrorMessage(reasons.join(", "));
+
+            return;
+        }
+
+        const file = acceptedFiles[0];
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await uploadAvatar(formData);
+
+        if (response.success) {
+            setAvatarLink(response.data.link);
+        }
+        else {
+            console.log(`Error uploading avatar: ${file.name} (${response.status})`);
+        }
+    };
+
+    useEffect(() => {
+
+    });
 
     return (
         <>
             <Typography variant="h4" fontWeight={600} color="primary">Mój profil</Typography>
-            <Typography mt={1}>Możesz zmienić tutaj ...</Typography>
+            <Typography mt={1}>Tutaj możesz zmienić podstawowe informacje, które będą widoczne w aplikacjach.</Typography>
 
             <Paper sx={{ mt: 2, px: 2, pt: 1.5, pb: 2.5, maxWidth: "900px" }}>
                 <Typography variant="h6" fontWeight={600} color="primary">Zdjęcie profilowe</Typography>
-                <Stack direction="row" sx={{ mt: 1, gap: 2 }}>
+                <Alert severity="info" icon={<Info />} sx={{ mt: 0.7, maxWidth: "500px" }}>
+                    <Typography>
+                        Dopuszczalne formaty pliku: jpg, png, gif, webp
+                    </Typography>
+                    <Typography>
+                        Maksymalny rozmiar pliku: 5MB
+                    </Typography>
+                </Alert>
+                {errorMessage && (
+                    <Alert severity="error" sx={{ mt: 2, maxWidth: "650px" }}>
+                        <Typography>
+                            {errorMessage}
+                        </Typography>
+                    </Alert>
+                )}
+                <Stack direction="row" sx={{ mt: 1.5, gap: 2 }}>
                     <Paper
                         sx={{
                             display: "flex",
@@ -31,27 +116,80 @@ export default function AccountSettingsPage() {
                             border: "2px dashed lightgray",
                         }}
                     >
-                        <Avatar src="/avatar2.webp" sx={{ width: 128, height: 128, m: 0 }} />
+                        <Avatar sx={{ width: 128, height: 128, m: 0 }}>
+                            <Image src="/avatar2.webp" width={128} height={128} alt="User's avatar" />
+                        </Avatar>
                         <Typography textAlign="center">Obecne zdjęcie</Typography>
                     </Paper>
                     <Box sx={{ width: 270, height: 250 }}>
-                        <ImageUploadArea onFileUpload={handleFileUpload} />
+                        <FileUploadArea
+                            onFilesChange={handleAvatarUpload}
+                            accept={{
+                                "image/jpeg": [".jpg", ".jpeg"],
+                                "image/png": [".png"],
+                                "image/gif": [".gif"],
+                                "image/webp": [".webp"]
+                            }}
+                            maxSize={5 * 1024 * 1024}
+                            maxFiles={1}
+                            idleMessage="Kliknij lub przeciągnij zdjęcie do wgrania"
+                            dragMessage="Upuść zdjęcie tutaj..."
+                        />
                     </Box>
                 </Stack>
                 <Typography variant="h6" fontWeight={600} color="primary" mt={2}>Podstawowe dane</Typography>
-                <Stack sx={{ gap: 1.5, mt: 1, width: 350 }}>
-                    <TextField required label="Imię" variant="outlined" sx={{ width: "100%" }} />
-                    <TextField required label="Nazwisko" variant="outlined" sx={{ width: "100%" }} />
-                    <TextField label="Numer telefonu" variant="outlined" sx={{ width: "100%" }} />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        sx={{ borderRadius: "50px", width: "125px" }}
-                    >
-                        Zaktualizuj
-                    </Button>
-                </Stack>
+                <form onSubmit={handleSubmit(onBasicDataSubmit)}>
+                    <Stack sx={{ gap: 1.5, mt: 1, width: 350 }}>
+                        <Controller
+                            name="firstName"
+                            control={control}
+                            render={({field}) => (
+                                <TextField
+                                    {...field}
+                                    label="Imię"
+                                    fullWidth
+                                    error={!!errors.firstName}
+                                    helperText={errors.firstName?.message}
+                                />
+                            )}
+                        />
+                        <Controller
+                            name="lastName"
+                            control={control}
+                            render={({field}) => (
+                                <TextField
+                                    {...field}
+                                    label="Nazwisko"
+                                    fullWidth
+                                    error={!!errors.lastName}
+                                    helperText={errors.lastName?.message}
+                                />
+                            )}
+                        />
+                        <Controller
+                            name="phone"
+                            control={control}
+                            render={({field}) => (
+                                <TextField
+                                    {...field}
+                                    label="Numer telefonu"
+                                    fullWidth
+                                    error={!!errors.phone}
+                                    helperText={errors.phone?.message}
+                                />
+                            )}
+                        />
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            type="submit"
+                            sx={{ borderRadius: "50px", width: "125px" }}
+                        >
+                            Zaktualizuj
+                        </Button>
+                    </Stack>
+                </form>
             </Paper>
         </>
     );
