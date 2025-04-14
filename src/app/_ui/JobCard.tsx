@@ -18,6 +18,7 @@ const formatPolishDate = (dateString: string): string => {
     const formatter = new Intl.DateTimeFormat('pl-PL', {
         day: 'numeric',
         month: 'long',
+        year: 'numeric',
     });
     return formatter.format(date);
 };
@@ -50,7 +51,7 @@ export default function JobCard({ item }: JobCardProps) {
             <Stack direction="row">
                 <Box py={2.1} pl={3} pr={1}>
                     <Avatar variant="rounded" sx={{ width: 80, height: 80 }}>
-                        <Image src={item.companyLogoLink ?? "/company2.webp"} width="80" height="80" alt="" />
+                        {item.companyLogoLink && <Image src={item.companyLogoLink} width="80" height="80" alt="" />}
                     </Avatar>
                 </Box>
                 <Stack sx={{ p: 2, flexGrow: 1 }}>

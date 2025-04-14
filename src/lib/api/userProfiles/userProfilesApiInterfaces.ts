@@ -47,6 +47,7 @@ export interface GetBookmarkedJobsResponse {
 }
 
 export interface GetJobApplicationsRequest {
+    statusId: number | null;
     paginationSpec: PaginationSpec;
 }
 

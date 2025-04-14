@@ -2,37 +2,68 @@
 
 import {Chip, Stack, Typography} from "@mui/material";
 import ApplicationInUserProfileCard from "@/app/account/applications/_ui/ApplicationInUserProfileCard";
-import {useState} from "react";
-
-
-const chips: string[] = ["Zaaplikowano", "W trakcie rozpatrzenia", "Odrzucona", "Wycofana"];
+import {useEffect, useState} from "react";
+import {jobApplicationStatuses} from "@/lib/seededData/jobApplicationStatuses";
+import MyDefaultPagination from "@/app/_ui/MyDefaultPagination";
+import {JobApplicationInUserProfileDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
+import {useSearchParams} from "next/navigation";
+import {getJobApplications} from "@/lib/api/userProfiles/userProfilesApi";
 
 
 export default function AccountApplicationsPage() {
-    const [selectedChips, setSelectedChips] = useState<string[]>([]);
+    const [selectedApplicationStatusId, setSelectedApplicationStatusId] = useState<number | null>(null);
+    const [applications, setApplications] = useState<JobApplicationInUserProfileDto[]>([]);
 
-    const handleChipClick = (chip: string) => {
-        setSelectedChips((prev) =>
-            prev.includes(chip) ? prev.filter((c) => c !== chip) : [...prev, chip]
-        );
-    };
+    const searchParams = useSearchParams();
+    const pageParam = searchParams.get("page");
+    const parsedPageParam = pageParam && !isNaN(parseInt(pageParam, 10)) ? parseInt(pageParam, 10) : 1;
+
+    const [totalPages, setTotalPages] = useState<number>(1);
+
+    useEffect(() => {
+
+        const fetchApplications = async () => {
+            const result = await getJobApplications(selectedApplicationStatusId,
+                {pageSize: 15, pageNumber: parsedPageParam});
+            
+            if (result.success) {
+                setApplications(result.data.jobApplications);
+                setTotalPages(result.data.paginationResponse.totalPages);
+            }
+            else {
+                console.log(`Error fetching job applications (${result.status})`);
+            }
+        }
+        
+        fetchApplications();
+
+    }, [parsedPageParam, selectedApplicationStatusId]);
 
     return (
         <>
             <Typography variant="h4" fontWeight={600} color="primary">Historia aplikacji</Typography>
             <Typography mt={0.5}>W tej zakładce sprawdzisz status swoich aplikacji.</Typography>
 
-            <Stack direction="row" spacing={1} sx={{ mt: 1.5, alignItems: "center" }}>
+            <Stack direction="row" spacing={1.3} sx={{ mt: 1.5, alignItems: "center" }}>
                 <Typography variant="body1" color="text.secondary">
                     Filtruj:
                 </Typography>
-                {chips.map((chip) => (
+                <Chip
+                    variant="filled"
+                    color={selectedApplicationStatusId === null ? "primary" : "default"}
+                    label="Wszystkie"
+                    onClick={() => setSelectedApplicationStatusId(null)}
+                    sx={{
+                        fontSize: "1.02em"
+                    }}
+                />
+                {jobApplicationStatuses.map((status) => (
                     <Chip
                         variant="filled"
-                        color={selectedChips.includes(chip) ? "primary" : "default"}
-                        key={chip}
-                        label={chip}
-                        onClick={() => handleChipClick(chip)}
+                        color={selectedApplicationStatusId === status.id ? "primary" : "default"}
+                        key={status.id}
+                        label={status.namePl}
+                        onClick={() => setSelectedApplicationStatusId(status.id)}
                         sx={{
                             fontSize: "1.02em"
                         }}
@@ -41,14 +72,10 @@ export default function AccountApplicationsPage() {
             </Stack>
 
             <Stack gap={3} mt={2} sx={{ maxWidth: "900px" }}>
-                <ApplicationInUserProfileCard />
-                <ApplicationInUserProfileCard />
-                <ApplicationInUserProfileCard />
-                <ApplicationInUserProfileCard />
-                <ApplicationInUserProfileCard />
-                <ApplicationInUserProfileCard />
-                <ApplicationInUserProfileCard />
-                <ApplicationInUserProfileCard />
+                {applications.map((application) => (
+                    <ApplicationInUserProfileCard key={application.id} item={application} />
+                ))}
+                <MyDefaultPagination currentPage={parsedPageParam} totalPages={totalPages} />
             </Stack>
 
         </>

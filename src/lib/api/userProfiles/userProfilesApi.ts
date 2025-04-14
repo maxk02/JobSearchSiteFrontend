@@ -1,9 +1,9 @@
 import fetchData from "@/lib/api/fetchData";
 import {
-    AddUserProfileRequest,
-    GetBookmarkedCompaniesResponse,
-    GetBookmarkedJobsResponse,
-    GetJobApplicationsResponse,
+    AddUserProfileRequest, GetBookmarkedCompaniesRequest,
+    GetBookmarkedCompaniesResponse, GetBookmarkedJobsRequest,
+    GetBookmarkedJobsResponse, GetJobApplicationsRequest,
+    GetJobApplicationsResponse, GetPersonalFilesRequest,
     GetPersonalFilesResponse,
     GetUserProfileResponse,
     UpdateUserProfileRequestDto
@@ -32,34 +32,34 @@ export const deleteJobBookmark = async (jobId: number) => {
 };
 
 export const getBookmarkedCompanies = async (paginationSpec: PaginationSpec) => {
-    return await fetchData<PaginationSpec, GetBookmarkedCompaniesResponse>(
+    return await fetchData<GetBookmarkedCompaniesRequest, GetBookmarkedCompaniesResponse>(
         `/user/bookmarks/companies`,
         "GET",
-        paginationSpec
+        { paginationSpec: paginationSpec }
     );
 };
 
 export const getBookmarkedJobs = async (paginationSpec: PaginationSpec) => {
-    return await fetchData<PaginationSpec, GetBookmarkedJobsResponse>(
+    return await fetchData<GetBookmarkedJobsRequest, GetBookmarkedJobsResponse>(
         `/user/bookmarks/jobs`,
         "GET",
-        paginationSpec
+        { paginationSpec: paginationSpec }
     );
 };
 
-export const getJobApplications = async (paginationSpec: PaginationSpec) => {
-    return await fetchData<PaginationSpec, GetJobApplicationsResponse>(
+export const getJobApplications = async (statusId: number | null, paginationSpec: PaginationSpec) => {
+    return await fetchData<GetJobApplicationsRequest, GetJobApplicationsResponse>(
         `/user/job-applications`,
         "GET",
-        paginationSpec
+        { statusId: statusId, paginationSpec: paginationSpec }
     );
 };
 
 export const getPersonalFiles = async (paginationSpec: PaginationSpec) => {
-    return await fetchData<PaginationSpec, GetPersonalFilesResponse>(
+    return await fetchData<GetPersonalFilesRequest, GetPersonalFilesResponse>(
         `/user/personal-files`,
         "GET",
-        paginationSpec
+        { paginationSpec: paginationSpec }
     );
 };
 

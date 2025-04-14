@@ -1,21 +1,48 @@
-import React, { useCallback } from "react";
-import { useDropzone } from "react-dropzone";
+import React, {useCallback} from "react";
+import {FileRejection, useDropzone} from "react-dropzone";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { Typography, Button, Paper } from "@mui/material";
+import {Button, Paper, Typography} from "@mui/material";
 
 interface FileUploadProps {
-    onFileUpload: (files: File[]) => void;
+    onFilesChange: (acceptedFiles: File[], rejectedFiles: FileRejection[]) => void;
+    accept?: Record<string, string[]>; // e.g., { "application/pdf": [".pdf"] }
+    maxSize?: number; // in bytes
+    maxFiles?: number;
+    dragMessage?: string;
+    idleMessage?: string;
+    buttonText?: string;
+    disabled?: boolean;
+    sx?: object;
 }
 
-const FileUploadArea: React.FC<FileUploadProps> = ({ onFileUpload }) => {
-    const onDrop = useCallback((acceptedFiles: File[]) => {
-        onFileUpload(acceptedFiles);
-    }, [onFileUpload]);
+export default function FileUploadArea(props: FileUploadProps) {
+
+    const {
+        onFilesChange,
+        accept = { "application/pdf": [".pdf"] },
+        maxSize,
+        maxFiles,
+        dragMessage = "Upuść pliki tutaj...",
+        idleMessage = "Kliknij lub przeciągnij pliki do dodania",
+        buttonText = "Wybierz pliki",
+        disabled = false,
+        sx = {},
+    } = props;
+
+    const onDrop = useCallback(
+        (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
+            onFilesChange(acceptedFiles, rejectedFiles);
+        },
+        [onFilesChange]
+    );
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         multiple: true,
-        // accept: { p: ["image/*,application/pdf"] },
+        accept,
+        maxSize,
+        maxFiles,
+        disabled,
     });
 
     return (
@@ -29,21 +56,25 @@ const FileUploadArea: React.FC<FileUploadProps> = ({ onFileUpload }) => {
                 justifyContent: "center",
                 border: "2px dashed #90caf9",
                 backgroundColor: isDragActive ? "#e3f2fd" : "#fafafa",
-                cursor: "pointer",
+                cursor: disabled ? "not-allowed" : "pointer",
                 transition: "background-color 0.3s",
                 textAlign: "center",
                 width: "100%",
                 height: "100%",
+                opacity: disabled ? 0.6 : 1,
+                ...sx,
             }}
         >
             <input {...getInputProps()} />
             <CloudUploadIcon color="primary" sx={{ fontSize: 48, mb: 1 }} />
             <Typography variant="body1">
-                {isDragActive ? "Upuść pliki tutaj..." : "Kliknij lub przeciągnij pliki do dodania"}
+                {isDragActive ? dragMessage : idleMessage}
             </Typography>
-            {!isDragActive && <Button variant="contained" sx={{ mt: 2 }}>Wybierz pliki</Button>}
+            {!isDragActive && !disabled && (
+                <Button variant="contained" sx={{ mt: 2 }}>
+                    {buttonText}
+                </Button>
+            )}
         </Paper>
     );
 };
-
-export default FileUploadArea;

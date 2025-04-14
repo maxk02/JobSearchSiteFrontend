@@ -1,6 +1,7 @@
 "use client";
 
 import {
+    Avatar,
     Box,
     Button,
     Chip,
@@ -15,43 +16,95 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import {FilePresent, PlayArrow, Undo} from "@mui/icons-material";
-// import Link from "next/link";
+import {JobApplicationInUserProfileDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
+import formatSalaryInfoText from "@/app/_ui/_functions/formatSalaryInfoText";
+import formatLocationText from "@/app/_ui/_functions/formatLocationText";
+import {employmentOptions} from "@/lib/seededData/employmentOptions";
+import {jobContractTypes} from "@/lib/seededData/jobContractTypes";
+import {jobApplicationStatuses} from "@/lib/seededData/jobApplicationStatuses";
 
 
-export default function ApplicationInUserProfileCard() {
+
+const formatPolishDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    const formatter = new Intl.DateTimeFormat('pl-PL', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+    });
+    return formatter.format(date);
+};
+
+const formatPolishDateTime = (dateString: string): string => {
+    const date = new Date(dateString);
+    const formatter = new Intl.DateTimeFormat('pl-PL', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+    });
+    return formatter.format(date);
+};
+
+export interface ApplicationInUserProfileCardProps {
+    item: JobApplicationInUserProfileDto;
+}
+
+export default function ApplicationInUserProfileCard({ item }: ApplicationInUserProfileCardProps) {
     const theme = useTheme();
 
     return (
         <Paper sx={{ width: "100%", textAlign: "left" }}>
             <Box display="flex" flexDirection="row" width="100%">
                 <Box py={2.1} pl={3} pr={1}>
-                    <Image src="/company2.webp" width="80" height="80" alt="" />
+                    <Avatar variant="rounded" sx={{ width: 80, height: 80 }}>
+                        {item.companyLogoLink && <Image src={item.companyLogoLink} width="80" height="80" alt="" />}
+                    </Avatar>
                 </Box>
                 <Stack sx={{ px: 2, py: 2, flexGrow: 1 }}>
                     <Typography variant="h5" sx={{ fontWeight: 800, lineHeight: 1 }}>
-                        Specjalista do spraw księgowości
+                        {item.jobTitle}
                     </Typography>
-                    <Typography fontWeight="bold" color="textSecondary" lineHeight={1} mt={1.3}>
-                        31 920-49 560 zł netto (+VAT) / mies.
-                    </Typography>
+                    {item.salaryInfo &&
+                        <Typography fontWeight="bold" color="textSecondary" lineHeight={1} mt={1.3}>
+                            {formatSalaryInfoText(item.salaryInfo)}
+                        </Typography>
+                    }
                     <Typography fontWeight="600" lineHeight={1} mt={1.3}>
-                        Alab laboratoria Sp z o o
+                        {item.companyName}
                     </Typography>
-                    <Typography lineHeight={1} mt={1.3}>
-                        Warszawa, Mazowieckie
-                    </Typography>
-                    <List sx={{ m: 0, p: 0, display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
-                        <ListItem sx={{ m: 0, px: 0, pt: 1.3, pb: 0, width: "auto", "&::after": { content: '"●"', mx: 0.5, fontSize: "0.7rem", color: "text.secondary" } }}>
-                            <Typography lineHeight={1} color="textSecondary">Zdalnie, W biurze, Jeszcze gdzieś</Typography>
-                        </ListItem>
-                        <ListItem sx={{ m: 0, px: 0, pt: 1.3, pb: 0, width: "auto", "&::after": { content: '"●"', mx: 0.5, fontSize: "0.7rem", color: "text.secondary" } }}>
-                            <Typography lineHeight={1} color="textSecondary">Umowa o ..., Umowa o ..., Umowa o ...</Typography>
-                        </ListItem>
-                        <ListItem sx={{ m: 0, px: 0, pt: 1.3, pb: 0, width: "auto", "&::after": { content: '"●"', mx: 0.5, fontSize: "0.7rem", color: "text.secondary" } }}>
-                            <Typography lineHeight={1} color="textSecondary">Umowa o ..., Umowa o ..., Umowa o ...</Typography>
+
+                    {item.locations.length === 1 ? (
+                        <Typography lineHeight={1} mt={1.3}>
+                            {formatLocationText(item.locations[0])}
+                        </Typography>
+                    ) : (
+                        <Typography lineHeight={1}>
+                            Dostępna w {item.locations.length} lokalizacjach
+                        </Typography>
+                    )}
+
+                    <List sx={{ m: 0, p: 0, display: "flex", flexDirection: "row" }}>
+                        <ListItem sx={{ m: 0, px: 0, pt: 1.3, pb: 0, width: "auto",
+                            "&::after": { content: '"●"', mx: 0.5, fontSize: "0.7rem", color: "text.secondary" } }}
+                        >
+                            {item.employmentOptionIds?.map((item) => (
+                                <Typography key={item} lineHeight={1} color="textSecondary">
+                                    {employmentOptions
+                                        .filter(eo => eo.id === item)
+                                        .map(eo => eo.namePl).join(",")}
+                                </Typography>
+                            ))}
                         </ListItem>
                         <ListItem sx={{ m: 0, px: 0, pt: 1.3, pb: 0, width: "auto" }}>
-                            <Typography lineHeight={1} color="textSecondary">Umowa o ..., Umowa o ..., Umowa o ...</Typography>
+                            {item.contractTypeIds?.map((item) => (
+                                <Typography key={item} lineHeight={1} color="textSecondary">
+                                    {jobContractTypes
+                                        .filter(jct => jct.id === item)
+                                        .map(jct => jct.namePl).join(",")}
+                                </Typography>
+                            ))}
                         </ListItem>
                     </List>
 
@@ -60,16 +113,26 @@ export default function ApplicationInUserProfileCard() {
                             <ListItemIcon sx={{ color: theme.palette.primary.main, px: 0.5, lineHeight: 1, minWidth: 24 }}>
                                 <PlayArrow sx={{ fontSize: "1rem" }} />
                             </ListItemIcon>
-                            <Typography lineHeight={1}>Status: odrzucona</Typography>
+                            <Typography lineHeight={1}>
+                                Status: {jobApplicationStatuses.find(s => s.id === item.statusId)?.namePl}
+                            </Typography>
                         </ListItem>
                         <ListItem sx={{ px: 0, pb: 0, pt: 0, height: "32px" }}>
                             <ListItemIcon sx={{ color: theme.palette.primary.main, px: 0.5, lineHeight: 1, minWidth: 24 }}>
                                 <PlayArrow sx={{ fontSize: "1rem" }} />
                             </ListItemIcon>
                             <Typography lineHeight={1}>Pliki:</Typography>
-                            <Stack direction="row" spacing={1} sx={{ ml: 1 }}>
-                                <Chip label="Cv Jan Kowalski Ul...pdf" variant="filled" onClick={() => {}} />
-                            </Stack>
+                            {item.personalFiles.length > 0 ?
+                                <Stack direction="row" spacing={1} sx={{ ml: 1 }}>
+                                    {item.personalFiles.map((file) => (
+                                        <Chip key={file.id} label={file.name} variant="filled" />
+                                    ))}
+                                </Stack> :
+                                <Typography lineHeight={1} color="textSecondary">
+                                    Brak plików
+                                </Typography>
+                            }
+
                         </ListItem>
                     </List>
 
@@ -100,10 +163,10 @@ export default function ApplicationInUserProfileCard() {
 
             <Box display="flex" flexDirection="column" py={1} px={2} gap={0.7}>
                 <Typography variant="body2" width="100%" color="text.secondary" textAlign="right">
-                    Opublikowana: 24.04.2024
+                    Opublikowana: {formatPolishDate(item.dateTimePublishedUtc)}
                 </Typography>
                 <Typography variant="body2" width="100%" color="text.secondary" textAlign="right">
-                    Zaaplikowano: 27.05.2024
+                    Zaaplikowano: {formatPolishDateTime(item.dateTimeAppliedUtc)}
                 </Typography>
             </Box>
 

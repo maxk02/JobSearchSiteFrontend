@@ -1,6 +1,7 @@
 import {JobSalaryInfoDto} from "@/lib/api/jobs/jobsApiDtos";
 import {PersonalFileInfoDto} from "@/lib/api/personalFiles/personalFIlesApiDtos";
 import {JobApplicationStatus} from "@/lib/api/jobApplications/jobApplicationsApiEnums";
+import {StringLocationDto} from "@/lib/api/locations/locationsApiDtos";
 
 
 export interface JobApplicationForManagersDto {
@@ -16,11 +17,15 @@ export interface JobApplicationInUserProfileDto {
     id: number;
     companyId: number;
     companyName: string;
+    companyLogoLink: string | null;
     jobId: number;
     jobTitle: string;
     dateTimePublishedUtc: string;
-    jobSalaryInfoDto: JobSalaryInfoDto | null;
-    employmentTypeIds: number[] | null;
+    salaryInfo: JobSalaryInfoDto | null;
+    locations: StringLocationDto[];
+    employmentOptionIds: number[] | null;
+    contractTypeIds: number[] | null;
     dateTimeAppliedUtc: string;
-    status: JobApplicationStatus;
+    personalFiles: PersonalFileInfoDto[];
+    statusId: number;
 }

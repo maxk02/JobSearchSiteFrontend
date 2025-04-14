@@ -18,6 +18,7 @@ const formatPolishDate = (dateString: string): string => {
     const formatter = new Intl.DateTimeFormat('pl-PL', {
         day: 'numeric',
         month: 'long',
+        year: 'numeric',
     });
     return formatter.format(date);
 };

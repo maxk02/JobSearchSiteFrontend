@@ -91,6 +91,10 @@ export default async function CompanyPage({ params, searchParams }: CompanyPageP
 
     const { jobCards, pagination } = await fetchCompanyJobs(typedParams.companyId, typedSearchParams);
 
+    if (typedSearchParams.page !== pagination.currentPage) {
+
+    }
+
     return (
         <>
             <Container maxWidth="lg" sx={{ mt: 4 }}>
@@ -128,7 +132,7 @@ export default async function CompanyPage({ params, searchParams }: CompanyPageP
                     <Stack direction="row" sx={{ justifyContent: "center" }}>
                         <MyDefaultPagination
                             totalPages={pagination.totalPages}
-                            currentPage={pagination.currentPage}
+                            currentPage={typedSearchParams.page}
                         />
                     </Stack>
                 </Stack>
