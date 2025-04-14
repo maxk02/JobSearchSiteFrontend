@@ -1,6 +1,5 @@
 import fetchData from "@/lib/api/fetchData";
 import {
-    AddCompanyRequest,
     AddCompanyResponse,
     GetCompaniesRequest,
     GetCompaniesResponse,
@@ -10,8 +9,9 @@ import {
     UpdateCompanyRequestDto
 } from "@/lib/api/companies/companiesApiInterfaces";
 
-export const addCompany = async (req: AddCompanyRequest) => {
-    return await fetchData<AddCompanyRequest, AddCompanyResponse>("/companies", "POST", req);
+
+export const addCompany = async (form: FormData) => {
+    return await fetchData<FormData, AddCompanyResponse>("/companies", "POST", form, {});
 };
 
 export const deleteCompany = async (id: number) => {

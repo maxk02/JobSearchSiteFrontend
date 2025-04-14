@@ -29,6 +29,9 @@ type AccountSideNavbarProps = {
 }
 
 export default function AccountSideNavbar({ currentPath }: AccountSideNavbarProps) {
+
+
+
     return (
         <Paper sx={{ px: 1, py: 0.5, position: "sticky", top: 20, zIndex: 1 }}>
             <Stack sx={{ gap: 0.7, mt: 1.5, pt: 1.5, pb: 0.5, px: 1.8 }}>

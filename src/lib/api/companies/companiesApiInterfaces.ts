@@ -6,9 +6,10 @@ import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 export interface AddCompanyRequest {
     name: string;
     description: string | null;
-    isPublic: boolean;
-    countryId: number;
-    logoLink: string | null;
+    nip: string;
+    // isPublic: boolean;
+    // countryId: number;
+    // logoLink: string | null;
 }
 
 export interface AddCompanyResponse {

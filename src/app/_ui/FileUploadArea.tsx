@@ -21,7 +21,7 @@ export default function FileUploadArea(props: FileUploadProps) {
         onFilesChange,
         accept,
         maxSize,
-        maxFiles,
+        maxFiles = 1,
         dragMessage = "Upuść pliki tutaj...",
         idleMessage = "Kliknij lub przeciągnij pliki do dodania",
         buttonText = "Wybierz pliki",
@@ -38,7 +38,7 @@ export default function FileUploadArea(props: FileUploadProps) {
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
-        multiple: (!!(maxFiles && maxFiles > 1)),
+        multiple: (maxFiles > 1),
         accept,
         maxSize,
         maxFiles,

@@ -70,6 +70,7 @@ export interface GetUserProfileResponse {
     lastName: string;
     email: string;
     phone: string | null;
+    avatarLink: string | null;
 }
 
 export interface UpdateUserProfileRequestDto {

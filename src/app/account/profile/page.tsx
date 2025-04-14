@@ -6,7 +6,7 @@ import {Controller, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {UserProfileFormData, userProfileSchema} from "@/lib/schemas/userProfileSchema";
 import {UpdateUserProfileRequestDto} from "@/lib/api/userProfiles/userProfilesApiInterfaces";
-import {updateUserProfile, uploadAvatar} from "@/lib/api/userProfiles/userProfilesApi";
+import {getUserProfile, updateUserProfile, uploadAvatar} from "@/lib/api/userProfiles/userProfilesApi";
 import Image from "next/image";
 import {Info} from "@mui/icons-material";
 import FileUploadArea from "@/app/_ui/FileUploadArea";
@@ -16,7 +16,7 @@ export default function AccountProfilePage() {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [avatarLink, setAvatarLink] = useState<string | null>(null);
 
-    const {handleSubmit, control, formState: {errors}} = useForm<UserProfileFormData>({
+    const {handleSubmit, control, reset, formState: {errors}} = useForm<UserProfileFormData>({
         resolver: zodResolver(userProfileSchema),
         defaultValues: {
             firstName: '',
@@ -31,7 +31,6 @@ export default function AccountProfilePage() {
             firstName: data.firstName,
             lastName: data.lastName,
             phone: data.phone
-
         };
 
         const result = await updateUserProfile(request);
@@ -44,21 +43,23 @@ export default function AccountProfilePage() {
     const handleAvatarUpload = async (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
         setErrorMessage(null);
 
-        if (rejectedFiles[0]) {
-            const reasons = rejectedFiles[0].errors.map((e) => {
-                if (e.code === "file-too-large") {
-                    return `Nie można dodać pliku \"${rejectedFiles[0].file.name}\": plik jest za duży (max 10MB).`;
-                }
-                if (e.code === "file-invalid-type") {
-                    return `Nie można dodać pliku \"${rejectedFiles[0].file.name}\": niedozwolony format (tylko PDF).`;
-                }
-                if (e.code === "too-many-files") {
-                    return `Nie można dodać pliku \"${rejectedFiles[0].file.name}\": nrzekroczono limit plików (max 15).`;
-                }
-                return `${rejectedFiles[0].file.name}: ${e.message}`;
+        if (rejectedFiles.length > 0) {
+            const errorMessages = rejectedFiles.map((file: FileRejection) => {
+                const reasons = file.errors.map((e) => {
+                    if (e.code === "file-too-large") {
+                        return `Nie można dodać pliku \"${file.file.name}\": plik jest za duży (max 5MB).`;
+                    }
+                    if (e.code === "file-invalid-type") {
+                        return `Nie można dodać pliku \"${file.file.name}\": niedozwolony format.`;
+                    }
+                    if (e.code === "too-many-files") {
+                        return `Nie można dodać pliku \"${file.file.name}\": nrzekroczono limit plików (max 1).`;
+                    }
+                    return `${file.file.name}: ${e.message}`;
+                });
+                return reasons.join(", ");
             });
-            setErrorMessage(reasons.join(", "));
-
+            setErrorMessage(errorMessages.join("; "));
             return;
         }
 
@@ -78,7 +79,23 @@ export default function AccountProfilePage() {
     };
 
     useEffect(() => {
+        const fetchData = async () => {
+            const result = await getUserProfile();
+            if (result.success) {
+                setAvatarLink(result.data.avatarLink);
 
+                reset({
+                    firstName: result.data.firstName,
+                    lastName: result.data.lastName,
+                    phone: result.data.phone,
+                });
+            }
+            else {
+                console.log("Profile fetching error");
+            }
+        }
+
+        fetchData();
     });
 
     return (
@@ -117,7 +134,7 @@ export default function AccountProfilePage() {
                         }}
                     >
                         <Avatar sx={{ width: 128, height: 128, m: 0 }}>
-                            <Image src="/avatar2.webp" width={128} height={128} alt="User's avatar" />
+                            <Image src={avatarLink ?? "/avatar2.webp"} width={128} height={128} alt="User's avatar" />
                         </Avatar>
                         <Typography textAlign="center">Obecne zdjęcie</Typography>
                     </Paper>
