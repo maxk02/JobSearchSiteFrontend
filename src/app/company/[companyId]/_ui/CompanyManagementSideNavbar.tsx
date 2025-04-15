@@ -14,6 +14,9 @@ import {
 } from "@mui/material";
 import {ArrowForward, Business, Dashboard, FileOpen, Policy, QueryStats} from "@mui/icons-material";
 import {useParams, usePathname} from "next/navigation";
+import {useEffect, useState} from "react";
+import {getCompanyById} from "@/lib/api/companies/companiesApi";
+import Image from "next/image";
 
 
 function isRouteActive(pathname: string, href: string) {
@@ -23,9 +26,29 @@ function isRouteActive(pathname: string, href: string) {
 
 export default function CompanyManagementSideNavbar() {
 
-    const { companyId } = useParams();
+    const params = useParams();
+
+    const companyId = parseInt(params.companyId as string, 10);
 
     const currentPath = usePathname();
+
+    const [companyName, setCompanyName] = useState<string | null>(null);
+    const [logoLink, setLogoLink] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchCompanyData = async () => {
+
+            const result = await getCompanyById(companyId);
+
+            if (result.success) {
+                setCompanyName(result.data.company.name);
+                setLogoLink(result.data.company.logoLink);
+            }
+
+        };
+
+        fetchCompanyData();
+    });
 
     const navItems = [
         { text: "Pulpit", icon: <Dashboard />, path: `/company/${companyId}/manage/dashboard` },
@@ -37,9 +60,11 @@ export default function CompanyManagementSideNavbar() {
     return (
         <Paper sx={{ px: 1, py: 0.5, position: "sticky", top: 20, zIndex: 1 }}>
             <Stack sx={{ gap: 0.7, mt: 1.5, pt: 1.5, pb: 0.5, px: 1.8 }}>
-                <Avatar variant="rounded" src="/company2.webp" sx={{ height: 64, width: 64 }} />
+                <Avatar variant="rounded" sx={{ height: 64, width: 64 }}>
+                    {logoLink && <Image width={64} height={64} src={logoLink} alt="Company logo image" />}
+                </Avatar>
                 <Typography variant="body1" fontWeight={600} gutterBottom marginBottom={0}>
-                    Firma1 Sp. z o o
+                    {companyName}
                 </Typography>
             </Stack>
             <List>

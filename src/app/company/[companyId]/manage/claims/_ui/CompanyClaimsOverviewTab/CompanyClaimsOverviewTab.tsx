@@ -14,9 +14,15 @@ import {
     SelectChangeEvent,
     TextField
 } from "@mui/material";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import CompanyClaimsOverviewTable
     from "@/app/company/[companyId]/manage/claims/_ui/CompanyClaimsOverviewTab/CompanyClaimsOverviewTable";
+import {companyClaims} from "@/lib/seededData/companyClaims";
+import {Close, Refresh} from "@mui/icons-material";
+import {getCompanyClaimsOverview} from "@/lib/api/companyClaims/companyClaimsApi";
+import {useParams} from "next/navigation";
+import {GetCompanyClaimsOverviewRequest} from "@/lib/api/companyClaims/companyClaimsApiInterfaces";
+import {CompanyClaimsOverviewDto} from "@/lib/api/companyClaims/companyClaimsDtos";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -29,51 +35,80 @@ const MenuProps = {
     },
 };
 
-const claimNames = [
-    "Pełny dostęp (1)",
-    "Pełny dostęp (2)",
-    "Pełny dostęp (3)",
-    "Pełny dostęp (4)",
-    "Pełny dostęp (5)",
-    "Pełny dostęp (6)",
-];
-
 
 export default function CompanyClaimsOverviewTab() {
-    const [claimName, setClaimName] = React.useState<string[]>([]);
-
-    const handleChange = (event: SelectChangeEvent<typeof claimName>) => {
-        const {
-            target: { value },
-        } = event;
-        setClaimName(
-            typeof value === 'string' ? value.split(',') : value,
-        );
-    };
     
+    const params = useParams();
+    const companyId = parseInt(params.companyId as string, 10);
+    
+    const [page, setPage] = useState<number>(0);
+    const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+    const [rows, setRows] = useState<CompanyClaimsOverviewDto[]>([]);
+    
+    const [searchText, setSearchText] = useState<string>("");
+    const [selectedClaimIds, setSelectedClaimIds] = useState<number[]>([]);
+
+    const handleChange = (event: SelectChangeEvent<number[]>) => {
+        setSelectedClaimIds(event.target.value as number[]);
+    };
+
+    const handleClearInputs = () => {
+        setSelectedClaimIds([]);
+        setSearchText("");
+        setPage(1);
+    };
+
+    const [refreshButtonCounter, setRefreshButtonCounter] = useState<number>(0);
+    
+    useEffect(() => {
+
+        const fetchData = async () => {
+            const request: GetCompanyClaimsOverviewRequest = {
+                companyClaimIds: selectedClaimIds,
+                paginationSpec: {
+                    pageNumber: page,
+                    pageSize: rowsPerPage
+                },
+                userQuery: searchText
+            };
+
+            const result = await getCompanyClaimsOverview(companyId, request);
+
+            if (result.success) {
+                setRows(result.data.companyClaimsOverviewDtos);
+            }
+        };
+
+        fetchData();
+        
+    }, [companyId, page, rowsPerPage, searchText, selectedClaimIds, refreshButtonCounter]);
     
     return (
         <Box sx={{ pt: 1.2, pb: 2, px: 2.1 }}>
             <Box display="flex" flexDirection="row" sx={{ alignItems: "center" }} mt={1}>
                 <FormLabel>Wyszukiwanie:</FormLabel>
-                <TextField label="Imię/nazwisko/email" variant="outlined" sx={{ ml: 1.3, width: 300 }} />
+                <TextField
+                    label="Imię/nazwisko/email"
+                    sx={{ ml: 1.3, width: 300 }}
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                />
                 <FormControl sx={{ ml: 2.5, width: 300 }}>
-                    <InputLabel id="demo-multiple-checkbox-label">Rodzaj uprawnienia</InputLabel>
+                    <InputLabel id="claim-type-select-label">Rodzaj uprawnienia</InputLabel>
                     <Select
-                        labelId="demo-multiple-checkbox-label"
-                        id="demo-multiple-checkbox"
+                        labelId="claim-type-select-label"
+                        id="claim-type-select"
                         multiple
-                        value={claimName}
+                        value={selectedClaimIds}
                         onChange={handleChange}
                         input={<OutlinedInput label="Rodzaj uprawnienia" />}
-                        // renderValue={(selected) => selected.join(', ')}
-                        renderValue={(selected) => `Wybrano ${selected.length} uprawnień`}
+                        renderValue={(selected) => `Wybrano uprawnień: ${selected.length}`}
                         MenuProps={MenuProps}
                     >
-                        {claimNames.map((name) => (
-                            <MenuItem key={name} value={name} sx={{ pl: 0.2 }}>
-                                <Checkbox checked={claimName.includes(name)} />
-                                <ListItemText primary={name} />
+                        {companyClaims.map((item) => (
+                            <MenuItem key={item.id} value={item.id} sx={{ pl: 0.2 }}>
+                                <Checkbox checked={selectedClaimIds.includes(item.id)} />
+                                <ListItemText primary={`${item.namePl} (${item.id})`} />
                             </MenuItem>
                         ))}
                     </Select>
@@ -82,7 +117,8 @@ export default function CompanyClaimsOverviewTab() {
                     variant="contained"
                     color="primary"
                     size="large"
-                    // component={Link}
+                    startIcon={<Refresh />}
+                    onClick={() => setRefreshButtonCounter(prev => prev + 1)}
                     sx={{ ml: 2.5, borderRadius: "50px", width: "125px" }}
                 >
                     Odśwież
@@ -91,14 +127,21 @@ export default function CompanyClaimsOverviewTab() {
                     variant="contained"
                     color="error"
                     size="large"
-                    // component={Link}
+                    startIcon={<Close />}
+                    onClick={handleClearInputs}
                     sx={{ ml: 2, borderRadius: "50px", width: "125px" }}
                 >
                     Wyczyść
                 </Button>
             </Box>
             <Box sx={{ mt: 2 }}>
-                <CompanyClaimsOverviewTable />
+                <CompanyClaimsOverviewTable
+                    rows={rows}
+                    page={page}
+                    rowsPerPage={rowsPerPage}
+                    onPageChange={(newPage: number) => setPage(() => newPage)}
+                    onRowsPerPageChange={(newRowsPerPage: number) => setRowsPerPage(newRowsPerPage)}
+                />
             </Box>
         </Box>
     );

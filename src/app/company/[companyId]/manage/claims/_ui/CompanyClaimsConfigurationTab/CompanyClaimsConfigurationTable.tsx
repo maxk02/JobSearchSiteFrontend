@@ -111,7 +111,7 @@ export default function UserFolderClaimsConfigurationTable() {
 
 
     return (
-        <Paper sx={{ width: '100%' }}>
+        <Paper sx={{ width: '1000px', maxWidth: '1000px' }}>
             <TableContainer sx={{ mt: 1.7 }}>
                 <Table sx={{ tableLayout: "auto" }}>
                     <TableHead>
@@ -211,14 +211,6 @@ export default function UserFolderClaimsConfigurationTable() {
                                             sx={{mr: 2}}
                                         >
                                             Wyłącz
-                                        </Button>
-                                        <Button
-                                            variant="outlined"
-                                            color="primary"
-                                            startIcon={<Settings/>}
-                                            endIcon={<OpenInNew/>}
-                                        >
-                                            Przejdź do źródła
                                         </Button>
                                     </TableCell>
                                 </TableRow>

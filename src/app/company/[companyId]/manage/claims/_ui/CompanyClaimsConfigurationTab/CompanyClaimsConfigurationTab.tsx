@@ -24,44 +24,26 @@ export default function CompanyClaimsConfigurationTab() {
                 </Button>
             </Box>
 
-            <Stack gap={0.8} sx={{ mt: 1.5 }}>
+            <Stack spacing={1} sx={{ mt: 1.5 }}>
                 <Typography variant="h6">
                     Wybrany użytkownik
                 </Typography>
-                <Paper sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 2,
-                    width: "fit-content",
-                    border: "2px dashed lightgray",
-                }}
-                >
+                <Stack direction="row" spacing={1.5} sx={{ alignItems: "center" }}>
                     <Avatar variant="circular" src="/avatar2.webp" sx={{ height: 50, width: 50 }} />
 
-                    <Box sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                    }}
-                    >
-                        <Typography variant="body1" fontWeight={600} gutterBottom m={0}
-                                    sx={{ flex: "none" }}
-                        >
+                    <Stack>
+                        <Typography variant="body1" fontWeight={600} gutterBottom m={0} sx={{ flex: "none" }}>
                             Jan Kowalski
                         </Typography>
-                        <Typography variant="body1" gutterBottom m={0}
-                                    sx={{ flex: "none" }}
-                        >
+                        <Typography variant="body1" gutterBottom m={0} sx={{ flex: "none" }}>
                             jankowalski9226@gmail.com
                         </Typography>
-                    </Box>
+                    </Stack>
 
-                </Paper>
+                </Stack>
             </Stack>
 
-            <Box sx={{ mt: 2 }}>
+            <Box sx={{ mt: 2.3 }}>
                 <CompanyClaimsConfigurationTable />
             </Box>
         </Box>
