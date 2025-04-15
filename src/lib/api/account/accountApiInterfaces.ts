@@ -6,7 +6,7 @@ export interface ChangePasswordRequest {
 }
 
 export interface ConfirmEmailRequest {
-    token: string;
+    code: string;
 }
 
 export interface CreateAccountRequest {
@@ -25,9 +25,9 @@ export interface GetUserSessionsResponse {
 export interface LogInRequest {
     email: string;
     password: string;
-    clientDeviceName: string;
-    clientOs: string;
-    clientBrowser: string;
+    deviceName: string | null;
+    os: string | null;
+    browser: string | null;
 }
 
 export interface LogInResponseDto {

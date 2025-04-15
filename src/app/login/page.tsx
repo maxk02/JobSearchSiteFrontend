@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Checkbox, Container, FormControlLabel, Link, Paper, Stack, TextField, Typography} from "@mui/material";
 import {Controller, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -9,11 +9,31 @@ import {logIn} from "@/lib/api/account/accountApi";
 import {LogInRequest} from "@/lib/api/account/accountApiInterfaces";
 import {useCurrentUserStore} from "@/lib/stores/currentUserStore";
 import {useRouter} from "next/navigation";
+import {UAParser} from "ua-parser-js";
+
+
+interface UAInfo {
+    browser?: string;
+    os?: string;
+    device?: string;
+}
 
 export default function LoginPage() {
     const { setAuth } = useCurrentUserStore();
 
     const router = useRouter();
+
+    const [uaInfo, setUaInfo] = useState<UAInfo>({});
+
+    useEffect(() => {
+        const parser = new UAParser();
+        const result = parser.getResult();
+        setUaInfo({
+            browser: [result.browser.name, result.browser.version].filter(String).join(' '),
+            os: [result.os.name, result.os.version].filter(String).join(' '),
+            device: [result.device.vendor, result.device.model].filter(String).join(' '),
+        });
+    }, []);
 
     const {
         control,
@@ -32,6 +52,9 @@ export default function LoginPage() {
         const logInRequest: LogInRequest = {
             email: data.email,
             password: data.password,
+            browser: uaInfo.browser ?? null,
+            deviceName: uaInfo.device ?? null,
+            os: uaInfo.os ?? null,
         };
 
         const logInResult = await logIn(logInRequest);

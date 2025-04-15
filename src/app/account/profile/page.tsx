@@ -30,7 +30,8 @@ export default function AccountProfilePage() {
         const request: UpdateUserProfileRequestDto = {
             firstName: data.firstName,
             lastName: data.lastName,
-            phone: data.phone
+            phone: data.phone,
+            isReceivingApplicationStatusUpdates: true,
         };
 
         const result = await updateUserProfile(request);

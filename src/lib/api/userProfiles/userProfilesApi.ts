@@ -10,6 +10,7 @@ import {
 } from "./userProfilesApiInterfaces";
 import { PaginationSpec } from "@/lib/api/sharedDtos";
 import {UploadFileResponse} from "@/lib/api/personalFiles/personalFilesApiInterfaces";
+import {AddCompanyResponse} from "@/lib/api/companies/companiesApiInterfaces";
 
 
 export const addCompanyBookmark = async (companyId: number) => {
@@ -20,8 +21,18 @@ export const addJobBookmark = async (jobId: number) => {
     return await fetchData<unknown>(`/user/bookmarks/jobs/${jobId}`, "POST");
 };
 
-export const addUserProfile = async (req: AddUserProfileRequest) => {
-    return await fetchData<AddUserProfileRequest>("/user", "POST", req);
+export const addUserProfile = async (req: AddUserProfileRequest, avatarFile: File | null = null) => {
+
+    const formData = new FormData();
+
+    formData.append("request", JSON.stringify(req));
+
+    formData.append("request", JSON.stringify(req));
+    if (avatarFile) {
+        formData.append("file", avatarFile);
+    }
+
+    return await fetchData<FormData>("/user", "POST", formData, {});
 };
 
 export const deleteCompanyBookmark = async (companyId: number) => {

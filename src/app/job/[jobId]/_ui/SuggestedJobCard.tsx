@@ -5,7 +5,6 @@ import Image from "next/image";
 import {Star, StarBorder} from "@mui/icons-material";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 import formatSalaryInfoText from "@/app/_ui/_functions/formatSalaryInfoText";
-import formatLocationText from "@/app/_ui/_functions/formatLocationText";
 import {employmentOptions} from "@/lib/seededData/employmentOptions";
 import {jobContractTypes} from "@/lib/seededData/jobContractTypes";
 import {addJobBookmark, deleteJobBookmark} from "@/lib/api/userProfiles/userProfilesApi";
@@ -73,7 +72,7 @@ export default function SuggestedJobCard({ item }: SuggestedJobCardProps) {
 
                 {item.locations.length === 1 ? (
                     <Typography lineHeight={1} mt={1.3}>
-                        {formatLocationText(item.locations[0])}
+                        {item.locations[0].name}
                     </Typography>
                 ) : (
                     <Typography lineHeight={1}>

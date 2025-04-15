@@ -16,7 +16,6 @@ export interface AddJobBookmarkRequest {
 export interface AddUserProfileRequest {
     firstName: string;
     lastName: string;
-    email: string;
     phone: string | null;
 }
 

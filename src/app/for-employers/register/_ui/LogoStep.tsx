@@ -2,7 +2,7 @@ import { Alert, Avatar, Box, Button, Paper, Stack, Typography } from '@mui/mater
 import { DeleteForever, Info } from '@mui/icons-material';
 import FileUploadArea from '@/app/_ui/FileUploadArea';
 import { FileRejection } from 'react-dropzone';
-import {useState} from "react";
+import React, {useState} from "react";
 
 interface LogoStepProps {
     setAvatarFile: (file: File | null) => void;
@@ -41,67 +41,70 @@ export default function LogoStep({ setAvatarFile }: LogoStepProps) {
     };
 
     return (
-        <Stack sx={{ gap: 2, mt: 2 }}>
-            <Typography>
-                Tu możesz dodać logo firmy, które będzie widoczne na ofertach pracy i w innych miejscach.
-            </Typography>
+        <>
+            <Typography variant="h4">Logo</Typography>
+            <Stack sx={{ gap: 2, mt: 2 }}>
+                <Typography>
+                    Tu możesz dodać logo firmy, które będzie widoczne na ofertach pracy i w innych miejscach.
+                </Typography>
 
-            <Alert severity="info" icon={<Info />} sx={{ mt: 0.7, maxWidth: "500px" }}>
-                <Typography>Dopuszczalne formaty pliku: jpg, png, gif, webp</Typography>
-                <Typography>Maksymalny rozmiar pliku: 5MB</Typography>
-            </Alert>
-
-            {errorMessage && (
-                <Alert severity="error" sx={{ mt: 2, maxWidth: "650px" }}>
-                    <Typography>{errorMessage}</Typography>
+                <Alert severity="info" icon={<Info />} sx={{ mt: 0.7, maxWidth: "500px" }}>
+                    <Typography>Dopuszczalne formaty pliku: jpg, png, gif, webp</Typography>
+                    <Typography>Maksymalny rozmiar pliku: 5MB</Typography>
                 </Alert>
-            )}
 
-            <Stack direction="row" sx={{ gap: 2 }}>
-                <Paper
-                    sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: 1.3,
-                        width: 270,
-                        height: 250,
-                        border: "2px dashed lightgray",
-                    }}
-                >
-                    <Avatar variant="rounded" src="/company2.webp" sx={{ width: 128, height: 128, m: 0 }} />
-                    <Typography textAlign="center">Obecne zdjęcie</Typography>
-                    <Button
-                        size="small"
-                        color="error"
-                        startIcon={<DeleteForever />}
+                {errorMessage && (
+                    <Alert severity="error" sx={{ mt: 2, maxWidth: "650px" }}>
+                        <Typography>{errorMessage}</Typography>
+                    </Alert>
+                )}
+
+                <Stack direction="row" sx={{ gap: 2 }}>
+                    <Paper
                         sx={{
-                            padding: 0,
-                            '&:hover': { backgroundColor: 'transparent' },
-                            '&:active': { backgroundColor: 'transparent' },
-                            '&:focus': { outline: 'none' },
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: 1.3,
+                            width: 270,
+                            height: 250,
+                            border: "2px dashed lightgray",
                         }}
                     >
-                        Usuń
-                    </Button>
-                </Paper>
-                <Box sx={{ width: 270, height: 250 }}>
-                    <FileUploadArea
-                        onFilesChange={handleAvatarUpload}
-                        accept={{
-                            "image/jpeg": [".jpg", ".jpeg"],
-                            "image/png": [".png"],
-                            "image/gif": [".gif"],
-                            "image/webp": [".webp"]
-                        }}
-                        maxSize={5 * 1024 * 1024}
-                        maxFiles={1}
-                        idleMessage="Kliknij lub przeciągnij zdjęcie do wgrania"
-                        dragMessage="Upuść zdjęcie tutaj..."
-                    />
-                </Box>
+                        <Avatar variant="rounded" src="/company2.webp" sx={{ width: 128, height: 128, m: 0 }} />
+                        <Typography textAlign="center">Obecne zdjęcie</Typography>
+                        <Button
+                            size="small"
+                            color="error"
+                            startIcon={<DeleteForever />}
+                            sx={{
+                                padding: 0,
+                                '&:hover': { backgroundColor: 'transparent' },
+                                '&:active': { backgroundColor: 'transparent' },
+                                '&:focus': { outline: 'none' },
+                            }}
+                        >
+                            Usuń
+                        </Button>
+                    </Paper>
+                    <Box sx={{ width: 270, height: 250 }}>
+                        <FileUploadArea
+                            onFilesChange={handleAvatarUpload}
+                            accept={{
+                                "image/jpeg": [".jpg", ".jpeg"],
+                                "image/png": [".png"],
+                                "image/gif": [".gif"],
+                                "image/webp": [".webp"]
+                            }}
+                            maxSize={5 * 1024 * 1024}
+                            maxFiles={1}
+                            idleMessage="Kliknij lub przeciągnij zdjęcie do wgrania"
+                            dragMessage="Upuść zdjęcie tutaj..."
+                        />
+                    </Box>
+                </Stack>
             </Stack>
-        </Stack>
+        </>
     );
 }

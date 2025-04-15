@@ -96,8 +96,7 @@ export default function RegisterCompanyPage() {
             <Paper sx={{ width: "100%", my: 5, px: 10, py: 6 }}>
                 <FormProvider {...methods}>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <Typography variant="h4">{steps[activeStep]}</Typography>
-                        <Box>{renderStepContent(activeStep)}</Box>
+                        {renderStepContent(activeStep)}
                         <Stack direction="row" sx={{ justifyContent: "space-between", mt: 5 }}>
                             {
                                 activeStep < steps.length - 1 &&
