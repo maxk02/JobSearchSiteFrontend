@@ -1,16 +1,19 @@
 import fetchData from "@/lib/api/fetchData";
 import {
-    AddUserProfileRequest, GetBookmarkedCompaniesRequest,
-    GetBookmarkedCompaniesResponse, GetBookmarkedJobsRequest,
-    GetBookmarkedJobsResponse, GetJobApplicationsRequest,
-    GetJobApplicationsResponse, GetPersonalFilesRequest,
+    AddUserProfileRequest,
+    GetBookmarkedCompaniesRequest,
+    GetBookmarkedCompaniesResponse,
+    GetBookmarkedJobsRequest,
+    GetBookmarkedJobsResponse,
+    GetJobApplicationsRequest,
+    GetJobApplicationsResponse,
+    GetPersonalFilesRequest,
     GetPersonalFilesResponse,
     GetUserProfileResponse,
-    UpdateUserProfileRequestDto, UploadAvatarResponse
+    UpdateUserProfileRequestDto,
+    UploadAvatarResponse
 } from "./userProfilesApiInterfaces";
-import { PaginationSpec } from "@/lib/api/sharedDtos";
-import {UploadFileResponse} from "@/lib/api/personalFiles/personalFilesApiInterfaces";
-import {AddCompanyResponse} from "@/lib/api/companies/companiesApiInterfaces";
+import {PaginationSpec} from "@/lib/api/sharedDtos";
 
 
 export const addCompanyBookmark = async (companyId: number) => {

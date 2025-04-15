@@ -25,7 +25,7 @@ export default function AccountProfilePage() {
         mode: 'onChange'
     });
 
-    const onBasicDataSubmit = async (data: UserProfileFormData) => {
+    const onSubmit = async (data: UserProfileFormData) => {
 
         const request: UpdateUserProfileRequestDto = {
             firstName: data.firstName,
@@ -156,7 +156,7 @@ export default function AccountProfilePage() {
                     </Box>
                 </Stack>
                 <Typography variant="h6" fontWeight={600} color="primary" mt={2}>Podstawowe dane</Typography>
-                <form onSubmit={handleSubmit(onBasicDataSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <Stack sx={{ gap: 1.5, mt: 1, width: 350 }}>
                         <Controller
                             name="firstName"

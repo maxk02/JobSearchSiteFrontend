@@ -9,7 +9,6 @@ export interface AddCompanyRequest {
     nip: string;
     // isPublic: boolean;
     // countryId: number;
-    // logoLink: string | null;
 }
 
 export interface AddCompanyResponse {
@@ -28,13 +27,12 @@ export interface GetCompaniesResponse {
 }
 
 export interface GetCompanyByIdResponse {
-    company: CompanyInfoDto | null;
+    company: CompanyInfoDto;
 }
 
 export interface UpdateCompanyRequestDto {
     name: string | null;
     description: string | null;
-    isPublic: boolean | null;
 }
 
 //
@@ -45,4 +43,8 @@ export interface GetCompanyJobsRequest {
 export interface GetCompanyJobsResponse {
     jobCards: JobCardDto[];
     paginationResponse: PaginationResponse;
+}
+
+export interface UploadAvatarResponse {
+    link: string;
 }

@@ -8,6 +8,7 @@ import {
     GetCompanyJobsResponse,
     UpdateCompanyRequestDto
 } from "@/lib/api/companies/companiesApiInterfaces";
+import {UploadAvatarResponse} from "@/lib/api/userProfiles/userProfilesApiInterfaces";
 
 
 export const addCompany = async (form: FormData) => {
@@ -33,4 +34,8 @@ export const getCompanyById = async (id: number) => {
 //
 export const getCompanyJobs = async (id: number, req: GetCompanyJobsRequest) => {
     return await fetchData<GetCompanyJobsRequest, GetCompanyJobsResponse>(`company/${id}/jobs`, "GET", req);
+};
+
+export const uploadAvatar = async (formData: FormData) => {
+    return await fetchData<FormData, UploadAvatarResponse>(`/company/avatar`, "PUT", formData, { "Content-Type": "multipart/form-data" });
 };
