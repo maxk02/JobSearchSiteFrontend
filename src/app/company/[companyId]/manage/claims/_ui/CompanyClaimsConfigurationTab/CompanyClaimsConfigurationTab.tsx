@@ -1,25 +1,30 @@
 "use client";
 
 import {
+    Alert,
     Autocomplete,
     Avatar,
     Box,
     Button,
+    FormControlLabel,
     FormLabel,
-    IconButton,
-    InputAdornment,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    Radio,
+    RadioGroup,
     Stack,
     TextField,
     Typography
 } from "@mui/material";
-import React, {useEffect, useState} from "react";
-import {Close, Refresh} from "@mui/icons-material";
+import React, {ChangeEvent, useEffect, useState} from "react";
+import {Add, Info, Refresh} from "@mui/icons-material";
 import CompanyClaimsConfigurationTable from "./CompanyClaimsConfigurationTable";
 import {useParams} from "next/navigation";
 import {getCompanyClaimIdsForUser} from "@/lib/api/companyClaims/companyClaimsApi";
-import { AccountDataDto } from "@/lib/api/account/accountApiDtos";
-import {getUsers} from "@/lib/api/companies/companiesApi";
-import {GetCompanyUsersRequest} from "@/lib/api/companies/companiesApiInterfaces";
+import {AccountDataDto} from "@/lib/api/account/accountApiDtos";
+import {getCompanyEmployees} from "@/lib/api/companies/companiesApi";
+import {GetCompanyEmployeesRequest} from "@/lib/api/companies/companiesApiInterfaces";
 import Image from "next/image";
 
 
@@ -37,9 +42,12 @@ export default function CompanyClaimsConfigurationTab() {
 
     const [displayedUser, setDisplayedUser] = useState<AccountDataDto | null>(null);
 
-    const [options, setOptions] = useState<AccountDataDto[]>([]);
+    const [findUserOptions, setFindUserOptions] = useState<AccountDataDto[]>([]);
     const [loading, setLoading] = useState(false);
-    const [inputValue, setInputValue] = useState('');
+    const [findUserInputValue, setFindUserInputValue] = useState('');
+
+    const [userMode, setUserMode] = useState<'existing' | 'new'>('existing');
+    const [newUserEmail, setNewUserEmail] = useState('');
 
     useEffect(() => {
 
@@ -49,112 +57,186 @@ export default function CompanyClaimsConfigurationTab() {
                 return;
             }
 
-            const result = await getCompanyClaimIdsForUser(companyId, selectedUserId);
+            const claimIdsResult = await getCompanyClaimIdsForUser(companyId, selectedUserId);
 
-            if (result.success) {
-                setDisplayedUser(options.find(o => o.id === selectedUserId) ?? null);
-                setActiveCompanyClaimIds(result.data);
+            if (claimIdsResult.success) {
+                setActiveCompanyClaimIds(claimIdsResult.data);
             }
         };
 
         fetchData();
 
-    }, [companyId, page, rowsPerPage, selectedUserId, refreshButtonCounter, options]);
-
-    const handleClearSearch = () => {
-        setInputValue("");
-        setOptions([]);
-    };
+    }, [companyId, refreshButtonCounter, selectedUserId]);
 
     useEffect(() => {
 
         const fetchOptions = async (query: string) => {
             if (!query) {
-                setOptions([]);
+                setFindUserOptions([]);
                 return;
             }
 
             setLoading(true);
 
-            const request: GetCompanyUsersRequest = {
+            const request: GetCompanyEmployeesRequest = {
                 query: query,
                 paginationSpec: { pageNumber: 1, pageSize: 5 },
             };
 
-            const result = await getUsers(request);
+            const result = await getCompanyEmployees(request);
 
             if (result.success) {
-                setOptions(result.data.users);
+                setFindUserOptions(() => result.data.users ?? []);
+            }
+            else {
+                setFindUserOptions(() => [
+                    {
+                        id: 1,
+                        email: "wojdwopejp@gmail.com",
+                        fullName: "Full Name",
+                        avatarLink: null,
+                        companiesManaged: [],
+                    },
+                    {
+                        id: 2,
+                        email: "wojdwowefefpejp@gmail.com",
+                        fullName: "Full Name 2",
+                        avatarLink: null,
+                        companiesManaged: [],
+                    },
+                ]);
             }
 
             setLoading(false);
         };
 
         const timeoutId = setTimeout(() => {
-            fetchOptions(inputValue);
+            fetchOptions(findUserInputValue);
         }, 100);
 
         return () => clearTimeout(timeoutId);
-    }, [inputValue]);
+    }, [findUserInputValue]);
+
+    const handleModeChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setUserMode(e.target.value as 'existing' | 'new');
+        setDisplayedUser(null);
+        setSelectedUserId(null);
+    };
+
+    const handleAddNewUser = (email: string) => {
+
+    };
 
     return (
         <Box sx={{ pt: 1.2, pb: 2, px: 2.1 }}>
-            <Box display="flex" flexDirection="row" sx={{ alignItems: "center" }} mt={1}>
-                <FormLabel>Wybierz użytkownika:</FormLabel>
-                <Autocomplete
-                    options={options}
-                    getOptionLabel={(option) => option.email}
-                    loading={loading}
-                    onChange={(_, newValue) => {
-                        const newId = newValue?.id;
-                        setSelectedUserId(newId ?? null);
-                    }}
-                    onInputChange={(_, newInputValue, reason) => {
-                        if (reason === 'input') {
-                            setInputValue(newInputValue);
-                        }
-                    }}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Imię/nazwisko/email"
-                            sx={{
-                                ml: 1.3,
-                                width: "400px"
-                            }}
-                            InputProps={{
-                                ...params.InputProps,
-                                endAdornment: inputValue.length > 0 && (
-                                    <>
-                                        {/*{loading &&*/}
-                                        {/*    <InputAdornment position="end">*/}
-                                        {/*        <CircularProgress size={20}/>*/}
-                                        {/*    </InputAdornment>*/}
-                                        {/*}*/}
-                                        {inputValue.length > 0 &&
-                                            <InputAdornment position="end">
-                                                <IconButton onClick={handleClearSearch} size="small">
-                                                    <Close/>
-                                                </IconButton>
-                                            </InputAdornment>
-                                        }
-                                    </>
-                                ),
-                            }}
-                        />
-                    )}
-                />
-                <Button
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    startIcon={<Refresh />}
-                    onClick={() => setRefreshButtonCounter(prevVal => prevVal + 1)}
-                    sx={{ ml: 2.5, borderRadius: "50px", width: "125px" }}
-                >
-                    Odśwież
-                </Button>
-            </Box>
+            {/*<Typography variant="h5">Wybór użytkownika</Typography>*/}
+            <Alert severity="info" icon={<Info />} sx={{ maxWidth: "550px", mt: 0.5 }}>
+                <Typography>By zarządzać uprawnieniami, wybierz istniejącego użytkownika z puli Twojej
+                    firmy lub wyślij mailowo zaproszenie nowemu użytkownikowi poprzez formularz dodania.</Typography>
+            </Alert>
+            <RadioGroup
+                row
+                value={userMode}
+                onChange={(e) => {handleModeChange(e)}}
+                sx={{ mt: 1 }}
+            >
+                <FormControlLabel value="existing" control={<Radio />} label="Wybór użytkownika" />
+                <FormControlLabel value="new" control={<Radio />} label="Dodanie użytkownika" />
+            </RadioGroup>
+
+            {userMode === 'existing' ? (
+                <Stack direction="row" sx={{ alignItems: "center" }} mt={1.2}>
+                    <FormLabel>Wybór użytkownika:</FormLabel>
+                    <Autocomplete
+                        // multiple
+                        forcePopupIcon={false}
+                        disableClearable={false}
+                        options={findUserOptions}
+                        getOptionLabel={(option) => option.email}
+                        loading={loading}
+                        filterOptions={(x) => x}
+                        onChange={(_, newUser) => {
+                            setSelectedUserId(newUser?.id ?? null);
+                            setDisplayedUser(newUser);
+                        }}
+                        onInputChange={(_, newInputValue, reason) => {
+                            if (reason === 'input') {
+                                setFindUserInputValue(newInputValue);
+                            }
+                        }}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label="Imię/nazwisko/email"
+                                sx={{
+                                    ml: 1.1,
+                                    width: "400px",
+                                    '& .MuiAutocomplete-clearIndicator': {
+                                        visibility: 'visible',
+                                    },
+                                }}
+                            />
+                        )}
+                        renderOption={(props, option) => {
+
+                            const { key, ...rest } = props;
+
+                            return (
+                                <ListItem component="li" key={key} {...rest}>
+                                    {option.avatarLink ? (
+                                        <ListItemAvatar>
+                                            <Avatar
+                                                src={option.avatarLink}
+                                                sx={{ width: 30, height: 30 }}
+                                            />
+                                        </ListItemAvatar>
+                                    ) : (
+                                        <ListItemAvatar>
+                                            <Avatar sx={{ width: 30, height: 30 }} />
+                                        </ListItemAvatar>
+                                    )}
+                                    <ListItemText
+                                        primary={option.email}
+                                        secondary={option.fullName || ''}
+                                    />
+                                </ListItem>
+                            );
+                        }}
+                    />
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        startIcon={<Refresh />}
+                        disabled={!selectedUserId}
+                        onClick={() => setRefreshButtonCounter(prevVal => prevVal + 1)}
+                        sx={{ ml: 2.5, borderRadius: "50px", width: "125px" }}
+                    >
+                        Odśwież
+                    </Button>
+                </Stack>
+            ) : (
+                <Box display="flex" flexDirection="row" sx={{ alignItems: "center" }} mt={1.2}>
+                    <FormLabel>Dodanie użytkownika:</FormLabel>
+                    <TextField
+                        label="Email nowego użytkownika"
+                        value={newUserEmail}
+                        onChange={(e) => setNewUserEmail(e.target.value)}
+                        sx={{ ml: 1.1, width: "400px" }}
+                    />
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        startIcon={<Add />}
+                        disabled={!newUserEmail}
+                        onClick={() => {handleAddNewUser(newUserEmail)}}
+                        sx={{ ml: 2.5, borderRadius: "50px", width: "125px" }}
+                    >
+                        Dodaj
+                    </Button>
+                </Box>
+            )}
 
             {displayedUser &&
                 <>

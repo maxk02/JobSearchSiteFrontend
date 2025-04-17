@@ -49,12 +49,16 @@ export interface UploadAvatarResponse {
     link: string;
 }
 
-export interface GetCompanyUsersRequest {
+export interface GetCompanyEmployeesRequest {
     query: string | null;
     paginationSpec: PaginationSpec;
 }
 
-export interface GetCompanyUsersResponse {
+export interface GetCompanyEmployeesResponse {
     users: AccountDataDto[];
-    paginationResponse: PaginationSpec;
+    paginationResponse: PaginationResponse;
+}
+
+export interface AddCompanyEmployeeRequest {
+    userId: number;
 }

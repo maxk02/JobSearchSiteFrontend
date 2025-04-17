@@ -55,7 +55,7 @@ export default function CompanyClaimsOverviewTab() {
     const handleClearInputs = () => {
         setSelectedClaimIds([]);
         setSearchText("");
-        setPage(1);
+        setPage(0);
     };
 
     const [refreshButtonCounter, setRefreshButtonCounter] = useState<number>(0);
@@ -118,6 +118,7 @@ export default function CompanyClaimsOverviewTab() {
                     color="primary"
                     size="large"
                     startIcon={<Refresh />}
+                    disabled={!searchText && selectedClaimIds.length === 0}
                     onClick={() => setRefreshButtonCounter(prev => prev + 1)}
                     sx={{ ml: 2.5, borderRadius: "50px", width: "125px" }}
                 >
@@ -128,6 +129,7 @@ export default function CompanyClaimsOverviewTab() {
                     color="error"
                     size="large"
                     startIcon={<Close />}
+                    disabled={!searchText && selectedClaimIds.length === 0}
                     onClick={handleClearInputs}
                     sx={{ ml: 2, borderRadius: "50px", width: "125px" }}
                 >

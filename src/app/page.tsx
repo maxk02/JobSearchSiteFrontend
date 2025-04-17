@@ -74,7 +74,9 @@ async function fetchJobs(params: TypedJobSearchParams) {
 }
 
 
-export default async function HomePage({searchParams}: { searchParams: { [key: string]: string | string[] | undefined } }) {
+export default async function HomePage(props: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
+
+    const searchParams = await props.searchParams;
 
     const typedSearchParams = parseSearchParams(searchParams);
 

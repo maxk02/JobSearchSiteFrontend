@@ -69,17 +69,21 @@ export function parseParams( companyParams: { companyId: string } ) {
 }
 
 export interface CompanyPageProps {
-    params: { companyId: string };
-    searchParams: { [key: string]: string | string[] | undefined };
+    params: Promise<{ companyId: string }>;
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-export default async function CompanyPage({ params, searchParams }: CompanyPageProps) {
+export default async function CompanyPage(props: CompanyPageProps) {
+
+    const params = await props.params;
 
     const typedParams = parseParams(params);
 
     if (!typedParams.companyId) {
         redirect('/');
     }
+
+    const searchParams = await props.searchParams;
 
     const typedSearchParams = parseSearchParams(searchParams);
 

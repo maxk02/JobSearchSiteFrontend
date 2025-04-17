@@ -1,13 +1,14 @@
 import fetchData from "@/lib/api/fetchData";
 import {
+    AddCompanyEmployeeRequest,
     AddCompanyResponse,
     GetCompaniesRequest,
     GetCompaniesResponse,
     GetCompanyByIdResponse,
+    GetCompanyEmployeesRequest,
+    GetCompanyEmployeesResponse,
     GetCompanyJobsRequest,
     GetCompanyJobsResponse,
-    GetCompanyUsersRequest,
-    GetCompanyUsersResponse,
     UpdateCompanyRequestDto
 } from "@/lib/api/companies/companiesApiInterfaces";
 import {UploadAvatarResponse} from "@/lib/api/userProfiles/userProfilesApiInterfaces";
@@ -37,10 +38,18 @@ export const getCompanyJobs = async (id: number, req: GetCompanyJobsRequest) => 
     return await fetchData<GetCompanyJobsRequest, GetCompanyJobsResponse>(`company/${id}/jobs`, "GET", req);
 };
 
-export const uploadAvatar = async (formData: FormData) => {
-    return await fetchData<FormData, UploadAvatarResponse>(`/company/avatar`, "PUT", formData, { "Content-Type": "multipart/form-data" });
+export const uploadAvatar = async (id: number, formData: FormData) => {
+    return await fetchData<FormData, UploadAvatarResponse>(`/company/${id}/avatar`, "PUT", formData, { "Content-Type": "multipart/form-data" });
 };
 
-export const getUsers = async (req: GetCompanyUsersRequest) => {
-    return await fetchData<GetCompanyUsersRequest, GetCompanyUsersResponse>(`/company/users`, "GET", req);
+export const getCompanyEmployees = async (id: number, req: GetCompanyEmployeesRequest) => {
+    return await fetchData<GetCompanyEmployeesRequest, GetCompanyEmployeesResponse>(`/company/${id}/users`, "GET", req);
+};
+
+export const addCompanyEmployee = async (id: number, req: AddCompanyEmployeeRequest) => {
+    return await fetchData<AddCompanyEmployeeRequest>(`/company/${id}/users`, "POST", req);
+};
+
+export const deleteCompanyEmployee = async (id: number, userId: number) => {
+    return await fetchData<unknown>(`/company/${id}/users/${userId}`, "DELETE");
 };

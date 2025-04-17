@@ -15,5 +15,5 @@ export interface AccountDataDto {
     email: string;
     fullName: string | null;
     avatarLink: string | null;
-    companiesManaged: CompanyInfoDto[]
+    companiesManaged: CompanyInfoDto[];
 }
