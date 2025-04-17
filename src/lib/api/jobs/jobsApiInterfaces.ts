@@ -1,5 +1,6 @@
 import {JobCardDto, JobDetailedDto, JobSalaryInfoDto} from "@/lib/api/jobs/jobsApiDtos";
 import {PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
+import {JobApplicationForManagersDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
 
 export interface AddJobRequest {
     jobFolderId: number;
@@ -71,4 +72,17 @@ export interface UpdateJobRequestDto {
     employmentOptionIds: number[] | null;
     contractTypeIds: number[] | null;
     locationIds: number[] | null;
+}
+
+export interface GetApplicationsRequest {
+    statusId: number | null;
+    query: string | null;
+    includedTags: string[] | null;
+    excludedTags: string[] | null;
+    paginationSpec: PaginationSpec;
+}
+
+export interface GetApplicationsResponse {
+    jobApplications: JobApplicationForManagersDto[];
+    paginationResponse: PaginationResponse;
 }

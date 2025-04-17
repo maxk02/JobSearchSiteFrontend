@@ -16,17 +16,6 @@ export interface DeleteJobApplicationRequest {
     id: number;
 }
 
-export interface GetApplicationsForJobIdRequest {
-    jobId: number;
-    query: string;
-    paginationSpec: PaginationSpec;
-}
-
-export interface GetApplicationsForJobIdResponse {
-    jobApplications: JobApplicationForManagersDto[];
-    paginationResponse: PaginationResponse;
-}
-
 export interface UpdateJobApplicationRequestDto {
     status: JobApplicationStatus;
 }

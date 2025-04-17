@@ -16,10 +16,6 @@ export const deleteJobApplication = async (id: number) => {
     return await fetchData<unknown>(`/job-applications/${id}`, "DELETE");
 };
 
-export const getApplicationsForJobId = async (req: GetApplicationsForJobIdRequest) => {
-    return await fetchData<GetApplicationsForJobIdRequest, GetApplicationsForJobIdResponse>("/job-applications", "GET", req);
-};
-
 export const updateJobApplication = async (id: number, req: UpdateJobApplicationRequestDto) => {
     return await fetchData<UpdateJobApplicationRequestDto>(`/job-applications/${id}`, "PATCH", req);
 };

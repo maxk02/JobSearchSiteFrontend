@@ -1,8 +1,12 @@
 import {
-    AddJobRequest, AddJobResponse,
+    AddJobRequest,
+    AddJobResponse,
     DeleteJobRequest,
+    GetApplicationsRequest,
+    GetApplicationsResponse,
     GetJobByIdRequest,
-    GetJobByIdResponse, GetJobManagementInfoResponse,
+    GetJobByIdResponse,
+    GetJobManagementInfoResponse,
     GetJobsRequest,
     GetJobsResponse,
     UpdateJobRequestDto
@@ -35,4 +39,8 @@ export const getJobManagementInfo = async (id: number) => {
 
 export const updateJob = async (id: number, req: UpdateJobRequestDto) => {
     return await fetchData<UpdateJobRequestDto>(`/jobs/${id}`, "PATCH", req);
+};
+
+export const getApplications = async (id: number, req: GetApplicationsRequest) => {
+    return await fetchData<GetApplicationsRequest, GetApplicationsResponse>(`/jobs/${id}/applications`, "GET", req);
 };
