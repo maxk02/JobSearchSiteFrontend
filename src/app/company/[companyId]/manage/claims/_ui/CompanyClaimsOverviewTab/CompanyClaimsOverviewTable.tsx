@@ -12,6 +12,7 @@ import {
 import {ArrowForward} from "@mui/icons-material";
 import React from "react";
 import {CompanyClaimsOverviewDto} from "@/lib/api/companyClaims/companyClaimsDtos";
+import {companyClaims} from "@/lib/seededData/companyClaims";
 
 
 
@@ -61,7 +62,7 @@ export default function CompanyClaimsOverviewTable(props: CompanyClaimsOverviewT
                     <TableBody>
                         {visibleRows.map((row) => (
                             <TableRow
-                                key={row.id}
+                                key={row.userCompanyClaimId}
                                 hover
                                 sx={{
                                     height: 68.9,
@@ -75,7 +76,9 @@ export default function CompanyClaimsOverviewTable(props: CompanyClaimsOverviewT
                             >
                                 <TableCell>{`${row.userFirstName} ${row.userLastName}`}</TableCell>
                                 <TableCell>{row.userEmail}</TableCell>
-                                <TableCell>{row.claimName}</TableCell>
+                                <TableCell>
+                                    { companyClaims.find(c => c.id == row.claimId)?.namePl }
+                                </TableCell>
                                 <TableCell sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                     <Button
                                         variant="text"
@@ -93,7 +96,7 @@ export default function CompanyClaimsOverviewTable(props: CompanyClaimsOverviewT
                                     height: emptyRows * 68.9,
                                 }}
                             >
-                                <TableCell colSpan={5} />
+                                <TableCell colSpan={4} />
                             </TableRow>
                         )}
                     </TableBody>

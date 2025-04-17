@@ -8,62 +8,52 @@ import {
     TableBody,
     TableCell,
     TableContainer,
-    TableHead, TablePagination,
+    TableHead,
+    TablePagination,
     TableRow,
     Typography
 } from "@mui/material";
-import {AddModerator, OpenInNew, RemoveModerator, Settings} from "@mui/icons-material";
-import React from "react";
+import {AddModerator, RemoveModerator} from "@mui/icons-material";
+import React, {useMemo} from "react";
+import {companyClaims} from "@/lib/seededData/companyClaims";
 
 
-interface Data {
+interface UserFolderClaimsConfigurationTableProps {
+    // rows: CompanyClaimsOverviewDto[];
+    activeCompanyClaimIds: number[];
+    page: number;
+    rowsPerPage: number;
+    onPageChange: (page: number) => void;
+    onRowsPerPageChange: (rowsPerPage: number) => void;
+}
+
+interface RowData {
     id: number;
-    name: string;
-    status: string;
+    isActive: boolean;
+    text: string;
 }
 
-function createData(
-    id: number,
-    name: string,
-    status: string,
-): Data {
-    return {
-        id,
-        name,
-        status,
-    };
-}
+export default function UserFolderClaimsConfigurationTable(props: UserFolderClaimsConfigurationTableProps) {
 
-const rows: Data[] = [
-    createData(1, "Pełny dostęp (1)", "Aktywne"),
-    createData(2, "Pełny dostęp (1)", "Aktywne"),
-    createData(3, "Pełny dostęp (1)", "Aktywne"),
-    createData(4, "Pełny dostęp (1)", "Aktywne"),
-    createData(5, "Pełny dostęp (1)", "Aktywne"),
-    createData(6, "Pełny dostęp (1)", "Aktywne"),
-    createData(7, "Pełny dostęp (1)", "Aktywne"),
-    createData(8, "Pełny dostęp (1)", "Aktywne"),
-    createData(9, "Pełny dostęp (1)", "Aktywne"),
-    createData(10, "Pełny dostęp (1)", "Aktywne"),
-    createData(11, "Pełny dostęp (1)", "Aktywne"),
-    createData(12, "Pełny dostęp (1)", "Aktywne"),
-];
+    const { activeCompanyClaimIds, page, rowsPerPage, onPageChange, onRowsPerPageChange } = props;
 
+    const rows = useMemo((): RowData[] =>
+        companyClaims
+            .map(c => ({ id: c.id,
+                isActive: activeCompanyClaimIds.includes(c.id),
+                text: `${c.namePl} (${c.id})` })),
+        [activeCompanyClaimIds]);
 
-
-export default function UserFolderClaimsConfigurationTable() {
     const [selected, setSelected] = React.useState<readonly number[]>([]);
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-    const visibleRows = React.useMemo(
+    const visibleRows = useMemo(
         () =>
             [...rows]
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-        [page, rowsPerPage],
+        [page, rows, rowsPerPage],
     );
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,23 +85,22 @@ export default function UserFolderClaimsConfigurationTable() {
     };
 
     const handleChangePage = (event: unknown, newPage: number) => {
-        setPage(newPage);
+        onPageChange(newPage);
     };
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
+        onRowsPerPageChange(parseInt(event.target.value, 10));
     };
 
     const customLabelDisplayedRows = ({ from, to, count }: { from: number; to: number; count: number }) => {
         return selected.length > 0
-            ? `Wybrano ${selected.length} elementów | Przegląd: ${from}-${to} z ${count}`
+            ? `Wybrano elementów: ${selected.length}${selected.length === rows.length && ' (wszystkie)'} | Przegląd: ${from}-${to} z ${count}`
             : `${from}-${to} z ${count}`;
     };
 
 
     return (
-        <Paper sx={{ width: '1000px', maxWidth: '1000px' }}>
+        <Paper sx={{ width: '900px', maxWidth: '900px' }}>
             <TableContainer sx={{ mt: 1.7 }}>
                 <Table sx={{ tableLayout: "auto" }}>
                     <TableHead>
@@ -185,33 +174,42 @@ export default function UserFolderClaimsConfigurationTable() {
                                             onClick={(event) => handleClick(event, row.id)}
                                         />
                                     </TableCell>
-                                    <TableCell>{row.name}</TableCell>
+                                    <TableCell>{row.text}</TableCell>
                                     <TableCell>
-                                        <Typography variant="body2" color="success">
-                                            {row.status}
-                                        </Typography>
+                                        {row.isActive ?
+                                            <Typography variant="body2" color="success" sx={{ fontWeight: "500" }}>
+                                                Aktywne
+                                            </Typography>
+                                            : <Typography variant="body2" color="error" sx={{ fontWeight: "500" }}>
+                                                Nieaktywne
+                                            </Typography>
+                                        }
                                     </TableCell>
                                     <TableCell sx={{
                                         display: 'flex',
                                         flexDirection: 'row',
                                         alignItems: 'center'
                                     }}>
-                                        <Button
-                                            variant="outlined"
-                                            color="primary"
-                                            startIcon={<AddModerator/>}
-                                            sx={{mr: 2}}
-                                        >
-                                            Aktywuj
-                                        </Button>
-                                        <Button
-                                            variant="outlined"
-                                            color="error"
-                                            startIcon={<RemoveModerator/>}
-                                            sx={{mr: 2}}
-                                        >
-                                            Wyłącz
-                                        </Button>
+                                        {!row.isActive &&
+                                            <Button
+                                                variant="outlined"
+                                                color="primary"
+                                                startIcon={<AddModerator/>}
+                                                sx={{mr: 2}}
+                                            >
+                                                Aktywuj
+                                            </Button>
+                                        }
+                                        {row.isActive &&
+                                            <Button
+                                                variant="outlined"
+                                                color="error"
+                                                startIcon={<RemoveModerator/>}
+                                                sx={{mr: 2}}
+                                            >
+                                                Wyłącz
+                                            </Button>
+                                        }
                                     </TableCell>
                                 </TableRow>
                             );
@@ -229,7 +227,7 @@ export default function UserFolderClaimsConfigurationTable() {
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[10, 25]}
+                rowsPerPageOptions={[10]}
                 component="div"
                 count={rows.length}
                 rowsPerPage={rowsPerPage}

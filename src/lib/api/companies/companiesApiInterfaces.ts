@@ -1,6 +1,7 @@
 import {CompanyInfoDto} from "@/lib/api/companies/companiesApiDtos";
 import {PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
+import {AccountDataDto} from "@/lib/api/account/accountApiDtos";
 
 
 export interface AddCompanyRequest {
@@ -35,7 +36,6 @@ export interface UpdateCompanyRequestDto {
     description: string | null;
 }
 
-//
 export interface GetCompanyJobsRequest {
     paginationSpec: PaginationSpec;
 }
@@ -47,4 +47,14 @@ export interface GetCompanyJobsResponse {
 
 export interface UploadAvatarResponse {
     link: string;
+}
+
+export interface GetCompanyUsersRequest {
+    query: string | null;
+    paginationSpec: PaginationSpec;
+}
+
+export interface GetCompanyUsersResponse {
+    users: AccountDataDto[];
+    paginationResponse: PaginationSpec;
 }

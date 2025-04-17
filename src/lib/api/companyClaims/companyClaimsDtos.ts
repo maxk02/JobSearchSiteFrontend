@@ -1,8 +1,8 @@
 export interface CompanyClaimsOverviewDto {
-    id: number;
+    userCompanyClaimId: number;
     userId: number;
     userFirstName: string;
     userLastName: string;
     userEmail: string;
-    claimName: string;
+    claimId: number;
 }
