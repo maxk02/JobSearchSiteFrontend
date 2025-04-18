@@ -1,5 +1,8 @@
 import {StringLocationDto} from "@/lib/api/locations/locationsApiDtos";
 
+
+export type JobApplicationSortOption = "dateAsc" | "dateDesc";
+
 export interface JobCardDto {
     id: number;
     companyLogoLink: string | null;

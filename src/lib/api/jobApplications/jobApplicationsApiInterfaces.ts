@@ -1,5 +1,3 @@
-import {PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
-import {JobApplicationForManagersDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
 import {JobApplicationStatus} from "@/lib/api/jobApplications/jobApplicationsApiEnums";
 
 export interface AddJobApplicationRequest {
@@ -16,10 +14,14 @@ export interface DeleteJobApplicationRequest {
     id: number;
 }
 
-export interface UpdateJobApplicationRequestDto {
-    status: JobApplicationStatus;
+export interface UpdateJobApplicationStatusRequest {
+    statusId: number;
 }
 
 export interface UpdateJobApplicationFilesRequestDto {
     personalFileIds: number[];
+}
+
+export interface AddJobApplicationTagRequest {
+    name: string;
 }

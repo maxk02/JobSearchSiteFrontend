@@ -1,5 +1,4 @@
 import {
-    Box,
     Button,
     Checkbox,
     Chip, InputLabel,
@@ -15,7 +14,6 @@ import {
 } from "@mui/material";
 import {Add} from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
-import Link from "next/link";
 import React, {useState} from "react";
 import {managementJobApplicationStatuses} from "@/lib/seededData/jobApplicationStatuses";
 import Grid from "@mui/material/Grid2";
@@ -76,7 +74,7 @@ export default function ApplicationFilteringCard(props: ApplicationFilteringCard
             <Paper elevation={3} sx={{ mt: 2, px: 2, py: 1.5,
                 // position: "sticky", top: "0", zIndex: "2"
             }}>
-                <Typography variant="h6" fontWeight={600}>Filtrowanie</Typography>
+                <Typography variant="h5" fontWeight={600} color="primary">Filtrowanie</Typography>
 
                 <Grid container sx={{ mt: 1 }}>
 
@@ -157,7 +155,12 @@ export default function ApplicationFilteringCard(props: ApplicationFilteringCard
                 <Stack direction="row" spacing={1} sx={{ ml: 0.3, mt: 1.2, alignItems: "center" }}>
                     <Typography variant="body2">Ma mieć tagi:</Typography>
                     {includedTags.map((item) => (
-                        <Chip key={item} label={item} variant="filled" onDelete={() => {}} />
+                        <Chip
+                            key={item}
+                            label={item}
+                            variant="filled"
+                            onDelete={() => {setIncludedTags(prev => prev.filter(x => x !== item))}}
+                        />
                     ))}
                     <Chip
                         icon={<Add />}
@@ -170,7 +173,12 @@ export default function ApplicationFilteringCard(props: ApplicationFilteringCard
                 <Stack direction="row" spacing={1} sx={{ ml: 0.3, mt: 1.2, alignItems: "center" }}>
                     <Typography variant="body2">Wyklucz tagi:</Typography>
                     {excludedTags.map((item) => (
-                        <Chip key={item} label={item} variant="filled" onDelete={() => {}} />
+                        <Chip
+                            key={item}
+                            label={item}
+                            variant="filled"
+                            onDelete={() => {setExcludedTags(prev => prev.filter(x => x !== item))}}
+                        />
                     ))}
                     <Chip
                         icon={<Add />}

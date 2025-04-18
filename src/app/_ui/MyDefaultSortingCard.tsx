@@ -1,27 +1,42 @@
-"use client";
-
 import {Button, IconButton, Menu, MenuItem, Paper, Stack, Typography, useTheme} from "@mui/material";
 import {ArrowBack, ArrowForward, KeyboardArrowDown, KeyboardArrowUp} from "@mui/icons-material";
-import React, {useRef} from "react";
+import React, {useRef, useState} from "react";
 
 
-interface MyDefaultSortingCardProps {
+interface MyDefaultSortingCardProps<T extends string> {
     pxValue: number | string;
+    sortModes: { value: T, label: string }[];
+    defaultMode: { value: T, label: string };
+    onSortChange: (newMode: T) => void;
+    currentPage: number;
+    totalPages: number;
 }
 
 
-export default function MyDefaultSortingCard({ pxValue }: MyDefaultSortingCardProps) {
+export default function MyDefaultSortingCard<T extends string>(props: MyDefaultSortingCardProps<T>) {
+
+    const {pxValue, sortModes, defaultMode, onSortChange, currentPage, totalPages} = props;
+
     const theme = useTheme();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const open = Boolean(anchorEl);
 
+    const [currentSortOption, setCurrentSortOption] = useState<{ value: T, label: string }>(defaultMode);
+
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleChooseOption = (newOption: { value: T, label: string }) => {
+        setCurrentSortOption(newOption);
+        onSortChange(newOption.value);
+        handleClose();
     };
 
     return (
@@ -50,7 +65,7 @@ export default function MyDefaultSortingCard({ pxValue }: MyDefaultSortingCardPr
                         }
                     }}
                 >
-                    Sortuj: Najnowsze
+                    Sortuj: {currentSortOption.label}
                 </Button>
                 <Menu
                     id="application-sorting-menu"
@@ -78,21 +93,27 @@ export default function MyDefaultSortingCard({ pxValue }: MyDefaultSortingCardPr
                         sx: { p: 0 }
                     }}
                 >
-                    <MenuItem onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
-                        Najnowsze
-                    </MenuItem>
+                    {sortModes.map((sortMode) => (
+                        <MenuItem
+                            key={sortMode.value}
+                            onClick={() => handleChooseOption(sortMode)}
+                            sx={{ py: 2, pr: 4, pl: 2 }}
+                        >
+                            {sortMode.label}
+                        </MenuItem>
+                    ))}
                 </Menu>
 
                 <Stack direction="row" sx={{ alignItems: "center" }}>
-                    <IconButton color="primary">
+                    <IconButton color="primary" disabled={currentPage < 2}>
                         <ArrowBack />
                     </IconButton>
 
-                    <Typography sx={{ ml: 0.5 }}>1</Typography>
+                    <Typography sx={{ ml: 0.5 }}>{currentPage}</Typography>
                     <Typography sx={{ ml: 1 }}>z</Typography>
-                    <Typography sx={{ ml: 1 }}>2</Typography>
+                    <Typography sx={{ ml: 1 }}>{totalPages}</Typography>
 
-                    <IconButton color="primary" sx={{ ml: 0.5 }}>
+                    <IconButton color="primary" sx={{ ml: 0.5 }} disabled={currentPage > totalPages - 1}>
                         <ArrowForward />
                     </IconButton>
                 </Stack>

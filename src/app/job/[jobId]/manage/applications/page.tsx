@@ -10,7 +10,14 @@ import {JobApplicationForManagersDto} from "@/lib/api/jobApplications/jobApplica
 import {useParams, useSearchParams} from "next/navigation";
 import {getApplications} from "@/lib/api/jobs/jobsApi";
 import {GetApplicationsRequest} from "@/lib/api/jobs/jobsApiInterfaces";
+import {JobApplicationSortOption} from "@/lib/api/jobs/jobsApiDtos";
 
+
+
+const sortOptionListItems: { value: JobApplicationSortOption, label: string }[] = [
+    { value: "dateAsc", label: "Najstarsze" },
+    { value: "dateDesc", label: "Najnowsze" },
+];
 
 export default function AccountApplicationsPage() {
 
@@ -24,6 +31,8 @@ export default function AccountApplicationsPage() {
     const pageParam = searchParams.get("page");
     const parsedPageParam = pageParam && !isNaN(parseInt(pageParam, 10)) ? parseInt(pageParam, 10) : 1;
 
+    const [sortOption, setSortOption] = useState<JobApplicationSortOption>("dateDesc");
+
     const [totalPages, setTotalPages] = useState<number>(1);
 
     const [searchQuery, setSearchQuery] = useState<string | null>(null);
@@ -35,6 +44,7 @@ export default function AccountApplicationsPage() {
 
         const request: GetApplicationsRequest = {
             paginationSpec: {pageSize: 15, pageNumber: parsedPageParam},
+            sortOption: sortOption,
             query: searchQuery,
             statusIds: selectedStatusIds,
             includedTags: includedTags,
@@ -57,7 +67,7 @@ export default function AccountApplicationsPage() {
 
         fetchApplications();
 
-    }, [excludedTags, includedTags, parsedJobIdParam, parsedPageParam]);
+    }, [excludedTags, fetchApplications, includedTags, parsedJobIdParam, parsedPageParam, sortOption]);
 
     return (
         <>
@@ -77,9 +87,16 @@ export default function AccountApplicationsPage() {
                 />
 
                 <Stack gap={3} sx={{ mt: 3 }}>
-                    <MyDefaultSortingCard pxValue={2} />
+                    <MyDefaultSortingCard<JobApplicationSortOption>
+                        pxValue={2}
+                        sortModes={sortOptionListItems}
+                        defaultMode={sortOptionListItems[1]}
+                        onSortChange={(newMode) => setSortOption(newMode)}
+                        currentPage={parsedPageParam}
+                        totalPages={totalPages}
+                    />
                     {applications.map((application) => (
-                        <ApplicationInJobManagementCard key={application.id} />
+                        <ApplicationInJobManagementCard key={application.id} item={application} />
                     ))}
                     <Stack direction="row" sx={{ justifyContent: "center" }}>
                         <MyDefaultPagination totalPages={totalPages} currentPage={parsedPageParam} />

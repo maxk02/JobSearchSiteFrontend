@@ -1,4 +1,4 @@
-import {JobCardDto, JobDetailedDto, JobSalaryInfoDto} from "@/lib/api/jobs/jobsApiDtos";
+import {JobApplicationSortOption, JobCardDto, JobDetailedDto, JobSalaryInfoDto} from "@/lib/api/jobs/jobsApiDtos";
 import {PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
 import {JobApplicationForManagersDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
 
@@ -77,6 +77,7 @@ export interface UpdateJobRequestDto {
 export interface GetApplicationsRequest {
     statusIds: number[];
     query: string | null;
+    sortOption: JobApplicationSortOption;
     includedTags: string[];
     excludedTags: string[];
     paginationSpec: PaginationSpec;
