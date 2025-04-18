@@ -10,19 +10,10 @@ import {JobApplicationForManagersDto} from "@/lib/api/jobApplications/jobApplica
 import {useParams, useSearchParams} from "next/navigation";
 import {getApplications} from "@/lib/api/jobs/jobsApi";
 import {GetApplicationsRequest} from "@/lib/api/jobs/jobsApiInterfaces";
-import ApplicationTagSearchDialog from "@/app/job/[jobId]/manage/applications/_ui/ApplicationTagSearchDialog";
-
-
-const mockTags = [
-    {id: 1, title: "1 etap"},
-    {id: 2, title: "2 etap"},
-    {id: 3, title: "Do przeglądu 7 lipca"},
-];
 
 
 export default function AccountApplicationsPage() {
 
-    const [selectedApplicationStatusId, setSelectedApplicationStatusId] = useState<number | null>(null);
     const [applications, setApplications] = useState<JobApplicationForManagersDto[]>([]);
 
     const params = useParams();
@@ -35,87 +26,66 @@ export default function AccountApplicationsPage() {
 
     const [totalPages, setTotalPages] = useState<number>(1);
 
-    const [includeTagSearchDialogOpen, setIncludeTagSearchDialogOpen] = useState(false);
-    const [excludeTagSearchDialogOpen, setExcludeTagSearchDialogOpen] = useState(false);
-
+    const [searchQuery, setSearchQuery] = useState<string | null>(null);
     const [includedTags, setIncludedTags] = useState<string[]>([]);
     const [excludedTags, setExcludedTags] = useState<string[]>([]);
+    const [selectedStatusIds, setSelectedStatusIds] = useState<number[]>([]);
 
-    useEffect(() => {
+    const fetchApplications = async () => {
 
-        const fetchApplications = async () => {
+        const request: GetApplicationsRequest = {
+            paginationSpec: {pageSize: 15, pageNumber: parsedPageParam},
+            query: searchQuery,
+            statusIds: selectedStatusIds,
+            includedTags: includedTags,
+            excludedTags: excludedTags
+        };
 
-            const request: GetApplicationsRequest = {
-                paginationSpec: {pageSize: 15, pageNumber: parsedPageParam},
-                query: "",
-                statusId: selectedApplicationStatusId,
-                includedTags: includedTags,
-                excludedTags: excludedTags
-            };
+        const result =
+            await getApplications(parsedJobIdParam, request);
 
-            const result =
-                await getApplications(parsedJobIdParam, request);
-
-            if (result.success) {
-                setApplications(result.data.jobApplications);
-                setTotalPages(result.data.paginationResponse.totalPages);
-            }
-            else {
-                console.log(`Error fetching job applications (${result.status})`);
-            }
+        if (result.success) {
+            setApplications(result.data.jobApplications);
+            setTotalPages(result.data.paginationResponse.totalPages);
         }
+        else {
+            console.log(`Error fetching job applications (${result.status})`);
+        }
+    }
+    
+    useEffect(() => {
 
         fetchApplications();
 
-    }, [excludedTags, includedTags, parsedJobIdParam, parsedPageParam, selectedApplicationStatusId]);
-
-    const handleCloseDialogs = () => {
-        setIncludeTagSearchDialogOpen(false);
-        setExcludeTagSearchDialogOpen(false);
-    };
-
-    const handleTagSearchDialogSubmit = (mode: "include" | "exclude", tag: string) => {
-        switch (mode) {
-            case "include":
-                setIncludedTags(prev => [...prev, tag]);
-                break;
-            case "exclude":
-                setExcludedTags(prev => [...prev, tag]);
-                break;
-        }
-    };
+    }, [excludedTags, includedTags, parsedJobIdParam, parsedPageParam]);
 
     return (
         <>
             <Box sx={{ maxWidth: 1000 }}>
-                <Typography variant="h4" fontWeight={600} mt={0.5} color="primary">Aplikacje</Typography>
-                <Typography variant="h6" fontWeight={600}>Specjalista ds księgowości</Typography>
+                <Typography variant="h4" fontWeight={600} color="primary">Aplikacje</Typography>
+                <Typography variant="h5" fontWeight={600} mt={0.5}>Specjalista ds księgowości</Typography>
 
-                <ApplicationFilteringCard />
+                <ApplicationFilteringCard
+                    setSearchQuery={setSearchQuery}
+                    includedTags={includedTags}
+                    setIncludedTags={setIncludedTags}
+                    excludedTags={excludedTags}
+                    setExcludedTags={setExcludedTags}
+                    selectedStatusIds={selectedStatusIds}
+                    setSelectedStatusIds={setSelectedStatusIds}
+                    onSearchButtonClick={fetchApplications}
+                />
 
                 <Stack gap={3} sx={{ mt: 3 }}>
                     <MyDefaultSortingCard pxValue={2} />
-                    <ApplicationInJobManagementCard />
+                    {applications.map((application) => (
+                        <ApplicationInJobManagementCard key={application.id} />
+                    ))}
                     <Stack direction="row" sx={{ justifyContent: "center" }}>
                         <MyDefaultPagination totalPages={totalPages} currentPage={parsedPageParam} />
                     </Stack>
                 </Stack>
             </Box>
-
-            <ApplicationTagSearchDialog
-                title="Wyszukiwanie tagów do uwzględnienia"
-                open={includeTagSearchDialogOpen}
-                onClose={handleCloseDialogs}
-                onSubmit={(tag: string) => handleTagSearchDialogSubmit("include", tag)}
-                data={mockTags}
-            />
-            <ApplicationTagSearchDialog
-                title="Wyszukiwanie tagów do uwzględnienia"
-                open={excludeTagSearchDialogOpen}
-                onClose={handleCloseDialogs}
-                onSubmit={(tag: string) => handleTagSearchDialogSubmit("exclude", tag)}
-                data={mockTags}
-            />
         </>
     );
 }

@@ -7,6 +7,7 @@ import {
     List,
     ListItem,
     ListItemAvatar,
+    ListItemButton,
     ListItemText,
     Stack,
     TextField,
@@ -31,7 +32,7 @@ interface ApplicationTagSearchDialogProps {
     data: ApplicationTagSearchDialogItem[];
 }
 
-export default function ApplicationTagSearchDialog({ title, open, onClose, data }: ApplicationTagSearchDialogProps) {
+export default function ApplicationTagSearchDialog({ title, open, onClose, onSubmit, data }: ApplicationTagSearchDialogProps) {
 
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -49,6 +50,11 @@ export default function ApplicationTagSearchDialog({ title, open, onClose, data 
         }
         setSearchQuery("");
         onClose();
+    };
+
+    const handleChooseTag = (tag: string) => {
+        onClose();
+        onSubmit(tag);
     };
 
     return (
@@ -87,22 +93,26 @@ export default function ApplicationTagSearchDialog({ title, open, onClose, data 
                         filteredResults.map((item) => (
                             <ListItem
                                 key={item.id}
-                                component="a"
-                                href={`/job/${item.id}/manage/`}
                                 disableGutters
-                                sx={{ py: 1.2 }}
+                                sx={{ p: 0 }}
                             >
-                                <ListItemAvatar sx={{ minWidth: "40px", mr: 1.3 }}>
-                                    <Avatar variant="rounded" sx={{ backgroundColor: getItemColor(item.id) }}>
-                                        <Tag />
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary={item.title}
-                                    slotProps={{
-                                        primary: { color: "black" }
-                                    }}
-                                />
+                                <ListItemButton
+                                    disableGutters
+                                    sx={{ py: 1.2 }}
+                                    onClick={() => handleChooseTag(item.title)}
+                                >
+                                    <ListItemAvatar sx={{ minWidth: "40px", mr: 1.3 }}>
+                                        <Avatar variant="rounded" sx={{ backgroundColor: getItemColor(item.id) }}>
+                                            <Tag />
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary={item.title}
+                                        slotProps={{
+                                            primary: { color: "black" }
+                                        }}
+                                    />
+                                </ListItemButton>
                             </ListItem>
                         ))
                     ) : (

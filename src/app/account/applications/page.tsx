@@ -3,11 +3,11 @@
 import {Chip, Stack, Typography} from "@mui/material";
 import ApplicationInUserProfileCard from "@/app/account/applications/_ui/ApplicationInUserProfileCard";
 import {useEffect, useState} from "react";
-import {jobApplicationStatuses} from "@/lib/seededData/jobApplicationStatuses";
 import MyDefaultPagination from "@/app/_ui/MyDefaultPagination";
 import {JobApplicationInUserProfileDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
 import {useSearchParams} from "next/navigation";
 import {getJobApplications} from "@/lib/api/userProfiles/userProfilesApi";
+import {accountJobApplicationStatuses} from "@/lib/seededData/jobApplicationStatuses";
 
 
 export default function AccountApplicationsPage() {
@@ -48,16 +48,7 @@ export default function AccountApplicationsPage() {
                 <Typography variant="body1" color="text.secondary">
                     Filtruj:
                 </Typography>
-                <Chip
-                    variant="filled"
-                    color={selectedApplicationStatusId === null ? "primary" : "default"}
-                    label="Wszystkie"
-                    onClick={() => setSelectedApplicationStatusId(null)}
-                    sx={{
-                        fontSize: "1.02em"
-                    }}
-                />
-                {jobApplicationStatuses.map((status) => (
+                {accountJobApplicationStatuses.map((status) => (
                     <Chip
                         variant="filled"
                         color={selectedApplicationStatusId === status.id ? "primary" : "default"}

@@ -75,10 +75,10 @@ export interface UpdateJobRequestDto {
 }
 
 export interface GetApplicationsRequest {
-    statusId: number | null;
+    statusIds: number[];
     query: string | null;
-    includedTags: string[] | null;
-    excludedTags: string[] | null;
+    includedTags: string[];
+    excludedTags: string[];
     paginationSpec: PaginationSpec;
 }
 

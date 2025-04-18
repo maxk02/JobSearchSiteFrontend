@@ -2,8 +2,6 @@ import fetchData from "@/lib/api/fetchData";
 import {
     AddJobApplicationRequest,
     AddJobApplicationResponse,
-    GetApplicationsForJobIdRequest,
-    GetApplicationsForJobIdResponse,
     UpdateJobApplicationFilesRequestDto,
     UpdateJobApplicationRequestDto
 } from "@/lib/api/jobApplications/jobApplicationsApiInterfaces";
