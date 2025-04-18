@@ -6,3 +6,7 @@ export interface UploadFileResponse {
 export interface UpdateFileRequestDto {
     newName: string;
 }
+
+export interface GetFileDownloadLinkResponse {
+    link: string;
+}

@@ -27,6 +27,8 @@ import {
     deleteJobApplicationTag,
     updateJobApplicationStatus
 } from "@/lib/api/jobApplications/jobApplicationsApi";
+import {getFileDownloadLink} from "@/lib/api/personalFiles/personalFilesApi";
+import downloadFileFromCloud from "@/lib/api/downloadFileFromCloud";
 
 
 const mockTags = [
@@ -84,8 +86,15 @@ export default function ApplicationInJobManagementCard({ item, setRefetchTrigger
         setChangeStatusDialogOpen(false);
     };
 
-    const handleDownloadFile = async (id: number) => {
+    const handleDownloadFile = async (id: number, fullName: string) => {
+        const result = await getFileDownloadLink(id);
 
+        if (result.success) {
+            downloadFileFromCloud(result.data.link, fullName);
+        }
+        else {
+            console.error("Failed to obtain link");
+        }
     };
 
     const handleStatusChange = async (newStatusId: number) => {
@@ -94,6 +103,10 @@ export default function ApplicationInJobManagementCard({ item, setRefetchTrigger
         };
 
         const result = await updateJobApplicationStatus(item.id, request);
+
+        if (result.success) {
+            setRefetchTrigger(prev => prev + 1);
+        }
     };
 
     return (
@@ -101,7 +114,7 @@ export default function ApplicationInJobManagementCard({ item, setRefetchTrigger
             <Paper sx={{ width: "100%", textAlign: "left" }}>
                 <Stack direction="row">
                     <Box py={2.1} pl={3} pr={1}>
-                        <Avatar src="/avatar2.webp" sx={{ height: 80, width: 80 }} />
+                        <Avatar src={item.avatarLink ?? "/avatar2.webp"} sx={{ height: 80, width: 80 }} />
                     </Box>
                     <Stack sx={{ px: 2, pt: 2, pb: 2 }}>
                         <Typography variant="h5" sx={{ fontWeight: 800, lineHeight: 1 }}>
@@ -153,7 +166,8 @@ export default function ApplicationInJobManagementCard({ item, setRefetchTrigger
                                             key={file.id}
                                             label={`${file.name}.${file.extension}`}
                                             variant="filled"
-                                            onClick={() => handleDownloadFile(file.id)}
+                                            onClick={() => handleDownloadFile(file.id,
+                                                `${file.name}.${file.extension}`)}
                                         />
                                     ))}
                                 </Stack>

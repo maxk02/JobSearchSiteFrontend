@@ -7,6 +7,7 @@ export interface JobApplicationForManagersDto {
     id: number;
     userId: number;
     userFullName: string;
+    avatarLink: string;
     email: string;
     phone: string | null;
     tags: string[];
