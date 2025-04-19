@@ -12,12 +12,12 @@ import {
     Typography,
     useTheme
 } from "@mui/material";
-import {Add, Download, Edit, PlayArrow} from "@mui/icons-material";
+import {Add, Close, Download, PlayArrow} from "@mui/icons-material";
 import {JobApplicationForManagersDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
 import ApplicationTagSearchDialog from "@/app/job/[jobId]/manage/applications/_ui/ApplicationTagSearchDialog";
 import React, {useState} from "react";
-import {managementJobApplicationStatuses} from "@/lib/seededData/jobApplicationStatuses";
-import ChangeApplicationStatusDialog from "@/app/job/[jobId]/manage/applications/_ui/ChangeApplicationStatusDialog";
+import {jobApplicationStatuses} from "@/lib/seededData/jobApplicationStatuses";
+import BasicConfirmationDialog from "@/app/_ui/BasicConfirmationDialog";
 import {
     AddJobApplicationTagRequest,
     UpdateJobApplicationStatusRequest
@@ -51,10 +51,10 @@ const formatDate = (dateString: string): string => {
 
 interface ApplicationInJobManagementCardProps {
     item: JobApplicationForManagersDto;
-    setRefetchTrigger: React.Dispatch<React.SetStateAction<number>>;
+    onUpdateTriggered: () => void;
 }
 
-export default function ApplicationInJobManagementCard({ item, setRefetchTrigger }: ApplicationInJobManagementCardProps) {
+export default function ApplicationInJobManagementCard({ item, onUpdateTriggered }: ApplicationInJobManagementCardProps) {
 
     const theme = useTheme();
 
@@ -66,7 +66,7 @@ export default function ApplicationInJobManagementCard({ item, setRefetchTrigger
         const result = await addJobApplicationTag(item.id, request);
 
         if (result.success) {
-            setRefetchTrigger(prev => prev + 1);
+            onUpdateTriggered();
         }
     };
 
@@ -74,16 +74,16 @@ export default function ApplicationInJobManagementCard({ item, setRefetchTrigger
         const result = await deleteJobApplicationTag(item.id, tag);
 
         if (result.success) {
-            setRefetchTrigger(prev => prev + 1);
+            onUpdateTriggered();
         }
     };
 
     const [addTagSearchDialogOpen, setAddTagSearchDialogOpen] = useState(false);
-    const [changeStatusDialogOpen, setChangeStatusDialogOpen] = useState(false);
+    const [confirmRejectionDialogOpen, setConfirmRejectionDialogOpen] = useState(false);
 
     const handleCloseDialogs = () => {
         setAddTagSearchDialogOpen(false);
-        setChangeStatusDialogOpen(false);
+        setConfirmRejectionDialogOpen(false);
     };
 
     const handleDownloadFile = async (id: number, fullName: string) => {
@@ -97,15 +97,15 @@ export default function ApplicationInJobManagementCard({ item, setRefetchTrigger
         }
     };
 
-    const handleStatusChange = async (newStatusId: number) => {
+    const handleRejectApplication = async () => {
         const request: UpdateJobApplicationStatusRequest = {
-            statusId: newStatusId,
+            statusId: 3,
         };
 
         const result = await updateJobApplicationStatus(item.id, request);
 
         if (result.success) {
-            setRefetchTrigger(prev => prev + 1);
+            onUpdateTriggered();
         }
     };
 
@@ -150,7 +150,7 @@ export default function ApplicationInJobManagementCard({ item, setRefetchTrigger
                                 </ListItemIcon>
                                 <Typography lineHeight={1}>
                                     Status: {
-                                        managementJobApplicationStatuses
+                                        jobApplicationStatuses
                                             .find(x => x.id === item.statusId)?.namePl ?? "N/A"
                                     }
                                 </Typography>
@@ -176,21 +176,20 @@ export default function ApplicationInJobManagementCard({ item, setRefetchTrigger
                         <Stack direction="row" mt={2} sx={{ justifyContent: "left" }} gap={1.3}>
                             <Button
                                 variant="outlined"
-                                color="primary"
-                                startIcon={<Edit />}
+                                color="error"
+                                startIcon={<Close />}
                                 size="medium"
-                                onClick={() => setChangeStatusDialogOpen(true)}
+                                onClick={() => setConfirmRejectionDialogOpen(true)}
                             >
-                                Zmień status
+                                Odrzuć
                             </Button>
                             <Button
                                 variant="outlined"
                                 color="primary"
                                 startIcon={<Download />}
                                 size="medium"
-
                             >
-                                Pobierz pliki jako archiwum
+                                Pobierz wszystkie pliki
                             </Button>
                         </Stack>
                     </Stack>
@@ -214,12 +213,12 @@ export default function ApplicationInJobManagementCard({ item, setRefetchTrigger
                 data={mockTags}
             />
 
-            <ChangeApplicationStatusDialog
+            <BasicConfirmationDialog
                 title="Zmiana statusu aplikacji"
-                open={changeStatusDialogOpen}
+                text="Czy potwierdzasz odrzucenie aplikacji?"
+                open={confirmRejectionDialogOpen}
                 onClose={handleCloseDialogs}
-                onSubmit={(newStatusId: number) => handleStatusChange(newStatusId)}
-                currentStatusId={item.statusId}
+                onConfirm={handleRejectApplication}
             />
         </>
     );

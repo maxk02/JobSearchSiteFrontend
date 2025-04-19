@@ -40,6 +40,8 @@ export default function AccountApplicationsPage() {
     const [excludedTags, setExcludedTags] = useState<string[]>([]);
     const [selectedStatusIds, setSelectedStatusIds] = useState<number[]>([]);
 
+    const [updateTriggerCounter, setUpdateTriggerCounter] = useState<number>(0);
+
     const fetchApplications = async () => {
 
         const request: GetApplicationsRequest = {
@@ -62,12 +64,12 @@ export default function AccountApplicationsPage() {
             console.log(`Error fetching job applications (${result.status})`);
         }
     }
-    
+
     useEffect(() => {
 
         fetchApplications();
 
-    }, [excludedTags, fetchApplications, includedTags, parsedJobIdParam, parsedPageParam, sortOption]);
+    }, [excludedTags, fetchApplications, includedTags, parsedJobIdParam, parsedPageParam, sortOption, updateTriggerCounter]);
 
     return (
         <>
@@ -96,7 +98,11 @@ export default function AccountApplicationsPage() {
                         totalPages={totalPages}
                     />
                     {applications.map((application) => (
-                        <ApplicationInJobManagementCard key={application.id} item={application} />
+                        <ApplicationInJobManagementCard
+                            key={application.id}
+                            item={application}
+                            onUpdateTriggered={() => setUpdateTriggerCounter(prev => prev + 1)}
+                        />
                     ))}
                     <Stack direction="row" sx={{ justifyContent: "center" }}>
                         <MyDefaultPagination totalPages={totalPages} currentPage={parsedPageParam} />

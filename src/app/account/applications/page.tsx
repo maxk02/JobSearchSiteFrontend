@@ -7,7 +7,7 @@ import MyDefaultPagination from "@/app/_ui/MyDefaultPagination";
 import {JobApplicationInUserProfileDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
 import {useSearchParams} from "next/navigation";
 import {getJobApplications} from "@/lib/api/userProfiles/userProfilesApi";
-import {accountJobApplicationStatuses} from "@/lib/seededData/jobApplicationStatuses";
+import {jobApplicationStatuses} from "@/lib/seededData/jobApplicationStatuses";
 
 
 export default function AccountApplicationsPage() {
@@ -19,6 +19,8 @@ export default function AccountApplicationsPage() {
     const parsedPageParam = pageParam && !isNaN(parseInt(pageParam, 10)) ? parseInt(pageParam, 10) : 1;
 
     const [totalPages, setTotalPages] = useState<number>(1);
+
+    const [updateTriggerCounter, setUpdateTriggerCounter] = useState<number>(0);
 
     useEffect(() => {
 
@@ -37,7 +39,7 @@ export default function AccountApplicationsPage() {
         
         fetchApplications();
 
-    }, [parsedPageParam, selectedApplicationStatusId]);
+    }, [parsedPageParam, selectedApplicationStatusId, updateTriggerCounter]);
 
     return (
         <>
@@ -48,7 +50,7 @@ export default function AccountApplicationsPage() {
                 <Typography variant="body1" color="text.secondary">
                     Filtruj:
                 </Typography>
-                {accountJobApplicationStatuses.map((status) => (
+                {jobApplicationStatuses.map((status) => (
                     <Chip
                         variant="filled"
                         color={selectedApplicationStatusId === status.id ? "primary" : "default"}
@@ -64,7 +66,11 @@ export default function AccountApplicationsPage() {
 
             <Stack gap={3} mt={2} sx={{ maxWidth: "900px" }}>
                 {applications.map((application) => (
-                    <ApplicationInUserProfileCard key={application.id} item={application} />
+                    <ApplicationInUserProfileCard
+                        key={application.id}
+                        item={application}
+                        onDeletionTriggered={() => setUpdateTriggerCounter(prev => prev + 1)}
+                    />
                 ))}
                 <MyDefaultPagination currentPage={parsedPageParam} totalPages={totalPages} />
             </Stack>

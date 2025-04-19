@@ -15,7 +15,7 @@ import {
 import {Add} from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import React, {useState} from "react";
-import {managementJobApplicationStatuses} from "@/lib/seededData/jobApplicationStatuses";
+import {jobApplicationStatuses} from "@/lib/seededData/jobApplicationStatuses";
 import Grid from "@mui/material/Grid2";
 import FormControl from "@mui/material/FormControl";
 import ApplicationTagSearchDialog from "@/app/job/[jobId]/manage/applications/_ui/ApplicationTagSearchDialog";
@@ -119,7 +119,7 @@ export default function ApplicationFilteringCard(props: ApplicationFilteringCard
                                         </Typography>
                                     )}
                             >
-                                {managementJobApplicationStatuses.map((item) => (
+                                {jobApplicationStatuses.map((item) => (
                                     <MenuItem key={item.id} value={item.id} sx={{px: 1, py: 0.5}}>
                                         <Checkbox
                                             checked={selectedStatusIds.indexOf(item.id) > -1}

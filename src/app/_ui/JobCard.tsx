@@ -7,10 +7,8 @@ import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 import {jobContractTypes} from "@/lib/seededData/jobContractTypes";
 import {employmentOptions} from "@/lib/seededData/employmentOptions";
 import formatSalaryInfoText from "@/app/_ui/_functions/formatSalaryInfoText";
-import formatLocationText from "@/app/_ui/_functions/formatLocationText";
 import {useState} from "react";
 import {addJobBookmark, deleteJobBookmark} from "@/lib/api/userProfiles/userProfilesApi";
-
 
 
 const formatPolishDate = (dateString: string): string => {
@@ -69,7 +67,7 @@ export default function JobCard({ item }: JobCardProps) {
 
                     {item.locations.length === 1 ? (
                         <Typography lineHeight={1} mt={1.3}>
-                            {formatLocationText(item.locations[0])}
+                            {item.locations[0].name}
                         </Typography>
                     ) : (
                         <>
@@ -84,7 +82,7 @@ export default function JobCard({ item }: JobCardProps) {
                             <Collapse in={isLocationsExpanded}>
                                 {item.locations.map((location) => (
                                     <Typography key={location.id} lineHeight={1} mt={1.3}>
-                                        {formatLocationText(location)}
+                                        {location.name}
                                     </Typography>
                                 ))}
                             </Collapse>

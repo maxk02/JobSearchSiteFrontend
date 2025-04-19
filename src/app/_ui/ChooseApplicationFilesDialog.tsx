@@ -20,7 +20,7 @@ import {
     AddJobApplicationRequest,
     UpdateJobApplicationFilesRequestDto
 } from "@/lib/api/jobApplications/jobApplicationsApiInterfaces";
-import ChooseApplicationFilesTable from "@/app/job/[jobId]/_ui/ChooseApplicationFilesTable";
+import ChooseApplicationFilesTable from "@/app/_ui/ChooseApplicationFilesTable";
 
 
 const mockFiles: PersonalFileInfoDto[] = [
@@ -37,7 +37,7 @@ interface ChangeApplicationStatusDialogDialogProps {
     jobId: number;
     currentFileIds: number[];
     applicationId: number | null;
-    setApplicationId: React.Dispatch<React.SetStateAction<number | null>>;
+    setApplicationId?: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 export default function ChooseApplicationFilesDialog(props: ChangeApplicationStatusDialogDialogProps) {
@@ -84,7 +84,7 @@ export default function ChooseApplicationFilesDialog(props: ChangeApplicationSta
 
                 }
             }
-            else {
+            else if (setApplicationId) {
                 const request: AddJobApplicationRequest = {
                     jobId: jobId,
                     personalFileIds: selectedFileIds

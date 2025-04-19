@@ -5,7 +5,7 @@ import {ArrowForward, Star, StarBorder, TaskAlt} from "@mui/icons-material";
 import React, {useState} from "react";
 import {addJobBookmark, deleteJobBookmark} from "@/lib/api/userProfiles/userProfilesApi";
 import {JobDetailedDto} from "@/lib/api/jobs/jobsApiDtos";
-import ChooseApplicationFilesDialog from "@/app/job/[jobId]/_ui/ChooseApplicationFilesDialog";
+import ChooseApplicationFilesDialog from "@/app/_ui/ChooseApplicationFilesDialog";
 
 
 interface JobBottomActionsCardProps {
