@@ -17,7 +17,9 @@ import {Delete, Download, Info} from "@mui/icons-material";
 import React, {useState} from "react";
 import FileUploadArea from "@/app/_ui/FileUploadArea";
 import {FileRejection} from "react-dropzone";
-import {deleteFile, uploadFile} from "@/lib/api/personalFiles/personalFilesApi";
+import {deleteFile, getFileDownloadLink, uploadFile} from "@/lib/api/personalFiles/personalFilesApi";
+import {PersonalFileInfoDto} from "@/lib/api/personalFiles/personalFIlesApiDtos";
+import downloadFileFromCloud from "@/lib/api/downloadFileFromCloud";
 
 
 const formatDate = (dateString: string): string => {
@@ -32,15 +34,8 @@ const formatDate = (dateString: string): string => {
     return formatter.format(date);
 };
 
-interface UploadedFile {
-    id: number;
-    name: string;
-    size: number;
-    uploadedAt: string;
-}
-
 export default function AccountFilesPage() {
-    const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+    const [uploadedFiles, setUploadedFiles] = useState<PersonalFileInfoDto[]>([]);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const handleFilesChange = async (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
@@ -75,10 +70,15 @@ export default function AccountFilesPage() {
             if (response.success) {
 
                 const id = response.data.id;
-                const dateTimeUploaded = response.data.dateTimeUploaded;
+                const dateTimeUploadedUtc = response.data.dateTimeUploadedUtc;
+                const nameWithoutExt = file.name.substring(0, file.name.lastIndexOf('.'));
+                const extension = file.name.substring(file.name.lastIndexOf('.') + 1);
+
+                const newFile: PersonalFileInfoDto = { id: id, name: nameWithoutExt, extension: extension,
+                    size: file.size, dateTimeUploadedUtc: dateTimeUploadedUtc };
 
                 setUploadedFiles((prevUploadedFiles) =>
-                    [...prevUploadedFiles, { id: id, name: file.name, size: file.size, uploadedAt: dateTimeUploaded }]);
+                    [...prevUploadedFiles, newFile]);
             }
             else {
                 console.log(`Error uploading file: ${file.name} (${response.status})`);
@@ -86,8 +86,15 @@ export default function AccountFilesPage() {
         }
     };
 
-    const handleFileDownload = async (id: number) => {
+    const handleFileDownload = async (id: number, fullName: string) => {
+        const result = await getFileDownloadLink(id);
 
+        if (result.success) {
+            downloadFileFromCloud(result.data.link, fullName);
+        }
+        else {
+            console.error("Failed to obtain link");
+        }
     };
 
     const handleFileDelete = async (id: number) => {
@@ -98,7 +105,6 @@ export default function AccountFilesPage() {
             setUploadedFiles((prevUploadedFiles) =>
                 prevUploadedFiles.filter(f => f.id !== id));
         }
-
     };
 
     return (
@@ -152,21 +158,21 @@ export default function AccountFilesPage() {
                                         <TableCell>Nazwa</TableCell>
                                         <TableCell>Rozmiar</TableCell>
                                         <TableCell>Data dodania</TableCell>
-                                        <TableCell></TableCell>
+                                        <TableCell>Akcje</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {uploadedFiles.map((file: UploadedFile) => (
+                                    {uploadedFiles.map((file: PersonalFileInfoDto) => (
                                         <TableRow key={file.id}>
-                                            <TableCell>{file.name}</TableCell>
+                                            <TableCell>{file.name}.{file.extension}</TableCell>
                                             <TableCell>{(file.size / (1024 * 1024)).toFixed(2)}MB</TableCell>
-                                            <TableCell>{formatDate(file.uploadedAt)}</TableCell>
+                                            <TableCell>{formatDate(file.dateTimeUploadedUtc)}</TableCell>
                                             <TableCell sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                                 <Button
                                                     variant="outlined"
                                                     color="primary"
                                                     startIcon={<Download />}
-                                                    onClick={() => handleFileDownload(file.id)}
+                                                    onClick={() => handleFileDownload(file.id, `${file.name}.${file.extension}`)}
                                                 >
                                                     Pobierz
                                                 </Button>

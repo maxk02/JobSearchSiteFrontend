@@ -37,6 +37,7 @@ export interface JobDetailedDto {
     employmentTypeIds: number[] | null;
     contractTypeIds: number[] | null;
     isBookmarked: boolean;
+    applicationId: number | null;
 
     managementInfo: JobManagementInfoDto | null;
 }

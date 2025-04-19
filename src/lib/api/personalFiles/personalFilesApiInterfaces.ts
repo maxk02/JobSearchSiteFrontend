@@ -1,6 +1,6 @@
 export interface UploadFileResponse {
     id: number;
-    dateTimeUploaded: string;
+    dateTimeUploadedUtc: string;
 }
 
 export interface UpdateFileRequestDto {
