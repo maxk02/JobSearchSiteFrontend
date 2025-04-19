@@ -1,5 +1,3 @@
-import {JobApplicationStatus} from "@/lib/api/jobApplications/jobApplicationsApiEnums";
-
 export interface AddJobApplicationRequest {
     userId: number;
     jobId: number;

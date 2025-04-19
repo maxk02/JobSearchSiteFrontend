@@ -70,11 +70,10 @@ export const getJobApplications = async (statusId: number | null, paginationSpec
     );
 };
 
-export const getPersonalFiles = async (paginationSpec: PaginationSpec) => {
+export const getPersonalFiles = async () => {
     return await fetchData<GetPersonalFilesRequest, GetPersonalFilesResponse>(
         `/user/personal-files`,
-        "GET",
-        { paginationSpec: paginationSpec }
+        "GET"
     );
 };
 
