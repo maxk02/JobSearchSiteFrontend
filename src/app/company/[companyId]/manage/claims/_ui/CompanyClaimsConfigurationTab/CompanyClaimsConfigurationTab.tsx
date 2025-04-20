@@ -83,7 +83,7 @@ export default function CompanyClaimsConfigurationTab() {
                 paginationSpec: { pageNumber: 1, pageSize: 5 },
             };
 
-            const result = await getCompanyEmployees(request);
+            const result = await getCompanyEmployees(companyId, request);
 
             if (result.success) {
                 setFindUserOptions(() => result.data.users ?? []);
@@ -115,7 +115,7 @@ export default function CompanyClaimsConfigurationTab() {
         }, 100);
 
         return () => clearTimeout(timeoutId);
-    }, [findUserInputValue]);
+    }, [companyId, findUserInputValue]);
 
     const handleModeChange = (e: ChangeEvent<HTMLInputElement>) => {
         setUserMode(e.target.value as 'existing' | 'new');
@@ -124,12 +124,11 @@ export default function CompanyClaimsConfigurationTab() {
     };
 
     const handleAddNewUser = (email: string) => {
-
+        //todo
     };
 
     return (
         <Box sx={{ pt: 1.2, pb: 2, px: 2.1 }}>
-            {/*<Typography variant="h5">Wybór użytkownika</Typography>*/}
             <Alert severity="info" icon={<Info />} sx={{ maxWidth: "550px", mt: 0.5 }}>
                 <Typography>By zarządzać uprawnieniami, wybierz istniejącego użytkownika z puli Twojej
                     firmy lub wyślij mailowo zaproszenie nowemu użytkownikowi poprzez formularz dodania.</Typography>
@@ -262,7 +261,7 @@ export default function CompanyClaimsConfigurationTab() {
 
                     <Box sx={{ mt: 2.3 }}>
                         <CompanyClaimsConfigurationTable
-                            activeCompanyClaimIds={activeCompanyClaimIds}
+                            activeClaimIds={activeCompanyClaimIds}
                             page={page}
                             rowsPerPage={rowsPerPage}
                             onPageChange={(newPage: number) => setPage(() => newPage)}

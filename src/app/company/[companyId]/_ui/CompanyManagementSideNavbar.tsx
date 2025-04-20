@@ -52,9 +52,9 @@ export default function CompanyManagementSideNavbar() {
 
     const navItems = [
         { text: "Pulpit", icon: <Dashboard />, path: `/company/${companyId}/manage/dashboard` },
-        { text: "Profil firmy", icon: <Business />, path: `/company/${companyId}/manage/profile` },
+        { text: "Profil i ustawienia", icon: <Business />, path: `/company/${companyId}/manage/profile` },
         { text: "Zarządzanie uprawnieniami", icon: <Policy />, path: `/company/${companyId}/manage/claims` },
-        { text: "Statystyki", icon: <QueryStats />, path: `/company/${companyId}/manage/stats` },
+        // { text: "Statystyki", icon: <QueryStats />, path: `/company/${companyId}/manage/stats` },
     ];
 
     return (

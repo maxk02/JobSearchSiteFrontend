@@ -18,9 +18,9 @@ import React, {useMemo} from "react";
 import {companyClaims} from "@/lib/seededData/companyClaims";
 
 
-interface UserFolderClaimsConfigurationTableProps {
+interface CompanyClaimsConfigurationTableProps {
     // rows: CompanyClaimsOverviewDto[];
-    activeCompanyClaimIds: number[];
+    activeClaimIds: number[];
     page: number;
     rowsPerPage: number;
     onPageChange: (page: number) => void;
@@ -33,16 +33,16 @@ interface RowData {
     text: string;
 }
 
-export default function UserFolderClaimsConfigurationTable(props: UserFolderClaimsConfigurationTableProps) {
+export default function UserFolderClaimsConfigurationTable(props: CompanyClaimsConfigurationTableProps) {
 
-    const { activeCompanyClaimIds, page, rowsPerPage, onPageChange, onRowsPerPageChange } = props;
+    const { activeClaimIds, page, rowsPerPage, onPageChange, onRowsPerPageChange } = props;
 
     const rows = useMemo((): RowData[] =>
         companyClaims
             .map(c => ({ id: c.id,
-                isActive: activeCompanyClaimIds.includes(c.id),
+                isActive: activeClaimIds.includes(c.id),
                 text: `${c.namePl} (${c.id})` })),
-        [activeCompanyClaimIds]);
+        [activeClaimIds]);
 
     const [selected, setSelected] = React.useState<readonly number[]>([]);
 

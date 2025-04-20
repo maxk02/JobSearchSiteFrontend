@@ -72,7 +72,7 @@ export default function CompanySettingsPage() {
         const formData = new FormData();
         formData.append("file", file);
 
-        const response = await uploadAvatar(formData);
+        const response = await uploadAvatar(companyId, formData);
 
         if (response.success) {
             setLogoLink(response.data.link);
@@ -104,11 +104,11 @@ export default function CompanySettingsPage() {
 
     return (
         <>
-            <Typography variant="h4" fontWeight={600} color="primary">Profil firmy</Typography>
-            <Typography mt={1}>Tutaj możesz zmienić informacje widoczne na stronie firmy i w ofertach pracy.</Typography>
+            <Typography variant="h4" fontWeight={600} color="primary">Profil i ustawienia</Typography>
+            <Typography mt={1}>Tutaj możesz zmienić informacje o firmie i zarządzać kontem.</Typography>
 
             <Paper sx={{ mt: 2, px: 2, pt: 1.5, pb: 2.5, maxWidth: "900px" }}>
-                <Typography variant="h6" fontWeight={600} color="primary">Zdjęcie profilowe</Typography>
+                <Typography variant="h5" fontWeight={600} color="primary">Zdjęcie profilowe</Typography>
                 <Alert severity="info" icon={<Info />} sx={{ mt: 0.7, maxWidth: "500px" }}>
                     <Typography>
                         Dopuszczalne formaty pliku: jpg, png, gif, webp
@@ -137,9 +137,7 @@ export default function CompanySettingsPage() {
                              border: "2px dashed lightgray",
                          }}
                     >
-                        <Avatar variant="rounded" sx={{ width: 128, height: 128, m: 0 }}>
-                            <Image src={logoLink ?? "/company2.webp"} width={128} height={128} alt="User's avatar" />
-                        </Avatar>
+                        <Avatar variant="rounded" src={logoLink ?? "/company2.webp"} sx={{ width: 128, height: 128, m: 0 }} />
                         <Typography textAlign="center">Obecne zdjęcie</Typography>
                     </Paper>
                     <Box sx={{ width: 270, height: 250 }}>
@@ -158,7 +156,7 @@ export default function CompanySettingsPage() {
                         />
                     </Box>
                 </Stack>
-                <Typography variant="h6" fontWeight={600} color="primary" mt={2}>Podstawowe dane</Typography>
+                <Typography variant="h5" fontWeight={600} color="primary" mt={2}>Podstawowe dane</Typography>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Stack sx={{ gap: 1.5, mt: 1, width: 500 }}>
                         <Controller
@@ -214,6 +212,17 @@ export default function CompanySettingsPage() {
                         </Button>
                     </Stack>
                 </form>
+                <Typography variant="h5" fontWeight={600} mt={2} color="primary">Usunięcie firmy</Typography>
+                <Typography mt={0.7} sx={{ width: "500px" }}>Usuwając konto firmy, stracisz wszystkie powiązane z nim dane,
+                    m.in. ogłoszenia, aplikacje i uprawnienia użytkowników.</Typography>
+                <Button
+                    variant="text"
+                    color="error"
+                    sx={{mt: 1.7, p: 0}}
+                    // onClick={handleAccountDeletion}
+                >
+                    Usuń konto
+                </Button>
             </Paper>
         </>
     );

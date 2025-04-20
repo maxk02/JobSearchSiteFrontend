@@ -215,9 +215,9 @@ export default function AccountSettingsPage() {
                     <Typography mt={0.7} sx={{ width: "500px" }}>Usuwając konto, stracisz wszystkie zapisane na nim dane, m.in. historię
                         aplikowań i ulubione oferty.</Typography>
                     <Button
-                        variant="outlined"
+                        variant="text"
                         color="error"
-                        sx={{mt: 1.7}}
+                        sx={{mt: 1.7, p: 0}}
                         onClick={handleAccountDeletion}
                     >
                         Usuń konto

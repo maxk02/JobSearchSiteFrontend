@@ -1,6 +1,6 @@
-import {JobSalaryInfoDto} from "@/lib/api/jobs/jobsApiDtos";
 import {PersonalFileInfoDto} from "@/lib/api/personalFiles/personalFIlesApiDtos";
 import {StringLocationDto} from "@/lib/api/locations/locationsApiDtos";
+import {JobSalaryInfoDto} from "@/lib/api/sharedDtos";
 
 
 export interface JobApplicationForManagersDto {

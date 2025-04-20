@@ -8,65 +8,51 @@ import {
     TableBody,
     TableCell,
     TableContainer,
-    TableHead, TablePagination,
+    TableHead,
+    TablePagination,
     TableRow,
     Typography
 } from "@mui/material";
-import {AddModerator, OpenInNew, RemoveModerator, Settings} from "@mui/icons-material";
-import React from "react";
+import {AddModerator, RemoveModerator} from "@mui/icons-material";
+import React, {useMemo} from "react";
+import {jobFolderClaims} from "@/lib/seededData/jobFolderClaims";
 
 
-interface Data {
+interface FolderClaimsConfigurationTableProps {
+    activeClaimIds: number[];
+    page: number;
+    rowsPerPage: number;
+    onPageChange: (page: number) => void;
+    onRowsPerPageChange: (rowsPerPage: number) => void;
+}
+
+interface RowData {
     id: number;
-    name: string;
-    status: string;
-    source: string;
+    isActive: boolean;
+    text: string;
 }
 
-function createData(
-    id: number,
-    name: string,
-    status: string,
-    source: string,
-): Data {
-    return {
-        id,
-        name,
-        status,
-        source,
-    };
-}
+export default function FolderClaimsConfigurationTable(props: FolderClaimsConfigurationTableProps) {
 
-const rows: Data[] = [
-    createData(1, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(2, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(3, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(4, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(5, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(6, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(7, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(8, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(9, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(10, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(11, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-    createData(12, "Pełny dostęp (1)", "Aktywne", "Ten folder"),
-];
+    const { activeClaimIds, page, rowsPerPage, onPageChange, onRowsPerPageChange } = props;
 
+    const rows = useMemo((): RowData[] =>
+            jobFolderClaims
+                .map(c => ({ id: c.id,
+                    isActive: activeClaimIds.includes(c.id),
+                    text: `${c.namePl} (${c.id})` })),
+        [activeClaimIds]);
 
-
-export default function FolderClaimsConfigurationTable() {
     const [selected, setSelected] = React.useState<readonly number[]>([]);
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-    const visibleRows = React.useMemo(
+    const visibleRows = useMemo(
         () =>
             [...rows]
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-        [page, rowsPerPage],
+        [page, rows, rowsPerPage],
     );
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,17 +84,16 @@ export default function FolderClaimsConfigurationTable() {
     };
 
     const handleChangePage = (event: unknown, newPage: number) => {
-        setPage(newPage);
+        onPageChange(newPage);
     };
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
+        onRowsPerPageChange(parseInt(event.target.value, 10));
     };
 
     const customLabelDisplayedRows = ({ from, to, count }: { from: number; to: number; count: number }) => {
         return selected.length > 0
-            ? `Wybrano ${selected.length} elementów | Przegląd: ${from}-${to} z ${count}`
+            ? `Wybrano elementów: ${selected.length}${selected.length === rows.length && ' (wszystkie)'} | Przegląd: ${from}-${to} z ${count}`
             : `${from}-${to} z ${count}`;
     };
 
@@ -132,7 +117,6 @@ export default function FolderClaimsConfigurationTable() {
                             </TableCell>
                             <TableCell>Uprawnienie (id)</TableCell>
                             <TableCell>Status</TableCell>
-                            <TableCell>Źródło</TableCell>
                             <TableCell sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                 <Button
                                     variant="outlined"
@@ -189,42 +173,42 @@ export default function FolderClaimsConfigurationTable() {
                                             onClick={(event) => handleClick(event, row.id)}
                                         />
                                     </TableCell>
-                                    <TableCell>{row.name}</TableCell>
+                                    <TableCell>{row.text}</TableCell>
                                     <TableCell>
-                                        <Typography variant="body2" color="success">
-                                            {row.status}
-                                        </Typography>
+                                        {row.isActive ?
+                                            <Typography variant="body2" color="success" sx={{ fontWeight: "500" }}>
+                                                Aktywne
+                                            </Typography>
+                                            : <Typography variant="body2" color="error" sx={{ fontWeight: "500" }}>
+                                                Nieaktywne
+                                            </Typography>
+                                        }
                                     </TableCell>
-                                    <TableCell>{row.source}</TableCell>
                                     <TableCell sx={{
                                         display: 'flex',
                                         flexDirection: 'row',
                                         alignItems: 'center'
                                     }}>
-                                        <Button
-                                            variant="outlined"
-                                            color="primary"
-                                            startIcon={<AddModerator/>}
-                                            sx={{mr: 2}}
-                                        >
-                                            Aktywuj
-                                        </Button>
-                                        <Button
-                                            variant="outlined"
-                                            color="error"
-                                            startIcon={<RemoveModerator/>}
-                                            sx={{mr: 2}}
-                                        >
-                                            Wyłącz
-                                        </Button>
-                                        <Button
-                                            variant="outlined"
-                                            color="primary"
-                                            startIcon={<Settings/>}
-                                            endIcon={<OpenInNew/>}
-                                        >
-                                            Przejdź do źródła
-                                        </Button>
+                                        {!row.isActive &&
+                                            <Button
+                                                variant="outlined"
+                                                color="primary"
+                                                startIcon={<AddModerator/>}
+                                                sx={{mr: 2}}
+                                            >
+                                                Aktywuj
+                                            </Button>
+                                        }
+                                        {row.isActive &&
+                                            <Button
+                                                variant="outlined"
+                                                color="error"
+                                                startIcon={<RemoveModerator/>}
+                                                sx={{mr: 2}}
+                                            >
+                                                Wyłącz
+                                            </Button>
+                                        }
                                     </TableCell>
                                 </TableRow>
                             );
@@ -242,7 +226,7 @@ export default function FolderClaimsConfigurationTable() {
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[10, 25]}
+                rowsPerPageOptions={[10]}
                 component="div"
                 count={rows.length}
                 rowsPerPage={rowsPerPage}

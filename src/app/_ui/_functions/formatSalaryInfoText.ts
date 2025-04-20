@@ -1,6 +1,6 @@
-import {JobSalaryInfoDto} from "@/lib/api/jobs/jobsApiDtos";
 import getCurrencySign from "@/lib/functions/currencySigns";
 import getUnitOfTimeSign from "@/lib/functions/unitOfTimeSigns";
+import {JobSalaryInfoDto} from "@/lib/api/sharedDtos";
 
 export default function formatSalaryInfoText(jobSalaryInfoDto: JobSalaryInfoDto): string | null {
 

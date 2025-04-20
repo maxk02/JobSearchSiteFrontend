@@ -12,8 +12,8 @@ interface JobFolderActionsCardProps {
 export default function JobFolderActionsCard({ claimIds }: JobFolderActionsCardProps) {
 
     const navItems = useMemo(() => [
-        { text: "Utwórz subfolder", icon: <CreateNewFolder />, isAllowed: claimIds.includes(5) },
-        { text: "Dodaj ofertę pracy", icon: <NoteAdd />, isAllowed: claimIds.includes(5) },
+        { text: "Utwórz subfolder", icon: <CreateNewFolder />, isAllowed: claimIds.includes(4) },
+        { text: "Dodaj ofertę pracy", icon: <NoteAdd />, isAllowed: claimIds.includes(4) },
     ], [claimIds]);
 
     return (navItems.filter(n => n.isAllowed).length > 0 &&

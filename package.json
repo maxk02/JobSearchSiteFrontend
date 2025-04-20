@@ -17,7 +17,6 @@
     "@mui/material": "^6.4.3",
     "@mui/material-nextjs": "^6.4.3",
     "@mui/x-date-pickers": "^7.27.1",
-    "@reduxjs/toolkit": "^2.5.1",
     "@types/ua-parser-js": "^0.7.39",
     "axios": "^1.8.4",
     "date-fns": "^4.1.0",

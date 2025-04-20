@@ -11,13 +11,13 @@ import {
 } from "@mui/material";
 import {ArrowForward} from "@mui/icons-material";
 import React from "react";
-import {CompanyClaimsOverviewDto} from "@/lib/api/companyClaims/companyClaimsDtos";
+import {CompanyClaimOverviewDto} from "@/lib/api/companyClaims/companyClaimsDtos";
 import {companyClaims} from "@/lib/seededData/companyClaims";
 
 
 
 interface CompanyClaimsOverviewTableProps {
-    rows: CompanyClaimsOverviewDto[];
+    rows: CompanyClaimOverviewDto[];
     page: number;
     rowsPerPage: number;
     onPageChange: (page: number) => void;

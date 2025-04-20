@@ -17,7 +17,7 @@ export default function JobFolderViewsCard() {
 
     const navItems = [
         { text: "Zarządzanie ogłoszeniami", icon: <Description />, path: `/folder/${folderId}/jobs` },
-        { text: "Ustawienia folderu", icon: <Settings />, path: `/folder/${folderId}/settings` },
+        { text: "Zarządzanie folderem", icon: <Settings />, path: `/folder/${folderId}/settings` },
     ];
 
     const currentPath = usePathname();

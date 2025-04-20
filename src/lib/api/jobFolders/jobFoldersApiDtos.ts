@@ -5,13 +5,13 @@ export type JobFolderJobsSortOption = "dateAsc" | "dateDesc";
 
 export interface JobFolderMinimalDto {
     id: number;
-    name: string | null;
+    name: string;
     claimIds: number[];
 }
 
 export interface JobFolderDetailedDto {
     id: number;
-    name: string | null;
+    name: string;
     description: string | null;
     rootFolderId: number | null;
     parentFolderId: number | null;

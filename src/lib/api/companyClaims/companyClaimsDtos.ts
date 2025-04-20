@@ -1,4 +1,4 @@
-export interface CompanyClaimsOverviewDto {
+export interface CompanyClaimOverviewDto {
     userCompanyClaimId: number;
     userId: number;
     userFirstName: string;

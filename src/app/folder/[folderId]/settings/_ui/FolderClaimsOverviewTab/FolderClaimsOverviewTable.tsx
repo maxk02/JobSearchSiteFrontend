@@ -1,7 +1,7 @@
 "use client";
 
 import {
-    Button,
+    Button, Link,
     Paper,
     Table,
     TableBody,
@@ -13,51 +13,21 @@ import {
 } from "@mui/material";
 import {OpenInNew, Settings} from "@mui/icons-material";
 import React from "react";
+import {JobFolderClaimOverviewDto} from "@/lib/api/jobFolderClaims/jobFolderClaimsDtos";
+import {jobFolderClaims} from "@/lib/seededData/jobFolderClaims";
 
 
-interface Data {
-    id: number;
-    personName: string;
-    email: string;
-    claimName: string;
-    source: string;
+interface FolderClaimsOverviewTableProps {
+    rows: JobFolderClaimOverviewDto[];
+    page: number;
+    rowsPerPage: number;
+    onPageChange: (page: number) => void;
+    onRowsPerPageChange: (rowsPerPage: number) => void;
 }
 
-function createData(
-    id: number,
-    personName: string,
-    email: string,
-    claimName: string,
-    source: string,
-): Data {
-    return {
-        id,
-        personName,
-        email,
-        claimName,
-        source,
-    };
-}
+export default function FolderClaimsOverviewTable(props: FolderClaimsOverviewTableProps) {
 
-const rows: Data[] = [
-    createData(1, "Jan Kowalski", "jankowalski9226@gmail.com", "Pełny dostęp (1)", "Odziedziczono po Some folder 2"),
-    createData(2, "Jan Kowalski", "jankowalski9226@gmail.com", "Pełny dostęp (1)", "Odziedziczono po Some folder 2"),
-    createData(3, "Jan Kowalski", "jankowalski9226@gmail.com", "Pełny dostęp (1)", "Odziedziczono po Some folder 2"),
-    createData(4, "Jan Kowalski", "jankowalski9226@gmail.com", "Pełny dostęp (1)", "Odziedziczono po Some folder 2"),
-    createData(5, "Jan Kowalski", "jankowalski9226@gmail.com", "Pełny dostęp (1)", "Odziedziczono po Some folder 2"),
-    createData(6, "Jan Kowalski", "jankowalski9226@gmail.com", "Pełny dostęp (1)", "Odziedziczono po Some folder 2"),
-    createData(7, "Jan Kowalski", "jankowalski9226@gmail.com", "Pełny dostęp (1)", "Odziedziczono po Some folder 2"),
-    createData(8, "Jan Kowalski", "jankowalski9226@gmail.com", "Pełny dostęp (1)", "Odziedziczono po Some folder 2"),
-    createData(9, "Jan Kowalski", "jankowalski9226@gmail.com", "Pełny dostęp (1)", "Odziedziczono po Some folder 2"),
-    createData(10, "Jan Kowalski", "jankowalski9226@gmail.com", "Pełny dostęp (1)", "Odziedziczono po Some folder 2"),
-    createData(11, "Jan Kowalski", "jankowalski9226@gmail.com", "Pełny dostęp (1)", "Odziedziczono po Some folder 2"),
-    createData(12, "Jan Kowalski", "jankowalski9226@gmail.com", "Pełny dostęp (1)", "Odziedziczono po Some folder 2"),
-];
-
-
-export default function FolderClaimsOverviewTable() {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const { rows, page, rowsPerPage, onPageChange, onRowsPerPageChange } = props;
 
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -66,20 +36,16 @@ export default function FolderClaimsOverviewTable() {
         () =>
             [...rows]
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-        [page, rowsPerPage],
+        [page, rows, rowsPerPage],
     );
 
-
-
     const handleChangePage = (event: unknown, newPage: number) => {
-        setPage(newPage);
+        onPageChange(newPage);
     };
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
+        onRowsPerPageChange(parseInt(event.target.value, 10));
     };
-
 
     return (
         <Paper>
@@ -91,13 +57,13 @@ export default function FolderClaimsOverviewTable() {
                             <TableCell>Email</TableCell>
                             <TableCell>Uprawnienie (id)</TableCell>
                             <TableCell>Źródło</TableCell>
-                            <TableCell></TableCell>
+                            <TableCell>Akcje</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {visibleRows.map((row) => (
                             <TableRow
-                                key={row.id}
+                                key={row.userCompanyClaimId}
                                 hover
                                 sx={{
                                     height: 68.9,
@@ -109,19 +75,35 @@ export default function FolderClaimsOverviewTable() {
                                     }
                                 }}
                             >
-                                <TableCell>{row.personName}</TableCell>
-                                <TableCell>{row.email}</TableCell>
-                                <TableCell>{row.claimName}</TableCell>
-                                <TableCell>{row.source}</TableCell>
+                                <TableCell>{`${row.userFirstName} ${row.userLastName}`}</TableCell>
+                                <TableCell>{row.userEmail}</TableCell>
+                                <TableCell>
+                                    { jobFolderClaims.find(c => c.id == row.claimId)?.namePl }
+                                </TableCell>
+                                <TableCell>
+                                    {!row.isInherited && "Ten folder"}
+                                    {row.isInherited && !row.inheritedFrom &&
+                                        "Odziedziczono"
+                                    }
+                                    {row.isInherited && row.inheritedFrom &&
+                                        `Odziedziczono po ${row.inheritedFrom.sourceFolderName}`
+                                    }
+                                </TableCell>
                                 <TableCell sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                    <Button
-                                        variant="outlined"
-                                        color="primary"
-                                        startIcon={<Settings />}
-                                        endIcon={<OpenInNew />}
-                                    >
-                                        Konfiguruj uprawnienia
-                                    </Button>
+                                    {row.isInherited && row.inheritedFrom &&
+                                        <Button
+                                            variant="outlined"
+                                            color="primary"
+                                            startIcon={<Settings />}
+                                            endIcon={<OpenInNew />}
+                                            component={Link}
+                                            href={`/folder/${row.inheritedFrom.sourceFolderId}/settings`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Konfiguruj
+                                        </Button>
+                                    }
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -138,7 +120,7 @@ export default function FolderClaimsOverviewTable() {
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[10, 25]}
+                rowsPerPageOptions={[10]}
                 component="div"
                 count={rows.length}
                 rowsPerPage={rowsPerPage}

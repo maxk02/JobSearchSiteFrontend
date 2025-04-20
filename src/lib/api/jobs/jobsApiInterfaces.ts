@@ -1,5 +1,5 @@
-import {JobApplicationSortOption, JobCardDto, JobDetailedDto, JobSalaryInfoDto} from "@/lib/api/jobs/jobsApiDtos";
-import {PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
+import {JobApplicationSortOption, JobCardDto, JobDetailedDto} from "@/lib/api/jobs/jobsApiDtos";
+import {JobSalaryInfoDto, PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
 import {JobApplicationForManagersDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
 
 export interface AddJobRequest {

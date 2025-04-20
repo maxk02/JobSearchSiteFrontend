@@ -22,7 +22,7 @@ import {Close, Refresh} from "@mui/icons-material";
 import {getCompanyClaimsOverview} from "@/lib/api/companyClaims/companyClaimsApi";
 import {useParams} from "next/navigation";
 import {GetCompanyClaimsOverviewRequest} from "@/lib/api/companyClaims/companyClaimsApiInterfaces";
-import {CompanyClaimsOverviewDto} from "@/lib/api/companyClaims/companyClaimsDtos";
+import {CompanyClaimOverviewDto} from "@/lib/api/companyClaims/companyClaimsDtos";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -43,7 +43,7 @@ export default function CompanyClaimsOverviewTab() {
     
     const [page, setPage] = useState<number>(0);
     const [rowsPerPage, setRowsPerPage] = useState<number>(10);
-    const [rows, setRows] = useState<CompanyClaimsOverviewDto[]>([]);
+    const [rows, setRows] = useState<CompanyClaimOverviewDto[]>([]);
     
     const [searchText, setSearchText] = useState<string>("");
     const [selectedClaimIds, setSelectedClaimIds] = useState<number[]>([]);

@@ -1,5 +1,3 @@
-"use client";
-
 import {Box, Button, Collapse, Divider, IconButton, List, ListItem, Paper, Stack, Typography} from "@mui/material";
 import {
     DeleteForever,
@@ -127,7 +125,7 @@ export default function ManageJobCard({ item, onUpdateTriggered }: ManageJobCard
                     </ListItem>
                 </List>
                 <Stack direction="row" mt={1} sx={{ justifyContent: "left" }} gap={2}>
-                    {currentJobFolderState?.claimIds && currentJobFolderState.claimIds.includes(5) &&
+                    {currentJobFolderState?.claimIds && currentJobFolderState.claimIds.includes(4) &&
                         <Button
                             variant="text"
                             color="primary"
@@ -140,7 +138,7 @@ export default function ManageJobCard({ item, onUpdateTriggered }: ManageJobCard
                         </Button>
                     }
 
-                    {currentJobFolderState?.claimIds && currentJobFolderState.claimIds.includes(7) &&
+                    {currentJobFolderState?.claimIds && currentJobFolderState.claimIds.includes(6) &&
                         <Button
                             variant="text"
                             color="primary"
@@ -165,7 +163,7 @@ export default function ManageJobCard({ item, onUpdateTriggered }: ManageJobCard
                         </Button>
                     }
 
-                    {currentJobFolderState?.claimIds && currentJobFolderState.claimIds.includes(5) &&
+                    {currentJobFolderState?.claimIds && currentJobFolderState.claimIds.includes(4) &&
                         <>
                             <Button
                                 variant="text"
