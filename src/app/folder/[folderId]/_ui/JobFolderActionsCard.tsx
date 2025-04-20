@@ -2,17 +2,24 @@
 
 import {List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper} from "@mui/material";
 import {CreateNewFolder, NoteAdd} from "@mui/icons-material";
+import {useMemo} from "react";
 
-const navItems = [
-    { text: "Utwórz subfolder", icon: <CreateNewFolder /> },
-    { text: "Dodaj ofertę pracy", icon: <NoteAdd /> },
-];
 
-export default function JobFolderActionsCard() {
-    return (
+interface JobFolderActionsCardProps {
+    claimIds: number[];
+}
+
+export default function JobFolderActionsCard({ claimIds }: JobFolderActionsCardProps) {
+
+    const navItems = useMemo(() => [
+        { text: "Utwórz subfolder", icon: <CreateNewFolder />, isAllowed: claimIds.includes(5) },
+        { text: "Dodaj ofertę pracy", icon: <NoteAdd />, isAllowed: claimIds.includes(5) },
+    ], [claimIds]);
+
+    return (navItems.filter(n => n.isAllowed).length > 0 &&
         <Paper sx={{ px: 0, pt: 0, pb: 0, flexShrink: 0 }}>
             <List sx={{ p: 0 }}>
-                {navItems.map((item) => (
+                {navItems.filter(n => n.isAllowed).map((item) => (
                     <ListItem key={item.text} disablePadding>
                         <ListItemButton
                             sx={{

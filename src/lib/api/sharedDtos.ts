@@ -9,3 +9,11 @@ export interface PaginationResponse {
     totalCount: number;
     totalPages: number;
 }
+
+export interface JobSalaryInfoDto {
+    minimum: number | null;
+    maximum: number | null;
+    currency: string;
+    unitOfTime: string;
+    isAfterTaxes: boolean;
+}

@@ -7,9 +7,32 @@ import JobFolderViewsCard from "@/app/folder/[folderId]/_ui/JobFolderViewsCard";
 import JobFolderActionsCard from "./_ui/JobFolderActionsCard";
 import JobFolderParentsNavigationCard from "./_ui/JobFolderParentsNavigationCard";
 import JobFolderChildrenNavigationCard from "./_ui/JobFolderChildrenNavigationCard";
+import React, {useEffect} from "react";
+import {useCurrentJobFolderStore} from "@/lib/stores/currentJobFolderStore";
+import {getFolder} from "@/lib/api/jobFolders/jobFoldersApi";
+import {useParams} from "next/navigation";
 
 
 export default function ManageFolderLayout({children}: Readonly<{ children: React.ReactNode; }>) {
+    
+    const { currentJobFolderState, setCurrentJobFolderState } = useCurrentJobFolderStore();
+    
+    const { folderId } = useParams();
+    const parsedFolderId = parseInt(folderId as string, 10);
+    
+    useEffect(() => {
+        const fetchJobFolder = async () => {
+            const result = await getFolder(parsedFolderId);
+            
+            if (result.success) {
+                setCurrentJobFolderState(result.data.jobFolder);
+            }
+        };
+
+        fetchJobFolder();
+
+    }, [parsedFolderId, setCurrentJobFolderState]);
+    
     return (
         <Container maxWidth="xl" sx={{ mt: 2.5, mb: 2.5 }}>
             <Grid container spacing={4}>
@@ -20,11 +43,20 @@ export default function ManageFolderLayout({children}: Readonly<{ children: Reac
                              maxHeight: "calc(100vh - 40px)", flex: 1
                         }}
                     >
-                        <JobFolderCompanyNavigationCard />
+                        {currentJobFolderState?.companyId && currentJobFolderState.companyName &&
+                            <JobFolderCompanyNavigationCard
+                                companyId={currentJobFolderState.companyId}
+                                companyName={currentJobFolderState.companyName}
+                                companyLogoLink={currentJobFolderState.companyLogoLink}
+                            />
+                        }
                         <JobFolderViewsCard />
-                        <JobFolderActionsCard />
-                        <JobFolderParentsNavigationCard rootFolderId={null} parentFolderId={null}  />
-                        <JobFolderChildrenNavigationCard />
+                        <JobFolderActionsCard claimIds={currentJobFolderState?.claimIds ?? []} />
+                        <JobFolderParentsNavigationCard
+                            rootFolderId={currentJobFolderState?.rootFolderId ?? null}
+                            parentFolderId={currentJobFolderState?.parentFolderId ?? null}
+                        />
+                        <JobFolderChildrenNavigationCard folders={currentJobFolderState?.children ?? []} />
                     </Box>
                 </Grid>
 

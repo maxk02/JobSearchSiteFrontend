@@ -12,13 +12,23 @@ import {
     Typography
 } from "@mui/material";
 import {ArrowBack} from "@mui/icons-material";
+import {useRouter} from "next/navigation";
 
 
+interface JobFolderCompanyNavigationCardProps {
+    companyId: number;
+    companyName: string;
+    companyLogoLink: string | null;
+}
 
-export default function JobFolderCompanyNavigationCard() {
+export default function JobFolderCompanyNavigationCard(props: JobFolderCompanyNavigationCardProps) {
+
+    const { companyId, companyName, companyLogoLink } = props;
+
+    const router = useRouter();
 
     const navItems = [
-        { text: "Powrót do zarządzania firmą", icon: <ArrowBack />, path: `/company/1/manage` },
+        { text: "Powrót do zarządzania firmą", icon: <ArrowBack />, path: `/company/${companyId}/manage` },
     ];
 
     return (
@@ -31,13 +41,17 @@ export default function JobFolderCompanyNavigationCard() {
             }}
             >
                 <ListItem sx={{ pl: 1.5, pr: 0.75, py: 0.5, alignItems: "center", flex: "0 0 fit-content" }}>
-                    <Avatar variant="rounded" src="/company2.webp" sx={{ height: 35, width: 35 }} />
+                    <Avatar
+                        variant="rounded"
+                        src={companyLogoLink ?? "/company2.webp"}
+                        sx={{ height: 35, width: 35 }}
+                    />
                 </ListItem>
                 <ListItem sx={{ pl: 0.75, py: 0.5, alignItems: "center", flex: "0 0 fit-content" }}>
                     <Typography variant="body1" fontWeight={600} gutterBottom marginBottom={0}
                                 sx={{ flex: "none" }}
                     >
-                        Firma1 Sp. z o o
+                        {companyName}
                     </Typography>
                 </ListItem>
             </Box>
@@ -51,6 +65,7 @@ export default function JobFolderCompanyNavigationCard() {
                                 py: 1.2,
                                 pr: 3
                             }}
+                            onClick={() => router.push(item.path)}
                         >
                             <ListItemIcon sx={{ minWidth: 36 }}>
                                 {item.icon}

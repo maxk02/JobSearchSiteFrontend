@@ -1,6 +1,6 @@
 "use client";
 
-import {Box, Breadcrumbs, Link, Paper, Tab, Tabs, Typography} from "@mui/material";
+import {Box, Paper, Tab, Tabs, Typography} from "@mui/material";
 import React from "react";
 import tabA11yProps from "@/app/_ui/_lib/_components/tab/tabA11yProps";
 import CustomTabPanel from "@/app/_ui/CustomTabPanel";
@@ -8,9 +8,13 @@ import GeneralTab from "./_ui/GeneralTab/GeneralTab";
 import FolderClaimsOverviewTab from "./_ui/FolderClaimsOverviewTab/FolderClaimsOverviewTab";
 import FolderClaimsConfigurationTab from "./_ui/FolderClaimsConfigurationTab/FolderClaimsConfigurationTab";
 import StatsTab from "@/app/folder/[folderId]/settings/_ui/StatsTab/StatsTab";
+import {useCurrentJobFolderStore} from "@/lib/stores/currentJobFolderStore";
 
 
 export default function FolderSettingsPage() {
+
+    const { currentJobFolderState } = useCurrentJobFolderStore();
+
     const [value, setValue] = React.useState(0);
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -19,23 +23,27 @@ export default function FolderSettingsPage() {
 
     return (
         <>
-            <Breadcrumbs aria-label="breadcrumb">
-                <Link underline="hover" color="inherit" href="/public">
-                    Udostępnione foldery
-                </Link>
-                <Link
-                    underline="hover"
-                    color="inherit"
-                    href="/public"
-                >
-                    Some parent folder 1
-                </Link>
-                <Typography sx={{ color: 'text.primary' }}>Some folder 1</Typography>
-            </Breadcrumbs>
+            {/*<Breadcrumbs aria-label="breadcrumb">*/}
+            {/*    <Link underline="hover" color="inherit" href="/public">*/}
+            {/*        Udostępnione foldery*/}
+            {/*    </Link>*/}
+            {/*    <Link*/}
+            {/*        underline="hover"*/}
+            {/*        color="inherit"*/}
+            {/*        href="/public"*/}
+            {/*    >*/}
+            {/*        Some parent folder 1*/}
+            {/*    </Link>*/}
+            {/*    <Typography sx={{ color: 'text.primary' }}>Some folder 1</Typography>*/}
+            {/*</Breadcrumbs>*/}
 
-            <Typography variant="h5" fontWeight={600} color="primary" mt={1}>Some folder 1</Typography>
+            <Typography variant="h4" fontWeight={600} color="primary">
+                {currentJobFolderState?.name}
+            </Typography>
 
-            <Typography variant="body1" mt={1}>Opis folderu</Typography>
+            <Typography variant="body1" mt={1}>
+                {currentJobFolderState?.description}
+            </Typography>
 
             <Box display="flex" flexDirection="column" gap={3} mt={2}>
                 <Paper>

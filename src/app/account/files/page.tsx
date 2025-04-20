@@ -113,11 +113,7 @@ export default function AccountFilesPage() {
             <Typography mt={0.5}>W tej zakładce możesz zarządzać plikami, z którymi będziesz aplikować na oferty.</Typography>
 
             <Paper sx={{ mt: 2, p: 2, maxWidth: "900px" }}>
-                <Alert
-                    severity="info"
-                    icon={<Info />}
-                    sx={{ maxWidth: "500px" }}
-                >
+                <Alert severity="info" icon={<Info />} sx={{ maxWidth: "500px" }}>
                     <Typography>
                         Dopuszczalny format plików: pdf
                     </Typography>
