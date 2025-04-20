@@ -12,7 +12,7 @@ import {
     Stack,
     Typography
 } from "@mui/material";
-import {ArrowForward, Business, Dashboard, FileOpen, Policy, QueryStats} from "@mui/icons-material";
+import {ArrowForward, Business, Dashboard, FileOpen, Policy} from "@mui/icons-material";
 import {useParams, usePathname} from "next/navigation";
 import {useEffect, useState} from "react";
 import {getCompanyById} from "@/lib/api/companies/companiesApi";

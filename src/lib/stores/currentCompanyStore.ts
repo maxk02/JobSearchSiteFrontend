@@ -8,7 +8,7 @@ export interface CurrentCompanyState {
     resetCurrentCompanyState: () => void;
 }
 
-export const useCurrentJobFolderStore = create<CurrentCompanyState>((set) => ({
+export const useCurrentCompanyStore = create<CurrentCompanyState>((set) => ({
     currentCompanyState: undefined,
     setCurrentCompanyState: (company) =>
         set({

@@ -1,8 +1,9 @@
 "use client";
 
 import {List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Typography} from "@mui/material";
-import {Description, Settings} from "@mui/icons-material";
+import {Description, QueryStats, Settings} from "@mui/icons-material";
 import {useParams, usePathname} from 'next/navigation';
+import {useCurrentJobFolderStore} from "@/lib/stores/currentJobFolderStore";
 
 
 function isRouteActive(pathname: string, href: string) {
@@ -15,9 +16,27 @@ export default function JobFolderViewsCard() {
 
     const { folderId } = useParams();
 
+    const { currentJobFolderState } = useCurrentJobFolderStore();
+
     const navItems = [
-        { text: "Zarządzanie ogłoszeniami", icon: <Description />, path: `/folder/${folderId}/jobs` },
-        { text: "Zarządzanie folderem", icon: <Settings />, path: `/folder/${folderId}/settings` },
+        {
+            text: "Zarządzanie ogłoszeniami",
+            icon: <Description />,
+            path: `/folder/${folderId}/jobs`,
+            isAccessible: true
+        },
+        {
+            text: "Zarządzanie folderem",
+            icon: <Settings />,
+            path: `/folder/${folderId}/settings`,
+            isAccessible: currentJobFolderState?.claimIds?.includes(4)
+        },
+        {
+            text: "Statystyki",
+            icon: <QueryStats />,
+            path: `/folder/${folderId}/stats`,
+            isAccessible: currentJobFolderState?.claimIds?.includes(3)
+        },
     ];
 
     const currentPath = usePathname();

@@ -2,7 +2,6 @@
 
 import {Alert, Avatar, Box, Button, Paper, Stack, TextField, Typography} from "@mui/material";
 import React, {useEffect, useState} from "react";
-import Image from "next/image";
 import FileUploadArea from "@/app/_ui/FileUploadArea";
 import {Info} from "@mui/icons-material";
 import {FileRejection} from "react-dropzone";
