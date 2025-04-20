@@ -1,17 +1,10 @@
 import {PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
-import {CompanyInfoDto} from "@/lib/api/companies/companiesApiDtos";
+import {CompanyManagementDetailedDto} from "@/lib/api/companies/companyDtos";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 import {JobApplicationInUserProfileDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
 import {PersonalFileInfoDto} from "@/lib/api/personalFiles/personalFIlesApiDtos";
 
 
-export interface AddCompanyBookmarkRequest {
-    companyId: number;
-}
-
-export interface AddJobBookmarkRequest {
-    jobId: number;
-}
 
 export interface AddUserProfileRequest {
     firstName: string;
@@ -19,20 +12,12 @@ export interface AddUserProfileRequest {
     phone: string | null;
 }
 
-export interface DeleteCompanyBookmarkRequest {
-    companyId: number;
-}
-
-export interface DeleteJobBookmarkRequest {
-    jobId: number;
-}
-
 export interface GetBookmarkedCompaniesRequest {
     paginationSpec: PaginationSpec;
 }
 
 export interface GetBookmarkedCompaniesResponse {
-    companyInfos: CompanyInfoDto[];
+    companyInfos: CompanyManagementDetailedDto[];
     paginationResponse: PaginationResponse;
 }
 

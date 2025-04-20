@@ -19,7 +19,6 @@ import {companyClaims} from "@/lib/seededData/companyClaims";
 
 
 interface CompanyClaimsConfigurationTableProps {
-    // rows: CompanyClaimsOverviewDto[];
     activeClaimIds: number[];
     page: number;
     rowsPerPage: number;

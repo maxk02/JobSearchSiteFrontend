@@ -3,7 +3,6 @@ import {
     ConfirmEmailRequest,
     CreateAccountRequest,
     ExtendSessionResponse,
-    GetUserSessionsResponse,
     LogInRequest,
     LogInResponseDto,
     ResetPasswordRequest,
@@ -35,10 +34,6 @@ export const extendSession = async () => {
 
 export const terminateSession = async (token: string) => {
     return await fetchData<unknown>(`/account/sessions/${token}`, "DELETE");
-};
-
-export const getSessions = async () => {
-    return await fetchData<unknown, GetUserSessionsResponse>("/account/sessions", "GET");
 };
 
 export const logIn = async (req: LogInRequest) => {

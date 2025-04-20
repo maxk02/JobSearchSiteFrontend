@@ -1,26 +1,15 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import {AccountDataDto} from "@/lib/api/account/accountApiDtos";
+import {create} from 'zustand';
+import {AccountDataDto} from "@/lib/api/account/accountDtos";
 
 interface CurrentUserState {
-    tokenId: string | null;
-    user: AccountDataDto | null;
-    isAuthenticated: boolean;
-    setAuth: (tokenId: string, user: AccountDataDto) => void;
-    clearAuth: () => void;
+    currentUser: AccountDataDto | null;
+    setCurrentUser: (user: AccountDataDto) => void;
+    clearCurrentUser: () => void;
 }
 
-export const useCurrentUserStore = create<CurrentUserState>()(
-    persist(
-        (set) => ({
-            tokenId: null,
-            user: null,
-            isAuthenticated: false,
-            setAuth: (tokenId, user) => set({ tokenId: tokenId, user: user, isAuthenticated: true }),
-            clearAuth: () => set({ tokenId: null, user: null, isAuthenticated: false }),
-        }),
-        {
-            name: 'current-user-storage',
-        }
-    )
+export const useCurrentUserStore = create<CurrentUserState>()((set) => ({
+        currentUser: null,
+        setCurrentUser: (user) => set({ currentUser: user }),
+        clearCurrentUser: () => set({ currentUser: null }),
+    })
 );

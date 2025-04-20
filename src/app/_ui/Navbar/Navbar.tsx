@@ -9,7 +9,7 @@ import ForEmployersMenuButton from "@/app/_ui/Navbar/ForEmployersMenuButton";
 import {useCurrentUserStore} from "@/lib/stores/currentUserStore";
 
 export default function Navbar() {
-    const { user } = useCurrentUserStore();
+    const { currentUser } = useCurrentUserStore();
 
     return (
         <AppBar position="static" sx={{ zIndex: 4, backgroundColor: "white", boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.08)" }}>
@@ -26,9 +26,8 @@ export default function Navbar() {
                     </Link>
                     <Stack direction="row" gap={3}>
                         <MyAccountMenuButton />
-                        {user?.companiesManaged.length && <ForEmployersMenuButton />}
-                        {
-                            !user?.companiesManaged.length &&
+                        {currentUser?.companiesManaged.length && <ForEmployersMenuButton />}
+                        {!currentUser?.companiesManaged.length &&
                             <Box display="flex" flexDirection="column" alignItems="left" justifyContent="center">
                                 <Typography fontWeight={450} lineHeight={1.2} fontSize={15} color="textSecondary">
                                     DLA PRACODAWCÓW

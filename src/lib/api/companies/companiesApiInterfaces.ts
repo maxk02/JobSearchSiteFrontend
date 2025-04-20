@@ -1,4 +1,4 @@
-import {CompanyInfoDto} from "@/lib/api/companies/companiesApiDtos";
+import {CompanyManagementDetailedDto} from "@/lib/api/companies/companyDtos";
 import {PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 import {AccountDataDto} from "@/lib/api/account/accountApiDtos";
@@ -23,12 +23,12 @@ export interface GetCompaniesRequest {
 }
 
 export interface GetCompaniesResponse {
-    companyInfoDtos: CompanyInfoDto[];
+    companyInfoDtos: CompanyManagementDetailedDto[];
     paginationResponse: PaginationResponse;
 }
 
 export interface GetCompanyByIdResponse {
-    company: CompanyInfoDto;
+    company: CompanyManagementDetailedDto;
 }
 
 export interface UpdateCompanyRequestDto {

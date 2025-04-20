@@ -17,12 +17,12 @@ import {
 import React from "react";
 import {useCurrentUserStore} from "@/lib/stores/currentUserStore";
 import Link from "next/link";
-import Image from "next/image";
+import {logOut} from "@/lib/api/account/accountApi";
 
 
 export default function MyAccountMenuButton() {
 
-    const { isAuthenticated, user, clearAuth } = useCurrentUserStore();
+    const { currentUser, clearCurrentUser } = useCurrentUserStore();
 
     const loggedInItems = [
         { text: "Mój profil", icon: <ContactPage />, path: "/account/profile" },
@@ -50,19 +50,22 @@ export default function MyAccountMenuButton() {
         setAnchorEl(null);
     };
 
-    const handleLogOut = () => {
-        clearAuth();
-        handleClose();
+    const handleLogOut = async () => {
+
+        const result = await logOut();
+
+        if (result.success) {
+            clearCurrentUser();
+            handleClose();
+        }
     }
 
-    const menuItems = isAuthenticated ? [
+    const menuItems = currentUser ? [
         <Box key="user-info" sx={{ display: "flex", flexDirection: "row", alignItems: "center", p: 2, pt: 1 }}>
-            <Avatar sx={{ height: 50, width: 50, mr: 1.5 }}>
-                {user?.avatarLink && <Image src={user.avatarLink} alt="User's avatar" />}
-            </Avatar>
-            {user?.fullName &&
+            <Avatar src={currentUser.avatarLink ?? ""} sx={{ height: 50, width: 50, mr: 1.5 }} />
+            {currentUser?.fullName &&
                 <Typography variant="body1" fontWeight={600} gutterBottom>
-                    {user?.fullName}
+                    {currentUser?.fullName}
                 </Typography>
             }
         </Box>,

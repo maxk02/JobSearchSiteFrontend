@@ -3,9 +3,13 @@
 import {Avatar, Box, Button, Divider, Menu, MenuItem, useTheme} from "@mui/material";
 import {KeyboardArrowDown, KeyboardArrowUp, Work} from "@mui/icons-material";
 import React from "react";
+import {useCurrentUserStore} from "@/lib/stores/currentUserStore";
 
 export default function MyAccountMenuButton() {
+
     const theme = useTheme();
+
+    const { currentUser } = useCurrentUserStore();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -68,12 +72,19 @@ export default function MyAccountMenuButton() {
                     sx: { py: 0 }
                 }}
             >
-                <MenuItem onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
-                    <Avatar variant="rounded" sx={{ height: 35, width: 35, mr: 1.5 }} />
-                    Provinvest Sp. z o.o.
-                </MenuItem>
-                <Divider style={{ marginTop: 0, marginBottom: 0 }} />
-                <MenuItem onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
+                {currentUser?.companiesManaged?.map((item) => (
+                    <MenuItem key={item.id} onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
+                        <Avatar src={item.logoLink ?? ""} variant="rounded" sx={{ height: 35, width: 35, mr: 1.5 }} />
+                        {item.name}
+                    </MenuItem>
+                ))}
+                {currentUser?.companiesManaged?.length &&
+                    <Divider style={{ marginTop: 0, marginBottom: 0 }} />
+                }
+                <MenuItem
+                    onClick={handleClose}
+                    sx={{ py: 2, pr: 4, pl: 2 }}
+                >
                     <Avatar variant="rounded" sx={{ height: 35, width: 35, mr: 1.5 }}>
                         +
                     </Avatar>
