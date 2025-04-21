@@ -3,18 +3,25 @@
 import {List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Typography} from "@mui/material";
 import {Edit, QueryStats, TaskAlt} from "@mui/icons-material";
 import {useParams, usePathname, useRouter} from 'next/navigation';
+import {useCurrentJobStore} from "@/lib/stores/currentJobStore";
 
-const navItems = [
-    { text: "Statystyki", icon: <QueryStats />, subpage: "stats" },
-    { text: "Aplikacje", icon: <TaskAlt />, subpage: "applications" },
-    { text: "Edycja", icon: <Edit />, subpage: "edit" },
-];
 
 export default function ManageJobViewsCard() {
     const { jobId } = useParams();
 
     const router = useRouter();
     const pathname = usePathname();
+
+    const { currentJobState } = useCurrentJobStore();
+
+    const navItems = [
+        { text: "Statystyki", icon: <QueryStats />, subpage: "stats",
+            isAccessible: currentJobState?.claimIds?.includes(3) },
+        { text: "Aplikacje", icon: <TaskAlt />, subpage: "applications",
+            isAccessible: currentJobState?.claimIds?.includes(6) },
+        { text: "Edycja", icon: <Edit />, subpage: "edit",
+            isAccessible: currentJobState?.claimIds?.includes(4) },
+    ];
 
     const navigateTo = (subPage: string) => {
         router.push(`/job/${jobId}/manage/${subPage}`);

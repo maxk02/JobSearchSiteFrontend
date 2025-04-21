@@ -28,10 +28,10 @@ export const createEditJobSchema = z.object({
     timeRangeOption: z.number().min(1).max(4),
     dateTimeExpiringUtc: z.date().min(new Date()),
     isPublic: z.boolean(),
-    employmentOptionIds: z.array(z.number())
-        .refine((arr) => arr.every(num => employmentOptionIds.includes(num))),
-    jobContractTypeIds: z.array(z.number())
-        .refine((arr) => arr.every(num => jobContractTypeIdsByCountry[1].includes(num))),
+    employmentOptionIds: z.array(z.number()).nullable()
+        .refine((arr) => (arr ?? []).every(num => employmentOptionIds.includes(num))),
+    jobContractTypeIds: z.array(z.number()).nullable()
+        .refine((arr) => (arr ?? []).every(num => jobContractTypeIdsByCountry[1].includes(num))),
     locationIds: z.array(z.number().min(1)),
     salaryInfo: jobSalaryInfoSchema,
     responsibilities: listItemsSchema,
