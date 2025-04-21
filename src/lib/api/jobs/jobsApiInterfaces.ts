@@ -37,7 +37,6 @@ export interface GetJobManagementDtoResponse {
 export interface GetJobsRequest {
     query: string;
     paginationSpec: PaginationSpec;
-    companyIds: number[] | null;
     employmentOptionIds: number[] | null;
     locationIds: number[] | null;
     categoryIds: number[] | null;

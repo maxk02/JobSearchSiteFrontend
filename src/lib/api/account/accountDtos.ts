@@ -1,4 +1,4 @@
-import {CompanyManagementListItemDto} from "@/lib/api/companies/companyDtos";
+import {CompanyManagementListItemDto} from "@/lib/api/companies/companiesApiDtos";
 
 
 export interface AccountDataDto {

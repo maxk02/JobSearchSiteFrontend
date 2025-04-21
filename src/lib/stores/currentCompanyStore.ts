@@ -1,5 +1,5 @@
 import {create} from 'zustand';
-import {CompanyManagementDetailedDto} from "@/lib/api/companies/companyDtos";
+import {CompanyManagementDetailedDto} from "@/lib/api/companies/companiesApiDtos";
 
 
 export interface CurrentCompanyState {

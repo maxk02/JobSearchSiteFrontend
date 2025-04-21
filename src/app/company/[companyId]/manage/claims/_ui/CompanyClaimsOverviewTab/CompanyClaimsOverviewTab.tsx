@@ -22,7 +22,7 @@ import {Close, Refresh} from "@mui/icons-material";
 import {getCompanyClaimsOverview} from "@/lib/api/companyClaims/companyClaimsApi";
 import {useParams} from "next/navigation";
 import {GetCompanyClaimsOverviewRequest} from "@/lib/api/companyClaims/companyClaimsApiInterfaces";
-import {CompanyClaimOverviewDto} from "@/lib/api/companyClaims/companyClaimsDtos";
+import {CompanyClaimOverviewDto} from "@/lib/api/companyClaims/companyClaimsApiDtos";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;

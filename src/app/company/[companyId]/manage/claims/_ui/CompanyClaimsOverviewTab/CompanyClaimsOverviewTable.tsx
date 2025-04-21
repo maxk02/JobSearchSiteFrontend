@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import {ArrowForward} from "@mui/icons-material";
 import React from "react";
-import {CompanyClaimOverviewDto} from "@/lib/api/companyClaims/companyClaimsDtos";
+import {CompanyClaimOverviewDto} from "@/lib/api/companyClaims/companyClaimsApiDtos";
 import {companyClaims} from "@/lib/seededData/companyClaims";
 
 

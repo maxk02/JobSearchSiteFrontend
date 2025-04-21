@@ -48,7 +48,6 @@ export default async function JobPage({ params }: { params: { jobId: string } })
     const job = await fetchJob(id);
 
     const request: GetJobsRequest = {
-        companyIds: null,
         query: job.title,
         paginationSpec: {
             pageNumber: 1,

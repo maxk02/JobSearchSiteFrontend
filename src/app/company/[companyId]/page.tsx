@@ -4,26 +4,19 @@ import MyDefaultPagination from "@/app/_ui/MyDefaultPagination";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 import JobCard from "@/app/_ui/JobCard";
 import {redirect} from "next/navigation";
-import {getCompany} from "@/lib/api/companies/companiesApi";
-import {GetJobsRequest} from "@/lib/api/jobs/jobsApiInterfaces";
-import {getJobs} from "@/lib/api/jobs/jobsApi";
+import {getCompany, getCompanyJobs} from "@/lib/api/companies/companiesApi";
+import {GetCompanyJobsRequest} from "@/lib/api/companies/companiesApiInterfaces";
 
 
 async function fetchCompanyJobs(id: number, params: TypedCompanySearchParams) {
-    const request: GetJobsRequest = {
-        categoryIds: null,
-        contractTypeIds: null,
-        employmentOptionIds: null,
-        locationIds: null,
-        query: "",
+    const request: GetCompanyJobsRequest = {
         paginationSpec: {
             pageNumber: params.page,
             pageSize: 10,
         },
-        companyIds: [id]
     };
 
-    const jobCardsResult = await getJobs(request);
+    const jobCardsResult = await getCompanyJobs(id, request);
 
     if (!jobCardsResult.success) {
         console.error(`Failed to fetch jobs (${jobCardsResult.status})`);

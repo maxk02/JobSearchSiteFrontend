@@ -1,5 +1,5 @@
 import {PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
-import {CompanyClaimOverviewDto} from "@/lib/api/companyClaims/companyClaimsDtos";
+import {CompanyClaimOverviewDto} from "@/lib/api/companyClaims/companyClaimsApiDtos";
 
 export interface GetCompanyClaimsOverviewRequest {
     userQuery: string;

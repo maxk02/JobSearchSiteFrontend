@@ -20,7 +20,7 @@ import FolderClaimsOverviewTable
 import {useParams} from "next/navigation";
 import {jobFolderClaims} from "@/lib/seededData/jobFolderClaims";
 import {Close, Refresh} from "@mui/icons-material";
-import {JobFolderClaimOverviewDto} from "@/lib/api/jobFolderClaims/jobFolderClaimsDtos";
+import {JobFolderClaimOverviewDto} from "@/lib/api/jobFolderClaims/jobFolderClaimsApiDtos";
 import {GetJobFolderClaimsOverviewRequest} from "@/lib/api/jobFolderClaims/jobFolderClaimsApiInterfaces";
 import {getJobFolderClaimsOverview} from "@/lib/api/jobFolderClaims/jobFolderClaimsApi";
 

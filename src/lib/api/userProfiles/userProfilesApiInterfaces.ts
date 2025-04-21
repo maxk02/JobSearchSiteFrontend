@@ -1,5 +1,5 @@
 import {PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
-import {CompanyManagementDetailedDto} from "@/lib/api/companies/companyDtos";
+import {CompanyManagementDetailedDto} from "@/lib/api/companies/companiesApiDtos";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 import {JobApplicationInUserProfileDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
 import {PersonalFileInfoDto} from "@/lib/api/personalFiles/personalFIlesApiDtos";

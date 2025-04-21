@@ -21,3 +21,10 @@ export interface CompanyManagementDetailedDto {
     nip: string;
     claimIds: number[];
 }
+
+export interface CompanyEmployeeDto {
+    id: number;
+    email: string;
+    fullName: string | null;
+    avatarLink: string | null;
+}

@@ -1,15 +1,13 @@
-import {CompanyDto, CompanyManagementDetailedDto} from "@/lib/api/companies/companyDtos";
+import {CompanyDto, CompanyManagementDetailedDto, CompanyEmployeeDto} from "@/lib/api/companies/companiesApiDtos";
 import {PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
-import {AccountDataDto} from "@/lib/api/account/accountDtos";
 
 
 export interface AddCompanyRequest {
     name: string;
     description: string | null;
     nip: string;
-    // isPublic: boolean;
-    // countryId: number;
+    countryId: number;
 }
 
 export interface AddCompanyResponse {
@@ -59,10 +57,14 @@ export interface GetCompanyEmployeesRequest {
 }
 
 export interface GetCompanyEmployeesResponse {
-    users: AccountDataDto[];
+    users: CompanyEmployeeDto[];
     paginationResponse: PaginationResponse;
 }
 
 export interface AddCompanyEmployeeRequest {
-    userId: number;
+    email: string;
+}
+
+export interface AddCompanyEmployeeResponse {
+    id: number;
 }

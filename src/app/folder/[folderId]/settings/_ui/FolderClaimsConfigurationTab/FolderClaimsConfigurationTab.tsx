@@ -22,11 +22,11 @@ import {Add, Info, Refresh} from "@mui/icons-material";
 import FolderClaimsConfigurationTable
     from "@/app/folder/[folderId]/settings/_ui/FolderClaimsConfigurationTab/FolderClaimsConfigurationTable";
 import {useParams} from "next/navigation";
-import {AccountDataDto} from "@/lib/api/account/accountApiDtos";
-import {GetCompanyEmployeesRequest} from "@/lib/api/companies/companiesApiInterfaces";
-import {getCompanyEmployees} from "@/lib/api/companies/companiesApi";
+import {AddCompanyEmployeeRequest, GetCompanyEmployeesRequest} from "@/lib/api/companies/companiesApiInterfaces";
+import {addCompanyEmployee, getCompanyEmployees} from "@/lib/api/companies/companiesApi";
 import {getJobFolderClaimIdsForUser} from "@/lib/api/jobFolderClaims/jobFolderClaimsApi";
 import Image from "next/image";
+import {CompanyEmployeeDto} from "@/lib/api/companies/companiesApiDtos";
 
 export default function FolderClaimsConfigurationTab() {
 
@@ -40,9 +40,9 @@ export default function FolderClaimsConfigurationTab() {
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
     const [refreshButtonCounter, setRefreshButtonCounter] = useState<number>(0);
 
-    const [displayedUser, setDisplayedUser] = useState<AccountDataDto | null>(null);
+    const [displayedUser, setDisplayedUser] = useState<CompanyEmployeeDto | null>(null);
 
-    const [findUserOptions, setFindUserOptions] = useState<AccountDataDto[]>([]);
+    const [findUserOptions, setFindUserOptions] = useState<CompanyEmployeeDto[]>([]);
     const [loading, setLoading] = useState(false);
     const [findUserInputValue, setFindUserInputValue] = useState('');
 
@@ -123,8 +123,22 @@ export default function FolderClaimsConfigurationTab() {
         setSelectedUserId(null);
     };
 
-    const handleAddNewUser = (email: string) => {
-        //todo
+    const handleAddNewUser = async (email: string) => {
+        const request: AddCompanyEmployeeRequest = {
+            email: email,
+        };
+
+        const result = await addCompanyEmployee(companyId, request);
+
+        if (result.success) {
+            const newDisplayedUser: CompanyEmployeeDto = {
+                id: result.data.id,
+                email: email,
+                fullName: null,
+                avatarLink: null,
+            };
+            setDisplayedUser(newDisplayedUser);
+        }
     };
 
     return (

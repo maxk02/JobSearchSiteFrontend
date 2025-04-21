@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import {OpenInNew, Settings} from "@mui/icons-material";
 import React from "react";
-import {JobFolderClaimOverviewDto} from "@/lib/api/jobFolderClaims/jobFolderClaimsDtos";
+import {JobFolderClaimOverviewDto} from "@/lib/api/jobFolderClaims/jobFolderClaimsApiDtos";
 import {jobFolderClaims} from "@/lib/seededData/jobFolderClaims";
 
 

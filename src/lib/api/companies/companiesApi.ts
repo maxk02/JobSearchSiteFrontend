@@ -1,20 +1,32 @@
 import fetchData from "@/lib/api/fetchData";
 import {
     AddCompanyEmployeeRequest,
+    AddCompanyEmployeeResponse,
+    AddCompanyRequest,
     AddCompanyResponse,
     GetCompaniesRequest,
     GetCompaniesResponse,
-    GetCompanyResponse,
     GetCompanyEmployeesRequest,
     GetCompanyEmployeesResponse,
     GetCompanyJobsRequest,
     GetCompanyJobsResponse,
-    UpdateCompanyRequestDto, GetCompanyManagementDtoResponse
+    GetCompanyManagementDtoResponse,
+    GetCompanyResponse,
+    UpdateCompanyRequestDto
 } from "@/lib/api/companies/companiesApiInterfaces";
 import {UploadAvatarResponse} from "@/lib/api/userProfiles/userProfilesApiInterfaces";
 
 
-export const addCompany = async (form: FormData) => {
+export const addCompany = async (req: AddCompanyRequest, file: File | null) => {
+
+    const form = new FormData();
+
+    form.append("request", JSON.stringify(req));
+
+    if (file) {
+        form.append("file", file);
+    }
+
     return await fetchData<FormData, AddCompanyResponse>("/companies", "POST", form, {});
 };
 
@@ -51,7 +63,7 @@ export const getCompanyEmployees = async (id: number, req: GetCompanyEmployeesRe
 };
 
 export const addCompanyEmployee = async (id: number, req: AddCompanyEmployeeRequest) => {
-    return await fetchData<AddCompanyEmployeeRequest>(`/company/${id}/users`, "POST", req);
+    return await fetchData<AddCompanyEmployeeRequest, AddCompanyEmployeeResponse>(`/company/${id}/users`, "POST", req);
 };
 
 export const deleteCompanyEmployee = async (id: number, userId: number) => {

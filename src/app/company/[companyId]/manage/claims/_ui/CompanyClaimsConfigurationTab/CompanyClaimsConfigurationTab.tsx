@@ -22,10 +22,10 @@ import {Add, Info, Refresh} from "@mui/icons-material";
 import CompanyClaimsConfigurationTable from "./CompanyClaimsConfigurationTable";
 import {useParams} from "next/navigation";
 import {getCompanyClaimIdsForUser} from "@/lib/api/companyClaims/companyClaimsApi";
-import {AccountDataDto} from "@/lib/api/account/accountApiDtos";
-import {getCompanyEmployees} from "@/lib/api/companies/companiesApi";
-import {GetCompanyEmployeesRequest} from "@/lib/api/companies/companiesApiInterfaces";
+import {addCompanyEmployee, getCompanyEmployees} from "@/lib/api/companies/companiesApi";
+import {AddCompanyEmployeeRequest, GetCompanyEmployeesRequest} from "@/lib/api/companies/companiesApiInterfaces";
 import Image from "next/image";
+import {CompanyEmployeeDto} from "@/lib/api/companies/companiesApiDtos";
 
 
 export default function CompanyClaimsConfigurationTab() {
@@ -40,9 +40,9 @@ export default function CompanyClaimsConfigurationTab() {
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
     const [refreshButtonCounter, setRefreshButtonCounter] = useState<number>(0);
 
-    const [displayedUser, setDisplayedUser] = useState<AccountDataDto | null>(null);
+    const [displayedUser, setDisplayedUser] = useState<CompanyEmployeeDto | null>(null);
 
-    const [findUserOptions, setFindUserOptions] = useState<AccountDataDto[]>([]);
+    const [findUserOptions, setFindUserOptions] = useState<CompanyEmployeeDto[]>([]);
     const [loading, setLoading] = useState(false);
     const [findUserInputValue, setFindUserInputValue] = useState('');
 
@@ -123,8 +123,22 @@ export default function CompanyClaimsConfigurationTab() {
         setSelectedUserId(null);
     };
 
-    const handleAddNewUser = (email: string) => {
-        //todo
+    const handleAddNewUser = async (email: string) => {
+        const request: AddCompanyEmployeeRequest = {
+            email: email,
+        };
+
+        const result = await addCompanyEmployee(companyId, request);
+
+        if (result.success) {
+            const newDisplayedUser: CompanyEmployeeDto = {
+                id: result.data.id,
+                email: email,
+                fullName: null,
+                avatarLink: null,
+            };
+            setDisplayedUser(newDisplayedUser);
+        }
     };
 
     return (
@@ -229,7 +243,7 @@ export default function CompanyClaimsConfigurationTab() {
                         size="large"
                         startIcon={<Add />}
                         disabled={!newUserEmail}
-                        onClick={() => {handleAddNewUser(newUserEmail)}}
+                        onClick={() => handleAddNewUser(newUserEmail)}
                         sx={{ ml: 2.5, borderRadius: "50px", width: "125px" }}
                     >
                         Dodaj
