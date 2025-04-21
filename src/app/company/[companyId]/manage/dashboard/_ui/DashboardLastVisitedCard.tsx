@@ -15,33 +15,31 @@ import {
     Typography
 } from "@mui/material";
 import {Clear} from "@mui/icons-material";
-import React, {useState} from "react";
+import React from "react";
 import {getItemColor} from "@/lib/functions/listItemColors";
 
 
-interface LastVisitedCardItem {
+export interface LastVisitedCardItem {
     id : number;
     title : string;
     subtitle? : string;
-    path : string;
 }
 
-interface LastVisitedCardProps {
+export interface LastVisitedCardProps {
     cardTitle: string;
-    initialItems: LastVisitedCardItem[];
+    items: LastVisitedCardItem[];
     noItemsPlaceholderText: string;
-    onDelete: () => void;
+    constructPath: (id: number) => string;
+    onDelete: (id: number) => void;
     onDeleteAll: () => void;
     listItemAvatarIcon: React.ReactNode;
 }
 
 
-export default function DashboardLastVisitedCard({ cardTitle, initialItems, noItemsPlaceholderText, listItemAvatarIcon }: LastVisitedCardProps) {
-    const [items, setItems] = useState(initialItems);
+export default function DashboardLastVisitedCard(props: LastVisitedCardProps) {
 
-    const clearItems = () => setItems([]);
-
-    const handleDelete = (id: number) => setItems(items.filter(job => job.id !== id));
+    const { cardTitle, items, noItemsPlaceholderText, constructPath,
+        onDelete, onDeleteAll, listItemAvatarIcon} = props;
 
     return (
         <Paper elevation={3} sx={{ width: "100%", height: "460px", display: "flex", flexDirection: "column" }}>
@@ -63,7 +61,7 @@ export default function DashboardLastVisitedCard({ cardTitle, initialItems, noIt
                                     }}
                                 >
                                     <ListItemButton
-                                        href={item.path}
+                                        href={constructPath(item.id)}
                                         sx={{ flexGrow: 0, py: 0, "&:hover": { backgroundColor: "transparent" } }}
                                         disableRipple
                                         disableTouchRipple
@@ -81,7 +79,7 @@ export default function DashboardLastVisitedCard({ cardTitle, initialItems, noIt
                                     </ListItemButton>
                                     <IconButton disableRipple
                                                 sx={{ p: 0 }}
-                                                onClick={() => handleDelete(item.id)}>
+                                                onClick={() => onDelete(item.id)}>
                                         <Clear />
                                     </IconButton>
                                 </ListItem>
@@ -93,7 +91,7 @@ export default function DashboardLastVisitedCard({ cardTitle, initialItems, noIt
                             variant="outlined"
                             color="error"
                             startIcon={<Clear />}
-                            onClick={clearItems}
+                            onClick={onDeleteAll}
                         >
                             Wyczyść
                         </Button>

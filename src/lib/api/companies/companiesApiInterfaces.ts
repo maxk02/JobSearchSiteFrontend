@@ -79,5 +79,5 @@ export interface GetLastJobsResponse {
 }
 
 export interface GetLastFoldersResponse {
-    jobs: CompanyLastFolderDto[];
+    folders: CompanyLastFolderDto[];
 }

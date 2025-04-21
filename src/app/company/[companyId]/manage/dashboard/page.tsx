@@ -4,11 +4,21 @@ import {Button, Paper, Typography} from "@mui/material";
 import {Add, Folder, Search, Work} from "@mui/icons-material";
 import {useParams, useRouter} from "next/navigation";
 import Grid from "@mui/material/Grid2";
-import React, {useEffect, useState} from "react";
-import DashboardLastVisitedCard from "@/app/company/[companyId]/manage/dashboard/_ui/DashboardLastVisitedCard";
+import React, {useCallback, useEffect, useState} from "react";
+import DashboardLastVisitedCard, {
+    LastVisitedCardItem
+} from "@/app/company/[companyId]/manage/dashboard/_ui/DashboardLastVisitedCard";
 import DashboardSearchDialog from "@/app/company/[companyId]/manage/dashboard/_ui/DashboardSearchDialog";
 import ChooseFolderDialog from "@/app/_ui/ChooseFolderDialog";
 import {useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
+import {
+    deleteAllLastFolders,
+    deleteAllLastJobs,
+    deleteLastFolder,
+    deleteLastJob,
+    getLastFolders,
+    getLastJobs
+} from "@/lib/api/companies/companiesApi";
 
 
 const mockCounters = {
@@ -19,45 +29,47 @@ const mockCounters = {
 };
 
 
-const initialJobs = [
-    {id: 1, title: "Programista Java", subtitle: "Poznań > Dział IT", path: "/job/1/manage"},
-    {id: 2, title: "Kierownik projektu", subtitle: "Warszawa > Dział IT", path: "/job/1/manage"},
-    {id: 3, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
-    {id: 4, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
-    {id: 5, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
-    {id: 6, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
-    {id: 7, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
-];
-
-
-const initialFolders = [
-    {id: 1, title: "Poznań > Dział IT", path: "/folder/1/jobs" },
-    {id: 2, title: "Warszawa > Dział IT", path: "/folder/1/jobs" },
-    {id: 3, title: "Trójmiasto > Dział IT", path: "/folder/1/jobs" },
-];
-
-
-const mockJobs = [
-    {id: 1, title: "Programista Java", subtitle: "Poznań > Dział IT"},
-    {id: 2, title: "Kierownik projektu", subtitle: "Warszawa > Dział IT"},
-    {id: 3, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
-    {id: 4, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
-    {id: 5, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
-    {id: 6, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
-    {id: 7, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
-    {id: 8, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
-];
-
-
-const mockFolders = [
-    {id: 1, title: "Poznań > Dział IT"},
-    {id: 2, title: "Warszawa > Dział IT"},
-    {id: 3, title: "Trójmiasto > Dział IT"},
-];
+// const initialJobs = [
+//     {id: 1, title: "Programista Java", subtitle: "Poznań > Dział IT", path: "/job/1/manage"},
+//     {id: 2, title: "Kierownik projektu", subtitle: "Warszawa > Dział IT", path: "/job/1/manage"},
+//     {id: 3, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
+//     {id: 4, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
+//     {id: 5, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
+//     {id: 6, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
+//     {id: 7, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
+// ];
+//
+//
+// const initialFolders = [
+//     {id: 1, title: "Poznań > Dział IT", path: "/folder/1/jobs" },
+//     {id: 2, title: "Warszawa > Dział IT", path: "/folder/1/jobs" },
+//     {id: 3, title: "Trójmiasto > Dział IT", path: "/folder/1/jobs" },
+// ];
+//
+//
+// const mockJobs = [
+//     {id: 1, title: "Programista Java", subtitle: "Poznań > Dział IT"},
+//     {id: 2, title: "Kierownik projektu", subtitle: "Warszawa > Dział IT"},
+//     {id: 3, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
+//     {id: 4, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
+//     {id: 5, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
+//     {id: 6, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
+//     {id: 7, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
+//     {id: 8, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
+// ];
+//
+//
+// const mockFolders = [
+//     {id: 1, title: "Poznań > Dział IT"},
+//     {id: 2, title: "Warszawa > Dział IT"},
+//     {id: 3, title: "Trójmiasto > Dział IT"},
+// ];
 
 
 export default function CompanyDashboard() {
-    const { companyId } = useParams();
+    const params = useParams();
+
+    const companyId = parseInt(params.companyId as string, 10);
 
     const router = useRouter();
 
@@ -69,19 +81,72 @@ export default function CompanyDashboard() {
 
     const { setCreateEditJobState } = useCreateEditJobStateStore();
 
+    const [lastJobs, setLastJobs] = useState<LastVisitedCardItem[]>([]);
+    const [lastFolders, setLastFolders] = useState<LastVisitedCardItem[]>([]);
+
+    const fetchLastJobs = useCallback(async () => {
+        const result = await getLastJobs(companyId);
+
+        if (result.success) {
+
+            const mappedItems = result.data.jobs
+                .map((j): LastVisitedCardItem => (
+                    { id: j.id, title: j.name, subtitle: j.folderName })
+                );
+
+            setLastJobs(mappedItems);
+        }
+    }, [companyId]);
+
+    const fetchLastFolders = useCallback(async () => {
+        const result = await getLastFolders(companyId);
+
+        if (result.success) {
+            const mappedItems = result.data.folders
+                .map((j): LastVisitedCardItem => (
+                    { id: j.id, title: j.name })
+                );
+
+            setLastFolders(mappedItems);
+        }
+    }, [companyId]);
+
     useEffect(() => {
-        const fetchLastJobs = async () => {
-
-        }
-
-        const fetchLastFolders = async () => {
-
-        }
-
         fetchLastJobs();
         fetchLastFolders();
-    })
+    }, [fetchLastFolders, fetchLastJobs])
 
+    const handleDeleteLastJob = async (jobId: number) => {
+        const result = await deleteLastJob(companyId, jobId);
+
+        if (result.success) {
+            await fetchLastJobs();
+        }
+    };
+
+    const handleDeleteAllJobs = async () => {
+        const result = await deleteAllLastJobs(companyId);
+
+        if (result.success) {
+            setLastJobs(() => []);
+        }
+    };
+
+    const handleDeleteLastFolder = async (folderId: number) => {
+        const result = await deleteLastFolder(companyId, folderId);
+
+        if (result.success) {
+            await fetchLastFolders();
+        }
+    };
+
+    const handleDeleteAllFolders = async () => {
+        const result = await deleteAllLastFolders(companyId);
+
+        if (result.success) {
+            setLastFolders(() => []);
+        }
+    };
 
     const handleOpenJobSearchDialog = () => {
         setJobSearchDialogOpen(true);
@@ -114,7 +179,6 @@ export default function CompanyDashboard() {
                 break;
         }
     };
-
 
     const handleOpenChooseFolderDialog = (mode: "createJob" | "folder") => {
         setChooseFolderDialogMode(mode);
@@ -204,20 +268,22 @@ export default function CompanyDashboard() {
                 <Grid size={{xs: 12, md: 6}}>
                     <DashboardLastVisitedCard
                         cardTitle="Ostatnio odwiedzane ogłoszenia"
-                        initialItems={initialJobs}
+                        items={lastJobs}
                         noItemsPlaceholderText="Brak ogłoszeń do wyświetlenia"
-                        onDelete={() => {}}
-                        onDeleteAll={() => {}}
+                        constructPath={(id: number) => `/jobs/${id}/manage`}
+                        onDelete={(id: number) => handleDeleteLastJob(id)}
+                        onDeleteAll={handleDeleteAllJobs}
                         listItemAvatarIcon={<Work />}
                     />
                 </Grid>
                 <Grid size={{xs: 12, md: 6}}>
                     <DashboardLastVisitedCard
                         cardTitle="Ostatnio odwiedzane foldery"
-                        initialItems={initialFolders}
+                        items={lastFolders}
                         noItemsPlaceholderText="Brak folderów do wyświetlenia"
-                        onDelete={() => {}}
-                        onDeleteAll={() => {}}
+                        constructPath={(id: number) => `/folders/${id}/jobs`}
+                        onDelete={(id: number) => handleDeleteLastFolder(id)}
+                        onDeleteAll={handleDeleteAllFolders}
                         listItemAvatarIcon={<Folder />}
                     />
                 </Grid>
@@ -228,7 +294,7 @@ export default function CompanyDashboard() {
                 open={jobSearchDialogOpen}
                 onClose={handleCloseDialogs}
                 onSubmit={(id: number) => handleSearchDialogSubmit("job", id)}
-                data={mockJobs}
+                data={lastJobs}
                 listItemIcon={<Work />}
             />
 
@@ -237,7 +303,7 @@ export default function CompanyDashboard() {
                 open={folderSearchDialogOpen}
                 onClose={handleCloseDialogs}
                 onSubmit={(id: number) => handleSearchDialogSubmit("folder", id)}
-                data={mockFolders}
+                data={lastFolders}
                 listItemIcon={<Folder />}
             />
 

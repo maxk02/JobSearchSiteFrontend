@@ -74,6 +74,22 @@ export const getLastJobs = async (id: number) => {
     return await fetchData<unknown, GetLastJobsResponse>(`company/${id}/last-jobs`, "GET");
 };
 
+export const deleteLastJob = async (id: number, jobId: number) => {
+    return await fetchData<unknown>(`company/${id}/last-jobs/${jobId}`, "DELETE");
+};
+
+export const deleteAllLastJobs = async (id: number) => {
+    return await fetchData<unknown>(`company/${id}/last-jobs`, "DELETE");
+};
+
 export const getLastFolders = async (id: number) => {
     return await fetchData<unknown, GetLastFoldersResponse>(`company/${id}/last-folders`, "GET");
+};
+
+export const deleteLastFolder = async (id: number, folderId: number) => {
+    return await fetchData<unknown>(`company/${id}/last-folders/${folderId}`, "DELETE");
+};
+
+export const deleteAllLastFolders = async (id: number) => {
+    return await fetchData<unknown>(`company/${id}/last-folders`, "DELETE");
 };
