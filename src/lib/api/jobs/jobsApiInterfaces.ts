@@ -1,4 +1,4 @@
-import {JobApplicationSortOption, JobCardDto, JobDetailedDto} from "@/lib/api/jobs/jobsApiDtos";
+import {JobApplicationSortOption, JobCardDto, JobDetailedDto, JobManagementDto} from "@/lib/api/jobs/jobsApiDtos";
 import {JobSalaryInfoDto, PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
 import {JobApplicationForManagersDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
 
@@ -26,20 +26,12 @@ export interface DeleteJobRequest {
     id: number;
 }
 
-export interface GetJobByIdRequest {
-    id: number;
-}
-
-export interface GetJobByIdResponse {
+export interface GetJobResponse {
     job: JobDetailedDto;
 }
 
-export interface GetJobManagementInfoResponse {
-    companyId: number;
-    companyName: string;
-    companyLogoLink: string | null;
-    folderId: number;
-    folderName: string;
+export interface GetJobManagementDtoResponse {
+    job: JobManagementDto;
 }
 
 export interface GetJobsRequest {

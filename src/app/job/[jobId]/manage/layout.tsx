@@ -3,18 +3,18 @@
 import {Box, Container} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import ManageJobViewsCard from "@/app/job/[jobId]/manage/_ui/ManageJobViewsCard";
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import CreateEditJobAnchorCard from "@/app/_ui/CreateEditJob/CreateEditJobAnchorCard";
 import EditJobButtons from "@/app/job/[jobId]/manage/edit/_ui/EditJobButtons";
 import {useParams, usePathname} from "next/navigation";
 import CreateManageJobNavigationCard from "@/app/_ui/CreateEditJob/CreateManageJobNavigationCard";
 import {useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
-import CreateManageJobFolderChosenCard from "@/app/_ui/CreateEditJob/CreateManageJobFolderChosenCard";
-import {getJobManagementInfo, updateJob} from "@/lib/api/jobs/jobsApi";
+import {getJobManagementDto, updateJob} from "@/lib/api/jobs/jobsApi";
 import {FormProvider, useForm} from "react-hook-form";
 import {CreateEditJobFormData, createEditJobSchema} from "@/lib/schemas/createEditJobSchema";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {UpdateJobRequestDto} from "@/lib/api/jobs/jobsApiInterfaces";
+import {useCurrentJobStore} from "@/lib/stores/currentJobStore";
 
 
 export default function ManageJobLayout({children}: Readonly<{ children: React.ReactNode; }>) {
@@ -27,6 +27,7 @@ export default function ManageJobLayout({children}: Readonly<{ children: React.R
 
     const isActive = () => pathname === `/job/${jobIdParam}/manage/edit`;
 
+    const { currentJobState, setCurrentJobState } = useCurrentJobStore();
     const storeData = useCreateEditJobStateStore();
 
     // const [company, setCompany] = useState<{id: number, name: string, logoLink: string} | null>({
@@ -35,25 +36,17 @@ export default function ManageJobLayout({children}: Readonly<{ children: React.R
     //     logoLink: storeData.company?.logoLink ?? null,
     // });
 
-    const [companyId, setCompanyId] = useState<number | null>(storeData.company?.id ?? null);
-    const [companyName, setCompanyName] = useState<string | null>(storeData.company?.name ?? null);
-    const [companyLogoLink, setCompanyLogoLink] = useState<string | null>(storeData.company?.logoLink ?? null);
-
     useEffect(() => {
 
-        const fetchManagementInfo = async () => {
-            const result = await getJobManagementInfo(jobIdParam);
+        const fetchManagementDto = async () => {
+            const result = await getJobManagementDto(jobIdParam);
 
             if (result.success) {
-                setCompanyId(result.data.companyId);
-                setCompanyName(result.data.companyName);
-                setCompanyLogoLink(result.data.companyLogoLink);
+                setCurrentJobState(result.data.job);
             }
         };
 
-        if (companyId === null || companyName === null || companyLogoLink === null) {
-            fetchManagementInfo();
-        }
+        fetchManagementDto();
     });
 
     const methods = useForm<CreateEditJobFormData>({
@@ -135,19 +128,19 @@ export default function ManageJobLayout({children}: Readonly<{ children: React.R
                                      maxHeight: "calc(100vh - 40px)", flex: 1
                                  }}
                             >
-                                {companyId && companyName && companyLogoLink &&
+                                {currentJobState &&
                                     <CreateManageJobNavigationCard
-                                        companyName={companyName}
-                                        companyLogoLink={companyLogoLink}
+                                        companyName={currentJobState.companyName}
+                                        companyLogoLink={currentJobState.companyLogoLink}
                                         returnTo={storeData.source}
-                                        returnToId={storeData.folder && storeData.source === "folder" ? storeData.folder.id : companyId}
+                                        returnToId={storeData.source === "folder" ? currentJobState.folderId : currentJobState.companyId}
                                     />
                                 }
                                 <ManageJobViewsCard />
 
                                 {isActive() &&
                                     <>
-                                        <CreateManageJobFolderChosenCard />
+                                        {/*<CreateManageJobFolderChosenCard />*/}
                                         <CreateEditJobAnchorCard />
                                         <EditJobButtons />
                                     </>

@@ -11,7 +11,7 @@ import CreateEditJobLocationCard from "@/app/_ui/CreateEditJob/CreateEditJobLoca
 import CreateEditJobListCard from "@/app/_ui/CreateEditJob/CreateEditJobListCard";
 import {useFormContext} from "react-hook-form";
 import {CreateEditJobFormData} from "@/lib/schemas/createEditJobSchema";
-import {getJobById} from "@/lib/api/jobs/jobsApi";
+import {getJobManagementDto} from "@/lib/api/jobs/jobsApi";
 import {useParams} from "next/navigation";
 
 
@@ -44,20 +44,20 @@ export default function EditJobPage() {
 
     const methods = useFormContext<CreateEditJobFormData>();
 
-    const { reset, formState: {touchedFields} } = methods;
+    const { reset } = methods;
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await getJobById(jobId);
-            if (result.success && result.data.job.managementInfo !== null) {
+            const result = await getJobManagementDto(jobId);
+            if (result.success) {
                 reset({
-                    jobFolderId: 0,
+                    jobFolderId: result.data.job.id,
                     title: result.data.job.title,
                     category: result.data.job.categoryId,
                     description: result.data.job.description,
-                    timeRangeOption: result.data.job.managementInfo.timeRangeOptionId,
+                    timeRangeOption: result.data.job.timeRangeOptionId,
                     dateTimeExpiringUtc: new Date(result.data.job.dateTimeExpiringUtc),
-                    isPublic: result.data.job.managementInfo.isPublic,
+                    isPublic: result.data.job.isPublic,
                     employmentOptionIds: result.data.job.employmentTypeIds ?? [],
                     jobContractTypeIds: result.data.job.contractTypeIds ?? [],
                     locationIds: result.data.job.locations.map(l => l.id),

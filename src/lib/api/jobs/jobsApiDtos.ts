@@ -40,3 +40,32 @@ export interface JobDetailedDto {
     isBookmarked: boolean;
     applicationId: number | null;
 }
+
+export interface JobManagementDto {
+    id: number;
+    companyId: number;
+    companyLogoLink: string | null;
+    companyName: string;
+    companyDescription: string | null;
+    locations: StringLocationDto[];
+    categoryId: number;
+    title: string;
+    description: string | null;
+    dateTimePublishedUtc: string;
+    dateTimeExpiringUtc: string;
+    responsibilities: string[];
+    requirements: string[];
+    niceToHaves: string[];
+    salaryInfo: JobSalaryInfoDto | null;
+    employmentTypeIds: number[] | null;
+    contractTypeIds: number[] | null;
+    isBookmarked: boolean;
+    applicationId: number | null;
+
+    folderId: number;
+    folderName: string;
+    claimIds: number[];
+
+    isPublic: boolean;
+    timeRangeOptionId: number;
+}

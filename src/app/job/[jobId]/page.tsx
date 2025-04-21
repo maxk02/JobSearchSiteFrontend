@@ -7,7 +7,7 @@ import JobListCard from "./_ui/JobListCard";
 import JobCompanyDescriptionCard from "./_ui/JobCompanyDescriptionCard";
 import JobSideActionsCard from "@/app/job/[jobId]/_ui/JobSideActionsCard";
 import SuggestedJobCard from "@/app/job/[jobId]/_ui/SuggestedJobCard";
-import {getJobById, getJobs} from "@/lib/api/jobs/jobsApi";
+import {getJob, getJobs} from "@/lib/api/jobs/jobsApi";
 import JobBottomActionsCard from "@/app/job/[jobId]/_ui/JobBottomActionsCard";
 import {GetJobsRequest} from "@/lib/api/jobs/jobsApiInterfaces";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
@@ -15,7 +15,7 @@ import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 
 async function fetchJob(id: number) {
 
-    const jobResult = await getJobById(id);
+    const jobResult = await getJob(id);
 
     if (!jobResult.success) {
         console.error(`Failed to fetch a job (${jobResult.status})`);
