@@ -14,9 +14,9 @@ import {
 } from "@mui/material";
 import {ArrowForward, Business, Dashboard, FileOpen, Policy} from "@mui/icons-material";
 import {useParams, usePathname} from "next/navigation";
-import {useEffect, useState} from "react";
-import {getCompanyById} from "@/lib/api/companies/companiesApi";
-import Image from "next/image";
+import {useEffect} from "react";
+import {getCompanyManagementDto} from "@/lib/api/companies/companiesApi";
+import {useCurrentCompanyStore} from "@/lib/stores/currentCompanyStore";
 
 
 function isRouteActive(pathname: string, href: string) {
@@ -32,17 +32,15 @@ export default function CompanyManagementSideNavbar() {
 
     const currentPath = usePathname();
 
-    const [companyName, setCompanyName] = useState<string | null>(null);
-    const [logoLink, setLogoLink] = useState<string | null>(null);
+    const { currentCompanyState, setCurrentCompanyState } = useCurrentCompanyStore();
 
     useEffect(() => {
         const fetchCompanyData = async () => {
 
-            const result = await getCompanyById(companyId);
+            const result = await getCompanyManagementDto(companyId);
 
             if (result.success) {
-                setCompanyName(result.data.company.name);
-                setLogoLink(result.data.company.logoLink);
+                setCurrentCompanyState(result.data.company);
             }
 
         };
@@ -51,20 +49,20 @@ export default function CompanyManagementSideNavbar() {
     });
 
     const navItems = [
-        { text: "Pulpit", icon: <Dashboard />, path: `/company/${companyId}/manage/dashboard` },
-        { text: "Profil i ustawienia", icon: <Business />, path: `/company/${companyId}/manage/profile` },
-        { text: "Zarządzanie uprawnieniami", icon: <Policy />, path: `/company/${companyId}/manage/claims` },
-        // { text: "Statystyki", icon: <QueryStats />, path: `/company/${companyId}/manage/stats` },
+        { text: "Pulpit", icon: <Dashboard />, path: `/company/${companyId}/manage/dashboard`,
+            isAccessible: true },
+        { text: "Profil i ustawienia", icon: <Business />, path: `/company/${companyId}/manage/profile`,
+            isAccessible: currentCompanyState?.claimIds?.includes(3) },
+        { text: "Zarządzanie uprawnieniami", icon: <Policy />, path: `/company/${companyId}/manage/claims`,
+            isAccessible: currentCompanyState?.claimIds?.includes(2) },
     ];
 
     return (
         <Paper sx={{ px: 1, py: 0.5, position: "sticky", top: 20, zIndex: 1 }}>
             <Stack sx={{ gap: 0.7, mt: 1.5, pt: 1.5, pb: 0.5, px: 1.8 }}>
-                <Avatar variant="rounded" sx={{ height: 64, width: 64 }}>
-                    {logoLink && <Image width={64} height={64} src={logoLink} alt="Company logo image" />}
-                </Avatar>
+                <Avatar src={currentCompanyState?.logoLink ?? ""} variant="rounded" sx={{ height: 64, width: 64 }} />
                 <Typography variant="body1" fontWeight={600} gutterBottom marginBottom={0}>
-                    {companyName}
+                    {currentCompanyState?.name}
                 </Typography>
             </Stack>
             <List>

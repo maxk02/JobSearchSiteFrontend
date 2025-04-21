@@ -4,12 +4,12 @@ import {
     AddCompanyResponse,
     GetCompaniesRequest,
     GetCompaniesResponse,
-    GetCompanyByIdResponse,
+    GetCompanyResponse,
     GetCompanyEmployeesRequest,
     GetCompanyEmployeesResponse,
     GetCompanyJobsRequest,
     GetCompanyJobsResponse,
-    UpdateCompanyRequestDto
+    UpdateCompanyRequestDto, GetCompanyManagementDtoResponse
 } from "@/lib/api/companies/companiesApiInterfaces";
 import {UploadAvatarResponse} from "@/lib/api/userProfiles/userProfilesApiInterfaces";
 
@@ -30,8 +30,12 @@ export const getCompanies = async (req: GetCompaniesRequest) => {
     return await fetchData<GetCompaniesRequest, GetCompaniesResponse>("/companies", "GET", req);
 };
 
-export const getCompanyById = async (id: number) => {
-    return await fetchData<unknown, GetCompanyByIdResponse>(`/companies/${id}`, "GET");
+export const getCompany = async (id: number) => {
+    return await fetchData<unknown, GetCompanyResponse>(`/companies/${id}`, "GET");
+};
+
+export const getCompanyManagementDto = async (id: number) => {
+    return await fetchData<unknown, GetCompanyManagementDtoResponse>(`/companies/${id}?type=management`, "GET");
 };
 
 export const getCompanyJobs = async (id: number, req: GetCompanyJobsRequest) => {

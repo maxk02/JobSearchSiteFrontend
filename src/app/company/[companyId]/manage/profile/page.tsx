@@ -5,7 +5,7 @@ import React, {useEffect, useState} from "react";
 import FileUploadArea from "@/app/_ui/FileUploadArea";
 import {Info} from "@mui/icons-material";
 import {FileRejection} from "react-dropzone";
-import {getCompanyById, updateCompany, uploadAvatar} from "@/lib/api/companies/companiesApi";
+import {getCompany, updateCompany, uploadAvatar} from "@/lib/api/companies/companiesApi";
 import {Controller, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {CompanyFormData, companySchema} from "@/lib/schemas/companySchema";
@@ -83,7 +83,7 @@ export default function CompanySettingsPage() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await getCompanyById(companyId);
+            const result = await getCompany(companyId);
             if (result.success) {
                 setLogoLink(result.data.company.logoLink);
 

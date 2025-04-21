@@ -4,7 +4,7 @@ import MyDefaultPagination from "@/app/_ui/MyDefaultPagination";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 import JobCard from "@/app/_ui/JobCard";
 import {redirect} from "next/navigation";
-import {getCompanyById} from "@/lib/api/companies/companiesApi";
+import {getCompany} from "@/lib/api/companies/companiesApi";
 import {GetJobsRequest} from "@/lib/api/jobs/jobsApiInterfaces";
 import {getJobs} from "@/lib/api/jobs/jobsApi";
 
@@ -39,7 +39,7 @@ async function fetchCompanyJobs(id: number, params: TypedCompanySearchParams) {
 
 async function fetchCompany(id: number) {
 
-    const companyResult = await getCompanyById(id);
+    const companyResult = await getCompany(id);
 
     if (!companyResult.success) {
         console.error(`Failed to fetch jobs (${companyResult.status})`);

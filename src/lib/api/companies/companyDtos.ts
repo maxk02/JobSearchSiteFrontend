@@ -4,7 +4,6 @@ export interface CompanyDto {
     name: string;
     description: string;
     logoLink: string | null;
-    claimIds: number[];
 }
 
 export interface CompanyManagementListItemDto {

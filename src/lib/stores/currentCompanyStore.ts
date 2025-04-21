@@ -1,10 +1,10 @@
-import { create } from 'zustand';
-import {JobFolderDetailedDto} from "@/lib/api/jobFolders/jobFoldersApiDtos";
+import {create} from 'zustand';
+import {CompanyManagementDetailedDto} from "@/lib/api/companies/companyDtos";
 
 
 export interface CurrentCompanyState {
-    currentCompanyState: JobFolderDetailedDto | undefined;
-    setCurrentCompanyState: (folder: JobFolderDetailedDto) => void;
+    currentCompanyState: CompanyManagementDetailedDto | undefined;
+    setCurrentCompanyState: (company: CompanyManagementDetailedDto) => void;
     resetCurrentCompanyState: () => void;
 }
 

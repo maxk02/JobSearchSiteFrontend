@@ -21,7 +21,7 @@ import {AddJobRequest} from "@/lib/api/jobs/jobsApiInterfaces";
 import {addJob} from "@/lib/api/jobs/jobsApi";
 import {useParams, useRouter} from "next/navigation";
 import CreateManageJobFolderChosenCard from "@/app/_ui/CreateEditJob/CreateManageJobFolderChosenCard";
-import {getCompanyById} from "@/lib/api/companies/companiesApi";
+import {getCompany} from "@/lib/api/companies/companiesApi";
 import {useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
 
 
@@ -41,7 +41,7 @@ export default function CreateJobPage() {
     useEffect(() => {
 
         const fetchCompany = async () => {
-            const result = await getCompanyById(companyId);
+            const result = await getCompany(companyId);
 
             if (result.success && result.data.company !== null) {
                 setCompanyName(result.data.company.name);
