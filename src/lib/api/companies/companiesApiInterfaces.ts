@@ -1,4 +1,9 @@
-import {CompanyDto, CompanyManagementDetailedDto, CompanyEmployeeDto} from "@/lib/api/companies/companiesApiDtos";
+import {
+    CompanyDto,
+    CompanyManagementDetailedDto,
+    CompanyEmployeeDto,
+    CompanyLastJobDto, CompanyLastFolderDto
+} from "@/lib/api/companies/companiesApiDtos";
 import {PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 
@@ -67,4 +72,12 @@ export interface AddCompanyEmployeeRequest {
 
 export interface AddCompanyEmployeeResponse {
     id: number;
+}
+
+export interface GetLastJobsResponse {
+    jobs: CompanyLastJobDto[];
+}
+
+export interface GetLastFoldersResponse {
+    jobs: CompanyLastFolderDto[];
 }

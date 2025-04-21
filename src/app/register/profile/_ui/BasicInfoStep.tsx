@@ -1,10 +1,10 @@
 import {Stack, TextField, Typography} from '@mui/material';
 import {Controller, useFormContext} from 'react-hook-form';
 import React from "react";
-import {RegisterUserFormData} from "@/lib/schemas/registerUserSchema";
+import {CreateUserProfileFormData} from "@/lib/schemas/createUserProfileSchema";
 
 export default function BasicInfoStep() {
-    const { control, formState: { errors } } = useFormContext<RegisterUserFormData>();
+    const { control, formState: { errors } } = useFormContext<CreateUserProfileFormData>();
 
     return (
         <>

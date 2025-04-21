@@ -11,7 +11,7 @@ import {
     GetCompanyJobsRequest,
     GetCompanyJobsResponse,
     GetCompanyManagementDtoResponse,
-    GetCompanyResponse,
+    GetCompanyResponse, GetLastFoldersResponse, GetLastJobsResponse,
     UpdateCompanyRequestDto
 } from "@/lib/api/companies/companiesApiInterfaces";
 import {UploadAvatarResponse} from "@/lib/api/userProfiles/userProfilesApiInterfaces";
@@ -68,4 +68,12 @@ export const addCompanyEmployee = async (id: number, req: AddCompanyEmployeeRequ
 
 export const deleteCompanyEmployee = async (id: number, userId: number) => {
     return await fetchData<unknown>(`/company/${id}/users/${userId}`, "DELETE");
+};
+
+export const getLastJobs = async (id: number) => {
+    return await fetchData<unknown, GetLastJobsResponse>(`company/${id}/last-jobs`, "GET");
+};
+
+export const getLastFolders = async (id: number) => {
+    return await fetchData<unknown, GetLastFoldersResponse>(`company/${id}/last-folders`, "GET");
 };

@@ -13,7 +13,7 @@ import {addUserProfile} from "@/lib/api/userProfiles/userProfilesApi";
 import {AddUserProfileRequest} from "@/lib/api/userProfiles/userProfilesApiInterfaces";
 import {ConfirmEmailRequest} from "@/lib/api/account/accountApiInterfaces";
 import {confirmEmail} from "@/lib/api/account/accountApi";
-import {RegisterUserFormData, registerUserFormSchema} from "@/lib/schemas/registerUserSchema";
+import {CreateUserProfileFormData, createUserProfileSchema} from "@/lib/schemas/createUserProfileSchema";
 
 
 const steps = ['Potwierdzenie email', 'Podstawowe dane', 'Zdjęcie'];
@@ -27,8 +27,8 @@ export default function RegisterProfilePage() {
     const step = parseInt(searchParams.get('step') || '1', 10) - 1;
     const activeStep = Math.max(0, Math.min(step, steps.length - 1));
 
-    const methods = useForm<RegisterUserFormData>({
-        resolver: zodResolver(registerUserFormSchema),
+    const methods = useForm<CreateUserProfileFormData>({
+        resolver: zodResolver(createUserProfileSchema),
         defaultValues: {
             firstName: '',
             lastName: '',
@@ -40,7 +40,7 @@ export default function RegisterProfilePage() {
 
     const { handleSubmit, trigger } = methods;
 
-    const onSubmit = async (data: RegisterUserFormData) => {
+    const onSubmit = async (data: CreateUserProfileFormData) => {
         if (activeStep === 0) {
             const isStep1Valid = await trigger(["code"], { shouldFocus: true });
 

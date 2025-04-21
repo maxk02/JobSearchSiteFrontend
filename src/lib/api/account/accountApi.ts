@@ -1,7 +1,7 @@
 import {
     ChangePasswordRequest,
     ConfirmEmailRequest,
-    CreateAccountRequest,
+    CreateAccountRequest, CreateAccountResponse,
     ExtendSessionResponse,
     LogInRequest,
     LogInResponseDto,
@@ -21,7 +21,7 @@ export const confirmEmail = async (req: ConfirmEmailRequest) => {
 };
 
 export const createAccount = async (req: CreateAccountRequest) => {
-    return await fetchData<CreateAccountRequest>("/account", "POST", req);
+    return await fetchData<CreateAccountRequest, CreateAccountResponse>("/account", "POST", req);
 };
 
 export const deleteAccount = async () => {
@@ -30,10 +30,6 @@ export const deleteAccount = async () => {
 
 export const extendSession = async () => {
     return await fetchData<unknown, ExtendSessionResponse>("/account/extend-session", "POST");
-};
-
-export const terminateSession = async (token: string) => {
-    return await fetchData<unknown>(`/account/sessions/${token}`, "DELETE");
 };
 
 export const logIn = async (req: LogInRequest) => {
@@ -45,11 +41,11 @@ export const logOut = async () => {
 };
 
 export const resetPassword = async (req: ResetPasswordRequest) => {
-    return await fetchData<ResetPasswordRequest>("/account/reset-password", "POST", req);
+    return await fetchData<ResetPasswordRequest>("/account/password", "PUT", req);
 };
 
-export const sendEmailConfirmationLink = async (req: SendEmailConfirmationLinkRequest) => {
-    return await fetchData<SendEmailConfirmationLinkRequest>("/account/send-email-confirmation-link", "POST", req);
+export const resendEmailConfirmationCode = async (req: SendEmailConfirmationLinkRequest) => {
+    return await fetchData<unknown>("/account/email-confirmation-code", "POST", req);
 };
 
 export const sendPasswordResetLink = async (req: SendPasswordResetLinkRequest) => {

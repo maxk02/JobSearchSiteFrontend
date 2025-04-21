@@ -1,15 +1,58 @@
 "use client";
 
-import {useState} from "react";
+import React from "react";
 import {Button, Container, Link, Paper, Stack, TextField, Typography} from "@mui/material";
+import {useCurrentUserStore} from "@/lib/stores/currentUserStore";
+import {useRouter} from "next/navigation";
+import {Controller, useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {CreateAccountRequest} from "@/lib/api/account/accountApiInterfaces";
+import {createAccount} from "@/lib/api/account/accountApi";
+import {AccountDataDto} from "@/lib/api/account/accountDtos";
+import {CreateAccountFormData, createAccountSchema} from "@/lib/schemas/createAccountSchema";
 
 export default function RegisterPage() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [rememberMe, setRememberMe] = useState(false);
 
-    const handleLogin = () => {
-        console.log({ email, password, rememberMe });
+    const { setCurrentUser } = useCurrentUserStore();
+
+    const router = useRouter();
+
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<CreateAccountFormData>({
+        resolver: zodResolver(createAccountSchema),
+        defaultValues: {
+            email: '',
+            password: '',
+            confirmPassword: '',
+        },
+    });
+
+    const onSubmit = async (data: CreateAccountFormData) => {
+        const request: CreateAccountRequest = {
+            email: data.email,
+            password: data.password,
+        };
+
+        const result = await createAccount(request);
+
+        if (result.success) {
+            const newCurrentUser: AccountDataDto = {
+                id: result.data.id,
+                email: data.email,
+                fullName: null,
+                avatarLink: null,
+                companiesManaged: []
+            };
+
+            setCurrentUser(newCurrentUser);
+            router.push("/register/profile?step=1");
+        }
+        else {
+            console.log(`Failed (${result.status})`)
+        }
     };
 
     return (
@@ -23,44 +66,65 @@ export default function RegisterPage() {
                         <Typography>
                             Masz konto?
                         </Typography>
-                        <Link href="#" variant="body1">
+                        <Link href="/login" variant="body1">
                             Zaloguj się
                         </Link>
                     </Stack>
-                    <Stack sx={{ mt: 3.5, gap: 2, width: "100%", alignItems: "center" }}>
-                        <TextField
-                            fullWidth
-                            label="Email"
-                            variant="outlined"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <TextField
-                            fullWidth
-                            label="Hasło"
-                            type="password"
-                            variant="outlined"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <TextField
-                            fullWidth
-                            label="Powtórz hasło"
-                            type="password"
-                            variant="outlined"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            sx={{ mt: 2, py: 1.5, width: "75%", fontSize: "1.02rem" }}
-                            onClick={handleLogin}
-                            size="large"
-                        >
-                            Zarejestruj się
-                        </Button>
-                    </Stack>
+                    <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
+                        <Stack sx={{ mt: 3.5, gap: 2, width: "100%", alignItems: "center" }}>
+                            <Controller
+                                name="email"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        label="Email"
+                                        fullWidth
+                                        required
+                                        error={!!errors.email}
+                                        helperText={errors.email?.message}
+                                    />
+                                )}
+                            />
+                            <Controller
+                                name="password"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        label="Hasło"
+                                        fullWidth
+                                        required
+                                        error={!!errors.password}
+                                        helperText={errors.password?.message}
+                                    />
+                                )}
+                            />
+                            <Controller
+                                name="confirmPassword"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        label="Powtórz hasło"
+                                        fullWidth
+                                        required
+                                        error={!!errors.confirmPassword}
+                                        helperText={errors.confirmPassword?.message}
+                                    />
+                                )}
+                            />
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                sx={{ mt: 0.5, py: 1.5, width: "75%", fontSize: "1.02rem" }}
+                                size="large"
+                            >
+                                Zarejestruj się
+                            </Button>
+                        </Stack>
+                    </form>
                 </Stack>
             </Paper>
         </Container>

@@ -28,3 +28,14 @@ export interface CompanyEmployeeDto {
     fullName: string | null;
     avatarLink: string | null;
 }
+
+export interface CompanyLastJobDto {
+    id: number;
+    name: string;
+    folderName: string;
+}
+
+export interface CompanyLastFolderDto {
+    id: number;
+    name: string;
+}

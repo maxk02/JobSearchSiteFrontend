@@ -1,12 +1,12 @@
 import {Stack, TextField, Typography} from '@mui/material';
 import {Controller, useFormContext} from "react-hook-form";
-import {RegisterUserFormData} from "@/lib/schemas/registerUserSchema";
+import {CreateUserProfileFormData} from "@/lib/schemas/createUserProfileSchema";
 import React from "react";
 
 
 export default function ConfirmEmailStep() {
 
-    const { control, formState: { errors } } = useFormContext<RegisterUserFormData>();
+    const { control, formState: { errors } } = useFormContext<CreateUserProfileFormData>();
 
     return (
         <>

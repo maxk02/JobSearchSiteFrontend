@@ -14,6 +14,10 @@ export interface CreateAccountRequest {
     password: string;
 }
 
+export interface CreateAccountResponse {
+    id: number;
+}
+
 export interface ExtendSessionResponse {
     newExpirationTimeUtc: string;
 }
