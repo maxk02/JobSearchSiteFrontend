@@ -14,15 +14,15 @@ import DashboardSearchDialog, {
 import ChooseFolderDialog from "@/app/_ui/ChooseFolderDialog";
 import {useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
 import {
-    deleteAllLastFolders,
+    deleteAllLastJobFolders,
     deleteAllLastJobs,
-    deleteLastFolder,
-    deleteLastJob, getCompanyManagementJobFolders, getCompanyManagementJobs,
-    getLastFolders,
+    deleteLastJobFolder,
+    deleteLastJob, searchCompanyJobFolders, searchCompanyJobs,
+    getLastJobFolders,
     getLastJobs
 } from "@/lib/api/companies/companiesApi";
 import {
-    GetCompanyManagementJobFoldersRequest,
+    SearchCompanyJobFoldersRequest,
     GetCompanyManagementJobsRequest
 } from "@/lib/api/companies/companiesApiInterfaces";
 
@@ -104,10 +104,10 @@ export default function CompanyDashboard() {
     }, [companyId]);
 
     const fetchLastFolders = useCallback(async () => {
-        const result = await getLastFolders(companyId);
+        const result = await getLastJobFolders(companyId);
 
         if (result.success) {
-            const mappedItems = result.data.folders
+            const mappedItems = result.data.jobFolders
                 .map((j): LastVisitedCardItem => (
                     { id: j.id, title: j.name })
                 );
@@ -138,7 +138,7 @@ export default function CompanyDashboard() {
     };
 
     const handleDeleteLastFolder = async (folderId: number) => {
-        const result = await deleteLastFolder(companyId, folderId);
+        const result = await deleteLastJobFolder(companyId, folderId);
 
         if (result.success) {
             await fetchLastFolders();
@@ -146,7 +146,7 @@ export default function CompanyDashboard() {
     };
 
     const handleDeleteAllFolders = async () => {
-        const result = await deleteAllLastFolders(companyId);
+        const result = await deleteAllLastJobFolders(companyId);
 
         if (result.success) {
             setLastFolders(() => []);
@@ -196,7 +196,7 @@ export default function CompanyDashboard() {
                 query: jobSearchDialogQuery,
             };
 
-            const result = await getCompanyManagementJobs(companyId, request);
+            const result = await searchCompanyJobs(companyId, request);
 
             if (result.success) {
                 const mappedJobs = result.data.jobs
@@ -214,11 +214,11 @@ export default function CompanyDashboard() {
     useEffect(() => {
         
         const fetchFolders = async () => {
-            const request: GetCompanyManagementJobFoldersRequest = {
+            const request: SearchCompanyJobFoldersRequest = {
                 query: folderSearchDialogQuery,
             };
             
-            const result = await getCompanyManagementJobFolders(companyId, request);
+            const result = await searchCompanyJobFolders(companyId, request);
 
             if (result.success) {
                 const mappedFolders = result.data.jobFolders
@@ -366,6 +366,7 @@ export default function CompanyDashboard() {
 
             <ChooseFolderDialog
                 title="Wybierz folder"
+                companyId={companyId}
                 open={chooseFolderDialogOpen}
                 onClose={handleCloseDialogs}
                 onSubmit={(id: number, name: string) => handleChooseFolderDialogSubmit(chooseFolderDialogMode, id, name)}

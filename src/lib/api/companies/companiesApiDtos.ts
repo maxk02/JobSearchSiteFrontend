@@ -38,4 +38,5 @@ export interface CompanyJobListItemDto {
 export interface CompanyJobFolderListItemDto {
     id: number;
     name: string;
+    claimIds: number[];
 }

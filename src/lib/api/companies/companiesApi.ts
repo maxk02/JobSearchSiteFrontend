@@ -9,12 +9,12 @@ import {
     GetCompanyJobsRequest,
     GetCompanyJobsResponse,
     GetCompanyManagementDtoResponse,
-    GetCompanyManagementJobFoldersRequest,
-    GetCompanyManagementJobFoldersResponse, GetCompanyManagementJobsRequest, GetCompanyManagementJobsResponse,
+    SearchCompanyJobFoldersRequest,
+    SearchCompanyJobFoldersResponse, GetCompanyManagementJobsRequest, GetCompanyManagementJobsResponse,
     GetCompanyResponse,
-    GetLastFoldersResponse,
+    GetLastJobFoldersResponse,
     GetLastJobsResponse,
-    UpdateCompanyRequestDto
+    UpdateCompanyRequestDto, GetCompanySharedFoldersResponse, GetCompanySharedFolderChildrenResponse
 } from "@/lib/api/companies/companiesApiInterfaces";
 import {UploadAvatarResponse} from "@/lib/api/userProfiles/userProfilesApiInterfaces";
 
@@ -80,22 +80,30 @@ export const deleteAllLastJobs = async (id: number) => {
     return await fetchData<unknown>(`/companies/${id}/management/last-jobs`, "DELETE");
 };
 
-export const getLastFolders = async (id: number) => {
-    return await fetchData<unknown, GetLastFoldersResponse>(`/companies/${id}/management/last-folders`, "GET");
+export const getLastJobFolders = async (id: number) => {
+    return await fetchData<unknown, GetLastJobFoldersResponse>(`/companies/${id}/management/last-job-folders`, "GET");
 };
 
-export const deleteLastFolder = async (id: number, folderId: number) => {
-    return await fetchData<unknown>(`/companies/${id}/management/last-folders/${folderId}`, "DELETE");
+export const deleteLastJobFolder = async (id: number, folderId: number) => {
+    return await fetchData<unknown>(`/companies/${id}/management/last-job-folders/${folderId}`, "DELETE");
 };
 
-export const deleteAllLastFolders = async (id: number) => {
-    return await fetchData<unknown>(`/companies/${id}/management/last-folders`, "DELETE");
+export const deleteAllLastJobFolders = async (id: number) => {
+    return await fetchData<unknown>(`/companies/${id}/management/last-job-folders`, "DELETE");
 };
 
-export const getCompanyManagementJobFolders = async (id: number, req: GetCompanyManagementJobFoldersRequest) => {
-    return await fetchData<GetCompanyManagementJobFoldersRequest, GetCompanyManagementJobFoldersResponse>(`/companies/${id}/management/job-folders`, "GET", {...req});
+export const searchCompanyJobFolders = async (id: number, req: SearchCompanyJobFoldersRequest) => {
+    return await fetchData<SearchCompanyJobFoldersRequest, SearchCompanyJobFoldersResponse>(`/companies/${id}/management/job-folders/search`, "GET", {...req});
 };
 
-export const getCompanyManagementJobs = async (id: number, req: GetCompanyManagementJobsRequest) => {
-    return await fetchData<GetCompanyManagementJobsRequest, GetCompanyManagementJobsResponse>(`/companies/${id}/management/jobs`, "GET", {...req});
+export const searchCompanyJobs = async (id: number, req: GetCompanyManagementJobsRequest) => {
+    return await fetchData<GetCompanyManagementJobsRequest, GetCompanyManagementJobsResponse>(`/companies/${id}/management/jobs/search`, "GET", {...req});
+};
+
+export const getCompanySharedJobFolders = async (id: number) => {
+    return await fetchData<unknown, GetCompanySharedFoldersResponse>(`/companies/${id}/management/job-folders`, "GET");
+};
+
+export const getCompanySharedJobFolderChildren = async (id: number, parentFolderId: number) => {
+    return await fetchData<unknown, GetCompanySharedFolderChildrenResponse>(`/companies/${id}/management/job-folders/${parentFolderId}`, "GET");
 };

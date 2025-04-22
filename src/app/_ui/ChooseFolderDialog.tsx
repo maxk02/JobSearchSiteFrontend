@@ -1,14 +1,12 @@
 import {
     Avatar,
     Box,
-    Breadcrumbs,
     Button,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
     IconButton,
-    Link,
     List,
     ListItem,
     ListItemAvatar,
@@ -20,64 +18,80 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import React, {useState} from "react";
-import {Close, Folder, Home} from "@mui/icons-material";
+import React, {useCallback, useState} from "react";
+import {Close, Folder} from "@mui/icons-material";
 import tabA11yProps from "@/app/_ui/_lib/_components/tab/tabA11yProps";
 import CustomTabPanel from "@/app/_ui/CustomTabPanel";
 import {getItemColor} from "@/lib/functions/listItemColors";
+import {getCompanySharedJobFolderChildren, getCompanySharedJobFolders} from "@/lib/api/companies/companiesApi";
+import {CompanyJobFolderListItemDto} from "@/lib/api/companies/companiesApiDtos";
 
-
-interface ChooseFolderDialogItem {
-    id: number;
-    title: string;
-}
 
 interface ChooseFolderDialogProps {
     title: string;
+    companyId: number;
     open: boolean;
     onClose: () => void;
     onSubmit: (id: number, name: string) => void;
 }
 
-const data = [
-    {id: 1, title: "Dział IT"},
-    {id: 2, title: "Warszawa"},
-    {id: 3, title: "Trójmiasto"},
-    {id: 4, title: "Trójmiasto"},
-    {id: 5, title: "Trójmiasto"},
-    {id: 6, title: "Trójmiasto"},
-    {id: 7, title: "Trójmiasto"},
-    {id: 8, title: "Trójmiasto"},
-    {id: 9, title: "Trójmiasto"},
-    {id: 10, title: "Trójmiasto"},
-];
+export default function ChooseFolderDialog({title, open, companyId, onClose, onSubmit}: ChooseFolderDialogProps) {
 
-export default function ChooseFolderDialog({title, open, onClose, onSubmit}: ChooseFolderDialogProps) {
+    const [tabIndex, setTabIndex] = useState<number>(0);
 
-    const [tabIndex, setTabIndex] = React.useState<number>(0);
-    const [chosenFolder, setChosenFolder] = React.useState<ChooseFolderDialogItem | null>(null);
+    const [displayedFolders, setDisplayedFolders] = useState<CompanyJobFolderListItemDto[]>([]);
+    const [searchQuery, setSearchQuery] = useState<string>("");
+    const [activeFolder, setActiveFolder] = useState<CompanyJobFolderListItemDto | null>(null);
 
-    const handleChangeTabIndex = (event: React.SyntheticEvent, newValue: number) => {
+
+    const fetchSharedFolders = useCallback(async () => {
+        const result = await getCompanySharedJobFolders(companyId);
+
+        if (result.success) {
+            setDisplayedFolders(result.data.jobFolders);
+        }
+    }, [companyId]);
+
+    const fetchChildFolders = useCallback(async (parentFolderId: number) => {
+        const result = await getCompanySharedJobFolderChildren(companyId, parentFolderId);
+
+        if (result.success) {
+            setDisplayedFolders(result.data.jobFolders);
+        }
+    }, [companyId]);
+
+
+    const handleChangeTabIndex = async (event: React.SyntheticEvent, newValue: number) => {
+
+        switch (newValue) {
+            case tabIndex:
+                return;
+            case 1:
+                setSearchQuery("");
+                setDisplayedFolders([]);
+                break;
+            case 2:
+                await fetchSharedFolders();
+                break;
+        }
         setTabIndex(newValue);
     };
 
-    const handleChooseFolderButtonClick = (event: React.SyntheticEvent) => {
-        if (chosenFolder !== null) {
-            handleChooseFolder(event, chosenFolder);
+    const handleChooseFolder = (event: React.SyntheticEvent, folder: CompanyJobFolderListItemDto) => {
+        onClose();
+        onSubmit(folder.id, folder.name);
+    };
+
+    const handleChooseFolderFromExplorerButtonClick = (event: React.SyntheticEvent) => {
+        if (activeFolder !== null) {
+            handleChooseFolder(event, activeFolder);
         }
     };
 
-    const handleChooseFolder = (event: React.SyntheticEvent, folder: ChooseFolderDialogItem) => {
-        onClose();
-        onSubmit(folder.id, folder.title);
+    const handleSetActiveFolderAndLoadChildren = async (folder: CompanyJobFolderListItemDto) => {
+        setActiveFolder(folder);
+        await fetchChildFolders(folder.id);
     };
-
-    const [searchQuery, setSearchQuery] = useState("");
-
-    const filteredResults = data.filter((item) =>
-        item.title?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
 
     const handleClose = (
         _event: unknown, reason: string
@@ -146,8 +160,8 @@ export default function ChooseFolderDialog({title, open, onClose, onSubmit}: Cho
                     />
                     <Typography variant="body2" sx={{mt: 1.2}}>Ostatnio odwiedzane</Typography>
                     <List disablePadding sx={{mt: 0.8, py: 0, px: 0.3, height: '390px', overflowY: "auto"}}>
-                        {filteredResults.length > 0 ? (
-                            filteredResults.map((item, index) => (
+                        {displayedFolders.length > 0 ? (
+                            displayedFolders.map((item, index) => (
                                 <ListItem
                                     key={item.id}
                                     disableGutters
@@ -167,7 +181,7 @@ export default function ChooseFolderDialog({title, open, onClose, onSubmit}: Cho
                                             </Avatar>
                                         </ListItemAvatar>
                                         <ListItemText
-                                            primary={item.title}
+                                            primary={item.name}
                                             slotProps={{
                                                 primary: {color: "black"}
                                             }}
@@ -184,24 +198,24 @@ export default function ChooseFolderDialog({title, open, onClose, onSubmit}: Cho
                 </CustomTabPanel>
 
                 <CustomTabPanel value={tabIndex} index={1}>
-                    <Breadcrumbs aria-label="breadcrumb" sx={{mt: 1.3}}>
-                        <Link underline="hover" color="inherit" href="/public"
-                              sx={{display: "flex", alignItems: "center", fontSize: "1.2em"}}>
-                            <Home fontSize="inherit"/>
-                            {/*Udostępnione foldery*/}
-                        </Link>
-                        <Link
-                            underline="hover"
-                            color="inherit"
-                            href="/material-ui/getting-started/installation/"
-                            sx={{fontSize: "1.2em"}}
-                        >
-                            Core
-                        </Link>
-                        <Typography sx={{color: 'text.primary', fontSize: "1.2em"}}>Breadcrumbs</Typography>
-                    </Breadcrumbs>
+                    {/*<Breadcrumbs aria-label="breadcrumb" sx={{mt: 1.3}}>*/}
+                    {/*    <Link underline="hover" color="inherit" href="/public"*/}
+                    {/*          sx={{display: "flex", alignItems: "center", fontSize: "1.2em"}}>*/}
+                    {/*        <Home fontSize="inherit"/>*/}
+                    {/*        /!*Udostępnione foldery*!/*/}
+                    {/*    </Link>*/}
+                    {/*    <Link*/}
+                    {/*        underline="hover"*/}
+                    {/*        color="inherit"*/}
+                    {/*        href="/material-ui/getting-started/installation/"*/}
+                    {/*        sx={{fontSize: "1.2em"}}*/}
+                    {/*    >*/}
+                    {/*        Core*/}
+                    {/*    </Link>*/}
+                    {/*    <Typography sx={{color: 'text.primary', fontSize: "1.2em"}}>Breadcrumbs</Typography>*/}
+                    {/*</Breadcrumbs>*/}
                     <List disablePadding sx={{py: 0.5, px: 0.3, height: '420px', minHeight: '420px', overflowY: "auto"}}>
-                        {data.map((item) => (
+                        {displayedFolders.map((item) => (
                             <ListItem
                                 key={item.id}
                                 disableGutters
@@ -210,7 +224,7 @@ export default function ChooseFolderDialog({title, open, onClose, onSubmit}: Cho
                                 <ListItemButton
                                     sx={{py: 1.2}}
                                     disableGutters
-                                    onClick={() => setChosenFolder(item)}
+                                    onClick={() => handleSetActiveFolderAndLoadChildren(item)}
                                 >
                                     <ListItemAvatar sx={{minWidth: "40px", mr: 1.3}}>
                                         <Avatar variant="rounded" sx={{backgroundColor: getItemColor(item.id)}}>
@@ -218,7 +232,7 @@ export default function ChooseFolderDialog({title, open, onClose, onSubmit}: Cho
                                         </Avatar>
                                     </ListItemAvatar>
                                     <ListItemText
-                                        primary={item.title}
+                                        primary={item.name}
                                         slotProps={{
                                             primary: {color: "black"}
                                         }}
@@ -233,10 +247,10 @@ export default function ChooseFolderDialog({title, open, onClose, onSubmit}: Cho
                 tabIndex === 1 &&
                 <DialogActions sx={{px: 2, pb: 1, pt: 0.5}}>
                     <Button
-                        onClick={handleChooseFolderButtonClick}
+                        onClick={handleChooseFolderFromExplorerButtonClick}
                         sx={{fontSize: "1.1em"}}
                     >
-                        Wybierz ten folder
+                        Wybierz obecny folder
                     </Button>
                 </DialogActions>
             }

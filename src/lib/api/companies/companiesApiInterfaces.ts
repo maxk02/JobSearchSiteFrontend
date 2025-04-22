@@ -79,15 +79,15 @@ export interface GetLastJobsResponse {
     jobs: CompanyJobListItemDto[];
 }
 
-export interface GetLastFoldersResponse {
-    folders: CompanyJobFolderListItemDto[];
+export interface GetLastJobFoldersResponse {
+    jobFolders: CompanyJobFolderListItemDto[];
 }
 
-export interface GetCompanyManagementJobFoldersRequest {
+export interface SearchCompanyJobFoldersRequest {
     query: string;
 }
 
-export interface GetCompanyManagementJobFoldersResponse {
+export interface SearchCompanyJobFoldersResponse {
     jobFolders: CompanyJobFolderListItemDto[];
 }
 
@@ -97,4 +97,12 @@ export interface GetCompanyManagementJobsRequest {
 
 export interface GetCompanyManagementJobsResponse {
     jobs: CompanyJobListItemDto[];
+}
+
+export interface GetCompanySharedFoldersResponse {
+    jobFolders: CompanyJobFolderListItemDto[];
+}
+
+export interface GetCompanySharedFolderChildrenResponse {
+    jobFolders: CompanyJobFolderListItemDto[];
 }
