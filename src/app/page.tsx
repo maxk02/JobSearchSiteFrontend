@@ -48,7 +48,6 @@ export function parseSearchParams(
 
 async function fetchJobs(params: TypedJobSearchParams) {
     const request: GetJobsRequest = {
-        companyIds: null,
         query: params.query,
         paginationSpec: {
             pageNumber: params.page,

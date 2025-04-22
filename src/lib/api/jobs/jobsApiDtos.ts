@@ -57,10 +57,8 @@ export interface JobManagementDto {
     requirements: string[];
     niceToHaves: string[];
     salaryInfo: JobSalaryInfoDto | null;
-    employmentTypeIds: number[] | null;
-    contractTypeIds: number[] | null;
-    isBookmarked: boolean;
-    applicationId: number | null;
+    employmentTypeIds: number[];
+    contractTypeIds: number[];
 
     folderId: number;
     folderName: string;

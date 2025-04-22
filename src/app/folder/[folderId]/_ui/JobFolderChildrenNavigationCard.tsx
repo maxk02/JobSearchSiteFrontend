@@ -5,22 +5,6 @@ import {Folder} from "@mui/icons-material";
 import {JobFolderMinimalDto} from "@/lib/api/jobFolders/jobFoldersApiDtos";
 import {usePathname, useRouter} from "next/navigation";
 
-// const navItems = [
-//     { text: "Some folder 1", icon: <Folder /> },
-//     { text: "Some folder 2", icon: <Folder /> },
-//     { text: "Some folder 3", icon: <Folder /> },
-//     { text: "Some folder 4", icon: <Folder /> },
-//     { text: "Some folder 5", icon: <Folder /> },
-//     { text: "Some folder 6", icon: <Folder /> },
-//     { text: "Some folder 7", icon: <Folder /> },
-//     { text: "Some folder 8", icon: <Folder /> },
-//     { text: "Some folder 9", icon: <Folder /> },
-//     { text: "Some folder 10", icon: <Folder /> },
-//     { text: "Some folder 11", icon: <Folder /> },
-//     { text: "Some folder 12", icon: <Folder /> },
-//     { text: "Some folder 13", icon: <Folder /> },
-//     { text: "Some folder 14", icon: <Folder /> },
-// ];
 
 interface JobFolderChildrenNavigationCardProps {
     folders: JobFolderMinimalDto[];

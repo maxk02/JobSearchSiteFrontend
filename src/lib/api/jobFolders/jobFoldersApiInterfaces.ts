@@ -8,10 +8,6 @@ export interface AddJobFolderRequest {
     description: string | null;
 }
 
-export interface GetChildFoldersResponse {
-    folders: JobFolderMinimalDto[];
-}
-
 export interface GetFolderJobsResponse {
     jobs: JobManagementCardDto[];
     paginationResponse: PaginationResponse;

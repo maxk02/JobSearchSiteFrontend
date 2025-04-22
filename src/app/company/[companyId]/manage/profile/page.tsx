@@ -1,16 +1,17 @@
 "use client";
 
 import {Alert, Avatar, Box, Button, Paper, Stack, TextField, Typography} from "@mui/material";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import FileUploadArea from "@/app/_ui/FileUploadArea";
 import {Info} from "@mui/icons-material";
 import {FileRejection} from "react-dropzone";
-import {getCompany, updateCompany, uploadAvatar} from "@/lib/api/companies/companiesApi";
+import {updateCompany, uploadAvatar} from "@/lib/api/companies/companiesApi";
 import {Controller, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {CompanyFormData, companySchema} from "@/lib/schemas/companySchema";
 import {UpdateCompanyRequestDto} from "@/lib/api/companies/companiesApiInterfaces";
 import {useParams} from "next/navigation";
+import {useCurrentCompanyStore} from "@/lib/stores/currentCompanyStore";
 
 export default function CompanySettingsPage() {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -19,12 +20,14 @@ export default function CompanySettingsPage() {
     const params = useParams();
     const companyId = parseInt(params.companyId as string, 10);
 
-    const {handleSubmit, control, reset, formState: {errors}} = useForm<CompanyFormData>({
+    const { currentCompanyState } = useCurrentCompanyStore();
+
+    const {handleSubmit, control, formState: {errors}} = useForm<CompanyFormData>({
         resolver: zodResolver(companySchema),
         defaultValues: {
-            name: '',
-            nip: '',
-            description: '',
+            name: currentCompanyState?.name ?? '',
+            nip: currentCompanyState?.nip ?? '',
+            description: currentCompanyState?.description ?? '',
         },
         mode: 'onChange'
     });
@@ -80,26 +83,6 @@ export default function CompanySettingsPage() {
             console.log(`Error uploading avatar: ${file.name} (${response.status})`);
         }
     };
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const result = await getCompany(companyId);
-            if (result.success) {
-                setLogoLink(result.data.company.logoLink);
-
-                reset({
-                    name: result.data.company.name,
-                    nip: result.data.company.nip,
-                    description: result.data.company.description,
-                });
-            }
-            else {
-                console.log("Profile fetching error");
-            }
-        }
-
-        fetchData();
-    });
 
     return (
         <>

@@ -163,7 +163,6 @@ export default function CreateJobPage() {
 
                                 <CreateEditJobListCard cardTitle="Mile widziane" fieldName="niceToHaves" />
 
-
                             </Box>
                         </Grid>
                     </Grid>

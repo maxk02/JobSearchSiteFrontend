@@ -25,7 +25,6 @@ export interface JobFolderDetailedDto {
 export interface JobManagementCardDto {
     id: number;
     companyLogoLink: string | null;
-    // companyName: string;
     locations: StringLocationDto[];
     title: string;
     dateTimePublishedUtc: string;
@@ -33,7 +32,6 @@ export interface JobManagementCardDto {
     salaryInfo: JobSalaryInfoDto | null;
     employmentOptionIds: number[] | null;
     contractTypeIds: number[] | null;
-    // folderId: number;
     isPublic: boolean;
     timeRangeOptionId: number;
 }

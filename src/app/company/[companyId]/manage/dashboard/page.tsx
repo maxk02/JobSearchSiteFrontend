@@ -8,17 +8,23 @@ import React, {useCallback, useEffect, useState} from "react";
 import DashboardLastVisitedCard, {
     LastVisitedCardItem
 } from "@/app/company/[companyId]/manage/dashboard/_ui/DashboardLastVisitedCard";
-import DashboardSearchDialog from "@/app/company/[companyId]/manage/dashboard/_ui/DashboardSearchDialog";
+import DashboardSearchDialog, {
+    DashboardSearchDialogItem
+} from "@/app/company/[companyId]/manage/dashboard/_ui/DashboardSearchDialog";
 import ChooseFolderDialog from "@/app/_ui/ChooseFolderDialog";
 import {useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
 import {
     deleteAllLastFolders,
     deleteAllLastJobs,
     deleteLastFolder,
-    deleteLastJob,
+    deleteLastJob, getCompanyManagementJobFolders, getCompanyManagementJobs,
     getLastFolders,
     getLastJobs
 } from "@/lib/api/companies/companiesApi";
+import {
+    GetCompanyManagementJobFoldersRequest,
+    GetCompanyManagementJobsRequest
+} from "@/lib/api/companies/companiesApiInterfaces";
 
 
 const mockCounters = {
@@ -88,7 +94,6 @@ export default function CompanyDashboard() {
         const result = await getLastJobs(companyId);
 
         if (result.success) {
-
             const mappedItems = result.data.jobs
                 .map((j): LastVisitedCardItem => (
                     { id: j.id, title: j.name, subtitle: j.folderName })
@@ -114,7 +119,7 @@ export default function CompanyDashboard() {
     useEffect(() => {
         fetchLastJobs();
         fetchLastFolders();
-    }, [fetchLastFolders, fetchLastJobs])
+    }, [fetchLastFolders, fetchLastJobs]);
 
     const handleDeleteLastJob = async (jobId: number) => {
         const result = await deleteLastJob(companyId, jobId);
@@ -160,7 +165,7 @@ export default function CompanyDashboard() {
         switch (dest) {
             case "job":
                 setCreateEditJobState("company");
-                router.push(`/job/${encodeURIComponent(id)}/manage/stats`);
+                router.push(`/job/${encodeURIComponent(id)}/manage/applications`);
                 break;
             case "folder":
                 router.push(`/folder/${encodeURIComponent(id)}/manage/jobs`);
@@ -179,6 +184,54 @@ export default function CompanyDashboard() {
                 break;
         }
     };
+
+    const [jobSearchDialogQuery, setJobSearchDialogQuery] = useState<string>("");
+    const [jobSearchResults, setJobSearchResults] = useState<DashboardSearchDialogItem[]>([]);
+    const [folderSearchDialogQuery, setFolderSearchDialogQuery] = useState<string>("");
+    const [folderSearchResults, setFolderSearchResults] = useState<DashboardSearchDialogItem[]>([]);
+
+    useEffect(() => {
+        const fetchJobs = async () => {
+            const request: GetCompanyManagementJobsRequest = {
+                query: jobSearchDialogQuery,
+            };
+
+            const result = await getCompanyManagementJobs(companyId, request);
+
+            if (result.success) {
+                const mappedJobs = result.data.jobs
+                    .map((j): DashboardSearchDialogItem => ({ id: j.id, title: j.name }));
+                setJobSearchResults(mappedJobs);
+            }
+        };
+
+        if (jobSearchDialogQuery) {
+            fetchJobs();
+        }
+
+    }, [companyId, jobSearchDialogQuery]);
+
+    useEffect(() => {
+        
+        const fetchFolders = async () => {
+            const request: GetCompanyManagementJobFoldersRequest = {
+                query: folderSearchDialogQuery,
+            };
+            
+            const result = await getCompanyManagementJobFolders(companyId, request);
+
+            if (result.success) {
+                const mappedFolders = result.data.jobFolders
+                    .map((jf): DashboardSearchDialogItem => ({ id: jf.id, title: jf.name }));
+                setFolderSearchResults(mappedFolders);
+            }
+        };
+
+        if (folderSearchDialogQuery) {
+            fetchFolders();
+        }
+        
+    }, [companyId, folderSearchDialogQuery]);
 
     const handleOpenChooseFolderDialog = (mode: "createJob" | "folder") => {
         setChooseFolderDialogMode(mode);
@@ -294,7 +347,9 @@ export default function CompanyDashboard() {
                 open={jobSearchDialogOpen}
                 onClose={handleCloseDialogs}
                 onSubmit={(id: number) => handleSearchDialogSubmit("job", id)}
-                data={lastJobs}
+                searchQuery={jobSearchDialogQuery}
+                setSearchQuery={setJobSearchDialogQuery}
+                searchResults={jobSearchResults}
                 listItemIcon={<Work />}
             />
 
@@ -303,7 +358,9 @@ export default function CompanyDashboard() {
                 open={folderSearchDialogOpen}
                 onClose={handleCloseDialogs}
                 onSubmit={(id: number) => handleSearchDialogSubmit("folder", id)}
-                data={lastFolders}
+                searchQuery={folderSearchDialogQuery}
+                setSearchQuery={setFolderSearchDialogQuery}
+                searchResults={folderSearchResults}
                 listItemIcon={<Folder />}
             />
 

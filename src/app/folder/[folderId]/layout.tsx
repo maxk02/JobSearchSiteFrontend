@@ -9,7 +9,7 @@ import JobFolderParentsNavigationCard from "./_ui/JobFolderParentsNavigationCard
 import JobFolderChildrenNavigationCard from "./_ui/JobFolderChildrenNavigationCard";
 import React, {useEffect} from "react";
 import {useCurrentJobFolderStore} from "@/lib/stores/currentJobFolderStore";
-import {getFolder} from "@/lib/api/jobFolders/jobFoldersApi";
+import {getJobFolder} from "@/lib/api/jobFolders/jobFoldersApi";
 import {useParams} from "next/navigation";
 
 
@@ -22,7 +22,7 @@ export default function ManageFolderLayout({children}: Readonly<{ children: Reac
     
     useEffect(() => {
         const fetchJobFolder = async () => {
-            const result = await getFolder(parsedFolderId);
+            const result = await getJobFolder(parsedFolderId);
             
             if (result.success) {
                 setCurrentJobFolderState(result.data.jobFolder);

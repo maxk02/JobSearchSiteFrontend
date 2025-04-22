@@ -1,11 +1,12 @@
 import fetchData from "@/lib/api/fetchData";
 import {
     AddJobFolderRequest,
-    GetChildFoldersResponse, GetJobFolderResponse,
     GetFolderJobsResponse,
+    GetJobFolderResponse,
     UpdateJobFolderRequestDto
 } from "@/lib/api/jobFolders/jobFoldersApiInterfaces";
 import {PaginationSpec} from "@/lib/api/sharedDtos";
+
 
 export const createJobFolder = async (req: AddJobFolderRequest) => {
     return await fetchData<AddJobFolderRequest, number>("/job-folders", "POST", req);
@@ -15,12 +16,8 @@ export const deleteJobFolder = async (id: number) => {
     return await fetchData<unknown>(`/job-folders/${id}`, "DELETE");
 };
 
-export const getFolder = async (id: number) => {
+export const getJobFolder = async (id: number) => {
     return await fetchData<unknown, GetJobFolderResponse>(`/job-folders/${id}`, "GET");
-};
-
-export const getChildFolders = async (id: number) => {
-    return await fetchData<unknown, GetChildFoldersResponse>(`/job-folders/${id}/child-folders`, "GET");
 };
 
 export const getJobs = async (id: number, paginationSpec: PaginationSpec) => {
