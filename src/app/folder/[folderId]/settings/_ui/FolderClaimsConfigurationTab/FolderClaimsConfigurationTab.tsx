@@ -21,17 +21,31 @@ import React, {ChangeEvent, useEffect, useState} from "react";
 import {Add, Info, Refresh} from "@mui/icons-material";
 import FolderClaimsConfigurationTable
     from "@/app/folder/[folderId]/settings/_ui/FolderClaimsConfigurationTab/FolderClaimsConfigurationTable";
-import {useParams} from "next/navigation";
 import {AddCompanyEmployeeRequest, GetCompanyEmployeesRequest} from "@/lib/api/companies/companiesApiInterfaces";
 import {addCompanyEmployee, getCompanyEmployees} from "@/lib/api/companies/companiesApi";
 import {getJobFolderClaimIdsForUser} from "@/lib/api/jobFolderClaims/jobFolderClaimsApi";
 import Image from "next/image";
 import {CompanyEmployeeDto} from "@/lib/api/companies/companiesApiDtos";
+import {useCurrentJobFolderStore} from "@/lib/stores/currentJobFolderStore";
+import {useRouter} from "next/navigation";
+
 
 export default function FolderClaimsConfigurationTab() {
+    
+    const router = useRouter();
 
-    const params = useParams();
-    const companyId = parseInt(params.companyId as string, 10);
+    const { currentJobFolderState } = useCurrentJobFolderStore();
+
+    const companyId = currentJobFolderState?.companyId;
+    const jobFolderId = currentJobFolderState?.id;
+
+    useEffect(() => {
+
+        if (companyId === null || jobFolderId === null) {
+            router.replace('/error');
+        }
+
+    }, [companyId, jobFolderId, router]);
 
     const [page, setPage] = useState<number>(0);
     const [rowsPerPage, setRowsPerPage] = useState<number>(10);
@@ -53,7 +67,7 @@ export default function FolderClaimsConfigurationTab() {
 
         const fetchData = async () => {
 
-            if (!selectedUserId) {
+            if (!selectedUserId || !companyId) {
                 return;
             }
 
@@ -73,6 +87,10 @@ export default function FolderClaimsConfigurationTab() {
         const fetchOptions = async (query: string) => {
             if (!query) {
                 setFindUserOptions([]);
+                return;
+            }
+            
+            if (!companyId) {
                 return;
             }
 
@@ -124,6 +142,8 @@ export default function FolderClaimsConfigurationTab() {
     };
 
     const handleAddNewUser = async (email: string) => {
+        if (!companyId) return;
+
         const request: AddCompanyEmployeeRequest = {
             email: email,
         };
@@ -251,7 +271,7 @@ export default function FolderClaimsConfigurationTab() {
                 </Box>
             )}
 
-            {displayedUser &&
+            {displayedUser && jobFolderId &&
                 <>
                     <Stack spacing={1} sx={{ mt: 1.5 }}>
                         <Typography variant="h5">
@@ -275,6 +295,8 @@ export default function FolderClaimsConfigurationTab() {
 
                     <Box sx={{ mt: 2.3 }}>
                         <FolderClaimsConfigurationTable
+                            jobFolderId={jobFolderId}
+                            userId={displayedUser.id}
                             activeClaimIds={activeJobFolderClaimIds}
                             page={page}
                             rowsPerPage={rowsPerPage}

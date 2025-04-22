@@ -292,7 +292,7 @@ export default function UserFolderClaimsConfigurationTable(props: CompanyClaimsC
                 onClose={() => { setInfoDialogOpen(false); setInfoDialogText(""); }}
                 open={infoDialogOpen}
                 text={infoDialogText}
-                title="Operacja z uprawnieniami nie może być przeprowadzona"
+                title="Operacja z uprawnieniami nie może zostać przeprowadzona"
             />
         </>
     );
