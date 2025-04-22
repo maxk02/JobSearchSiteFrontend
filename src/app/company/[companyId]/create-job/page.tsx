@@ -29,9 +29,9 @@ export default function CreateJobPage() {
 
     const router = useRouter();
 
-    const { companyIdParam } = useParams();
+    const params = useParams();
 
-    const companyId = companyIdParam as unknown as number;
+    const companyId = parseInt(params.companyId as string, 10);
 
     const storeData = useCreateEditJobStateStore();
 
@@ -132,7 +132,7 @@ export default function CreateJobPage() {
                                         returnToId={storeData.folder && storeData.source === "folder" ? storeData.folder.id : companyId}
                                     />
                                 }
-                                <CreateManageJobFolderChosenCard />
+                                <CreateManageJobFolderChosenCard companyId={companyId} />
                                 <CreateEditJobAnchorCard />
                                 <CreateJobButtons />
                             </Box>

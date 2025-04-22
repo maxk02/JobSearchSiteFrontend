@@ -1,21 +1,16 @@
-import {Avatar, Box, Button, ListItem, Paper, Stack, Typography} from "@mui/material";
+import {Avatar, Box, Button, Paper, Stack, Typography} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import {Folder} from "@mui/icons-material";
 import {getItemColor} from "@/lib/functions/listItemColors";
 import {StoreFolder, useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
-import {useFormContext} from "react-hook-form";
-import {CreateEditJobFormData} from "@/lib/schemas/createEditJobSchema";
 import ChooseFolderDialog from "@/app/_ui/ChooseFolderDialog";
 
 
-// interface CreateManageJobFolderChosenCardProps {
-//     folderId: number;
-//     folderName: string;
-// }
+interface CreateManageJobFolderChosenCardProps {
+    companyId: number;
+}
 
-export default function CreateManageJobFolderChosenCard() {
-
-    // const { setValue } = useFormContext<CreateEditJobFormData>();
+export default function CreateManageJobFolderChosenCard({ companyId }: CreateManageJobFolderChosenCardProps) {
 
     const storeData = useCreateEditJobStateStore();
 
@@ -71,6 +66,8 @@ export default function CreateManageJobFolderChosenCard() {
             <ChooseFolderDialog
                 title="Wybierz folder by rozpocząć"
                 open={isDialogOpen}
+                companyId={companyId}
+                jobFolderClaimReqs={[4]}
                 onClose={() => setIsDialogOpen(false)}
                 onSubmit={(id: number, name: string) => {handleChooseFolderDialogSubmit(id, name)}}
             />

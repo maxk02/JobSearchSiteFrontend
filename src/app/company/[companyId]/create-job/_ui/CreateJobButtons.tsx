@@ -1,12 +1,8 @@
 import {Button, Stack} from "@mui/material";
 import {Done, Preview} from "@mui/icons-material";
 import React from "react";
-import {useFormContext} from "react-hook-form";
-import {CreateEditJobFormData} from "@/lib/schemas/createEditJobSchema";
 
 export default function CreateJobButtons() {
-
-    const { control, formState: { errors } } = useFormContext<CreateEditJobFormData>();
 
     return (
         <Stack direction="row" flexWrap="wrap" spacing={2} sx={{ alignSelf: "center" }}>

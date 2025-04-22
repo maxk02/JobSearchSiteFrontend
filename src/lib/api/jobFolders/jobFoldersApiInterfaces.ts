@@ -1,4 +1,4 @@
-import {JobFolderDetailedDto, JobFolderMinimalDto, JobManagementCardDto} from "@/lib/api/jobFolders/jobFoldersApiDtos";
+import {JobFolderDetailedDto, JobManagementCardDto} from "@/lib/api/jobFolders/jobFoldersApiDtos";
 import {PaginationResponse} from "@/lib/api/sharedDtos";
 
 export interface AddJobFolderRequest {
