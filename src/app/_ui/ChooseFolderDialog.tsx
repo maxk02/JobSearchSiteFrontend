@@ -30,12 +30,13 @@ import {CompanyJobFolderListItemDto} from "@/lib/api/companies/companiesApiDtos"
 interface ChooseFolderDialogProps {
     title: string;
     companyId: number;
+    jobFolderClaimReqs: number[];
     open: boolean;
     onClose: () => void;
     onSubmit: (id: number, name: string) => void;
 }
 
-export default function ChooseFolderDialog({title, open, companyId, onClose, onSubmit}: ChooseFolderDialogProps) {
+export default function ChooseFolderDialog({title, open, companyId, jobFolderClaimReqs, onClose, onSubmit}: ChooseFolderDialogProps) {
 
     const [tabIndex, setTabIndex] = useState<number>(0);
 
@@ -174,6 +175,7 @@ export default function ChooseFolderDialog({title, open, companyId, onClose, onS
                                             pb: 1.2
                                         }}
                                         onClick={(event) => handleChooseFolder(event, item)}
+                                        disabled={!jobFolderClaimReqs.every(jfcr => item.claimIds.includes(jfcr))}
                                     >
                                         <ListItemAvatar sx={{minWidth: "40px", mr: 1.3}}>
                                             <Avatar variant="rounded" sx={{backgroundColor: getItemColor(item.id)}}>
@@ -225,6 +227,7 @@ export default function ChooseFolderDialog({title, open, companyId, onClose, onS
                                     sx={{py: 1.2}}
                                     disableGutters
                                     onClick={() => handleSetActiveFolderAndLoadChildren(item)}
+                                    disabled={!jobFolderClaimReqs.every(jfcr => item.claimIds.includes(jfcr))}
                                 >
                                     <ListItemAvatar sx={{minWidth: "40px", mr: 1.3}}>
                                         <Avatar variant="rounded" sx={{backgroundColor: getItemColor(item.id)}}>

@@ -35,43 +35,6 @@ const mockCounters = {
 };
 
 
-// const initialJobs = [
-//     {id: 1, title: "Programista Java", subtitle: "Poznań > Dział IT", path: "/job/1/manage"},
-//     {id: 2, title: "Kierownik projektu", subtitle: "Warszawa > Dział IT", path: "/job/1/manage"},
-//     {id: 3, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
-//     {id: 4, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
-//     {id: 5, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
-//     {id: 6, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
-//     {id: 7, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT", path: "/job/1/manage"},
-// ];
-//
-//
-// const initialFolders = [
-//     {id: 1, title: "Poznań > Dział IT", path: "/folder/1/jobs" },
-//     {id: 2, title: "Warszawa > Dział IT", path: "/folder/1/jobs" },
-//     {id: 3, title: "Trójmiasto > Dział IT", path: "/folder/1/jobs" },
-// ];
-//
-//
-// const mockJobs = [
-//     {id: 1, title: "Programista Java", subtitle: "Poznań > Dział IT"},
-//     {id: 2, title: "Kierownik projektu", subtitle: "Warszawa > Dział IT"},
-//     {id: 3, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
-//     {id: 4, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
-//     {id: 5, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
-//     {id: 6, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
-//     {id: 7, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
-//     {id: 8, title: "Analityk danych", subtitle: "Trójmiasto > Dział IT"},
-// ];
-//
-//
-// const mockFolders = [
-//     {id: 1, title: "Poznań > Dział IT"},
-//     {id: 2, title: "Warszawa > Dział IT"},
-//     {id: 3, title: "Trójmiasto > Dział IT"},
-// ];
-
-
 export default function CompanyDashboard() {
     const params = useParams();
 
@@ -81,9 +44,10 @@ export default function CompanyDashboard() {
 
     const [jobSearchDialogOpen, setJobSearchDialogOpen] = useState(false);
     const [folderSearchDialogOpen, setFolderSearchDialogOpen] = useState(false);
-    const [chooseFolderDialogOpen, setChooseFolderDialogOpen] = useState(false);
 
+    const [chooseFolderDialogOpen, setChooseFolderDialogOpen] = useState(false);
     const [chooseFolderDialogMode, setChooseFolderDialogMode] = useState<"createJob" | "folder">("createJob");
+    const [chooseFolderDialogClaimReqs, setChooseFolderDialogClaimReqs] = useState<number[]>([]);
 
     const { setCreateEditJobState } = useCreateEditJobStateStore();
 
@@ -235,6 +199,12 @@ export default function CompanyDashboard() {
 
     const handleOpenChooseFolderDialog = (mode: "createJob" | "folder") => {
         setChooseFolderDialogMode(mode);
+        if (mode === "createJob") {
+            setChooseFolderDialogClaimReqs(() => [4]);
+        }
+        else {
+            setChooseFolderDialogClaimReqs(() => []);
+        }
         setChooseFolderDialogOpen(true);
     };
 
@@ -367,6 +337,7 @@ export default function CompanyDashboard() {
             <ChooseFolderDialog
                 title="Wybierz folder"
                 companyId={companyId}
+                jobFolderClaimReqs={chooseFolderDialogClaimReqs}
                 open={chooseFolderDialogOpen}
                 onClose={handleCloseDialogs}
                 onSubmit={(id: number, name: string) => handleChooseFolderDialogSubmit(chooseFolderDialogMode, id, name)}
