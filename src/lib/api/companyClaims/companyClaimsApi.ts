@@ -19,7 +19,7 @@ export const updateCompanyClaimIdsForUser = async (
 ) => {
     return await fetchData<UpdateCompanyClaimIdsForUserRequestDto>(
         `/company-claims/company/${companyId}/user/${userId}`,
-        "PATCH",
+        "PUT",
         req
     );
 };

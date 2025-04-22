@@ -21,7 +21,7 @@ export const updateJobFolderClaimIdsForUser = async (
 ) => {
     return await fetchData<UpdateJobFolderClaimIdsForUserRequestDto>(
         `/job-folder-claims/folder/${folderId}/user/${userId}`,
-        "PATCH",
+        "PUT",
         req
     );
 };

@@ -275,6 +275,8 @@ export default function CompanyClaimsConfigurationTab() {
 
                     <Box sx={{ mt: 2.3 }}>
                         <CompanyClaimsConfigurationTable
+                            companyId={companyId}
+                            userId={displayedUser.id}
                             activeClaimIds={activeCompanyClaimIds}
                             page={page}
                             rowsPerPage={rowsPerPage}
