@@ -20,6 +20,7 @@ import {FileRejection} from "react-dropzone";
 import {deleteFile, getFileDownloadLink, uploadFile} from "@/lib/api/personalFiles/personalFilesApi";
 import {PersonalFileInfoDto} from "@/lib/api/personalFiles/personalFIlesApiDtos";
 import downloadFileFromCloud from "@/lib/api/downloadFileFromCloud";
+import { personalFiles } from "@/lib/seededData/personalFiles";
 
 
 const formatDate = (dateString: string): string => {
@@ -35,7 +36,7 @@ const formatDate = (dateString: string): string => {
 };
 
 export default function AccountFilesPage() {
-    const [uploadedFiles, setUploadedFiles] = useState<PersonalFileInfoDto[]>([]);
+    const [uploadedFiles, setUploadedFiles] = useState<PersonalFileInfoDto[]>(personalFiles);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const handleFilesChange = async (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {

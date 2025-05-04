@@ -50,14 +50,26 @@ export default function SuggestedJobCard({ item }: SuggestedJobCardProps) {
                     <Typography sx={{ fontWeight: 800, lineHeight: 1, fontSize: "1.15em" }}>
                         {item.title}
                     </Typography>
+                    <Typography fontWeight="600" lineHeight={1} mt={1} sx={{ fontWeight: 500, fontSize: "0.9em" }}>
+                        {item.companyName}
+                    </Typography>
                 </Stack>
                 <Box sx={{ px: 2, py: 1 }}>
-                    <IconButton
-                        sx={{ lineHeight: 1 }}
-                        onClick={toggleBookmark}
-                    >
-                        { item.isBookmarked ? <Star /> : <StarBorder /> }
-                    </IconButton>
+                    { item.isBookmarked ?
+                        <IconButton
+                            sx={{ lineHeight: 1 }}
+                            onClick={toggleBookmark}
+                            color="warning"
+                        >
+                            <Star />
+                        </IconButton> :
+                        <IconButton
+                            sx={{ lineHeight: 1 }}
+                            onClick={toggleBookmark}
+                        >
+                            <StarBorder />
+                        </IconButton>
+                    }
                 </Box>
             </Stack>
             <Stack pl={1.5} pt={0.5} pb={2}>
@@ -66,38 +78,35 @@ export default function SuggestedJobCard({ item }: SuggestedJobCardProps) {
                         {formatSalaryInfoText(item.salaryInfo)}
                     </Typography>
                 }
-                <Typography fontWeight="600" lineHeight={1} mt={0.7} sx={{ fontWeight: 500, fontSize: "0.9em" }}>
-                    {item.companyName}
-                </Typography>
 
                 {item.locations.length === 1 ? (
-                    <Typography lineHeight={1} mt={1.3}>
+                    <Typography lineHeight={1} mt={1.3} sx={{ fontSize: "0.9em" }}>
                         {item.locations[0].name}
                     </Typography>
                 ) : (
-                    <Typography lineHeight={1}>
+                    <Typography lineHeight={1} mt={1.3} sx={{ fontSize: "0.9em" }}>
                         Dostępna w {item.locations.length} lokalizacjach
                     </Typography>
                 )}
 
                 <List sx={{ mt: 0.7, p: 0, display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
                     <ListItem sx={{ m: 0, px: 0, pt: 0.7, pb: 0, width: "auto", "&::after": { content: '"●"', mx: 0.5, fontSize: "0.5rem", color: "text.secondary" } }}>
-                        {item.employmentOptionIds?.map((item) => (
-                            <Typography key={item} lineHeight={1} color="textSecondary">
-                                {employmentOptions
-                                    .filter(eo => eo.id === item)
-                                    .map(eo => eo.namePl).join(",")}
-                            </Typography>
-                        ))}
+                        <Typography lineHeight={1} color="textSecondary" sx={{ fontSize: "0.9em" }}>
+                            {employmentOptions
+                                .filter(eo => item.employmentOptionIds?.includes(eo.id))
+                                .map(eo => eo.namePl)
+                                .join(", ")
+                            }
+                        </Typography>
                     </ListItem>
                     <ListItem sx={{ m: 0, px: 0, pt: 0.7, pb: 0, width: "auto" }}>
-                        {item.contractTypeIds?.map((item) => (
-                            <Typography key={item} lineHeight={0.5} color="textSecondary" sx={{ fontSize: "0.85em" }}>
-                                {jobContractTypes
-                                    .filter(jct => jct.id === item)
-                                    .map(jct => jct.namePl).join(",")}
-                            </Typography>
-                        ))}
+                        <Typography lineHeight={1} color="textSecondary" sx={{ fontSize: "0.9em" }}>
+                            {jobContractTypes
+                                .filter(jct => item.contractTypeIds?.includes(jct.id))
+                                .map(jct => jct.namePl)
+                                .join(", ")
+                            }
+                        </Typography>
                     </ListItem>
                 </List>
             </Stack>

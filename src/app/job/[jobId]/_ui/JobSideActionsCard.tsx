@@ -1,7 +1,7 @@
 "use client";
 
 import {Button, Paper, Stack} from "@mui/material";
-import {ArrowForward, Star, StarBorder, TaskAlt} from "@mui/icons-material";
+import {ArrowForward, Close, Delete, Star, StarBorder, TaskAlt} from "@mui/icons-material";
 import React, {useState} from "react";
 import {addJobBookmark, deleteJobBookmark} from "@/lib/api/userProfiles/userProfilesApi";
 import {JobDetailedDto} from "@/lib/api/jobs/jobsApiDtos";
@@ -37,15 +37,34 @@ export default function JobSideActionsCard({ item }: JobSideActionsCardProps) {
                         color="primary"
                         startIcon={applicationId !== null ? <ArrowForward /> : <TaskAlt />}
                         sx={{
-                            px: 8,
+                            width: "90%",
                             maxWidth: "90%",
                             borderRadius: "50px",
-                            fontSize: '1.1rem',
+                            fontSize: '1.0rem',
                             "& .MuiButton-startIcon > :nth-of-type(1)": { fontSize: "1.5rem", lineHeight: 1 }
                         }}
+                        onClick={() => setDialogOpen(() => true)}
                     >
-                        {applicationId !== null ? "Przejdź do aplikacji" : "Aplikuj teraz"}
+                        {applicationId !== null ? "Zmień pliki" : "Aplikuj teraz"}
                     </Button>
+
+                    {applicationId !== null &&
+                        <Button
+                            variant="contained"
+                            color="error"
+                            startIcon={<Close />}
+                            sx={{
+                                width: "90%",
+                                maxWidth: "90%",
+                                borderRadius: "50px",
+                                fontSize: '1.0rem',
+                                "& .MuiButton-startIcon > :nth-of-type(1)": { fontSize: "1.5rem", lineHeight: 1 }
+                            }}
+                            onClick={() => setDialogOpen(() => true)}
+                        >
+                            Wycofaj aplikację
+                        </Button>
+                    }
 
 
                     <Stack direction="row" sx={{ justifyContent: "center" }}>

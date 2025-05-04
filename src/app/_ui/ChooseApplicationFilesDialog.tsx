@@ -21,14 +21,8 @@ import {
     UpdateJobApplicationFilesRequestDto
 } from "@/lib/api/jobApplications/jobApplicationsApiInterfaces";
 import ChooseApplicationFilesTable from "@/app/_ui/ChooseApplicationFilesTable";
+import {personalFiles} from "@/lib/seededData/personalFiles";
 
-
-const mockFiles: PersonalFileInfoDto[] = [
-    {id: 1, name: "File 1 owejfiowejfiojeopfjwop", size: 2000000, dateTimeUploadedUtc: "2025-04-19T10:35:24.123Z", extension: "pdf"},
-    {id: 2, name: "File 2", size: 2000000, dateTimeUploadedUtc: "2025-04-19T10:35:24.123Z", extension: "pdf"},
-    {id: 3, name: "File 3", size: 2000000, dateTimeUploadedUtc: "2025-04-19T10:35:24.123Z", extension: "pdf"},
-    {id: 4, name: "File 4", size: 2000000, dateTimeUploadedUtc: "2025-04-19T10:35:24.123Z", extension: "pdf"},
-];
 
 interface ChangeApplicationStatusDialogDialogProps {
     title: string;
@@ -44,7 +38,7 @@ export default function ChooseApplicationFilesDialog(props: ChangeApplicationSta
 
     const { title, open, onClose, jobId, applicationId, currentFileIds, setApplicationId } = props;
 
-    const [files, setFiles] = useState<PersonalFileInfoDto[]>(mockFiles);
+    const [files, setFiles] = useState<PersonalFileInfoDto[]>(personalFiles);
     const [selectedFileIds, setSelectedFileIds] = useState<number[]>(currentFileIds);
     
     const handleClose = (

@@ -1,7 +1,6 @@
 "use client";
 
 import {Avatar, Box, Collapse, Divider, IconButton, List, ListItem, Paper, Stack, Typography} from "@mui/material";
-import Image from "next/image";
 import {ExpandLess, ExpandMore, Star, StarBorder} from "@mui/icons-material";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 import {jobContractTypes} from "@/lib/seededData/jobContractTypes";
@@ -48,9 +47,7 @@ export default function JobCard({ item }: JobCardProps) {
         <Paper sx={{ width: "100%", textAlign: "left" }}>
             <Stack direction="row">
                 <Box py={2.1} pl={3} pr={1}>
-                    <Avatar variant="rounded" sx={{ width: 80, height: 80 }}>
-                        {item.companyLogoLink && <Image src={item.companyLogoLink} width="80" height="80" alt="" />}
-                    </Avatar>
+                    <Avatar variant="rounded" src={item.companyLogoLink ?? ''} sx={{ width: 80, height: 80 }} />
                 </Box>
                 <Stack sx={{ p: 2, flexGrow: 1 }}>
                     <Typography variant="h5" sx={{ fontWeight: 800, lineHeight: 1 }}>
@@ -93,32 +90,41 @@ export default function JobCard({ item }: JobCardProps) {
                         <ListItem sx={{ m: 0, px: 0, pt: 1.3, pb: 0, width: "auto",
                             "&::after": { content: '"●"', mx: 0.5, fontSize: "0.7rem", color: "text.secondary" } }}
                         >
-                            {item.employmentOptionIds?.map((item) => (
-                                <Typography key={item} lineHeight={1} color="textSecondary">
-                                    {employmentOptions
-                                        .filter(eo => eo.id === item)
-                                        .map(eo => eo.namePl).join(",")}
-                                </Typography>
-                            ))}
+                            <Typography lineHeight={1} color="textSecondary">
+                                {employmentOptions
+                                    .filter(eo => item.employmentOptionIds?.includes(eo.id))
+                                    .map(eo => eo.namePl)
+                                    .join(", ")
+                                }
+                            </Typography>
                         </ListItem>
                         <ListItem sx={{ m: 0, px: 0, pt: 1.3, pb: 0, width: "auto" }}>
-                            {item.contractTypeIds?.map((item) => (
-                                <Typography key={item} lineHeight={1} color="textSecondary">
-                                    {jobContractTypes
-                                        .filter(jct => jct.id === item)
-                                        .map(jct => jct.namePl).join(",")}
-                                </Typography>
-                            ))}
+                            <Typography lineHeight={1} color="textSecondary">
+                                {jobContractTypes
+                                    .filter(jct => item.contractTypeIds?.includes(jct.id))
+                                    .map(jct => jct.namePl)
+                                    .join(", ")
+                                }
+                            </Typography>
                         </ListItem>
                     </List>
                 </Stack>
                 <Box sx={{ px: 2, py: 1 }}>
-                    <IconButton
-                        sx={{ lineHeight: 1 }}
-                        onClick={toggleBookmark}
-                    >
-                        { item.isBookmarked ? <Star /> : <StarBorder /> }
-                    </IconButton>
+                    { item.isBookmarked ?
+                        <IconButton
+                            sx={{ lineHeight: 1 }}
+                            onClick={toggleBookmark}
+                            color="warning"
+                        >
+                            <Star />
+                        </IconButton> :
+                        <IconButton
+                            sx={{ lineHeight: 1 }}
+                            onClick={toggleBookmark}
+                        >
+                            <StarBorder />
+                        </IconButton>
+                    }
                 </Box>
             </Stack>
             <Divider />

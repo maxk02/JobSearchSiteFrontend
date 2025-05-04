@@ -10,7 +10,9 @@ import SuggestedJobCard from "@/app/job/[jobId]/_ui/SuggestedJobCard";
 import {getJob, getJobs} from "@/lib/api/jobs/jobsApi";
 import JobBottomActionsCard from "@/app/job/[jobId]/_ui/JobBottomActionsCard";
 import {GetJobsRequest} from "@/lib/api/jobs/jobsApiInterfaces";
-import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
+import {JobCardDto, JobDetailedDto} from "@/lib/api/jobs/jobsApiDtos";
+import {jobCardData} from "@/lib/seededData/jobCards";
+import {backendJobCards} from "@/lib/seededData/backendJobCards";
 
 
 async function fetchJob(id: number) {
@@ -30,8 +32,8 @@ async function fetchSuggestedJobs(request: GetJobsRequest) {
     const jobCardsResult = await getJobs(request);
 
     if (!jobCardsResult.success) {
-        console.error(`Failed to fetch jobs (${jobCardsResult.status})`);
-        return { jobCards: [], pagination: { currentPage: 1, pageSize: 4, totalCount: 0, totalPages: 1 } };
+        // console.error(`Failed to fetch jobs (${jobCardsResult.status})`);
+        return { jobCards: jobCardData.filter(x => [1, 2, 3, 4].includes(x.id)), pagination: { currentPage: 1, pageSize: 4, totalCount: 0, totalPages: 1 } };
     }
 
     return {
@@ -45,7 +47,58 @@ export default async function JobPage({ params }: { params: { jobId: string } })
 
     const id = parseInt(params.jobId, 10);
 
-    const job = await fetchJob(id);
+    // const job = await fetchJob(id);
+
+    const job: JobDetailedDto = {
+        id: id,
+        companyId: 1,
+        companyLogoLink: '/company_0.svg',
+        companyName: "Technologie Rozwiązań Sp. z o.o.",
+        companyDescription:
+            `
+            Jesteśmy Technologie Rozwiązań Sp. z o.o., dynamicznie rozwijającą się firmą z branży IT, specjalizującą się w tworzeniu nowoczesnych rozwiązań programistycznych dla klientów z całego świata. Od ponad 10 lat wspieramy przedsiębiorstwa w cyfrowej transformacji, dostarczając im dedykowane aplikacje webowe, mobilne oraz rozwiązania chmurowe.
+            `,
+        locations: [
+            { id: 7, name: "Warszawa, Województwo Mazowieckie" }
+        ],
+        categoryId: 2,
+        title: "Programista Backend",
+        description: "Na tym stanowisku będziesz odpowiedzialny za projektowanie i implementację logiki serwerowej, tworzenie API, zarządzanie bazami danych oraz współpracę z innymi członkami zespołu przy dostarczaniu kompletnych rozwiązań programistycznych.",
+        dateTimePublishedUtc: "2025-04-21T11:00:00Z",
+        dateTimeExpiringUtc: "2025-05-20T23:59:59Z",
+        responsibilities: [
+            "Tworzenie i rozwój aplikacji backendowych w oparciu o nowoczesne technologie",
+            "Projektowanie i implementacja API oraz logiki biznesowej",
+            "Współpraca z zespołem frontendowym i DevOps przy integracji systemów",
+            "Optymalizacja wydajności i bezpieczeństwa aplikacji",
+            "Udział w projektowaniu architektury systemu",
+            "Pisanie testów jednostkowych i integracyjnych",
+            "Utrzymanie i rozwój istniejących rozwiązań"
+        ],
+        requirements: [
+            "Minimum 2 lata doświadczenia na podobnym stanowisku",
+            "Bardzo dobra znajomość jednego z języków backendowych (np. Python, Node.js, Java, .NET)",
+            "Znajomość baz danych (SQL i/lub NoSQL)",
+            "Umiejętność projektowania i tworzenia RESTful API",
+            "Znajomość systemu kontroli wersji Git",
+            "Doświadczenie w pracy z frameworkami backendowymi (np. Django, Express, Spring, .NET Core)",
+            "Znajomość języka angielskiego na poziomie umożliwiającym czytanie dokumentacji"
+        ],
+        niceToHaves: [
+            "Doświadczenie z architekturą mikroserwisów",
+            "Znajomość GraphQL lub gRPC",
+            "Doświadczenie z chmurą (AWS, GCP, Azure)",
+            "Znajomość Dockera i/lub Kubernetes",
+            "Praktyczna znajomość CI/CD (np. GitHub Actions, GitLab CI)",
+            "Udział w projektach typu open-source",
+            "Znajomość zasad clean code i DDD"
+        ],
+        salaryInfo: null,
+        employmentTypeIds: [1, 2, 4, 5],
+        contractTypeIds: [4],
+        isBookmarked: false,
+        applicationId: null
+    };
 
     const request: GetJobsRequest = {
         query: job.title,
@@ -59,7 +112,9 @@ export default async function JobPage({ params }: { params: { jobId: string } })
         employmentOptionIds: job.employmentTypeIds
     };
 
-    const suggestedJobs = await fetchSuggestedJobs(request);
+    // const suggestedJobs = await fetchSuggestedJobs(request);
+
+    const suggestedJobs = backendJobCards;
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 3 }}>
@@ -88,11 +143,11 @@ export default async function JobPage({ params }: { params: { jobId: string } })
                     <Stack sx={{ position: "sticky", top: 20, zIndex: 1 }}>
                         <JobSideActionsCard item={job} />
                         {
-                            suggestedJobs.jobCards.length > 0 &&
+                            suggestedJobs.length > 0 &&
                             <>
                                 <Typography variant="h5" fontWeight={600} mt={2} color="primary">Podobne oferty</Typography>
                                 <Stack gap={2} mt={1.5}>
-                                    {suggestedJobs.jobCards.map((jobCard: JobCardDto) => (
+                                    {suggestedJobs.map((jobCard: JobCardDto) => (
                                         <SuggestedJobCard
                                             key={jobCard.id}
                                             item={jobCard}

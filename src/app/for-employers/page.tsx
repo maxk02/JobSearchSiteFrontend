@@ -45,7 +45,7 @@ export default function ForEmployersPage() {
                         Elastyczny system kredytów
                     </Typography>
                     <Typography variant="body1" color="text.secondary" sx={{ mb: 3, width: "80%", fontWeight: 500 }}>
-                        Po rejestracji otrzymasz 10 darmowych kredytów na 1 ofertę pracy (7 dni). Kupuj kredyty, aby publikować więcej ofert i wybierać ich czas ważności: 7 dni (10 kredytów), 14 dni (15 kredytów) lub 30 dni (25 kredytów). Im więcej kredytów kupisz, tym taniej – już od 1,50 PLN za kredyt!
+                        Po rejestracji otrzymasz 10 darmowych kredytów na 1 ofertę pracy (7 dni). Kupuj kredyty, aby publikować więcej ofert i wybierać ich czas ważności: 7 dni (10 kredytów), 30 dni (20 kredytów), 60 dni (30 kredytów) lub 90 dni (40 kredytów). Im więcej kredytów kupisz, tym taniej – już od 1,50 PLN za kredyt!
                     </Typography>
                 </Stack>
                 <Link href="/for-employers/register?step=1" passHref>

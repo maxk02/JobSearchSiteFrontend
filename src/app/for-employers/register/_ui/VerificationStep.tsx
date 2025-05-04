@@ -19,7 +19,7 @@ export default function VerificationStep() {
                     </Typography>
                     <Typography>z konta powiązanego z rejestrowaną firmą z opisem:</Typography>
                     <Typography sx={{ fontWeight: "bold" }}>
-                        Rejestracja na stronie znajdzprace.pl jankowalski9226@gmail.com
+                        Rejestracja firmy Moja Firma na stronie znajdzprace.pl jankowalski9226@localmail.com
                     </Typography>
                 </Alert>
 
@@ -28,8 +28,8 @@ export default function VerificationStep() {
                         Dane rejestrowanej firmy:
                     </Typography>
                     <Avatar variant="rounded" src="/company2.webp" sx={{ width: 50, height: 50, m: 0 }} />
-                    <Typography sx={{ fontSize: "1.05em" }}>Nazwa: {values.name}</Typography>
-                    <Typography sx={{ fontSize: "1.05em" }}>NIP: {values.nip}</Typography>
+                    <Typography sx={{ fontSize: "1.05em" }}>Nazwa: Moja Firma</Typography>
+                    <Typography sx={{ fontSize: "1.05em" }}>NIP: 1111111111</Typography>
                     {values.description && <Typography sx={{ fontSize: "1.05em" }}>Opis: {values.description}</Typography>}
                 </Stack>
             </Stack>

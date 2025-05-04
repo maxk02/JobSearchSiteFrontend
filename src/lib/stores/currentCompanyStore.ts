@@ -9,7 +9,15 @@ export interface CurrentCompanyState {
 }
 
 export const useCurrentCompanyStore = create<CurrentCompanyState>((set) => ({
-    currentCompanyState: undefined,
+    currentCompanyState: {
+        id: 1,
+        name: 'Moja Firma',
+        description: null,
+        countryId: 1,
+        logoLink: '/company2.webp',
+        nip: '1111111111',
+        claimIds: [1, 2, 3, 4, 5, 6]
+    },
     setCurrentCompanyState: (company) =>
         set({
             currentCompanyState: company,

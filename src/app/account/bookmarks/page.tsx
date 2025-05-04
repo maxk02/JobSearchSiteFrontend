@@ -7,6 +7,7 @@ import {useSearchParams} from "next/navigation";
 import {getBookmarkedJobs} from "@/lib/api/userProfiles/userProfilesApi";
 import MyDefaultPagination from "@/app/_ui/MyDefaultPagination";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
+import {jobCardData} from "@/lib/seededData/bookmarkJobCards";
 
 export default function AccountBookmarksPage() {
 
@@ -29,6 +30,7 @@ export default function AccountBookmarksPage() {
                 setTotalPages(result.data.paginationResponse.totalPages);
             }
             else {
+                setJobCards(jobCardData);
                 console.log(`Error fetching job bookmarks (${result.status})`);
             }
         }

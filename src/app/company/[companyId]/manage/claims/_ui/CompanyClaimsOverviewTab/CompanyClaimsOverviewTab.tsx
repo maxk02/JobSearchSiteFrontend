@@ -23,6 +23,7 @@ import {getCompanyClaimsOverview} from "@/lib/api/companyClaims/companyClaimsApi
 import {useParams} from "next/navigation";
 import {GetCompanyClaimsOverviewRequest} from "@/lib/api/companyClaims/companyClaimsApiInterfaces";
 import {CompanyClaimOverviewDto} from "@/lib/api/companyClaims/companyClaimsApiDtos";
+import {companyClaimOverviews} from "@/lib/seededData/companyClaimOverviews";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -76,6 +77,9 @@ export default function CompanyClaimsOverviewTab() {
 
             if (result.success) {
                 setRows(result.data.companyClaimsOverviewDtos);
+            }
+            else {
+                setRows(companyClaimOverviews.filter(x => (selectedClaimIds.length < 1 || selectedClaimIds.includes(x.claimId)) && `${x.userFirstName} ${x.userLastName} ${x.userEmail}`.toLowerCase().includes(request.userQuery.toLowerCase())));
             }
         };
 

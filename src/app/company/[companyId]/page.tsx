@@ -6,6 +6,9 @@ import JobCard from "@/app/_ui/JobCard";
 import {redirect} from "next/navigation";
 import {getCompany, getCompanyJobs} from "@/lib/api/companies/companiesApi";
 import {GetCompanyJobsRequest} from "@/lib/api/companies/companiesApiInterfaces";
+import {CompanyDto} from "@/lib/api/companies/companiesApiDtos";
+import {backendJobCards} from "@/lib/seededData/backendJobCards";
+import {jobCardData} from "@/lib/seededData/jobCards";
 
 
 async function fetchCompanyJobs(id: number, params: TypedCompanySearchParams) {
@@ -68,29 +71,39 @@ export interface CompanyPageProps {
 
 export default async function CompanyPage(props: CompanyPageProps) {
 
-    const params = await props.params;
+    // const params = await props.params;
+    //
+    // const typedParams = parseParams(params);
+    //
+    // if (!typedParams.companyId) {
+    //     redirect('/');
+    // }
+    //
+    // const searchParams = await props.searchParams;
+    //
+    // const typedSearchParams = parseSearchParams(searchParams);
 
-    const typedParams = parseParams(params);
-
-    if (!typedParams.companyId) {
-        redirect('/');
-    }
-
-    const searchParams = await props.searchParams;
-
-    const typedSearchParams = parseSearchParams(searchParams);
-
-    const company = await fetchCompany(typedParams.companyId);
+    const company: CompanyDto = {
+        id: 0,
+        name: "Sieć Sklepów Spożywczych",
+        description: "",
+        logoLink: null
+    };
 
     if (!company) {
         redirect('/');
     }
 
-    const { jobCards, pagination } = await fetchCompanyJobs(typedParams.companyId, typedSearchParams);
+    // const { jobCards, pagination } = await fetchCompanyJobs(typedParams.companyId, typedSearchParams);
 
-    if (typedSearchParams.page !== pagination.currentPage) {
+    const { jobCards, pagination } = {
+        jobCards: jobCardData.filter(x => x.companyName === "Sieć Sklepów Spożywczych"),
+        pagination: { currentPage: 1, pageSize: 15, totalCount: 0, totalPages: 1 }
+    };
 
-    }
+    // if (typedSearchParams.page !== pagination.currentPage) {
+    //
+    // }
 
     return (
         <>
@@ -129,7 +142,7 @@ export default async function CompanyPage(props: CompanyPageProps) {
                     <Stack direction="row" sx={{ justifyContent: "center" }}>
                         <MyDefaultPagination
                             totalPages={pagination.totalPages}
-                            currentPage={typedSearchParams.page}
+                            currentPage={1}
                         />
                     </Stack>
                 </Stack>

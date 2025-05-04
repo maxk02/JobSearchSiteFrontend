@@ -3,7 +3,7 @@
 import {Alert, Avatar, Box, Button, Paper, Stack, TextField, Typography} from "@mui/material";
 import React, {useState} from "react";
 import FileUploadArea from "@/app/_ui/FileUploadArea";
-import {Info} from "@mui/icons-material";
+import {DeleteForever, Info} from "@mui/icons-material";
 import {FileRejection} from "react-dropzone";
 import {updateCompany, uploadAvatar} from "@/lib/api/companies/companiesApi";
 import {Controller, useForm} from "react-hook-form";
@@ -108,19 +108,32 @@ export default function CompanySettingsPage() {
                 )}
                 <Stack direction="row" sx={{ mt: 1, gap: 2 }}>
                     <Paper
-                         sx={{
-                             display: "flex",
-                             flexDirection: "column",
-                             alignItems: "center",
-                             justifyContent: "center",
-                             gap: 1.3,
-                             width: 270,
-                             height: 250,
-                             border: "2px dashed lightgray",
-                         }}
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: 1.3,
+                            width: 270,
+                            height: 250,
+                            border: "2px dashed lightgray",
+                        }}
                     >
-                        <Avatar variant="rounded" src={logoLink ?? "/company2.webp"} sx={{ width: 128, height: 128, m: 0 }} />
+                        <Avatar variant="rounded" src="/company2.webp" sx={{ width: 128, height: 128, m: 0 }} />
                         <Typography textAlign="center">Obecne zdjęcie</Typography>
+                        <Button
+                            size="small"
+                            color="error"
+                            startIcon={<DeleteForever />}
+                            sx={{
+                                padding: 0,
+                                '&:hover': { backgroundColor: 'transparent' },
+                                '&:active': { backgroundColor: 'transparent' },
+                                '&:focus': { outline: 'none' },
+                            }}
+                        >
+                            Usuń
+                        </Button>
                     </Paper>
                     <Box sx={{ width: 270, height: 250 }}>
                         <FileUploadArea

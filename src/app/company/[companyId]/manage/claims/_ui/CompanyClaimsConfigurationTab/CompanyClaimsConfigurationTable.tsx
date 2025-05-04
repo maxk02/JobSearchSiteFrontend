@@ -31,7 +31,7 @@ interface CompanyClaimsConfigurationTableProps {
     onRowsPerPageChange: (rowsPerPage: number) => void;
 }
 
-interface RowData {
+export interface RowData {
     id: number;
     isActive: boolean;
     text: string;
@@ -127,8 +127,11 @@ export default function UserFolderClaimsConfigurationTable(props: CompanyClaimsC
 
             const result = await updateCompanyClaimIdsForUser(companyId, userId, request);
 
-            if (!result.success) {
-                console.error(result);
+            if (result.success) {
+
+            }
+            else {
+
             }
         }
         else {

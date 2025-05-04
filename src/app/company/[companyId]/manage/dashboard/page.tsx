@@ -252,40 +252,40 @@ export default function CompanyDashboard() {
                 </Grid>
             </Grid>
 
-            <Grid container spacing={3} sx={{mb: 4}}>
-                <Grid size={{xs: 12, sm: 6, md: 3}}>
-                    <Paper elevation={3} sx={{p: 2, textAlign: "center"}}>
-                        <Typography variant="h6">Wyświetlenia ofert</Typography>
-                        <Typography variant="h6">(dzisiaj)</Typography>
-                        <Typography variant="h4"
-                                    sx={{mt: 1, fontWeight: "500"}}>{mockCounters.jobViewsToday}</Typography>
-                    </Paper>
-                </Grid>
-                <Grid size={{xs: 12, sm: 6, md: 3}}>
-                    <Paper elevation={3} sx={{p: 2, textAlign: "center"}}>
-                        <Typography variant="h6">Wyświetlenia ofert</Typography>
-                        <Typography variant="h6">(ostatni tydzień)</Typography>
-                        <Typography variant="h4"
-                                    sx={{mt: 1, fontWeight: "500"}}>{mockCounters.jobViewsLastWeek}</Typography>
-                    </Paper>
-                </Grid>
-                <Grid size={{xs: 12, sm: 6, md: 3}}>
-                    <Paper elevation={3} sx={{p: 2, textAlign: "center"}}>
-                        <Typography variant="h6">Nowe aplikacje</Typography>
-                        <Typography variant="h6">(dzisiaj)</Typography>
-                        <Typography variant="h4"
-                                    sx={{mt: 1, fontWeight: "500"}}>{mockCounters.applicationsToday}</Typography>
-                    </Paper>
-                </Grid>
-                <Grid size={{xs: 12, sm: 6, md: 3}}>
-                    <Paper elevation={3} sx={{p: 2, textAlign: "center"}}>
-                        <Typography variant="h6">Nowe aplikacje</Typography>
-                        <Typography variant="h6">(ostatni tydzień)</Typography>
-                        <Typography variant="h4"
-                                    sx={{mt: 1, fontWeight: "500"}}>{mockCounters.applicationsLastWeek}</Typography>
-                    </Paper>
-                </Grid>
-            </Grid>
+            {/*<Grid container spacing={3} sx={{mb: 4}}>*/}
+            {/*    <Grid size={{xs: 12, sm: 6, md: 3}}>*/}
+            {/*        <Paper elevation={3} sx={{p: 2, textAlign: "center"}}>*/}
+            {/*            <Typography variant="h6">Wyświetlenia ofert</Typography>*/}
+            {/*            <Typography variant="h6">(dzisiaj)</Typography>*/}
+            {/*            <Typography variant="h4"*/}
+            {/*                        sx={{mt: 1, fontWeight: "500"}}>{mockCounters.jobViewsToday}</Typography>*/}
+            {/*        </Paper>*/}
+            {/*    </Grid>*/}
+            {/*    <Grid size={{xs: 12, sm: 6, md: 3}}>*/}
+            {/*        <Paper elevation={3} sx={{p: 2, textAlign: "center"}}>*/}
+            {/*            <Typography variant="h6">Wyświetlenia ofert</Typography>*/}
+            {/*            <Typography variant="h6">(ostatni tydzień)</Typography>*/}
+            {/*            <Typography variant="h4"*/}
+            {/*                        sx={{mt: 1, fontWeight: "500"}}>{mockCounters.jobViewsLastWeek}</Typography>*/}
+            {/*        </Paper>*/}
+            {/*    </Grid>*/}
+            {/*    <Grid size={{xs: 12, sm: 6, md: 3}}>*/}
+            {/*        <Paper elevation={3} sx={{p: 2, textAlign: "center"}}>*/}
+            {/*            <Typography variant="h6">Nowe aplikacje</Typography>*/}
+            {/*            <Typography variant="h6">(dzisiaj)</Typography>*/}
+            {/*            <Typography variant="h4"*/}
+            {/*                        sx={{mt: 1, fontWeight: "500"}}>{mockCounters.applicationsToday}</Typography>*/}
+            {/*        </Paper>*/}
+            {/*    </Grid>*/}
+            {/*    <Grid size={{xs: 12, sm: 6, md: 3}}>*/}
+            {/*        <Paper elevation={3} sx={{p: 2, textAlign: "center"}}>*/}
+            {/*            <Typography variant="h6">Nowe aplikacje</Typography>*/}
+            {/*            <Typography variant="h6">(ostatni tydzień)</Typography>*/}
+            {/*            <Typography variant="h4"*/}
+            {/*                        sx={{mt: 1, fontWeight: "500"}}>{mockCounters.applicationsLastWeek}</Typography>*/}
+            {/*        </Paper>*/}
+            {/*    </Grid>*/}
+            {/*</Grid>*/}
 
             <Grid container spacing={3}>
                 <Grid size={{xs: 12, md: 6}}>

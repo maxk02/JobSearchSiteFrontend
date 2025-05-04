@@ -27,6 +27,43 @@ export default function ManageFolderLayout({children}: Readonly<{ children: Reac
             if (result.success) {
                 setCurrentJobFolderState(result.data.jobFolder);
             }
+            else {
+                setCurrentJobFolderState(
+                    {
+                        id: 1,
+                        name: "Folder głowny",
+                        description: null,
+                        rootFolderId: null,
+                        parentFolderId: null,
+                        companyId: 1,
+                        companyName: "Moja Firma",
+                        companyLogoLink: '/company2.webp',
+                        claimIds: [1, 2, 3, 4, 5, 6, 7, 8],
+                        children: [
+                            {
+                                id: 2,
+                                name: "Dział Rachunkowy",
+                                claimIds: [1, 2, 3, 4, 5, 6, 7, 8]
+                            },
+                            {
+                                id: 3,
+                                name: "Dział IT",
+                                claimIds: [1, 2, 3, 4, 5, 6, 7, 8]
+                            },
+                            {
+                                id: 4,
+                                name: "Dział Sprzedaży",
+                                claimIds: [1, 2, 3, 4, 5, 6, 7, 8]
+                            },
+                            {
+                                id: 4,
+                                name: "Dział Badań i Rozwoju",
+                                claimIds: [1, 2, 3, 4, 5, 6, 7, 8]
+                            }
+                        ]
+                    }
+                );
+            }
         };
 
         fetchJobFolder();

@@ -8,7 +8,13 @@ interface CurrentUserState {
 }
 
 export const useCurrentUserStore = create<CurrentUserState>()((set) => ({
-        currentUser: null,
+        currentUser: {
+            id: 1,
+            email: 'mail@example.local',
+            fullName: 'Jan Testowy',
+            avatarLink: '/avatar2.webp',
+            companiesManaged: []
+        },
         setCurrentUser: (user) => set({ currentUser: user }),
         clearCurrentUser: () => set({ currentUser: null }),
     })

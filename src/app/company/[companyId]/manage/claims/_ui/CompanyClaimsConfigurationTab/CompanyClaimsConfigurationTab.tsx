@@ -62,6 +62,9 @@ export default function CompanyClaimsConfigurationTab() {
             if (claimIdsResult.success) {
                 setActiveCompanyClaimIds(claimIdsResult.data);
             }
+            else {
+                setActiveCompanyClaimIds([]);
+            }
         };
 
         fetchData();
@@ -92,17 +95,9 @@ export default function CompanyClaimsConfigurationTab() {
                 setFindUserOptions(() => [
                     {
                         id: 1,
-                        email: "wojdwopejp@gmail.com",
-                        fullName: "Full Name",
+                        email: "anna.nowak@example.pl",
+                        fullName: "Anna Nowak",
                         avatarLink: null,
-                        companiesManaged: [],
-                    },
-                    {
-                        id: 2,
-                        email: "wojdwowefefpejp@gmail.com",
-                        fullName: "Full Name 2",
-                        avatarLink: null,
-                        companiesManaged: [],
                     },
                 ]);
             }
@@ -133,6 +128,15 @@ export default function CompanyClaimsConfigurationTab() {
         if (result.success) {
             const newDisplayedUser: CompanyEmployeeDto = {
                 id: result.data.id,
+                email: email,
+                fullName: null,
+                avatarLink: null,
+            };
+            setDisplayedUser(newDisplayedUser);
+        }
+        else {
+            const newDisplayedUser: CompanyEmployeeDto = {
+                id: 1,
                 email: email,
                 fullName: null,
                 avatarLink: null,
@@ -258,9 +262,7 @@ export default function CompanyClaimsConfigurationTab() {
                             Wybrany użytkownik
                         </Typography>
                         <Stack direction="row" spacing={1.5} sx={{ alignItems: "center" }}>
-                            <Avatar variant="circular" sx={{ height: 60, width: 60 }}>
-                                <Image width={60} height={60} src={displayedUser.avatarLink ?? "/avatar2.webp"} alt="User's avatar" />
-                            </Avatar>
+                            <Avatar variant="circular" sx={{ height: 60, width: 60 }} />
                             <Stack>
                                 <Typography variant="body1" fontWeight={600} gutterBottom m={0} sx={{ flex: "none" }}>
                                     {displayedUser.fullName}

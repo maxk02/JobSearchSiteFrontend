@@ -16,6 +16,7 @@ import {usePathname} from "next/navigation";
 import {useEffect, useState} from "react";
 import {getUserProfile} from "@/lib/api/userProfiles/userProfilesApi";
 import Image from "next/image";
+import {useCurrentUserStore} from "@/lib/stores/currentUserStore";
 
 
 const navItems = [
@@ -36,32 +37,32 @@ export default function AccountSideNavbar() {
 
     const currentPath = usePathname();
 
-    const [userName, setUserName] = useState<string | null>(null);
-    const [avatarLink, setAvatarLink] = useState<string | null>(null);
+    // const [userName, setUserName] = useState<string | null>(null);
+    // const [avatarLink, setAvatarLink] = useState<string | null>(null);
 
-    useEffect(() => {
-        const fetchAccountData = async () => {
+    const { currentUser } = useCurrentUserStore();
 
-            const result = await getUserProfile();
-
-            if (result.success) {
-                setUserName(`${result.data.firstName} ${result.data.lastName}`);
-                setAvatarLink(result.data.avatarLink);
-            }
-
-        };
-
-        fetchAccountData();
-    });
+    // useEffect(() => {
+    //     const fetchAccountData = async () => {
+    //
+    //         const result = await getUserProfile();
+    //
+    //         if (result.success) {
+    //             setUserName(`${result.data.firstName} ${result.data.lastName}`);
+    //             setAvatarLink(result.data.avatarLink);
+    //         }
+    //
+    //     };
+    //
+    //     fetchAccountData();
+    // });
 
     return (
         <Paper sx={{ px: 1, py: 0.5, position: "sticky", top: 20, zIndex: 1 }}>
             <Stack sx={{ gap: 0.7, mt: 1.5, pt: 1.5, pb: 0.5, px: 1.8 }}>
-                <Avatar sx={{ height: 64, width: 64 }}>
-                    {avatarLink && <Image width={64} height={64} src={avatarLink} alt="User's avatar image" />}
-                </Avatar>
+                <Avatar src={currentUser?.avatarLink ?? ''} sx={{ height: 64, width: 64 }} />
                 <Typography variant="body1" fontWeight={600} gutterBottom marginBottom={0}>
-                    {userName}
+                    {currentUser?.fullName}
                 </Typography>
             </Stack>
             <List>

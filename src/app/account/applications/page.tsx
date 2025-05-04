@@ -8,11 +8,12 @@ import {JobApplicationInUserProfileDto} from "@/lib/api/jobApplications/jobAppli
 import {useSearchParams} from "next/navigation";
 import {getJobApplications} from "@/lib/api/userProfiles/userProfilesApi";
 import {jobApplicationStatuses} from "@/lib/seededData/jobApplicationStatuses";
+import jobApplications from "@/lib/seededData/jobApplications";
 
 
 export default function AccountApplicationsPage() {
-    const [selectedApplicationStatusId, setSelectedApplicationStatusId] = useState<number | null>(null);
-    const [applications, setApplications] = useState<JobApplicationInUserProfileDto[]>([]);
+    const [selectedApplicationStatusId, setSelectedApplicationStatusId] = useState<number>(0);
+    const [applications, setApplications] = useState<JobApplicationInUserProfileDto[]>(jobApplications);
 
     const searchParams = useSearchParams();
     const pageParam = searchParams.get("page");

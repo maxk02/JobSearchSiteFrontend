@@ -38,6 +38,11 @@ export default function JobSearchLocationAutoComplete() {
             if (result.success) {
                 setOptions(result.data.locations);
             }
+            else {
+                setOptions([
+                    { id: 1, name: 'Kraków, Województwo Małopolskie' },
+                ]);
+            }
 
             setLoading(false);
         };
@@ -55,6 +60,8 @@ export default function JobSearchLocationAutoComplete() {
             control={control}
             render={({field}) => (
                 <Autocomplete
+                    forcePopupIcon={false}
+                    disableClearable={false}
                     options={options}
                     getOptionLabel={(option) => option.name}
                     loading={loading}
@@ -77,25 +84,6 @@ export default function JobSearchLocationAutoComplete() {
                                 maxHeight: "56px",
                                 height: "56px",
                                 "& .MuiOutlinedInput-root": {borderRadius: "0", backgroundColor: "white", pr: 0}
-                            }}
-                            InputProps={{
-                                ...params.InputProps,
-                                endAdornment: inputValue.length > 0 && (
-                                    <>
-                                        {/*{loading &&*/}
-                                        {/*    <InputAdornment position="end">*/}
-                                        {/*        <CircularProgress size={20}/>*/}
-                                        {/*    </InputAdornment>*/}
-                                        {/*}*/}
-                                        {inputValue.length > 0 &&
-                                            <InputAdornment position="end">
-                                                <IconButton onClick={handleClearSearch} size="small">
-                                                    <Close/>
-                                                </IconButton>
-                                            </InputAdornment>
-                                        }
-                                    </>
-                                ),
                             }}
                         />
                     )}

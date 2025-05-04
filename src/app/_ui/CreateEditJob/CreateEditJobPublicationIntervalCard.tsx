@@ -15,8 +15,8 @@ import {CreateEditJobFormData} from "@/lib/schemas/createEditJobSchema";
 
 
 const expiryOptions = [
-    { id: 1, title: "0-4 dni", description: "Wartość: 10 kredytów" },
-    { id: 2, title: "5-30 dni", description: "Wartość: 20 kredytów" },
+    { id: 1, title: "0-7 dni", description: "Wartość: 10 kredytów" },
+    { id: 2, title: "8-30 dni", description: "Wartość: 20 kredytów" },
     { id: 3, title: "31-60 dni", description: "Wartość: 30 kredytów" },
     { id: 4, title: "61-90 dni", description: "Wartość: 40 kredytów" },
 ];

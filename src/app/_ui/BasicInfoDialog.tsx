@@ -39,7 +39,7 @@ export default function BasicInfoDialog({ title, text, open, onClose }: BasicInf
                     </IconButton>
                 </Stack>
             </DialogTitle>
-            <DialogContent sx={{ height: "500px" }}>
+            <DialogContent>
                 <Typography>
                     {text}
                 </Typography>

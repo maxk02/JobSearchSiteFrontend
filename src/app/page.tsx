@@ -6,6 +6,7 @@ import React from "react";
 import MyDefaultPagination from "@/app/_ui/MyDefaultPagination";
 import {GetJobsRequest} from "@/lib/api/jobs/jobsApiInterfaces";
 import {getJobs} from "@/lib/api/jobs/jobsApi";
+import {jobCardData} from "@/lib/seededData/jobCards";
 
 
 export interface TypedJobSearchParams {
@@ -17,7 +18,6 @@ export interface TypedJobSearchParams {
     contractTypeIds: number[];
     employmentOptionIds: number[];
 }
-
 
 export function parseSearchParams(
     searchParams: { [key: string]: string | string[] | undefined }
@@ -62,8 +62,14 @@ async function fetchJobs(params: TypedJobSearchParams) {
     const jobCardsResult = await getJobs(request);
 
     if (!jobCardsResult.success) {
-        console.error(`Failed to fetch jobs (${jobCardsResult.status})`);
-        return { jobCards: [], pagination: { currentPage: 1, pageSize: 15, totalCount: 0, totalPages: 1 } };
+        // console.error(`Failed to fetch jobs (${jobCardsResult.status})`);
+        return {
+            // jobCards: jobCardData.filter(x =>
+            //     x.title.toLowerCase().includes('kasjer') && x.locations.map(x => x.name.toLowerCase()).join(',').includes('kraków')
+            // ),
+            jobCards: jobCardData,
+            pagination: { currentPage: 1, pageSize: 15, totalCount: 0, totalPages: 1 }
+        };
     }
 
     return {

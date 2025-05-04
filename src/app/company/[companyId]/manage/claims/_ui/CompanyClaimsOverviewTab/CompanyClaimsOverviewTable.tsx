@@ -78,6 +78,7 @@ export default function CompanyClaimsOverviewTable(props: CompanyClaimsOverviewT
                                 <TableCell>{row.userEmail}</TableCell>
                                 <TableCell>
                                     { companyClaims.find(c => c.id == row.claimId)?.namePl }
+                                    {' '}({ companyClaims.find(c => c.id == row.claimId)?.id })
                                 </TableCell>
                                 <TableCell sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                     <Button
