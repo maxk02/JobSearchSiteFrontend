@@ -6,7 +6,7 @@ export interface ChangePasswordRequest {
 }
 
 export interface ConfirmEmailRequest {
-    code: string;
+    token: string;
 }
 
 export interface CreateAccountRequest {
@@ -16,10 +16,6 @@ export interface CreateAccountRequest {
 
 export interface CreateAccountResponse {
     id: number;
-}
-
-export interface ExtendSessionResponse {
-    newExpirationTimeUtc: string;
 }
 
 export interface LogInRequest {
@@ -32,13 +28,9 @@ export interface LogInResponseDto {
     accountData: AccountDataDto;
 }
 
-export interface ResetPasswordRequest {
+export interface ResetForgottenPasswordRequest {
     token: string;
     newPassword: string;
-}
-
-export interface SendEmailConfirmationLinkRequest {
-    email: string;
 }
 
 export interface SendPasswordResetLinkRequest {

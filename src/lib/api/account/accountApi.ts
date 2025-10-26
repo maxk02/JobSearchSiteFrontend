@@ -1,12 +1,11 @@
 import {
     ChangePasswordRequest,
     ConfirmEmailRequest,
-    CreateAccountRequest, CreateAccountResponse,
-    ExtendSessionResponse,
+    CreateAccountRequest,
+    CreateAccountResponse,
     LogInRequest,
     LogInResponseDto,
-    ResetPasswordRequest,
-    SendEmailConfirmationLinkRequest,
+    ResetForgottenPasswordRequest,
     SendPasswordResetLinkRequest
 } from "@/lib/api/account/accountApiInterfaces";
 import fetchData from "@/lib/api/fetchData";
@@ -28,10 +27,6 @@ export const deleteAccount = async () => {
     return await fetchData<unknown>("/account", "DELETE");
 };
 
-export const extendSession = async () => {
-    return await fetchData<unknown, ExtendSessionResponse>("/account/extend-session", "POST");
-};
-
 export const logIn = async (req: LogInRequest) => {
     return await fetchData<LogInRequest, LogInResponseDto>("/account/login", "POST", req);
 };
@@ -40,12 +35,12 @@ export const logOut = async () => {
     return await fetchData<unknown>("/account/logout", "POST");
 };
 
-export const resetPassword = async (req: ResetPasswordRequest) => {
-    return await fetchData<ResetPasswordRequest>("/account/password", "PUT", req);
+export const resetForgottenPassword = async (req: ResetForgottenPasswordRequest) => {
+    return await fetchData<ResetForgottenPasswordRequest>("/account/reset-forgotten-password", "POST", req);
 };
 
-export const resendEmailConfirmationCode = async (req: SendEmailConfirmationLinkRequest) => {
-    return await fetchData<unknown>("/account/email-confirmation-code", "POST", req);
+export const resendEmailConfirmationLink = async () => {
+    return await fetchData<unknown>("/account/resend-email-confirmation-link", "POST");
 };
 
 export const sendPasswordResetLink = async (req: SendPasswordResetLinkRequest) => {

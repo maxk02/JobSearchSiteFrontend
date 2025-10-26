@@ -49,7 +49,7 @@ export default function RegisterProfilePage() {
             }
 
             const request: ConfirmEmailRequest = {
-                code: data.code
+                token: data.code
             };
 
             const result = await confirmEmail(request);
