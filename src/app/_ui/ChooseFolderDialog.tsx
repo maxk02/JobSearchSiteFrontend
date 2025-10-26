@@ -23,7 +23,7 @@ import {Close, Folder} from "@mui/icons-material";
 import tabA11yProps from "@/app/_ui/_lib/_components/tab/tabA11yProps";
 import CustomTabPanel from "@/app/_ui/CustomTabPanel";
 import {getItemColor} from "@/lib/functions/listItemColors";
-import {getCompanySharedJobFolderChildren, getCompanySharedJobFolders} from "@/lib/api/companies/companiesApi";
+import {getCompanySharedFolderChildren, getCompanySharedFolders} from "@/lib/api/companies/companiesApi";
 import {CompanyJobFolderListItemDto} from "@/lib/api/companies/companiesApiDtos";
 
 
@@ -46,7 +46,7 @@ export default function ChooseFolderDialog({title, open, companyId, jobFolderCla
 
 
     const fetchSharedFolders = useCallback(async () => {
-        const result = await getCompanySharedJobFolders(companyId);
+        const result = await getCompanySharedFolders(companyId);
 
         if (result.success) {
             setDisplayedFolders(result.data.jobFolders);
@@ -54,7 +54,7 @@ export default function ChooseFolderDialog({title, open, companyId, jobFolderCla
     }, [companyId]);
 
     const fetchChildFolders = useCallback(async (parentFolderId: number) => {
-        const result = await getCompanySharedJobFolderChildren(companyId, parentFolderId);
+        const result = await getCompanySharedFolderChildren(companyId, parentFolderId);
 
         if (result.success) {
             setDisplayedFolders(result.data.jobFolders);

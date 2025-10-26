@@ -15,7 +15,7 @@ import {
 import {ArrowForward, Business, Dashboard, FileOpen, Policy} from "@mui/icons-material";
 import {useParams, usePathname} from "next/navigation";
 import {useEffect} from "react";
-import {getCompanyManagementDto} from "@/lib/api/companies/companiesApi";
+import {getCompanyManagementNavbarDto} from "@/lib/api/companies/companiesApi";
 import {useCurrentCompanyStore} from "@/lib/stores/currentCompanyStore";
 
 
@@ -37,7 +37,7 @@ export default function CompanyManagementSideNavbar() {
     useEffect(() => {
         const fetchCompanyData = async () => {
 
-            const result = await getCompanyManagementDto(companyId);
+            const result = await getCompanyManagementNavbarDto(companyId);
 
             if (result.success) {
                 setCurrentCompanyState(result.data.company);

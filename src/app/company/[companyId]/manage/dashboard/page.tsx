@@ -14,15 +14,15 @@ import DashboardSearchDialog, {
 import ChooseFolderDialog from "@/app/_ui/ChooseFolderDialog";
 import {useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
 import {
-    deleteAllLastJobFolders,
-    deleteAllLastJobs,
-    deleteLastJobFolder,
-    deleteLastJob, searchCompanyJobFolders, searchCompanyJobs,
-    getLastJobFolders,
-    getLastJobs
+    removeCompanyAllLastVisitedFolders,
+    removeCompanyAllLastVisitedJobs,
+    removeCompanyLastVisitedFolder,
+    removeCompanyLastVisitedJob, searchCompanySharedFolders, searchCompanySharedJobs,
+    getCompanyLastVisitedFolders,
+    getCompanyLastVisitedJobs
 } from "@/lib/api/companies/companiesApi";
 import {
-    SearchCompanyJobFoldersRequest,
+    SearchCompanySharedFoldersRequest,
     GetCompanyManagementJobsRequest
 } from "@/lib/api/companies/companiesApiInterfaces";
 
@@ -55,7 +55,7 @@ export default function CompanyDashboard() {
     const [lastFolders, setLastFolders] = useState<LastVisitedCardItem[]>([]);
 
     const fetchLastJobs = useCallback(async () => {
-        const result = await getLastJobs(companyId);
+        const result = await getCompanyLastVisitedJobs(companyId);
 
         if (result.success) {
             const mappedItems = result.data.jobs
@@ -68,7 +68,7 @@ export default function CompanyDashboard() {
     }, [companyId]);
 
     const fetchLastFolders = useCallback(async () => {
-        const result = await getLastJobFolders(companyId);
+        const result = await getCompanyLastVisitedFolders(companyId);
 
         if (result.success) {
             const mappedItems = result.data.jobFolders
@@ -86,7 +86,7 @@ export default function CompanyDashboard() {
     }, [fetchLastFolders, fetchLastJobs]);
 
     const handleDeleteLastJob = async (jobId: number) => {
-        const result = await deleteLastJob(companyId, jobId);
+        const result = await removeCompanyLastVisitedJob(companyId, jobId);
 
         if (result.success) {
             await fetchLastJobs();
@@ -94,7 +94,7 @@ export default function CompanyDashboard() {
     };
 
     const handleDeleteAllJobs = async () => {
-        const result = await deleteAllLastJobs(companyId);
+        const result = await removeCompanyAllLastVisitedJobs(companyId);
 
         if (result.success) {
             setLastJobs(() => []);
@@ -102,7 +102,7 @@ export default function CompanyDashboard() {
     };
 
     const handleDeleteLastFolder = async (folderId: number) => {
-        const result = await deleteLastJobFolder(companyId, folderId);
+        const result = await removeCompanyLastVisitedFolder(companyId, folderId);
 
         if (result.success) {
             await fetchLastFolders();
@@ -110,7 +110,7 @@ export default function CompanyDashboard() {
     };
 
     const handleDeleteAllFolders = async () => {
-        const result = await deleteAllLastJobFolders(companyId);
+        const result = await removeCompanyAllLastVisitedFolders(companyId);
 
         if (result.success) {
             setLastFolders(() => []);
@@ -160,7 +160,7 @@ export default function CompanyDashboard() {
                 query: jobSearchDialogQuery,
             };
 
-            const result = await searchCompanyJobs(companyId, request);
+            const result = await searchCompanySharedJobs(companyId, request);
 
             if (result.success) {
                 const mappedJobs = result.data.jobs
@@ -178,11 +178,11 @@ export default function CompanyDashboard() {
     useEffect(() => {
         
         const fetchFolders = async () => {
-            const request: SearchCompanyJobFoldersRequest = {
+            const request: SearchCompanySharedFoldersRequest = {
                 query: folderSearchDialogQuery,
             };
             
-            const result = await searchCompanyJobFolders(companyId, request);
+            const result = await searchCompanySharedFolders(companyId, request);
 
             if (result.success) {
                 const mappedFolders = result.data.jobFolders

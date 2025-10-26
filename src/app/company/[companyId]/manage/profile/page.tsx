@@ -5,7 +5,7 @@ import React, {useState} from "react";
 import FileUploadArea from "@/app/_ui/FileUploadArea";
 import {Info} from "@mui/icons-material";
 import {FileRejection} from "react-dropzone";
-import {updateCompany, uploadAvatar} from "@/lib/api/companies/companiesApi";
+import {updateCompany} from "@/lib/api/companies/companiesApi";
 import {Controller, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {CompanyFormData, companySchema} from "@/lib/schemas/companySchema";
@@ -74,14 +74,15 @@ export default function CompanySettingsPage() {
         const formData = new FormData();
         formData.append("file", file);
 
-        const response = await uploadAvatar(companyId, formData);
-
-        if (response.success) {
-            setLogoLink(response.data.link);
-        }
-        else {
-            console.log(`Error uploading avatar: ${file.name} (${response.status})`);
-        }
+        // todo upload avatar
+        // const response = await uploadAvatar(companyId, formData);
+        //
+        // if (response.success) {
+        //     setLogoLink(response.data.link);
+        // }
+        // else {
+        //     console.log(`Error uploading avatar: ${file.name} (${response.status})`);
+        // }
     };
 
     return (
