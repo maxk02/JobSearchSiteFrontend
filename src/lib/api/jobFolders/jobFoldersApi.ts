@@ -16,6 +16,10 @@ export const deleteJobFolder = async (id: number) => {
     return await fetchData<unknown>(`/job-folders/${id}`, "DELETE");
 };
 
+// export const getChildFolders = async (id: number) => {
+//     return await fetchData<unknown, GetChildFoldersResponse>(`/job-folders/${id}`, "GET");
+// };
+
 export const getJobFolder = async (id: number) => {
     return await fetchData<unknown, GetJobFolderResponse>(`/job-folders/${id}`, "GET");
 };

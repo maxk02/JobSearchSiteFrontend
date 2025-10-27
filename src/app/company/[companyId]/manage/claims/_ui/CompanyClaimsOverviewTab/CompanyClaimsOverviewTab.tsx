@@ -65,11 +65,9 @@ export default function CompanyClaimsOverviewTab() {
         const fetchData = async () => {
             const request: GetCompanyClaimsOverviewRequest = {
                 companyClaimIds: selectedClaimIds,
-                paginationSpec: {
-                    pageNumber: page,
-                    pageSize: rowsPerPage
-                },
-                userQuery: searchText
+                userQuery: searchText,
+                page: page,
+                size: rowsPerPage,
             };
 
             const result = await getCompanyClaimsOverview(companyId, request);

@@ -7,10 +7,6 @@ export interface AddJobApplicationResponse {
     id: number;
 }
 
-export interface DeleteJobApplicationRequest {
-    id: number;
-}
-
 export interface UpdateJobApplicationStatusRequest {
     statusId: number;
 }
