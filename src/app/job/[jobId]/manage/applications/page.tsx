@@ -8,8 +8,8 @@ import ApplicationFilteringCard from "./_ui/ApplicationFilteringCard";
 import React, {useEffect, useState} from "react";
 import {JobApplicationForManagersDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
 import {useParams, useSearchParams} from "next/navigation";
-import {getApplications} from "@/lib/api/jobs/jobsApi";
-import {GetApplicationsRequest} from "@/lib/api/jobs/jobsApiInterfaces";
+import {getApplicationsForJob} from "@/lib/api/jobs/jobsApi";
+import {GetApplicationsForJobRequest} from "@/lib/api/jobs/jobsApiInterfaces";
 import {JobApplicationSortOption} from "@/lib/api/jobs/jobsApiDtos";
 
 
@@ -44,7 +44,7 @@ export default function AccountApplicationsPage() {
 
     const fetchApplications = async () => {
 
-        const request: GetApplicationsRequest = {
+        const request: GetApplicationsForJobRequest = {
             paginationSpec: {pageSize: 15, pageNumber: parsedPageParam},
             sortOption: sortOption,
             query: searchQuery,
@@ -54,7 +54,7 @@ export default function AccountApplicationsPage() {
         };
 
         const result =
-            await getApplications(parsedJobIdParam, request);
+            await getApplicationsForJob(parsedJobIdParam, request);
 
         if (result.success) {
             setApplications(result.data.jobApplications);

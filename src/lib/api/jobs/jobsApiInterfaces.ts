@@ -65,16 +65,17 @@ export interface UpdateJobRequestDto {
     locationIds: number[] | null;
 }
 
-export interface GetApplicationsRequest {
+export interface GetApplicationsForJobRequest {
     statusIds: number[];
     query: string | null;
     sortOption: JobApplicationSortOption;
     includedTags: string[];
     excludedTags: string[];
-    paginationSpec: PaginationSpec;
+    page: number;
+    size: number;
 }
 
-export interface GetApplicationsResponse {
+export interface GetApplicationsForJobResponse {
     jobApplications: JobApplicationForManagersDto[];
     paginationResponse: PaginationResponse;
 }

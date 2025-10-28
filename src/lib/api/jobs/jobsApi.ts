@@ -2,8 +2,8 @@ import {
     AddJobRequest,
     AddJobResponse,
     DeleteJobRequest,
-    GetApplicationsRequest,
-    GetApplicationsResponse,
+    GetApplicationsForJobRequest,
+    GetApplicationsForJobResponse,
     GetJobManagementDtoResponse,
     GetJobResponse,
     GetJobsRequest,
@@ -17,29 +17,26 @@ export const addJob = async (req: AddJobRequest) => {
     return await fetchData<AddJobRequest, AddJobResponse>("/jobs", "POST", req);
 };
 
-
 export const deleteJob = async (id: number) => {
     return await fetchData<DeleteJobRequest>(`/jobs/${id}`, "DELETE");
 };
 
-
-export const getJobs = async (req: GetJobsRequest) => {
-    return await fetchData<GetJobsRequest, GetJobsResponse>("/jobs", "GET", req);
+export const getApplicationsForJob = async (id: number, req: GetApplicationsForJobRequest) => {
+    return await fetchData<GetApplicationsForJobRequest, GetApplicationsForJobResponse>(`/jobs/${id}/applications`, "GET", req);
 };
-
 
 export const getJob = async (id: number) => {
     return await fetchData<unknown, GetJobResponse>(`/jobs/${id}`, "GET");
 };
 
 export const getJobManagementDto = async (id: number) => {
-    return await fetchData<unknown, GetJobManagementDtoResponse>(`/jobs/${id}?type=management`, "GET");
+    return await fetchData<unknown, GetJobManagementDtoResponse>(`/jobs/${id}/management`, "GET");
+};
+
+export const getJobs = async (req: GetJobsRequest) => {
+    return await fetchData<GetJobsRequest, GetJobsResponse>("/jobs", "GET", req);
 };
 
 export const updateJob = async (id: number, req: UpdateJobRequestDto) => {
     return await fetchData<UpdateJobRequestDto>(`/jobs/${id}`, "PATCH", req);
-};
-
-export const getApplications = async (id: number, req: GetApplicationsRequest) => {
-    return await fetchData<GetApplicationsRequest, GetApplicationsResponse>(`/jobs/${id}/applications`, "GET", req);
 };
