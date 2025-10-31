@@ -17,7 +17,7 @@ import {Delete, Download, Info} from "@mui/icons-material";
 import React, {useState} from "react";
 import FileUploadArea from "@/app/_ui/FileUploadArea";
 import {FileRejection} from "react-dropzone";
-import {deleteFile, getFileDownloadLink, uploadFile} from "@/lib/api/personalFiles/personalFilesApi";
+import {deleteFile, getDownloadLink, uploadFile} from "@/lib/api/personalFiles/personalFilesApi";
 import {PersonalFileInfoDto} from "@/lib/api/personalFiles/personalFIlesApiDtos";
 import downloadFileFromCloud from "@/lib/api/downloadFileFromCloud";
 
@@ -87,7 +87,7 @@ export default function AccountFilesPage() {
     };
 
     const handleFileDownload = async (id: number, fullName: string) => {
-        const result = await getFileDownloadLink(id);
+        const result = await getDownloadLink(id);
 
         if (result.success) {
             downloadFileFromCloud(result.data.link, fullName);

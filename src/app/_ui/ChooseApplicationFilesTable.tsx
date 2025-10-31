@@ -94,15 +94,15 @@ export default function ChooseApplicationFilesTable(props: ChooseApplicationFile
             if (response.success) {
 
                 const id = response.data.id;
-                const dateTimeUploadedUtc = response.data.dateTimeUploadedUtc;
-                const nameWithoutExt = file.name.substring(0, file.name.lastIndexOf('.'));
-                const extension = file.name.substring(file.name.lastIndexOf('.') + 1);
-
-                const newFile: PersonalFileInfoDto = { id: id, name: nameWithoutExt, extension: extension,
-                    size: file.size, dateTimeUploadedUtc: dateTimeUploadedUtc };
-
-                setFiles((prevUploadedFiles) =>
-                    [...prevUploadedFiles, newFile]);
+                // const dateTimeUploadedUtc = response.data.dateTimeUploadedUtc;
+                // const nameWithoutExt = file.name.substring(0, file.name.lastIndexOf('.'));
+                // const extension = file.name.substring(file.name.lastIndexOf('.') + 1);
+                //
+                // const newFile: PersonalFileInfoDto = { id: id, name: nameWithoutExt, extension: extension,
+                //     size: file.size, dateTimeUploadedUtc: dateTimeUploadedUtc };
+                //
+                // setFiles((prevUploadedFiles) =>
+                //     [...prevUploadedFiles, newFile]); todo
             }
             else {
                 console.log(`Error uploading file: ${file.name} (${response.status})`);
