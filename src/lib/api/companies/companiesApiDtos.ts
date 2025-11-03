@@ -25,7 +25,7 @@ export interface CompanyManagementDetailedDto {
 export interface CompanyEmployeeDto {
     id: number;
     email: string;
-    fullName: string | null;
+    fullName: string;
     avatarLink: string | null;
 }
 

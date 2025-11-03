@@ -32,7 +32,7 @@ export const addCompany = async (req: AddCompanyRequest, avatarFile: File | null
 };
 
 export const addCompanyEmployee = async (id: number, req: AddCompanyEmployeeRequest) => {
-    return await fetchData<AddCompanyEmployeeRequest, AddCompanyEmployeeResponse>(`/companies/${id}/management/users`, "POST", req);
+    return await fetchData<AddCompanyEmployeeRequest, AddCompanyEmployeeResponse>(`/companies/${id}/management/employees`, "POST", req);
 };
 
 export const deleteCompany = async (id: number) => {
@@ -44,7 +44,7 @@ export const getCompany = async (id: number) => {
 };
 
 export const getCompanyEmployees = async (id: number, req: GetCompanyEmployeesRequest) => {
-    return await fetchData<GetCompanyEmployeesRequest, GetCompanyEmployeesResponse>(`/companies/${id}/management/users`, "GET", req);
+    return await fetchData<GetCompanyEmployeesRequest, GetCompanyEmployeesResponse>(`/companies/${id}/management/employees`, "GET", req);
 };
 
 export const getCompanyJobs = async (id: number, req: GetCompanyJobsRequest) => {
@@ -88,7 +88,7 @@ export const removeCompanyLastVisitedJob = async (id: number, jobId: number) => 
 };
 
 export const removeCompanyEmployee = async (id: number, userId: number) => {
-    return await fetchData<unknown>(`/companies/${id}/management/users/${userId}`, "DELETE");
+    return await fetchData<unknown>(`/companies/${id}/management/employees/${userId}`, "DELETE");
 };
 
 export const searchCompanySharedFolders = async (id: number, req: SearchCompanySharedFoldersRequest) => {
