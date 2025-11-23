@@ -73,7 +73,7 @@ export default function CompanyClaimsOverviewTab() {
             const result = await getCompanyClaimsOverview(companyId, request);
 
             if (result.success) {
-                setRows(result.data.companyClaimsOverviewDtos);
+                setRows(result.data.companyClaimOverviewDtos);
             }
         };
 

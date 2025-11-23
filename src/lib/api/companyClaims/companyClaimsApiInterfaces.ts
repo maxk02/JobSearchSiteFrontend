@@ -9,10 +9,10 @@ export interface GetCompanyClaimsOverviewRequest {
 }
 
 export interface GetCompanyClaimsOverviewResponse {
-    companyClaimsOverviewDtos: CompanyClaimOverviewDto[];
+    companyClaimOverviewDtos: CompanyClaimOverviewDto[];
     paginationResponse: PaginationResponse;
 }
 
-export interface UpdateCompanyClaimIdsForUserRequestDto {
+export interface UpdateCompanyClaimIdsForUserRequest {
     companyClaimIds: number[];
 }
