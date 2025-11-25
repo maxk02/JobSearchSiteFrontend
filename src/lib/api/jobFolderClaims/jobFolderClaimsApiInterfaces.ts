@@ -1,10 +1,11 @@
-import {PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
+import {PaginationResponse} from "@/lib/api/sharedDtos";
 import {JobFolderClaimsOverviewDto} from "@/lib/api/jobFolderClaims/jobFolderClaimsApiDtos";
 
 export interface GetJobFolderClaimsOverviewRequest {
-    userQuery: string;
-    jobFolderClaimIds: number[];
-    paginationSpec: PaginationSpec;
+    userQuery: string | null;
+    jobFolderClaimIds: number[] | null;
+    page: number;
+    size: number;
 }
 
 export interface GetJobFolderClaimsOverviewResponse {
@@ -12,11 +13,10 @@ export interface GetJobFolderClaimsOverviewResponse {
     paginationResponse: PaginationResponse;
 }
 
-export interface GetJobFolderClaimIdsForUserRequest {
-    userId: number;
-    folderId: number;
+export interface GetJobFolderClaimIdsForUserResponse {
+    jobFolderClaimIds: number[]; //todo
 }
 
-export interface UpdateJobFolderClaimIdsForUserRequestDto {
+export interface UpdateJobFolderClaimIdsForUserRequest {
     jobFolderClaimIds: number[];
 }

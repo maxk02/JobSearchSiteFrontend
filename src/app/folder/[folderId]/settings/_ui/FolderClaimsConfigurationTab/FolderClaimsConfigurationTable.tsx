@@ -17,7 +17,7 @@ import {AddModerator, RemoveModerator} from "@mui/icons-material";
 import React, {useMemo, useState} from "react";
 import {jobFolderClaims} from "@/lib/seededData/jobFolderClaims";
 import {updateJobFolderClaimIdsForUser} from "@/lib/api/jobFolderClaims/jobFolderClaimsApi";
-import {UpdateJobFolderClaimIdsForUserRequestDto} from "@/lib/api/jobFolderClaims/jobFolderClaimsApiInterfaces";
+import {UpdateJobFolderClaimIdsForUserRequest} from "@/lib/api/jobFolderClaims/jobFolderClaimsApiInterfaces";
 import BasicInfoDialog from "@/app/_ui/BasicInfoDialog";
 
 
@@ -121,7 +121,7 @@ export default function FolderClaimsConfigurationTable(props: FolderClaimsConfig
 
         if (!lackingDependencyIds.length) {
 
-            const request: UpdateJobFolderClaimIdsForUserRequestDto = {
+            const request: UpdateJobFolderClaimIdsForUserRequest = {
                 jobFolderClaimIds: [...finalClaimIds]
             };
 

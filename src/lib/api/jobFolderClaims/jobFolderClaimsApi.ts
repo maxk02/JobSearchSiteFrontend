@@ -2,7 +2,7 @@ import fetchData from "@/lib/api/fetchData";
 import {
     GetJobFolderClaimsOverviewRequest,
     GetJobFolderClaimsOverviewResponse,
-    UpdateJobFolderClaimIdsForUserRequestDto
+    UpdateJobFolderClaimIdsForUserRequest
 } from "@/lib/api/jobFolderClaims/jobFolderClaimsApiInterfaces";
 
 
@@ -17,9 +17,9 @@ export const getJobFolderClaimIdsForUser = async (folderId: number, userId: numb
 export const updateJobFolderClaimIdsForUser = async (
     folderId: number,
     userId: number,
-    req: UpdateJobFolderClaimIdsForUserRequestDto
+    req: UpdateJobFolderClaimIdsForUserRequest
 ) => {
-    return await fetchData<UpdateJobFolderClaimIdsForUserRequestDto>(
+    return await fetchData<UpdateJobFolderClaimIdsForUserRequest>(
         `/job-folder-claims/folder/${folderId}/user/${userId}`,
         "PUT",
         req
