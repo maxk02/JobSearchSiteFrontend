@@ -14,7 +14,7 @@ import {
     GetCompanyResponse,
     GetCompanyLastVisitedFoldersResponse,
     GetCompanyLastVisitedJobsResponse,
-    UpdateCompanyRequestDto, GetCompanySharedFoldersResponse, GetCompanySharedFolderChildrenResponse
+    UpdateCompanyRequest, GetCompanySharedFoldersResponse, GetCompanySharedFolderChildrenResponse
 } from "@/lib/api/companies/companiesApiInterfaces";
 
 
@@ -99,6 +99,6 @@ export const searchCompanySharedJobs = async (id: number, req: GetCompanyManagem
     return await fetchData<GetCompanyManagementJobsRequest, GetCompanyManagementJobsResponse>(`/companies/${id}/management/jobs/search`, "GET", {...req});
 };
 
-export const updateCompany = async (id: number, req: UpdateCompanyRequestDto) => {
-    return await fetchData<UpdateCompanyRequestDto>(`/companies/${id}`, "PATCH", req);
+export const updateCompany = async (id: number, req: UpdateCompanyRequest) => {
+    return await fetchData<UpdateCompanyRequest>(`/companies/${id}`, "PATCH", req);
 };

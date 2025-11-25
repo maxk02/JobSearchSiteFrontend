@@ -9,7 +9,7 @@ import {updateCompany} from "@/lib/api/companies/companiesApi";
 import {Controller, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {CompanyFormData, companySchema} from "@/lib/schemas/companySchema";
-import {UpdateCompanyRequestDto} from "@/lib/api/companies/companiesApiInterfaces";
+import {UpdateCompanyRequest} from "@/lib/api/companies/companiesApiInterfaces";
 import {useParams} from "next/navigation";
 import {useCurrentCompanyStore} from "@/lib/stores/currentCompanyStore";
 
@@ -34,7 +34,7 @@ export default function CompanySettingsPage() {
 
     const onSubmit = async (data: CompanyFormData) => {
 
-        const request: UpdateCompanyRequestDto = {
+        const request: UpdateCompanyRequest = {
             name: data.name,
             description: data.description,
         };

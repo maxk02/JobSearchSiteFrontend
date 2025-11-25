@@ -9,6 +9,14 @@ import {PaginationResponse} from "@/lib/api/sharedDtos";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 
 
+export interface AddCompanyEmployeeRequest {
+    email: string; //todo
+}
+
+export interface AddCompanyEmployeeResponse {
+    id: number; //todo
+}
+
 export interface AddCompanyRequest {
     name: string;
     description: string | null;
@@ -17,14 +25,6 @@ export interface AddCompanyRequest {
 }
 
 export interface AddCompanyResponse {
-    id: number;
-}
-
-export interface AddCompanyEmployeeRequest {
-    email: string;
-}
-
-export interface AddCompanyEmployeeResponse {
     id: number;
 }
 
@@ -40,14 +40,6 @@ export interface AddCompanyEmployeeResponse {
 //     paginationResponse: PaginationResponse;
 // }
 
-export interface GetCompanyResponse {
-    company: CompanyDto;
-}
-
-export interface GetCompanyManagementNavbarDtoResponse {
-    company: CompanyManagementDetailedDto;
-}
-
 export interface GetCompanyEmployeesRequest {
     query: string | null;
     page: number;
@@ -60,8 +52,13 @@ export interface GetCompanyEmployeesResponse {
 }
 
 export interface GetCompanyJobsRequest {
+    query: string | null;
     page: number;
     size: number;
+    mustHaveSalaryRecord: boolean;
+    employmentTypeIds: number[] | null;
+    categoryIds: number[] | null;
+    contractTypeIds: number[] | null;
 }
 
 export interface GetCompanyJobsResponse {
@@ -69,19 +66,7 @@ export interface GetCompanyJobsResponse {
     paginationResponse: PaginationResponse;
 }
 
-export interface GetCompanyManagementJobsRequest {
-    query: string;
-}
-
-export interface GetCompanyManagementJobsResponse {
-    jobs: CompanyJobListItemDto[];
-}
-
-export interface GetCompanySharedFoldersResponse {
-    jobFolders: CompanyJobFolderListItemDto[];
-}
-
-export interface GetCompanySharedFolderChildrenResponse {
+export interface GetCompanyLastVisitedFoldersResponse {
     jobFolders: CompanyJobFolderListItemDto[];
 }
 
@@ -89,19 +74,44 @@ export interface GetCompanyLastVisitedJobsResponse {
     jobs: CompanyJobListItemDto[];
 }
 
-export interface GetCompanyLastVisitedFoldersResponse {
-    jobFolders: CompanyJobFolderListItemDto[];
+export interface GetCompanyManagementJobsRequest {
+    query: string; //todo
+}
+
+export interface GetCompanyManagementJobsResponse {
+    jobs: CompanyJobListItemDto[]; //todo
+}
+
+export interface GetCompanyManagementNavbarDtoResponse {
+    company: CompanyManagementDetailedDto;
+}
+
+export interface GetCompanyResponse {
+    company: CompanyDto;
+}
+
+export interface GetCompanySharedFoldersResponse {
+    jobFolders: CompanyJobFolderListItemDto[]; //todo
+}
+
+export interface GetCompanySharedFolderChildrenResponse {
+    jobFolders: CompanyJobFolderListItemDto[]; //todo
 }
 
 export interface SearchCompanySharedFoldersRequest {
-    query: string;
+    query: string; //todo
 }
 
 export interface SearchCompanySharedFoldersResponse {
-    jobFolders: CompanyJobFolderListItemDto[];
+    jobFolders: CompanyJobFolderListItemDto[]; //todo
 }
 
-export interface UpdateCompanyRequestDto {
+export interface UpdateCompanyRequest {
     name: string | null;
     description: string | null;
+    isPublic: boolean | null;
+}
+
+export interface UploadCompanyAvatarResponse {
+    id: number; //todo
 }
