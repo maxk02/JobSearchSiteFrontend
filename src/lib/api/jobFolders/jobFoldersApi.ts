@@ -3,7 +3,7 @@ import {
     AddJobFolderRequest,
     GetFolderJobsResponse,
     GetJobFolderResponse,
-    UpdateJobFolderRequestDto
+    UpdateJobFolderRequest
 } from "@/lib/api/jobFolders/jobFoldersApiInterfaces";
 import {PaginationSpec} from "@/lib/api/sharedDtos";
 
@@ -28,6 +28,6 @@ export const getJobs = async (id: number, paginationSpec: PaginationSpec) => {
     return await fetchData<unknown, GetFolderJobsResponse>(`/job-folders/${id}/jobs`, "GET", paginationSpec);
 };
 
-export const updateJobFolder = async (id: number, req: UpdateJobFolderRequestDto) => {
-    return await fetchData<UpdateJobFolderRequestDto>(`/job-folders/${id}`, "PATCH", req);
+export const updateJobFolder = async (id: number, req: UpdateJobFolderRequest) => {
+    return await fetchData<UpdateJobFolderRequest>(`/job-folders/${id}`, "PATCH", req);
 };

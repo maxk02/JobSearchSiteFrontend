@@ -1,4 +1,4 @@
-import {JobFolderDetailedDto, JobManagementCardDto} from "@/lib/api/jobFolders/jobFoldersApiDtos";
+import {JobFolderDetailedDto, JobFolderMinimalDto, JobManagementCardDto} from "@/lib/api/jobFolders/jobFoldersApiDtos";
 import {PaginationResponse} from "@/lib/api/sharedDtos";
 
 export interface AddJobFolderRequest {
@@ -8,16 +8,20 @@ export interface AddJobFolderRequest {
     description: string | null;
 }
 
+export interface GetChildFoldersResponse {
+    folders: JobFolderMinimalDto[]; //todo
+}
+
 export interface GetFolderJobsResponse {
     jobs: JobManagementCardDto[];
     paginationResponse: PaginationResponse;
 }
 
 export interface GetJobFolderResponse {
-    jobFolder: JobFolderDetailedDto;
+    folder: JobFolderDetailedDto;
 }
 
-export interface UpdateJobFolderRequestDto {
+export interface UpdateJobFolderRequest {
     name: string | null;
     description: string | null;
 }

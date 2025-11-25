@@ -25,7 +25,7 @@ export default function ManageFolderLayout({children}: Readonly<{ children: Reac
             const result = await getJobFolder(parsedFolderId);
             
             if (result.success) {
-                setCurrentJobFolderState(result.data.jobFolder);
+                setCurrentJobFolderState(result.data.folder);
             }
         };
 
