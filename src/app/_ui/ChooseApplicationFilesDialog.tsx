@@ -18,7 +18,7 @@ import {PersonalFileInfoDto} from "@/lib/api/personalFiles/personalFIlesApiDtos"
 import {addJobApplication, updateJobApplicationFiles} from "@/lib/api/jobApplications/jobApplicationsApi";
 import {
     AddJobApplicationRequest,
-    UpdateJobApplicationFilesRequestDto
+    UpdateJobApplicationFilesRequest
 } from "@/lib/api/jobApplications/jobApplicationsApiInterfaces";
 import ChooseApplicationFilesTable from "@/app/_ui/ChooseApplicationFilesTable";
 
@@ -74,7 +74,7 @@ export default function ChooseApplicationFilesDialog(props: ChangeApplicationSta
         const addOrUpdateApplication = async () => {
 
             if (applicationId) {
-                const request: UpdateJobApplicationFilesRequestDto = {
+                const request: UpdateJobApplicationFilesRequest = {
                     personalFileIds: selectedFileIds,
                 };
 

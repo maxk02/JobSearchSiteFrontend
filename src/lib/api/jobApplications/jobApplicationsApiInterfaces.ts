@@ -7,14 +7,14 @@ export interface AddJobApplicationResponse {
     id: number;
 }
 
-export interface UpdateJobApplicationStatusRequest {
-    statusId: number;
+export interface AddJobApplicationTagRequest {
+    name: string;
 }
 
-export interface UpdateJobApplicationFilesRequestDto {
+export interface UpdateJobApplicationFilesRequest {
     personalFileIds: number[];
 }
 
-export interface AddJobApplicationTagRequest {
-    name: string;
+export interface UpdateJobApplicationStatusRequest {
+    statusId: number;
 }
