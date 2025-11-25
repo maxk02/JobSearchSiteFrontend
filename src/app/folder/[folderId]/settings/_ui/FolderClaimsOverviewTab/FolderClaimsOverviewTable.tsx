@@ -13,12 +13,12 @@ import {
 } from "@mui/material";
 import {OpenInNew, Settings} from "@mui/icons-material";
 import React from "react";
-import {JobFolderClaimOverviewDto} from "@/lib/api/jobFolderClaims/jobFolderClaimsApiDtos";
+import {JobFolderClaimsOverviewDto} from "@/lib/api/jobFolderClaims/jobFolderClaimsApiDtos";
 import {jobFolderClaims} from "@/lib/seededData/jobFolderClaims";
 
 
 interface FolderClaimsOverviewTableProps {
-    rows: JobFolderClaimOverviewDto[];
+    rows: JobFolderClaimsOverviewDto[];
     page: number;
     rowsPerPage: number;
     onPageChange: (page: number) => void;
@@ -63,7 +63,7 @@ export default function FolderClaimsOverviewTable(props: FolderClaimsOverviewTab
                     <TableBody>
                         {visibleRows.map((row) => (
                             <TableRow
-                                key={row.userCompanyClaimId}
+                                key={row.userJobFolderClaimId}
                                 hover
                                 sx={{
                                     height: 68.9,

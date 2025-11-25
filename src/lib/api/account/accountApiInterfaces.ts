@@ -23,7 +23,7 @@ export interface LogInRequest {
     password: string;
 }
 
-export interface LogInResponseDto {
+export interface LogInResponse {
     tokenId: string;
     accountData: AccountDataDto;
 }

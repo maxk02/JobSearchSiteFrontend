@@ -20,7 +20,7 @@ import FolderClaimsOverviewTable
 import {useParams} from "next/navigation";
 import {jobFolderClaims} from "@/lib/seededData/jobFolderClaims";
 import {Close, Refresh} from "@mui/icons-material";
-import {JobFolderClaimOverviewDto} from "@/lib/api/jobFolderClaims/jobFolderClaimsApiDtos";
+import {JobFolderClaimsOverviewDto} from "@/lib/api/jobFolderClaims/jobFolderClaimsApiDtos";
 import {GetJobFolderClaimsOverviewRequest} from "@/lib/api/jobFolderClaims/jobFolderClaimsApiInterfaces";
 import {getJobFolderClaimsOverview} from "@/lib/api/jobFolderClaims/jobFolderClaimsApi";
 
@@ -43,7 +43,7 @@ export default function FolderClaimsOverviewTab() {
 
     const [page, setPage] = useState<number>(0);
     const [rowsPerPage, setRowsPerPage] = useState<number>(10);
-    const [rows, setRows] = useState<JobFolderClaimOverviewDto[]>([]);
+    const [rows, setRows] = useState<JobFolderClaimsOverviewDto[]>([]);
 
     const [searchText, setSearchText] = useState<string>("");
     const [selectedClaimIds, setSelectedClaimIds] = useState<number[]>([]);

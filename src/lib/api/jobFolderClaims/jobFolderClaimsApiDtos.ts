@@ -3,8 +3,8 @@ export interface JobFolderClaimSourceFolderDto {
     sourceFolderName: string;
 }
 
-export interface JobFolderClaimOverviewDto {
-    userCompanyClaimId: number;
+export interface JobFolderClaimsOverviewDto {
+    userJobFolderClaimId: number;
     userId: number;
     userFirstName: string;
     userLastName: string;

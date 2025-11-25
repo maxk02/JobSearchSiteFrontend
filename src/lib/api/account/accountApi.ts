@@ -4,7 +4,7 @@ import {
     CreateAccountRequest,
     CreateAccountResponse,
     LogInRequest,
-    LogInResponseDto,
+    LogInResponse,
     ResetForgottenPasswordRequest,
     SendPasswordResetLinkRequest
 } from "@/lib/api/account/accountApiInterfaces";
@@ -28,7 +28,7 @@ export const deleteAccount = async () => {
 };
 
 export const logIn = async (req: LogInRequest) => {
-    return await fetchData<LogInRequest, LogInResponseDto>("/account/login", "POST", req);
+    return await fetchData<LogInRequest, LogInResponse>("/account/login", "POST", req);
 };
 
 export const logOut = async () => {
