@@ -10,7 +10,7 @@ import {
     GetPersonalFilesRequest,
     GetPersonalFilesResponse,
     GetUserProfileResponse,
-    UpdateUserProfileRequestDto,
+    UpdateUserProfileRequest,
     UploadAvatarResponse
 } from "./userProfilesApiInterfaces";
 import {PaginationSpec} from "@/lib/api/sharedDtos";
@@ -81,8 +81,8 @@ export const getUserProfile = async () => {
     return await fetchData<unknown, GetUserProfileResponse>(`/user`, "GET");
 };
 
-export const updateUserProfile = async (req: UpdateUserProfileRequestDto) => {
-    return await fetchData<UpdateUserProfileRequestDto>(`/user`, "PATCH", req);
+export const updateUserProfile = async (req: UpdateUserProfileRequest) => {
+    return await fetchData<UpdateUserProfileRequest>(`/user`, "PATCH", req);
 };
 
 export const uploadAvatar = async (formData: FormData) => {

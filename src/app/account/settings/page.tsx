@@ -20,7 +20,7 @@ import {changePassword, deleteAccount} from "@/lib/api/account/accountApi";
 import {ChangePasswordRequest} from "@/lib/api/account/accountApiInterfaces";
 import {useRouter} from "next/navigation";
 import {getUserProfile, updateUserProfile} from "@/lib/api/userProfiles/userProfilesApi";
-import {UpdateUserProfileRequestDto} from "@/lib/api/userProfiles/userProfilesApiInterfaces";
+import {UpdateUserProfileRequest} from "@/lib/api/userProfiles/userProfilesApiInterfaces";
 import {Info} from "@mui/icons-material";
 
 export default function AccountSettingsPage() {
@@ -93,7 +93,7 @@ export default function AccountSettingsPage() {
 
     const handleToggleApplicationStatusUpdates = async (currentVal: boolean) => {
 
-        const request: UpdateUserProfileRequestDto = {
+        const request: UpdateUserProfileRequest = {
             firstName: null,
             lastName: null,
             phone: null,

@@ -5,7 +5,7 @@ import React, {useEffect, useState} from "react";
 import {Controller, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {UserProfileFormData, userProfileSchema} from "@/lib/schemas/userProfileSchema";
-import {UpdateUserProfileRequestDto} from "@/lib/api/userProfiles/userProfilesApiInterfaces";
+import {UpdateUserProfileRequest} from "@/lib/api/userProfiles/userProfilesApiInterfaces";
 import {getUserProfile, updateUserProfile, uploadAvatar} from "@/lib/api/userProfiles/userProfilesApi";
 import Image from "next/image";
 import {Info} from "@mui/icons-material";
@@ -27,7 +27,7 @@ export default function AccountProfilePage() {
 
     const onSubmit = async (data: UserProfileFormData) => {
 
-        const request: UpdateUserProfileRequestDto = {
+        const request: UpdateUserProfileRequest = {
             firstName: data.firstName,
             lastName: data.lastName,
             phone: data.phone,

@@ -1,9 +1,7 @@
-import {PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
-import {CompanyManagementDetailedDto} from "@/lib/api/companies/companiesApiDtos";
+import {PaginationResponse} from "@/lib/api/sharedDtos";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 import {JobApplicationInUserProfileDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
 import {PersonalFileInfoDto} from "@/lib/api/personalFiles/personalFIlesApiDtos";
-
 
 
 export interface AddUserProfileRequest {
@@ -12,17 +10,22 @@ export interface AddUserProfileRequest {
     phone: string | null;
 }
 
-export interface GetBookmarkedCompaniesRequest {
-    paginationSpec: PaginationSpec;
+export interface AddUserProfileResponse {
+    id: number;
 }
 
-export interface GetBookmarkedCompaniesResponse {
-    companyInfos: CompanyManagementDetailedDto[];
-    paginationResponse: PaginationResponse;
-}
+// export interface GetBookmarkedCompaniesRequest {
+//     paginationSpec: PaginationSpec;
+// }
+//
+// export interface GetBookmarkedCompaniesResponse {
+//     companyInfos: CompanyManagementDetailedDto[];
+//     paginationResponse: PaginationResponse;
+// } //todo check
 
 export interface GetBookmarkedJobsRequest {
-    paginationSpec: PaginationSpec;
+    page: number;
+    size: number;
 }
 
 export interface GetBookmarkedJobsResponse {
@@ -32,7 +35,8 @@ export interface GetBookmarkedJobsResponse {
 
 export interface GetJobApplicationsRequest {
     statusId: number | null;
-    paginationSpec: PaginationSpec;
+    page: number;
+    size: number;
 }
 
 export interface GetJobApplicationsResponse {
@@ -41,7 +45,8 @@ export interface GetJobApplicationsResponse {
 }
 
 export interface GetPersonalFilesRequest {
-    paginationSpec: PaginationSpec;
+    page: number;
+    size: number;
 }
 
 export interface GetPersonalFilesResponse {
@@ -58,13 +63,13 @@ export interface GetUserProfileResponse {
     isReceivingApplicationStatusUpdates: boolean;
 }
 
-export interface UpdateUserProfileRequestDto {
+export interface UpdateUserProfileRequest {
     firstName: string | null;
     lastName: string | null;
     phone: string | null;
-    isReceivingApplicationStatusUpdates: boolean;
+    isReceivingApplicationStatusUpdates: boolean | null;
 }
 
 export interface UploadAvatarResponse {
-    link: string;
+    avatarId: number; //todo check
 }
