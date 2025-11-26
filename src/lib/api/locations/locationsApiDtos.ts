@@ -7,7 +7,7 @@ export interface LocationDto {
     code: string | null;
 }
 
-export interface StringLocationDto {
-    id: number;
-    name: string;
-}
+// export interface StringLocationDto {
+//     id: number;
+//     name: string; //todo remove
+// }

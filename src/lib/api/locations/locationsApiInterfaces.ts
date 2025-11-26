@@ -1,4 +1,4 @@
-import {LocationDto, StringLocationDto} from "@/lib/api/locations/locationsApiDtos";
+import {LocationDto} from "@/lib/api/locations/locationsApiDtos";
 
 
 export interface GetLocationsRequest {
@@ -10,11 +10,11 @@ export interface GetLocationsResponse {
     locations: LocationDto[];
 }
 
-export interface GetStringLocationsRequest {
-    countryId: number;
-    query: string;
-}
-
-export interface GetStringLocationsResponse {
-    locations: StringLocationDto[];
-}
+// export interface GetStringLocationsRequest {
+//     countryId: number;
+//     query: string;
+// }
+//
+// export interface GetStringLocationsResponse {
+//     locations: StringLocationDto[];
+// } //todo remove
