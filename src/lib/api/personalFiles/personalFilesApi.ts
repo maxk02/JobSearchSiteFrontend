@@ -1,5 +1,5 @@
 import fetchData from "@/lib/api/fetchData";
-import {GetDownloadLinkResponse, UpdateFileRequestDto, UploadFileResponse} from "@/lib/api/personalFiles/personalFilesApiInterfaces";
+import {GetDownloadLinkResponse, UpdateFileRequest, UploadFileResponse} from "@/lib/api/personalFiles/personalFilesApiInterfaces";
 
 
 export const deleteFile = async (id: number) => {
@@ -10,8 +10,8 @@ export const getDownloadLink = async (id: number) => {
     return await fetchData<unknown, GetDownloadLinkResponse>(`/personal-files/${id}/download-link`, "GET");
 };
 
-export const updateFile = async (id: number, req: UpdateFileRequestDto) => {
-    return await fetchData<UpdateFileRequestDto>(`/personal-files/${id}`, "PATCH", req);
+export const updateFile = async (id: number, req: UpdateFileRequest) => {
+    return await fetchData<UpdateFileRequest>(`/personal-files/${id}`, "PATCH", req);
 };
 
 export const uploadFile = async (formData: FormData) => {
