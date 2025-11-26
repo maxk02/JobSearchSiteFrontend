@@ -22,21 +22,34 @@ export interface AddJobResponse {
     id: number;
 }
 
-export interface DeleteJobRequest {
-    id: number;
+export interface GetApplicationsForJobRequest {
+    statusIds: number[];
+    query: string | null;
+    sortOption: JobApplicationSortOption;
+    includedTags: string[];
+    excludedTags: string[];
+    page: number;
+    size: number;
 }
 
-export interface GetJobResponse {
-    job: JobDetailedDto;
+export interface GetApplicationsForJobResponse {
+    jobApplications: JobApplicationForManagersDto[];
+    paginationResponse: PaginationResponse;
 }
 
 export interface GetJobManagementDtoResponse {
     job: JobManagementDto;
 }
 
+export interface GetJobResponse {
+    job: JobDetailedDto;
+}
+
 export interface GetJobsRequest {
-    query: string;
-    paginationSpec: PaginationSpec;
+    query: string | null;
+    page: number;
+    size: number;
+    mustHaveSalaryRecord: boolean | null;
     employmentOptionIds: number[] | null;
     locationIds: number[] | null;
     categoryIds: number[] | null;
@@ -48,7 +61,7 @@ export interface GetJobsResponse {
     paginationResponse: PaginationResponse;
 }
 
-export interface UpdateJobRequestDto {
+export interface UpdateJobRequest {
     title: string | null;
     folderId: number | null;
     categoryId: number | null;
@@ -63,19 +76,4 @@ export interface UpdateJobRequestDto {
     employmentOptionIds: number[] | null;
     contractTypeIds: number[] | null;
     locationIds: number[] | null;
-}
-
-export interface GetApplicationsForJobRequest {
-    statusIds: number[];
-    query: string | null;
-    sortOption: JobApplicationSortOption;
-    includedTags: string[];
-    excludedTags: string[];
-    page: number;
-    size: number;
-}
-
-export interface GetApplicationsForJobResponse {
-    jobApplications: JobApplicationForManagersDto[];
-    paginationResponse: PaginationResponse;
 }

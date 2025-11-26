@@ -14,7 +14,7 @@ import {CreateEditJobFormData, createEditJobSchema} from "@/lib/schemas/createEd
 import {updateJob} from "@/lib/api/jobs/jobsApi";
 import {useParams} from "next/navigation";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {UpdateJobRequestDto} from "@/lib/api/jobs/jobsApiInterfaces";
+import {UpdateJobRequest} from "@/lib/api/jobs/jobsApiInterfaces";
 import {useCurrentJobStore} from "@/lib/stores/currentJobStore";
 
 
@@ -65,7 +65,7 @@ export default function EditJobPage() {
             }
         });
 
-        const updateJobRequest: UpdateJobRequestDto = {
+        const updateJobRequest: UpdateJobRequest = {
             folderId: data.jobFolderId,
             categoryId: data.category,
             title: data.title,
