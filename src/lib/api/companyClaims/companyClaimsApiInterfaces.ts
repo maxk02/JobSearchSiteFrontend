@@ -1,6 +1,10 @@
 import {PaginationResponse} from "@/lib/api/sharedDtos";
 import {CompanyClaimOverviewDto} from "@/lib/api/companyClaims/companyClaimsApiDtos";
 
+export interface GetCompanyClaimIdsForUserResponse {
+    claimIds: number[];
+}
+
 export interface GetCompanyClaimsOverviewRequest {
     companyClaimIds: number[] | null;
     userQuery: string | null;
