@@ -1,8 +1,6 @@
 import fetchData from "@/lib/api/fetchData";
 import {
     AddUserProfileRequest,
-    GetBookmarkedCompaniesRequest,
-    GetBookmarkedCompaniesResponse,
     GetBookmarkedJobsRequest,
     GetBookmarkedJobsResponse,
     GetJobApplicationsRequest,
@@ -13,15 +11,14 @@ import {
     UpdateUserProfileRequest,
     UploadAvatarResponse
 } from "./userProfilesApiInterfaces";
-import {PaginationSpec} from "@/lib/api/sharedDtos";
 
 
 export const addCompanyBookmark = async (companyId: number) => {
-    return await fetchData<unknown>(`/user/bookmarks/companies/${companyId}`, "POST");
+    return await fetchData<unknown>(`/users/current/bookmarks/companies/${companyId}`, "POST");
 };
 
 export const addJobBookmark = async (jobId: number) => {
-    return await fetchData<unknown>(`/user/bookmarks/jobs/${jobId}`, "POST");
+    return await fetchData<unknown>(`/users/current/bookmarks/jobs/${jobId}`, "POST");
 };
 
 export const addUserProfile = async (req: AddUserProfileRequest, avatarFile: File | null = null) => {
@@ -35,56 +32,56 @@ export const addUserProfile = async (req: AddUserProfileRequest, avatarFile: Fil
         formData.append("file", avatarFile);
     }
 
-    return await fetchData<FormData>("/user", "POST", formData, {});
+    return await fetchData<FormData>("/users", "POST", formData, {});
 };
 
 export const deleteCompanyBookmark = async (companyId: number) => {
-    return await fetchData<unknown>(`/user/bookmarks/companies/${companyId}`, "DELETE");
+    return await fetchData<unknown>(`/users/current/bookmarks/companies/${companyId}`, "DELETE");
 };
 
 export const deleteJobBookmark = async (jobId: number) => {
-    return await fetchData<unknown>(`/user/bookmarks/jobs/${jobId}`, "DELETE");
+    return await fetchData<unknown>(`/users/current/bookmarks/jobs/${jobId}`, "DELETE");
 };
 
-export const getBookmarkedCompanies = async (paginationSpec: PaginationSpec) => {
-    return await fetchData<GetBookmarkedCompaniesRequest, GetBookmarkedCompaniesResponse>(
-        `/user/bookmarks/companies`,
-        "GET",
-        { paginationSpec: paginationSpec }
-    );
-};
+// export const getBookmarkedCompanies = async (page: number, size: number) => {
+//     return await fetchData<GetBookmarkedCompaniesRequest, GetBookmarkedCompaniesResponse>(
+//         `/users/current/bookmarks/companies`,
+//         "GET",
+//         { page: page, size: size }
+//     );
+// };
 
-export const getBookmarkedJobs = async (paginationSpec: PaginationSpec) => {
+export const getBookmarkedJobs = async (page: number, size: number) => {
     return await fetchData<GetBookmarkedJobsRequest, GetBookmarkedJobsResponse>(
-        `/user/bookmarks/jobs`,
+        `/users/current/bookmarks/jobs`,
         "GET",
-        { paginationSpec: paginationSpec }
+        { page: page, size: size }
     );
 };
 
-export const getJobApplications = async (statusId: number | null, paginationSpec: PaginationSpec) => {
+export const getJobApplications = async (statusId: number | null, page: number, size: number) => {
     return await fetchData<GetJobApplicationsRequest, GetJobApplicationsResponse>(
-        `/user/job-applications`,
+        `/users/current/job-applications`,
         "GET",
-        { statusId: statusId, paginationSpec: paginationSpec }
+        { statusId: statusId, page: page, size: size }
     );
 };
 
 export const getPersonalFiles = async () => {
     return await fetchData<GetPersonalFilesRequest, GetPersonalFilesResponse>(
-        `/user/personal-files`,
+        `/users/current/personal-files`,
         "GET"
     );
 };
 
 export const getUserProfile = async () => {
-    return await fetchData<unknown, GetUserProfileResponse>(`/user`, "GET");
+    return await fetchData<unknown, GetUserProfileResponse>(`/users/current`, "GET");
 };
 
 export const updateUserProfile = async (req: UpdateUserProfileRequest) => {
-    return await fetchData<UpdateUserProfileRequest>(`/user`, "PATCH", req);
+    return await fetchData<UpdateUserProfileRequest>(`/users/current`, "PATCH", req);
 };
 
 export const uploadAvatar = async (formData: FormData) => {
-    return await fetchData<FormData, UploadAvatarResponse>(`/user/avatar`, "PUT", formData, { "Content-Type": "multipart/form-data" });
+    return await fetchData<FormData, UploadAvatarResponse>(`/users/current/avatar`, "PUT", formData, { "Content-Type": "multipart/form-data" });
 };
