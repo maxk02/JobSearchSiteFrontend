@@ -106,6 +106,14 @@ export interface SearchCompanySharedFoldersResponse {
     jobFolders: CompanyJobFolderListItemDto[]; //todo
 }
 
+export interface SearchCompanySharedJobsRequest {
+    query: string; //todo
+}
+
+export interface SearchCompanySharedJobsResponse {
+    jobs: CompanyJobListItemDto[]; //todo
+}
+
 export interface UpdateCompanyRequest {
     name: string | null;
     description: string | null;
