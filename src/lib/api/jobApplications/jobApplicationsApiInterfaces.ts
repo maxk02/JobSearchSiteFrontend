@@ -1,5 +1,6 @@
 export interface AddJobApplicationRequest {
     jobId: number;
+    locationId: number;
     personalFileIds: number[];
 }
 
