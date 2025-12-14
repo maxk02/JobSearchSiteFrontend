@@ -151,7 +151,7 @@ export default function ApplicationInJobManagementCard({ item, onUpdateTriggered
                                 <Typography lineHeight={1}>
                                     Status: {
                                         jobApplicationStatuses
-                                            .find(x => x.id === item.statusId)?.namePl ?? "N/A"
+                                            .find(x => x.id === item.status)?.namePl ?? "N/A"
                                     }
                                 </Typography>
                             </ListItem>

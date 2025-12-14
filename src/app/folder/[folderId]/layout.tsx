@@ -47,7 +47,7 @@ export default function ManageFolderLayout({children}: Readonly<{ children: Reac
                             <JobFolderCompanyNavigationCard
                                 companyId={currentJobFolderState.companyId}
                                 companyName={currentJobFolderState.companyName}
-                                companyLogoLink={currentJobFolderState.companyLogoLink}
+                                companyLogoLink={currentJobFolderState.companyAvatarLink}
                             />
                         }
                         <JobFolderViewsCard />

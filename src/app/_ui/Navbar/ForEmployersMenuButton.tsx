@@ -74,7 +74,7 @@ export default function MyAccountMenuButton() {
             >
                 {currentUser?.companiesManaged?.map((item) => (
                     <MenuItem key={item.id} onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
-                        <Avatar src={item.logoLink ?? ""} variant="rounded" sx={{ height: 35, width: 35, mr: 1.5 }} />
+                        <Avatar src={item.avatarLink ?? ""} variant="rounded" sx={{ height: 35, width: 35, mr: 1.5 }} />
                         {item.name}
                     </MenuItem>
                 ))}

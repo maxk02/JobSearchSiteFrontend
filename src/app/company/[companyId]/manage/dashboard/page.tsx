@@ -60,7 +60,7 @@ export default function CompanyDashboard() {
         if (result.success) {
             const mappedItems = result.data.jobs
                 .map((j): LastVisitedCardItem => (
-                    { id: j.id, title: j.name, subtitle: j.folderName })
+                    { id: j.id, title: j.title, subtitle: j.folderName })
                 );
 
             setLastJobs(mappedItems);
@@ -164,7 +164,7 @@ export default function CompanyDashboard() {
 
             if (result.success) {
                 const mappedJobs = result.data.jobs
-                    .map((j): DashboardSearchDialogItem => ({ id: j.id, title: j.name }));
+                    .map((j): DashboardSearchDialogItem => ({ id: j.id, title: j.title }));
                 setJobSearchResults(mappedJobs);
             }
         };

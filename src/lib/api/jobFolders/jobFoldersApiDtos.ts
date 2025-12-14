@@ -1,37 +1,37 @@
-import {StringLocationDto} from "@/lib/api/locations/locationsApiDtos";
 import {JobSalaryInfoDto} from "@/lib/api/sharedDtos";
+import {LocationDto} from "@/lib/api/locations/locationsApiDtos";
 
 export type JobFolderJobsSortOption = "dateAsc" | "dateDesc";
 
-export interface JobFolderMinimalDto {
-    id: number;
-    name: string;
-    claimIds: number[];
-}
 
 export interface JobFolderDetailedDto {
     id: number;
-    name: string;
+    name: string | null;
     description: string | null;
     rootFolderId: number | null;
     parentFolderId: number | null;
     companyId: number;
     companyName: string;
-    companyLogoLink: string | null;
+    companyAvatarLink: string | null;
     claimIds: number[];
     children: JobFolderMinimalDto[];
 }
 
+export interface JobFolderMinimalDto {
+    id: number;
+    name: string | null;
+    claimIds: number[];
+}
+
 export interface JobManagementCardDto {
     id: number;
-    companyLogoLink: string | null;
-    locations: StringLocationDto[];
+    locations: LocationDto[];
     title: string;
     dateTimePublishedUtc: string;
     dateTimeExpiringUtc: string;
-    salaryInfo: JobSalaryInfoDto | null;
+    salaryInfoDto: JobSalaryInfoDto | null;
     employmentOptionIds: number[] | null;
     contractTypeIds: number[] | null;
+    isBookmarked: boolean;
     isPublic: boolean;
-    timeRangeOptionId: number;
 }

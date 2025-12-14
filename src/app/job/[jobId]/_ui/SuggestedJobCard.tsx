@@ -44,7 +44,7 @@ export default function SuggestedJobCard({ item }: SuggestedJobCardProps) {
         <Paper sx={{ width: "100%", textAlign: "left" }}>
             <Stack direction="row">
                 <Box pt={1.5} pl={1.5} pr={0.8}>
-                    { item.companyLogoLink && <Image src={item.companyLogoLink} width="35" height="35" alt="" /> }
+                    { item.companyAvatarLink && <Image src={item.companyAvatarLink} width="35" height="35" alt="" /> }
                 </Box>
                 <Stack sx={{ pt: 1.5, pl: 0.8, pr: 2, flexGrow: 1 }}>
                     <Typography sx={{ fontWeight: 800, lineHeight: 1, fontSize: "1.15em" }}>
@@ -61,9 +61,9 @@ export default function SuggestedJobCard({ item }: SuggestedJobCardProps) {
                 </Box>
             </Stack>
             <Stack pl={1.5} pt={0.5} pb={2}>
-                {item.salaryInfo &&
+                {item.salaryInfoDto &&
                     <Typography fontWeight="bold" color="textSecondary" lineHeight={1} sx={{ fontWeight: 500, fontSize: "0.9em" }}>
-                        {formatSalaryInfoText(item.salaryInfo)}
+                        {formatSalaryInfoText(item.salaryInfoDto)}
                     </Typography>
                 }
                 <Typography fontWeight="600" lineHeight={1} mt={0.7} sx={{ fontWeight: 500, fontSize: "0.9em" }}>
@@ -72,7 +72,7 @@ export default function SuggestedJobCard({ item }: SuggestedJobCardProps) {
 
                 {item.locations.length === 1 ? (
                     <Typography lineHeight={1} mt={1.3}>
-                        {item.locations[0].name}
+                        {item.locations[0].fullName}
                     </Typography>
                 ) : (
                     <Typography lineHeight={1}>

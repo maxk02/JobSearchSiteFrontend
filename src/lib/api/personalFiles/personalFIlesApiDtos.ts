@@ -3,7 +3,7 @@ export interface PersonalFileInfoDto {
     name: string;
     extension: string;
     size: number;
-    dateTimeUploadedUtc: string;
+    // dateTimeUploadedUtc: string;
 }
 
 export interface PersonalFileTagDto {

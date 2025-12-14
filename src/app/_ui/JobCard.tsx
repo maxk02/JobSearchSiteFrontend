@@ -49,16 +49,16 @@ export default function JobCard({ item }: JobCardProps) {
             <Stack direction="row">
                 <Box py={2.1} pl={3} pr={1}>
                     <Avatar variant="rounded" sx={{ width: 80, height: 80 }}>
-                        {item.companyLogoLink && <Image src={item.companyLogoLink} width="80" height="80" alt="" />}
+                        {item.companyAvatarLink && <Image src={item.companyAvatarLink} width="80" height="80" alt="" />}
                     </Avatar>
                 </Box>
                 <Stack sx={{ p: 2, flexGrow: 1 }}>
                     <Typography variant="h5" sx={{ fontWeight: 800, lineHeight: 1 }}>
                         {item.title}
                     </Typography>
-                    {item.salaryInfo &&
+                    {item.salaryInfoDto &&
                         <Typography fontWeight="bold" color="textSecondary" lineHeight={1} mt={1.3}>
-                            {formatSalaryInfoText(item.salaryInfo)}
+                            {formatSalaryInfoText(item.salaryInfoDto)}
                         </Typography>
                     }
                     <Typography fontWeight="600" lineHeight={1} mt={1.3}>
@@ -67,7 +67,7 @@ export default function JobCard({ item }: JobCardProps) {
 
                     {item.locations.length === 1 ? (
                         <Typography lineHeight={1} mt={1.3}>
-                            {item.locations[0].name}
+                            {item.locations[0].fullName}
                         </Typography>
                     ) : (
                         <>
@@ -82,7 +82,7 @@ export default function JobCard({ item }: JobCardProps) {
                             <Collapse in={isLocationsExpanded}>
                                 {item.locations.map((location) => (
                                     <Typography key={location.id} lineHeight={1} mt={1.3}>
-                                        {location.name}
+                                        {location.fullName}
                                     </Typography>
                                 ))}
                             </Collapse>

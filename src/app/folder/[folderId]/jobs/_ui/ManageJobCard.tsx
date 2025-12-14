@@ -73,14 +73,14 @@ export default function ManageJobCard({ item, onUpdateTriggered }: ManageJobCard
                 <Typography variant="h5" sx={{ fontWeight: 800, lineHeight: 1 }}>
                     {item.title}
                 </Typography>
-                {item.salaryInfo &&
+                {item.salaryInfoDto &&
                     <Typography fontWeight="bold" color="textSecondary" lineHeight={1} mt={1.3}>
-                        {formatSalaryInfoText(item.salaryInfo)}
+                        {formatSalaryInfoText(item.salaryInfoDto)}
                     </Typography>
                 }
                 {item.locations.length === 1 ? (
                     <Typography lineHeight={1} mt={1.3}>
-                        {item.locations[0].name}
+                        {item.locations[0].fullName}
                     </Typography>
                 ) : (
                     <>
@@ -95,7 +95,7 @@ export default function ManageJobCard({ item, onUpdateTriggered }: ManageJobCard
                         <Collapse in={isLocationsExpanded}>
                             {item.locations.map((location) => (
                                 <Typography key={location.id} lineHeight={1} mt={1.3}>
-                                    {location.name}
+                                    {location.fullName}
                                 </Typography>
                             ))}
                         </Collapse>

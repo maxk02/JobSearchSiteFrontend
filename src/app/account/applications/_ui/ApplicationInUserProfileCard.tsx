@@ -71,16 +71,16 @@ export default function ApplicationInUserProfileCard({ item, onDeletionTriggered
                 <Box display="flex" flexDirection="row" width="100%">
                     <Box py={2.1} pl={3} pr={1}>
                         <Avatar variant="rounded" sx={{ width: 80, height: 80 }}>
-                            {item.companyLogoLink && <Image src={item.companyLogoLink} width="80" height="80" alt="" />}
+                            {item.companyAvatarLink && <Image src={item.companyAvatarLink} width="80" height="80" alt="" />}
                         </Avatar>
                     </Box>
                     <Stack sx={{ px: 2, py: 2, flexGrow: 1 }}>
                         <Typography variant="h5" sx={{ fontWeight: 800, lineHeight: 1 }}>
                             {item.jobTitle}
                         </Typography>
-                        {item.salaryInfo &&
+                        {item.jobSalaryInfoDto &&
                             <Typography fontWeight="bold" color="textSecondary" lineHeight={1} mt={1.3}>
-                                {formatSalaryInfoText(item.salaryInfo)}
+                                {formatSalaryInfoText(item.jobSalaryInfoDto)}
                             </Typography>
                         }
                         <Typography fontWeight="600" lineHeight={1} mt={1.3}>
@@ -126,7 +126,7 @@ export default function ApplicationInUserProfileCard({ item, onDeletionTriggered
                                     <PlayArrow sx={{ fontSize: "1rem" }} />
                                 </ListItemIcon>
                                 <Typography lineHeight={1}>
-                                    Status: {jobApplicationStatuses.find(s => s.id === item.statusId)?.namePl}
+                                    Status: {jobApplicationStatuses.find(s => s.id === item.status)?.namePl}
                                 </Typography>
                             </ListItem>
                             <ListItem sx={{ px: 0, pb: 0, pt: 0, height: "32px" }}>
@@ -134,9 +134,9 @@ export default function ApplicationInUserProfileCard({ item, onDeletionTriggered
                                     <PlayArrow sx={{ fontSize: "1rem" }} />
                                 </ListItemIcon>
                                 <Typography lineHeight={1}>Pliki:</Typography>
-                                {item.personalFiles.length > 0 ?
+                                {item.personalFileInfoDtos.length > 0 ?
                                     <Stack direction="row" spacing={1} sx={{ ml: 1 }}>
-                                        {item.personalFiles.map((file) => (
+                                        {item.personalFileInfoDtos.map((file) => (
                                             <Chip key={file.id} label={file.name} variant="filled" />
                                         ))}
                                     </Stack> :

@@ -1,34 +1,34 @@
 import {PersonalFileInfoDto} from "@/lib/api/personalFiles/personalFIlesApiDtos";
-import {StringLocationDto} from "@/lib/api/locations/locationsApiDtos";
-import {JobSalaryInfoDto} from "@/lib/api/sharedDtos";
+import {LocationDto} from "@/lib/api/locations/locationsApiDtos";
+import {JobSalaryInfoDto} from "@/lib/api/jobs/jobsApiDtos";
 
 
 export interface JobApplicationForManagersDto {
     id: number;
     userId: number;
     userFullName: string;
-    avatarLink: string;
+    avatarLink: string | null;
     email: string;
     phone: string | null;
     tags: string[];
     dateTimeAppliedUtc: string;
     personalFiles: PersonalFileInfoDto[];
-    statusId: number;
+    status: number;
 }
 
 export interface JobApplicationInUserProfileDto {
     id: number;
     companyId: number;
     companyName: string;
-    companyLogoLink: string | null;
+    companyAvatarLink: string | null;
     jobId: number;
     jobTitle: string;
     dateTimePublishedUtc: string;
-    salaryInfo: JobSalaryInfoDto | null;
-    locations: StringLocationDto[];
+    jobSalaryInfoDto: JobSalaryInfoDto | null;
+    locationDto: LocationDto;
     employmentOptionIds: number[] | null;
     contractTypeIds: number[] | null;
     dateTimeAppliedUtc: string;
-    personalFiles: PersonalFileInfoDto[];
-    statusId: number;
+    personalFileInfoDtos: PersonalFileInfoDto[];
+    status: number;
 }

@@ -60,7 +60,7 @@ export default function CompanyManagementSideNavbar() {
     return (
         <Paper sx={{ px: 1, py: 0.5, position: "sticky", top: 20, zIndex: 1 }}>
             <Stack sx={{ gap: 0.7, mt: 1.5, pt: 1.5, pb: 0.5, px: 1.8 }}>
-                <Avatar src={currentCompanyState?.logoLink ?? ""} variant="rounded" sx={{ height: 64, width: 64 }} />
+                <Avatar src={currentCompanyState?.avatarLink ?? ""} variant="rounded" sx={{ height: 64, width: 64 }} />
                 <Typography variant="body1" fontWeight={600} gutterBottom marginBottom={0}>
                     {currentCompanyState?.name}
                 </Typography>

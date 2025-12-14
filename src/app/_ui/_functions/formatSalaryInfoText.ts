@@ -1,6 +1,6 @@
 import getCurrencySign from "@/lib/functions/currencySigns";
 import getUnitOfTimeSign from "@/lib/functions/unitOfTimeSigns";
-import {JobSalaryInfoDto} from "@/lib/api/sharedDtos";
+import {JobSalaryInfoDto} from "@/lib/api/jobs/jobsApiDtos";
 
 export default function formatSalaryInfoText(jobSalaryInfoDto: JobSalaryInfoDto): string | null {
 
@@ -19,8 +19,9 @@ export default function formatSalaryInfoText(jobSalaryInfoDto: JobSalaryInfoDto)
         return null;
     }
 
-    if (jobSalaryInfoDto.currency) {
-        result += ` ${getCurrencySign(jobSalaryInfoDto.currency)}`;
+    if (jobSalaryInfoDto.currencyId) {
+        // result += ` ${getCurrencySign(jobSalaryInfoDto.currency)}`; todo
+        result += 'PLN';
     }
     else {
         return null;
@@ -31,7 +32,8 @@ export default function formatSalaryInfoText(jobSalaryInfoDto: JobSalaryInfoDto)
     }
 
     if (jobSalaryInfoDto.unitOfTime) {
-        result += ` / ${getUnitOfTimeSign(jobSalaryInfoDto.unitOfTime)}`;
+        // result += ` / ${getUnitOfTimeSign(jobSalaryInfoDto.unitOfTime)}`; todo
+        result += ' / mies.';
     }
     else {
         return null;

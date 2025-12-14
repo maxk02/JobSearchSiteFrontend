@@ -56,7 +56,7 @@ export default async function JobPage({ params }: { params: { jobId: string } })
         locationIds: job.locations.map(dto => dto.id),
         categoryIds: [job.categoryId],
         contractTypeIds: job.contractTypeIds,
-        employmentOptionIds: job.employmentTypeIds
+        employmentOptionIds: job.employmentOptionIds
     };
 
     const suggestedJobs = await fetchSuggestedJobs(request);

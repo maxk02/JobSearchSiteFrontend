@@ -32,7 +32,7 @@ export default function JobOverviewCard({job} : JobOverviewCardProps) {
             <Stack direction="row">
                 <Box py={2.1} pl={3} pr={1}>
                     <Avatar variant="rounded" sx={{ height: 80, width: 80 }}>
-                        {job.companyLogoLink && <Image src={job.companyLogoLink} width="80" height="80" alt="" />}
+                        {job.companyAvatarLink && <Image src={job.companyAvatarLink} width="80" height="80" alt="" />}
                     </Avatar>
                 </Box>
                 <Stack sx={{ py: 2, px: 1.8, flexGrow: 1, justifyContent: "center" }}>
@@ -89,7 +89,7 @@ export default function JobOverviewCard({job} : JobOverviewCardProps) {
                     </Grid>
                     }
                     {
-                        employmentMobilityOptionIds.filter(id => (job.employmentTypeIds ?? []).includes(id)) &&
+                        employmentMobilityOptionIds.filter(id => (job.employmentOptionIds ?? []).includes(id)) &&
                         <Grid size={{ xs: 12, md: 12, lg: 6 }}>
                             <ListItem sx={{ px: 3, display: "flex", flexDirection: "row", gap: 1.5 }}>
                                 <Avatar variant="rounded" sx={{ height: 45, width: 45,
@@ -108,7 +108,7 @@ export default function JobOverviewCard({job} : JobOverviewCardProps) {
                         </Grid>
                     }
                     {
-                        employmentTimeOptionIds.filter(id => (job.employmentTypeIds ?? []).includes(id)) &&
+                        employmentTimeOptionIds.filter(id => (job.employmentOptionIds ?? []).includes(id)) &&
                         <Grid size={{ xs: 12, md: 12, lg: 6 }}>
                             <ListItem sx={{ px: 3, display: "flex", flexDirection: "row", gap: 1.5 }}>
                                 <Avatar variant="rounded" sx={{ height: 45, width: 45,

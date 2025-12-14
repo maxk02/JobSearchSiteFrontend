@@ -1,5 +1,4 @@
-import {StringLocationDto} from "@/lib/api/locations/locationsApiDtos";
-import {JobSalaryInfoDto} from "@/lib/api/sharedDtos";
+import {LocationDto} from "@/lib/api/locations/locationsApiDtos";
 
 
 export type JobApplicationSortOption = "dateAsc" | "dateDesc";
@@ -7,13 +6,13 @@ export type JobApplicationSortOption = "dateAsc" | "dateDesc";
 export interface JobCardDto {
     id: number;
     companyId: number;
-    companyLogoLink: string | null;
+    companyAvatarLink: string | null;
     companyName: string;
-    locations: StringLocationDto[];
+    locations: LocationDto[];
     title: string;
     dateTimePublishedUtc: string;
     dateTimeExpiringUtc: string;
-    salaryInfo: JobSalaryInfoDto | null;
+    salaryInfoDto: JobSalaryInfoDto | null;
     employmentOptionIds: number[] | null;
     contractTypeIds: number[] | null;
     isBookmarked: boolean;
@@ -22,10 +21,10 @@ export interface JobCardDto {
 export interface JobDetailedDto {
     id: number;
     companyId: number;
-    companyLogoLink: string | null;
+    companyAvatarLink: string | null;
     companyName: string;
     companyDescription: string | null;
-    locations: StringLocationDto[];
+    locations: LocationDto[];
     categoryId: number;
     title: string;
     description: string | null;
@@ -34,8 +33,8 @@ export interface JobDetailedDto {
     responsibilities: string[];
     requirements: string[];
     niceToHaves: string[];
-    salaryInfo: JobSalaryInfoDto | null;
-    employmentTypeIds: number[] | null;
+    salaryInfoDto: JobSalaryInfoDto | null;
+    employmentOptionIds: number[] | null;
     contractTypeIds: number[] | null;
     isBookmarked: boolean;
     applicationId: number | null;
@@ -47,7 +46,7 @@ export interface JobManagementDto {
     companyLogoLink: string | null;
     companyName: string;
     companyDescription: string | null;
-    locations: StringLocationDto[];
+    locations: LocationDto[];
     categoryId: number;
     title: string;
     description: string | null;
@@ -56,14 +55,19 @@ export interface JobManagementDto {
     responsibilities: string[];
     requirements: string[];
     niceToHaves: string[];
-    salaryInfo: JobSalaryInfoDto | null;
-    employmentTypeIds: number[];
+    salaryInfoDto: JobSalaryInfoDto | null;
+    employmentOptionIds: number[];
     contractTypeIds: number[];
-
     folderId: number;
-    folderName: string;
+    folderName: string | null;
     claimIds: number[];
-
     isPublic: boolean;
-    timeRangeOptionId: number;
+}
+
+export interface JobSalaryInfoDto {
+    minimum: number | null;
+    maximum: number | null;
+    currencyId: number;
+    unitOfTime: number;
+    isAfterTaxes: boolean | null;
 }

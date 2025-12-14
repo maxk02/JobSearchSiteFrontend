@@ -1,8 +1,3 @@
-export interface JobFolderClaimSourceFolderDto {
-    sourceFolderId: number;
-    sourceFolderName: string;
-}
-
 export interface JobFolderClaimsOverviewDto {
     userJobFolderClaimId: number;
     userId: number;
@@ -12,4 +7,9 @@ export interface JobFolderClaimsOverviewDto {
     claimId: number;
     isInherited: boolean;
     inheritedFrom: JobFolderClaimSourceFolderDto | null;
+}
+
+export interface JobFolderClaimSourceFolderDto {
+    sourceFolderId: number;
+    sourceFolderName: string | null;
 }
