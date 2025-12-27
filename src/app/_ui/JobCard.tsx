@@ -2,7 +2,7 @@
 
 import {Avatar, Box, Collapse, Divider, IconButton, List, ListItem, Paper, Stack, Typography} from "@mui/material";
 import Image from "next/image";
-import {ExpandLess, ExpandMore, Star, StarBorder} from "@mui/icons-material";
+import {ExpandLess, ExpandMore, LocationPin, Star, StarBorder} from "@mui/icons-material";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 import {jobContractTypes} from "@/lib/seededData/jobContractTypes";
 import {employmentOptions} from "@/lib/seededData/employmentOptions";
@@ -66,9 +66,12 @@ export default function JobCard({ item }: JobCardProps) {
                     </Typography>
 
                     {item.locations.length === 1 ? (
-                        <Typography lineHeight={1} mt={1.3}>
-                            {item.locations[0].fullName}
-                        </Typography>
+                        <Stack direction="row" gap={0.3} sx={{ alignItems: "center", mt: 1.3 }}>
+                            <LocationPin fontSize="small" sx={{ p: 0 }}></LocationPin>
+                            <Typography lineHeight={1}>
+                                {item.locations[0].fullName}
+                            </Typography>
+                        </Stack>
                     ) : (
                         <>
                             <Box sx={{ display: "flex", alignItems: "center", mt: 1.3, cursor: "pointer" }} onClick={toggleLocations}>
@@ -81,34 +84,38 @@ export default function JobCard({ item }: JobCardProps) {
                             </Box>
                             <Collapse in={isLocationsExpanded}>
                                 {item.locations.map((location) => (
-                                    <Typography key={location.id} lineHeight={1} mt={1.3}>
-                                        {location.fullName}
-                                    </Typography>
+                                    <Stack key={location.id} direction="row" gap={0.3} sx={{ alignItems: "center", mt: 1.3 }}>
+                                        <LocationPin fontSize="small" sx={{ p: 0 }}></LocationPin>
+                                        <Typography lineHeight={1}>
+                                            {location.fullName}
+                                        </Typography>
+                                    </Stack>
                                 ))}
                             </Collapse>
                         </>
                     )}
 
                     <List sx={{ m: 0, p: 0, display: "flex", flexDirection: "row" }}>
-                        <ListItem sx={{ m: 0, px: 0, pt: 1.3, pb: 0, width: "auto",
-                            "&::after": { content: '"●"', mx: 0.5, fontSize: "0.7rem", color: "text.secondary" } }}
-                        >
-                            {item.employmentOptionIds?.map((item) => (
-                                <Typography key={item} lineHeight={1} color="textSecondary">
+                        {item.employmentOptionIds?.map((item) => (
+                            <ListItem key={item} sx={{ m: 0, px: 0, pt: 1.3, pb: 0, width: "auto",
+                                "&::after": { content: '"●"', mx: 0.5, fontSize: "0.7rem", color: "text.secondary" } }}
+                            >
+                                <Typography lineHeight={1} color="textSecondary">
                                     {employmentOptions
                                         .filter(eo => eo.id === item)
                                         .map(eo => eo.namePl).join(",")}
                                 </Typography>
-                            ))}
-                        </ListItem>
-                        <ListItem sx={{ m: 0, px: 0, pt: 1.3, pb: 0, width: "auto" }}>
-                            {item.contractTypeIds?.map((item) => (
-                                <Typography key={item} lineHeight={1} color="textSecondary">
-                                    {jobContractTypes
-                                        .filter(jct => jct.id === item)
-                                        .map(jct => jct.namePl).join(",")}
-                                </Typography>
-                            ))}
+                            </ListItem>
+                        ))}
+                        
+                        <ListItem sx={{ m: 0, px: 0, pt: 1.3, pb: 0, width: "auto", }}>
+                            <Typography lineHeight={1} color="textSecondary">
+                                {jobContractTypes
+                                    .filter(jct => item.contractTypeIds?.includes(jct.id))
+                                    .map(jct => jct.namePl)
+                                    .join(", ")
+                                }
+                            </Typography>
                         </ListItem>
                     </List>
                 </Stack>

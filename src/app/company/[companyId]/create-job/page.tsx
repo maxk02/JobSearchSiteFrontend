@@ -13,7 +13,7 @@ import {FormProvider, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {CreateEditJobFormData, createEditJobSchema} from "@/lib/schemas/createEditJobSchema";
 import CreateEditJobListCard from "@/app/_ui/CreateEditJob/CreateEditJobListCard";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import CreateManageJobNavigationCard from "@/app/_ui/CreateEditJob/CreateManageJobNavigationCard";
 import CreateEditJobAnchorCard from "@/app/_ui/CreateEditJob/CreateEditJobAnchorCard";
 import CreateJobButtons from "@/app/company/[companyId]/create-job/_ui/CreateJobButtons";

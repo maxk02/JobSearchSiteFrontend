@@ -21,7 +21,7 @@ export default function formatSalaryInfoText(jobSalaryInfoDto: JobSalaryInfoDto)
 
     if (jobSalaryInfoDto.currencyId) {
         // result += ` ${getCurrencySign(jobSalaryInfoDto.currency)}`; todo
-        result += 'PLN';
+        result += ' zł';
     }
     else {
         return null;

@@ -1,7 +1,7 @@
 "use client";
 
 import {Box, Container} from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import JobFolderCompanyNavigationCard from "@/app/folder/[folderId]/_ui/JobFolderCompanyNavigationCard";
 import JobFolderViewsCard from "@/app/folder/[folderId]/_ui/JobFolderViewsCard";
 import JobFolderActionsCard from "./_ui/JobFolderActionsCard";

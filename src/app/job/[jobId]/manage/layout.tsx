@@ -1,7 +1,7 @@
 "use client";
 
 import {Box, Container} from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import ManageJobViewsCard from "@/app/job/[jobId]/manage/_ui/ManageJobViewsCard";
 import React, {useEffect} from "react";
 import CreateEditJobAnchorCard from "@/app/_ui/CreateEditJob/CreateEditJobAnchorCard";

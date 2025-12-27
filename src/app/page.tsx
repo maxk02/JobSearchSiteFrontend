@@ -1,6 +1,6 @@
 import JobCard from "@/app/_ui/JobCard";
 import JobSearchInputs from "@/app/_ui/JobSearchInputs/JobSearchInputs";
-import {Box, Container, Typography} from "@mui/material";
+import {Box, Container, Stack, Typography} from "@mui/material";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 import React from "react";
 import MyDefaultPagination from "@/app/_ui/MyDefaultPagination";
@@ -49,14 +49,13 @@ export function parseSearchParams(
 async function fetchJobs(params: TypedJobSearchParams) {
     const request: GetJobsRequest = {
         query: params.query,
-        paginationSpec: {
-            pageNumber: params.page,
-            pageSize: 15,
-        },
+        page: params.page,
+        size: 15,
         locationIds: [params.locationId],
         categoryIds: params.categoryIds,
         contractTypeIds: params.contractTypeIds,
-        employmentOptionIds: params.employmentOptionIds
+        employmentOptionIds: params.employmentOptionIds,
+        mustHaveSalaryRecord: false
     };
 
     const jobCardsResult = await getJobs(request);
@@ -89,17 +88,19 @@ export default async function HomePage(props: { searchParams: Promise<{ [key: st
                 <Box width="1000px" margin="auto">
                     <Typography variant="h6" fontWeight="bold">NAJNOWSZE OFERTY PRACY</Typography>
 
-                    <Box display="flex" flexDirection="column" gap={3} mt={2}>
+                    <Box display="flex" flexDirection="column" gap={3} mt={2} width="100%">
                         {jobCards.map((jobCard: JobCardDto) => (
                             <JobCard
                                 key={jobCard.id}
                                 item={jobCard}
                             />
                         ))}
-                        <MyDefaultPagination
-                            totalPages={pagination.totalPages}
-                            currentPage={pagination.currentPage}
-                        />
+                        <Stack direction="row" alignContent="center" justifyItems="center" width="100%">
+                            <MyDefaultPagination
+                                totalPages={pagination.totalPages}
+                                currentPage={pagination.currentPage}
+                            />
+                        </Stack>
                     </Box>
                 </Box>
             </Container>

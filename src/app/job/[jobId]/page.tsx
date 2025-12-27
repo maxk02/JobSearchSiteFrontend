@@ -1,5 +1,5 @@
 import {Container, Stack, Typography} from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import React from "react";
 import JobOverviewCard from "./_ui/JobOverviewCard";
 import JobDescriptionCard from "./_ui/JobDescriptionCard";

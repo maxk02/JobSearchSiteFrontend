@@ -1,6 +1,6 @@
 import {Box, Button, Container, Stack, Typography} from "@mui/material";
 import React from "react";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import {ArrowForward} from "@mui/icons-material";
 import Link from "next/link";
 

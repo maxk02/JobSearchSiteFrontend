@@ -4,7 +4,7 @@ import {Box, Button, Container, MenuItem, TextField} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
 import {jobCategories} from "@/lib/seededData/jobCategories";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import JobSearchSelectOptionsInput from "@/app/_ui/JobSearchInputs/JobSearchSelectOptionsInput";
 import {jobContractTypes} from "@/lib/seededData/jobContractTypes";
 import {employmentOptions} from "@/lib/seededData/employmentOptions";

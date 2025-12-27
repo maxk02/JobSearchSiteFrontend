@@ -3,7 +3,7 @@
 import {Button, Paper, Typography} from "@mui/material";
 import {Add, Folder, Search, Work} from "@mui/icons-material";
 import {useParams, useRouter} from "next/navigation";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import React, {useCallback, useEffect, useState} from "react";
 import DashboardLastVisitedCard, {
     LastVisitedCardItem

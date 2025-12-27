@@ -4,7 +4,7 @@ import {Box, Checkbox, Paper, Table, TableBody, TableCell, TableContainer, Table
 import React, {useState} from "react";
 import {PersonalFileInfoDto} from "@/lib/api/personalFiles/personalFIlesApiDtos";
 import FileUploadArea from "@/app/_ui/FileUploadArea";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import {FileRejection} from "react-dropzone";
 import {uploadFile} from "@/lib/api/personalFiles/personalFilesApi";
 

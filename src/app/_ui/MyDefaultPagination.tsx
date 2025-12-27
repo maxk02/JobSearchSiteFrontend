@@ -50,6 +50,13 @@ export default function MyDefaultPagination({ currentPage, totalPages }: MyDefau
                         color: `${theme.palette.primary.main}`,
                         borderColor: `${theme.palette.primary.main}`,
                     },
+                    "& .MuiPagination-ul": {
+                        width: "80%",
+                        justifyContent: "space-between",
+                    },
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center"
                 }}
                 renderItem={(item) => (
                     <PaginationItem

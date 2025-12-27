@@ -1,7 +1,7 @@
 import {Avatar, Box, Divider, List, ListItem, Paper, Stack, Typography} from "@mui/material";
 import Image from "next/image";
 import {AccessTime, Description, HomeWork, PieChart, PinDrop} from "@mui/icons-material";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import React from "react";
 import {JobDetailedDto} from "@/lib/api/jobs/jobsApiDtos";
 import {jobContractTypes} from "@/lib/seededData/jobContractTypes";
