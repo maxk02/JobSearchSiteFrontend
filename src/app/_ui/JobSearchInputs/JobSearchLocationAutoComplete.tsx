@@ -5,15 +5,15 @@ import {Autocomplete, IconButton, InputAdornment, TextField,} from '@mui/materia
 import {Controller, useFormContext} from 'react-hook-form';
 import {Close} from "@mui/icons-material";
 import {SearchJobFormData} from "@/lib/schemas/searchJobSchema";
-import {getStringLocations} from "@/lib/api/locations/locationsApi";
-import {StringLocationDto} from "@/lib/api/locations/locationsApiDtos";
+import {getLocations} from "@/lib/api/locations/locationsApi";
+import { LocationDto } from '@/lib/api/locations/locationsApiDtos';
 
 
 export default function JobSearchLocationAutoComplete() {
 
     const {control, getValues, formState: {errors}} = useFormContext<SearchJobFormData>();
 
-    const [options, setOptions] = useState<StringLocationDto[]>([]);
+    const [options, setOptions] = useState<LocationDto[]>([]);
     const [loading, setLoading] = useState(false);
     const [inputValue, setInputValue] = useState('');
 
@@ -31,8 +31,8 @@ export default function JobSearchLocationAutoComplete() {
 
             setLoading(true);
 
-            const result = await getStringLocations({
-                countryId: getValues("countryId"), query: query
+            const result = await getLocations({
+                countryId: getValues("countryId"), query: query, size: 5
             });
 
             if (result.success) {
@@ -56,7 +56,8 @@ export default function JobSearchLocationAutoComplete() {
             render={({field}) => (
                 <Autocomplete
                     options={options}
-                    getOptionLabel={(option) => option.name}
+                    filterOptions={(x) => x}
+                    getOptionLabel={(option) => option.fullName}
                     loading={loading}
                     onChange={(_, newValue) => {
                         const newId = newValue?.id || '';

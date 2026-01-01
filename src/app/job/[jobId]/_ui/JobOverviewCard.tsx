@@ -65,7 +65,7 @@ export default function JobOverviewCard({job} : JobOverviewCardProps) {
                             <Stack gap={0.5}>
                                 {/*<Typography lineHeight={1} sx={{ fontSize: "0.95em" }}>ważna jeszcze 10 dni</Typography>*/}
                                 <Typography lineHeight={1} sx={{ fontSize: "0.95em" }}>
-                                    `Ważna do: ${formatPolishDate(job.dateTimeExpiringUtc)}`
+                                    Ważna do: {formatPolishDate(job.dateTimeExpiringUtc)}
                                 </Typography>
                             </Stack>
                         </ListItem>
@@ -82,7 +82,7 @@ export default function JobOverviewCard({job} : JobOverviewCardProps) {
                                         jobContractTypes
                                             .filter(jct => (job.contractTypeIds ?? []).includes(jct.id))
                                             .map(jct => jct.namePl)
-                                            .join(',')
+                                            .join(', ')
                                     }
                                 </Typography>
                         </ListItem>

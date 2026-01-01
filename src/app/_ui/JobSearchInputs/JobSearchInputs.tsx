@@ -110,6 +110,11 @@ export default function JobSearchInputs() {
                                             onChange={(e) => field.onChange(e.target.value)}
                                             error={!!errors.countryId}
                                             helperText={errors.countryId?.message}
+                                            sx={{
+                                                maxHeight: "56px",
+                                                height: "56px",
+                                                "& .MuiOutlinedInput-root": {borderRadius: "0", backgroundColor: "white"}
+                                            }}
                                             SelectProps={{
                                                 sx: {
                                                     textAlign: 'left',

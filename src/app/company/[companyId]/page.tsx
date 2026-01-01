@@ -10,10 +10,13 @@ import {GetCompanyJobsRequest} from "@/lib/api/companies/companiesApiInterfaces"
 
 async function fetchCompanyJobs(id: number, params: TypedCompanySearchParams) {
     const request: GetCompanyJobsRequest = {
-        paginationSpec: {
-            pageNumber: params.page,
-            pageSize: 10,
-        },
+        query: null,
+        page: 1,
+        size: 10,
+        mustHaveSalaryRecord: false,
+        employmentTypeIds: null,
+        categoryIds: null,
+        contractTypeIds: null
     };
 
     const jobCardsResult = await getCompanyJobs(id, request);

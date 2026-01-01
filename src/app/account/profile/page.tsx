@@ -21,6 +21,7 @@ export default function AccountProfilePage() {
         defaultValues: {
             firstName: '',
             lastName: '',
+            phone: ''
         },
         mode: 'onChange'
     });
@@ -72,7 +73,8 @@ export default function AccountProfilePage() {
         const response = await uploadAvatar(formData);
 
         if (response.success) {
-            setAvatarLink(response.data.link);
+            // setAvatarLink(response.data.link); todo
+            console.log(`Avatar uploaded successfully`);
         }
         else {
             console.log(`Error uploading avatar: ${file.name} (${response.status})`);
@@ -86,9 +88,9 @@ export default function AccountProfilePage() {
                 setAvatarLink(result.data.avatarLink);
 
                 reset({
-                    firstName: result.data.firstName,
-                    lastName: result.data.lastName,
-                    phone: result.data.phone,
+                    firstName: result.data.firstName ?? '',
+                    lastName: result.data.lastName ?? '',
+                    phone: result.data.phone ?? '',
                 });
             }
             else {
@@ -97,7 +99,7 @@ export default function AccountProfilePage() {
         }
 
         fetchData();
-    });
+    }, [reset]);
 
     return (
         <>

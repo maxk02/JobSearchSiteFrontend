@@ -70,7 +70,14 @@ export default function RegisterPage() {
                             Zaloguj się
                         </Link>
                     </Stack>
-                    <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
+                    <form
+                        noValidate
+                        onSubmit={handleSubmit(
+                            onSubmit,
+                            (errors) => console.log("FORM ERRORS", errors)
+                        )}
+                        style={{ width: "100%" }}
+                    >
                         <Stack sx={{ mt: 3.5, gap: 2, width: "100%", alignItems: "center" }}>
                             <Controller
                                 name="email"
@@ -80,7 +87,7 @@ export default function RegisterPage() {
                                         {...field}
                                         label="Email"
                                         fullWidth
-                                        required
+                                        // required
                                         error={!!errors.email}
                                         helperText={errors.email?.message}
                                     />
@@ -94,7 +101,8 @@ export default function RegisterPage() {
                                         {...field}
                                         label="Hasło"
                                         fullWidth
-                                        required
+                                        // required
+                                        type="password"
                                         error={!!errors.password}
                                         helperText={errors.password?.message}
                                     />
@@ -108,7 +116,8 @@ export default function RegisterPage() {
                                         {...field}
                                         label="Powtórz hasło"
                                         fullWidth
-                                        required
+                                        // required
+                                        type="password"
                                         error={!!errors.confirmPassword}
                                         helperText={errors.confirmPassword?.message}
                                     />

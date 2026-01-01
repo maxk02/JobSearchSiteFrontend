@@ -30,7 +30,10 @@ async function fetchSuggestedJobs(request: GetJobsRequest) {
     const jobCardsResult = await getJobs(request);
 
     if (!jobCardsResult.success) {
-        console.error(`Failed to fetch jobs (${jobCardsResult.status})`);
+
+        if (jobCardsResult.status !== 404)
+            console.error(`Failed to fetch jobs (${jobCardsResult.status})`);
+        
         return { jobCards: [], pagination: { currentPage: 1, pageSize: 4, totalCount: 0, totalPages: 1 } };
     }
 
@@ -41,7 +44,13 @@ async function fetchSuggestedJobs(request: GetJobsRequest) {
 }
 
 
-export default async function JobPage({ params }: { params: { jobId: string } }) {
+interface JobPageProps {
+    params: Promise<{ jobId: string }>;
+}
+
+export default async function JobPage(props: JobPageProps) {
+
+    const params = await props.params;
 
     const id = parseInt(params.jobId, 10);
 
@@ -49,14 +58,13 @@ export default async function JobPage({ params }: { params: { jobId: string } })
 
     const request: GetJobsRequest = {
         query: job.title,
-        paginationSpec: {
-            pageNumber: 1,
-            pageSize: 4,
-        },
-        locationIds: job.locations.map(dto => dto.id),
-        categoryIds: [job.categoryId],
-        contractTypeIds: job.contractTypeIds,
-        employmentOptionIds: job.employmentOptionIds
+        page: 1,
+        size: 4,
+        locationIds: null, // job.locations.map(dto => dto.id),
+        categoryIds: null, //[job.categoryId],
+        contractTypeIds: null, // job.contractTypeIds,
+        employmentOptionIds: null, // job.employmentOptionIds,
+        mustHaveSalaryRecord: null
     };
 
     const suggestedJobs = await fetchSuggestedJobs(request);
@@ -79,7 +87,12 @@ export default async function JobPage({ params }: { params: { jobId: string } })
                             <JobListCard header="Mile widziane" items={job.niceToHaves} /> }
 
                         { job.companyDescription &&
-                            <JobCompanyDescriptionCard companyName={job.companyName} description={job.companyDescription} /> }
+                            <JobCompanyDescriptionCard
+                                companyName={job.companyName}
+                                description={job.companyDescription}
+                                companyId={job.companyId}
+                            /> 
+                        }
 
                         <JobBottomActionsCard item={job} />
                     </Stack>
