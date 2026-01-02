@@ -2,14 +2,21 @@
 
 import {AppBar, Box, Container, Stack, Toolbar, Typography,} from "@mui/material";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import SiteLogo from "@/app/_ui/SiteLogo";
 import MyAccountMenuButton from "@/app/_ui/Navbar/MyAccountMenuButton";
 import ForEmployersMenuButton from "@/app/_ui/Navbar/ForEmployersMenuButton";
 import {useCurrentUserStore} from "@/lib/stores/currentUserStore";
 
 export default function Navbar() {
-    const { currentUser } = useCurrentUserStore();
+    const { currentUser, fetchCurrentUser } = useCurrentUserStore();
+
+    useEffect(() => {
+        // Explicitly call the action on mount
+        fetchCurrentUser(); 
+    }, []);
+
+    const hasCompanies = currentUser?.companiesManaged && currentUser.companiesManaged.length > 0;
 
     return (
         <AppBar position="static" sx={{ zIndex: 4, backgroundColor: "white", boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.08)" }}>
@@ -26,8 +33,8 @@ export default function Navbar() {
                     </Link>
                     <Stack direction="row" gap={3}>
                         <MyAccountMenuButton />
-                        {currentUser?.companiesManaged.length && <ForEmployersMenuButton />}
-                        {!currentUser?.companiesManaged.length &&
+                        {hasCompanies && <ForEmployersMenuButton />}
+                        {!hasCompanies &&
                             <Box display="flex" flexDirection="column" alignItems="left" justifyContent="center">
                                 <Typography fontWeight={450} lineHeight={1.2} fontSize={15} color="textSecondary">
                                     DLA PRACODAWCÓW

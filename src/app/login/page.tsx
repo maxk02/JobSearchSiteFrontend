@@ -107,7 +107,7 @@ export default function LoginPage() {
                                     />
                                 )}
                             />
-                            <Button
+                            {/* <Button
                                 type="submit"
                                 variant="contained"
                                 color="primary"
@@ -115,7 +115,7 @@ export default function LoginPage() {
                                 size="large"
                             >
                                 Zaloguj się
-                            </Button>
+                            </Button> */}
                         </Stack>
                     </form>
                 </Stack>

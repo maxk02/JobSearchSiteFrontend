@@ -3,6 +3,7 @@ import {
     ConfirmEmailRequest,
     CreateAccountRequest,
     CreateAccountResponse,
+    GetAccountDataResponse,
     LogInRequest,
     LogInResponse,
     ResetForgottenPasswordRequest,
@@ -25,6 +26,10 @@ export const createAccount = async (req: CreateAccountRequest) => {
 
 export const deleteAccount = async () => {
     return await fetchData<unknown>("/account", "DELETE");
+};
+
+export const getAccountData = async () => {
+    return await fetchData<unknown, GetAccountDataResponse>("/account", "GET");
 };
 
 export const logIn = async (req: LogInRequest) => {

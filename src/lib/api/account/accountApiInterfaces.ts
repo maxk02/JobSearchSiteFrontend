@@ -18,6 +18,10 @@ export interface CreateAccountResponse {
     id: number;
 }
 
+export interface GetAccountDataResponse {
+    accountData: AccountDataDto;
+}
+
 export interface LogInRequest {
     email: string;
     password: string;
