@@ -29,13 +29,16 @@ export default function CompanyClaimsOverviewTable(props: CompanyClaimsOverviewT
     const { rows, page, rowsPerPage, onPageChange, onRowsPerPageChange } = props;
 
 
+    // const emptyRows =
+    //     page > 1 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+        page > 1 ? Math.max(0, (page - 1) * rowsPerPage - rows.length) : 0;
 
     const visibleRows = React.useMemo(
         () =>
             [...rows]
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+                .slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage),
         [page, rows, rowsPerPage],
     );
     
@@ -107,7 +110,7 @@ export default function CompanyClaimsOverviewTable(props: CompanyClaimsOverviewT
                 component="div"
                 count={rows.length}
                 rowsPerPage={rowsPerPage}
-                page={page}
+                page={page - 1}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />

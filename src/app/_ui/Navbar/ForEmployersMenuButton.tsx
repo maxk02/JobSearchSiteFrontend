@@ -4,8 +4,11 @@ import {Avatar, Box, Button, Divider, Menu, MenuItem, useTheme} from "@mui/mater
 import {KeyboardArrowDown, KeyboardArrowUp, Work} from "@mui/icons-material";
 import React from "react";
 import {useCurrentUserStore} from "@/lib/stores/currentUserStore";
+import { useRouter } from "next/navigation";
 
 export default function MyAccountMenuButton() {
+
+    const router = useRouter();
 
     const theme = useTheme();
 
@@ -13,11 +16,18 @@ export default function MyAccountMenuButton() {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleGoToCompany = (companyId: number) => {
+        setAnchorEl(null);
+        router.push(`/company/${companyId}/manage/dashboard`);
     };
 
     return(
@@ -73,7 +83,7 @@ export default function MyAccountMenuButton() {
                 }}
             >
                 {currentUser?.companiesManaged?.map((item) => (
-                    <MenuItem key={item.id} onClick={handleClose} sx={{ py: 2, pr: 4, pl: 2 }}>
+                    <MenuItem key={item.id} onClick={() => handleGoToCompany(item.id)} sx={{ py: 2, pr: 4, pl: 2 }}>
                         <Avatar src={item.avatarLink ?? ""} variant="rounded" sx={{ height: 35, width: 35, mr: 1.5 }} />
                         {item.name}
                     </MenuItem>

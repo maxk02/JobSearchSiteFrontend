@@ -24,9 +24,9 @@ export default function CompanySettingsPage() {
 
     const {handleSubmit, control, formState: {errors}} = useForm<CompanyFormData>({
         resolver: zodResolver(companySchema),
-        defaultValues: {
+        values: {
             name: currentCompanyState?.name ?? '',
-            nip: currentCompanyState?.nip ?? '',
+            nip: '1112223334',
             description: currentCompanyState?.description ?? '',
         },
         mode: 'onChange'
@@ -37,6 +37,7 @@ export default function CompanySettingsPage() {
         const request: UpdateCompanyRequest = {
             name: data.name,
             description: data.description,
+            isPublic: true
         };
 
         const result = await updateCompany(companyId, request);
@@ -120,7 +121,7 @@ export default function CompanySettingsPage() {
                              border: "2px dashed lightgray",
                          }}
                     >
-                        <Avatar variant="rounded" src={logoLink ?? "/company2.webp"} sx={{ width: 128, height: 128, m: 0 }} />
+                        <Avatar variant="rounded" src={logoLink ?? currentCompanyState?.avatarLink ?? ''} sx={{ width: 128, height: 128, m: 0 }} />
                         <Typography textAlign="center">Obecne zdjęcie</Typography>
                     </Paper>
                     <Box sx={{ width: 270, height: 250 }}>

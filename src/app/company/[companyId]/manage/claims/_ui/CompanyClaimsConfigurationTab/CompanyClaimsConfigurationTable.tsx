@@ -17,8 +17,8 @@ import {AddModerator, RemoveModerator} from "@mui/icons-material";
 import React, {useMemo, useState} from "react";
 import {companyClaims} from "@/lib/seededData/companyClaims";
 import {updateCompanyClaimIdsForUser} from "@/lib/api/companyClaims/companyClaimsApi";
-import {UpdateCompanyClaimIdsForUserRequestDto} from "@/lib/api/companyClaims/companyClaimsApiInterfaces";
 import BasicInfoDialog from "@/app/_ui/BasicInfoDialog";
+import { UpdateCompanyClaimIdsForUserRequest } from "@/lib/api/companyClaims/companyClaimsApiInterfaces";
 
 
 interface CompanyClaimsConfigurationTableProps {
@@ -53,12 +53,12 @@ export default function UserFolderClaimsConfigurationTable(props: CompanyClaimsC
     const [infoDialogText, setInfoDialogText] = useState<string>("");
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+        page > 0 ? Math.max(0, page * rowsPerPage - rows.length) : 0;
 
     const visibleRows = useMemo(
         () =>
             [...rows]
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+                .slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage),
         [page, rows, rowsPerPage],
     );
 
@@ -121,7 +121,7 @@ export default function UserFolderClaimsConfigurationTable(props: CompanyClaimsC
 
         if (!lackingDependencyIds.length) {
 
-            const request: UpdateCompanyClaimIdsForUserRequestDto = {
+            const request: UpdateCompanyClaimIdsForUserRequest = {
                 companyClaimIds: [...finalClaimIds]
             };
 
@@ -282,7 +282,7 @@ export default function UserFolderClaimsConfigurationTable(props: CompanyClaimsC
                     component="div"
                     count={rows.length}
                     rowsPerPage={rowsPerPage}
-                    page={page}
+                    page={page - 1}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                     labelDisplayedRows={customLabelDisplayedRows}

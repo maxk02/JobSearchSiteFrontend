@@ -80,7 +80,7 @@ export default function ChooseFolderDialog({title, open, companyId, jobFolderCla
 
     const handleChooseFolder = (event: React.SyntheticEvent, folder: CompanyJobFolderListItemDto) => {
         onClose();
-        onSubmit(folder.id, folder.name);
+        onSubmit(folder.id, folder.name ?? ''); //todo
     };
 
     const handleChooseFolderFromExplorerButtonClick = (event: React.SyntheticEvent) => {
@@ -159,7 +159,7 @@ export default function ChooseFolderDialog({title, open, companyId, jobFolderCla
                         onChange={(e) => setSearchQuery(e.target.value)}
                         autoFocus
                     />
-                    <Typography variant="body2" sx={{mt: 1.2}}>Ostatnio odwiedzane</Typography>
+                    {/* <Typography variant="body2" sx={{mt: 1.2}}>Ostatnio odwiedzane</Typography> */}
                     <List disablePadding sx={{mt: 0.8, py: 0, px: 0.3, height: '390px', overflowY: "auto"}}>
                         {displayedFolders.length > 0 ? (
                             displayedFolders.map((item, index) => (

@@ -28,10 +28,10 @@ import {
 
 
 const mockCounters = {
-    jobViewsToday: 15,
-    jobViewsLastWeek: 120,
-    applicationsToday: 3,
-    applicationsLastWeek: 25,
+    jobViewsToday: 12,
+    jobViewsLastWeek: 12,
+    applicationsToday: 53,
+    applicationsLastWeek: 53,
 };
 
 
@@ -60,7 +60,7 @@ export default function CompanyDashboard() {
         if (result.success) {
             const mappedItems = result.data.jobs
                 .map((j): LastVisitedCardItem => (
-                    { id: j.id, title: j.title, subtitle: j.folderName })
+                    { id: j.id, title: j.title, subtitle: j.folderName ?? 'Folder główny' })
                 );
 
             setLastJobs(mappedItems);
@@ -73,7 +73,7 @@ export default function CompanyDashboard() {
         if (result.success) {
             const mappedItems = result.data.jobFolders
                 .map((j): LastVisitedCardItem => (
-                    { id: j.id, title: j.name })
+                    { id: j.id, title: j.name ?? 'Folder główny' })
                 );
 
             setLastFolders(mappedItems);
@@ -186,7 +186,7 @@ export default function CompanyDashboard() {
 
             if (result.success) {
                 const mappedFolders = result.data.jobFolders
-                    .map((jf): DashboardSearchDialogItem => ({ id: jf.id, title: jf.name }));
+                    .map((jf): DashboardSearchDialogItem => ({ id: jf.id, title: jf.name ?? 'Folder główny' }));
                 setFolderSearchResults(mappedFolders);
             }
         };

@@ -33,8 +33,8 @@ export default function CompanyClaimsConfigurationTab() {
     const params = useParams();
     const companyId = parseInt(params.companyId as string, 10);
 
-    const [page, setPage] = useState<number>(0);
-    const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+    const [page, setPage] = useState<number>(1);
+    const [rowsPerPage, setRowsPerPage] = useState<number>(5);
     const [activeCompanyClaimIds, setActiveCompanyClaimIds] = useState<number[]>([]);
 
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
@@ -60,7 +60,7 @@ export default function CompanyClaimsConfigurationTab() {
             const claimIdsResult = await getCompanyClaimIdsForUser(companyId, selectedUserId);
 
             if (claimIdsResult.success) {
-                setActiveCompanyClaimIds(claimIdsResult.data);
+                setActiveCompanyClaimIds(claimIdsResult.data.claimIds);
             }
         };
 
@@ -80,15 +80,17 @@ export default function CompanyClaimsConfigurationTab() {
 
             const request: GetCompanyEmployeesRequest = {
                 query: query,
-                paginationSpec: { pageNumber: 1, pageSize: 5 },
+                page: 1,
+                size: 5
             };
 
             const result = await getCompanyEmployees(companyId, request);
 
             if (result.success) {
-                setFindUserOptions(() => result.data.users ?? []);
+                setFindUserOptions(() => result.data.employees ?? []);
             }
             else {
+                console.error(`couldnt get users, ${result.status}, ${result.error.message}`);
                 setFindUserOptions(() => [
                     {
                         id: 1,
@@ -134,7 +136,7 @@ export default function CompanyClaimsConfigurationTab() {
             const newDisplayedUser: CompanyEmployeeDto = {
                 id: result.data.id,
                 email: email,
-                fullName: null,
+                fullName: '',
                 avatarLink: null,
             };
             setDisplayedUser(newDisplayedUser);
@@ -198,10 +200,11 @@ export default function CompanyClaimsConfigurationTab() {
                                 <ListItem component="li" key={key} {...rest}>
                                     {option.avatarLink ? (
                                         <ListItemAvatar>
-                                            <Avatar
-                                                src={option.avatarLink}
-                                                sx={{ width: 30, height: 30 }}
-                                            />
+                                            <Avatar sx={{ width: 30, height: 30 }}>
+                                                <Image width={30} height={30}
+                                                        src={option.avatarLink} alt="User's avatar image"
+                                                    />
+                                            </Avatar>
                                         </ListItemAvatar>
                                     ) : (
                                         <ListItemAvatar>
@@ -259,7 +262,9 @@ export default function CompanyClaimsConfigurationTab() {
                         </Typography>
                         <Stack direction="row" spacing={1.5} sx={{ alignItems: "center" }}>
                             <Avatar variant="circular" sx={{ height: 60, width: 60 }}>
-                                <Image width={60} height={60} src={displayedUser.avatarLink ?? "/avatar2.webp"} alt="User's avatar" />
+                                {displayedUser.avatarLink &&
+                                    <Image width={60} height={60} src={displayedUser.avatarLink} alt="User's avatar" />
+                                }
                             </Avatar>
                             <Stack>
                                 <Typography variant="body1" fontWeight={600} gutterBottom m={0} sx={{ flex: "none" }}>

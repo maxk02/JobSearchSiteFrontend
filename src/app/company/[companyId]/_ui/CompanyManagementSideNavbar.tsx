@@ -41,12 +41,13 @@ export default function CompanyManagementSideNavbar() {
 
             if (result.success) {
                 setCurrentCompanyState(result.data.company);
+            } else {
+                console.error(`couldn't fetch company: ${result.status}, ${result.error.details}`);
             }
-
         };
 
         fetchCompanyData();
-    });
+    }, []);
 
     const navItems = [
         { text: "Pulpit", icon: <Dashboard />, path: `/company/${companyId}/manage/dashboard`,

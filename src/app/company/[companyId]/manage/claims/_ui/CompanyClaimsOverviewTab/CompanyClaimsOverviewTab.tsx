@@ -41,7 +41,7 @@ export default function CompanyClaimsOverviewTab() {
     const params = useParams();
     const companyId = parseInt(params.companyId as string, 10);
     
-    const [page, setPage] = useState<number>(0);
+    const [page, setPage] = useState<number>(1);
     const [rowsPerPage, setRowsPerPage] = useState<number>(10);
     const [rows, setRows] = useState<CompanyClaimOverviewDto[]>([]);
     
