@@ -91,7 +91,7 @@ export default function LoginPage() {
                                     />
                                 )}
                             />
-                            <Controller
+                            {/* <Controller
                                 name="rememberMe"
                                 control={control}
                                 render={({ field }) => (
@@ -106,8 +106,8 @@ export default function LoginPage() {
                                         label="Zapamiętaj konto"
                                     />
                                 )}
-                            />
-                            {/* <Button
+                            /> */}
+                            <Button
                                 type="submit"
                                 variant="contained"
                                 color="primary"
@@ -115,7 +115,7 @@ export default function LoginPage() {
                                 size="large"
                             >
                                 Zaloguj się
-                            </Button> */}
+                            </Button>
                         </Stack>
                     </form>
                 </Stack>

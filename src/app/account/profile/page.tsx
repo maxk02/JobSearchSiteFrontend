@@ -136,8 +136,8 @@ export default function AccountProfilePage() {
                             border: "2px dashed lightgray",
                         }}
                     >
-                        <Avatar sx={{ width: 128, height: 128, m: 0 }}>
-                            <Image src={avatarLink ?? "/avatar2.webp"} width={128} height={128} alt="User's avatar" />
+                        <Avatar sx={{ height: 128, width: 128, m: 0 }}>
+                            {avatarLink && <Image src={avatarLink} width={128} height={128} alt="User's avatar" />}
                         </Avatar>
                         <Typography textAlign="center">Obecne zdjęcie</Typography>
                     </Paper>

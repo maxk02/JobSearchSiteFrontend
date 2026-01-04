@@ -9,12 +9,7 @@ import ForEmployersMenuButton from "@/app/_ui/Navbar/ForEmployersMenuButton";
 import {useCurrentUserStore} from "@/lib/stores/currentUserStore";
 
 export default function Navbar() {
-    const { currentUser, fetchCurrentUser } = useCurrentUserStore();
-
-    useEffect(() => {
-        // Explicitly call the action on mount
-        fetchCurrentUser(); 
-    }, []);
+    const currentUser = useCurrentUserStore((state) => state.currentUser);
 
     const hasCompanies = currentUser?.companiesManaged && currentUser.companiesManaged.length > 0;
 

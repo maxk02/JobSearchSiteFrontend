@@ -19,7 +19,7 @@ export interface CreateAccountResponse {
 }
 
 export interface GetAccountDataResponse {
-    accountData: AccountDataDto;
+    accountDataDto: AccountDataDto;
 }
 
 export interface LogInRequest {

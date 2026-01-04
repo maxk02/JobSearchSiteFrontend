@@ -6,6 +6,7 @@ import Navbar from "@/app/_ui/Navbar/Navbar";
 import Footer from "@/app/_ui/Footer";
 import {Box, Container} from "@mui/material";
 import {headers} from "next/headers";
+import AuthInitializer from "./_ui/AuthInitializer";
 
 
 export const metadata: Metadata = {
@@ -49,6 +50,7 @@ export default async function RootLayout({children}: Readonly<{ children: React.
     return (
     <html lang="pl">
       <body className={font.variable}>
+        <AuthInitializer />
         <ThemeRegistry>
             <Box display="flex" flexDirection="column" minHeight="100vh" height="100vh" m={0} p={0}>
                 {!hideToolbars && <Navbar />}

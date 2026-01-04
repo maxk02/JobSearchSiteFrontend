@@ -22,7 +22,8 @@ import {logOut} from "@/lib/api/account/accountApi";
 
 export default function MyAccountMenuButton() {
 
-    const { currentUser, clearCurrentUser } = useCurrentUserStore();
+    const currentUser = useCurrentUserStore((state) => state.currentUser);
+    const clearCurrentUser = useCurrentUserStore((state) => state.clearCurrentUser);
 
     const loggedInItems = [
         { text: "Mój profil", icon: <ContactPage />, path: "/account/profile" },

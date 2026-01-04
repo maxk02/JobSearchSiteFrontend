@@ -4,29 +4,26 @@ import { getAccountData } from '../api/account/accountApi';
 
 interface CurrentUserState {
     currentUser: AccountDataDto | null;
+    isLoading: boolean;
     setCurrentUser: (user: AccountDataDto) => void;
-    isInitialized: boolean;
     clearCurrentUser: () => void;
     fetchCurrentUser: () => Promise<void>;
 }
 
 export const useCurrentUserStore = create<CurrentUserState>()((set, get) => ({
         currentUser: null,
+        isLoading: true,
         setCurrentUser: (user) => set({ currentUser: user }),
-        isInitialized: false,
         clearCurrentUser: () => set({ currentUser: null }),
         fetchCurrentUser: async () => {
-            if (get().isInitialized) return; 
-
-            try {
-                const result = await getAccountData();
-                if (result.success) {
-                    set({ currentUser: result.data.accountData });
-                }
-            } catch (e) {
-                console.error(e);
-            } finally {
-                set({ isInitialized: true }); 
+            const result = await getAccountData();
+            if (result.success) {
+                set({ currentUser: result.data.accountDataDto, isLoading: false });
+                console.log(`Loaded user ${get().currentUser?.id}`);
+            }
+            else {
+                set({ currentUser: null, isLoading: false });
+                console.error(`Couldn't load user, error: ${result.error.message}, ${result.error.details}`);
             }
         }
     })
