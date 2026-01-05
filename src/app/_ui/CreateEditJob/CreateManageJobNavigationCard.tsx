@@ -16,19 +16,18 @@ import Image from "next/image";
 
 
 
-interface CreateJobNavigationCardProps {
+interface CreateManageJobNavigationCardProps {
     companyName: string;
     companyLogoLink: string | null;
-    returnTo: "company" | "folder";
     returnToId: number;
 }
 
-export default function CreateManageJobNavigationCard({ returnTo, returnToId, companyName, companyLogoLink }: CreateJobNavigationCardProps) {
+export default function CreateManageJobNavigationCard({ returnTo, returnToId, companyName, companyLogoLink }: CreateManageJobNavigationCardProps) {
 
     const navItems = [
         {
-            text: `Powrót do ${returnTo === "company" ? "firmy" : "folderu"}`,
-            path: (returnTo === "company" ? `/company/${returnToId}/manage/dashboard` : `folder/${returnToId}`),
+            text: "Powrót do firmy",
+            path: `/company/${returnToId}/manage/dashboard`,
             icon: <ArrowBack />
         },
     ];

@@ -66,10 +66,6 @@ export interface GetCompanyJobsResponse {
     paginationResponse: PaginationResponse;
 }
 
-export interface GetCompanyLastVisitedFoldersResponse {
-    jobFolders: CompanyJobFolderListItemDto[];
-}
-
 export interface GetCompanyLastVisitedJobsResponse {
     jobs: CompanyJobListItemDto[];
 }
@@ -88,22 +84,6 @@ export interface GetCompanyManagementNavbarDtoResponse {
 
 export interface GetCompanyResponse {
     company: CompanyDto;
-}
-
-export interface GetCompanySharedFoldersResponse {
-    jobFolders: CompanyJobFolderListItemDto[]; //todo
-}
-
-export interface GetCompanySharedFolderChildrenResponse {
-    jobFolders: CompanyJobFolderListItemDto[]; //todo
-}
-
-export interface SearchCompanySharedFoldersRequest {
-    query: string; //todo
-}
-
-export interface SearchCompanySharedFoldersResponse {
-    jobFolders: CompanyJobFolderListItemDto[]; //todo
 }
 
 export interface SearchCompanySharedJobsRequest {

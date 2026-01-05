@@ -14,16 +14,9 @@ export interface CompanyEmployeeDto {
     avatarLink: string | null;
 }
 
-export interface CompanyJobFolderListItemDto {
-    id: number;
-    name: string | null;
-    claimIds: number[];
-}
-
 export interface CompanyJobListItemDto {
     id: number;
     title: string;
-    folderName: string | null;
 }
 
 export interface CompanyManagementDetailedDto {

@@ -9,12 +9,11 @@ import {
     GetCompanyJobsRequest,
     GetCompanyJobsResponse,
     GetCompanyManagementNavbarDtoResponse,
-    SearchCompanySharedFoldersRequest,
-    SearchCompanySharedFoldersResponse, GetCompanyManagementJobsRequest, GetCompanyManagementJobsResponse,
+    GetCompanyManagementJobsRequest,
+    GetCompanyManagementJobsResponse,
     GetCompanyResponse,
-    GetCompanyLastVisitedFoldersResponse,
     GetCompanyLastVisitedJobsResponse,
-    UpdateCompanyRequest, GetCompanySharedFoldersResponse, GetCompanySharedFolderChildrenResponse
+    UpdateCompanyRequest
 } from "@/lib/api/companies/companiesApiInterfaces";
 
 
@@ -51,32 +50,12 @@ export const getCompanyJobs = async (id: number, req: GetCompanyJobsRequest) => 
     return await fetchData<GetCompanyJobsRequest, GetCompanyJobsResponse>(`/companies/${id}/jobs`, "GET", req);
 };
 
-export const getCompanyLastVisitedFolders = async (id: number) => {
-    return await fetchData<unknown, GetCompanyLastVisitedFoldersResponse>(`/companies/${id}/management/last-visited-folders`, "GET");
-};
-
 export const getCompanyLastVisitedJobs = async (id: number) => {
     return await fetchData<unknown, GetCompanyLastVisitedJobsResponse>(`/companies/${id}/management/last-visited-jobs`, "GET");
 };
 
 export const getCompanyManagementNavbarDto = async (id: number) => {
     return await fetchData<unknown, GetCompanyManagementNavbarDtoResponse>(`/companies/${id}/management`, "GET");
-};
-
-export const getCompanySharedFolders = async (id: number) => {
-    return await fetchData<unknown, GetCompanySharedFoldersResponse>(`/companies/${id}/management/job-folders`, "GET");
-};
-
-export const getCompanySharedFolderChildren = async (id: number, parentFolderId: number) => {
-    return await fetchData<unknown, GetCompanySharedFolderChildrenResponse>(`/companies/${id}/management/job-folders/${parentFolderId}`, "GET");
-};
-
-export const removeCompanyAllLastVisitedFolders = async (id: number) => {
-    return await fetchData<unknown>(`/companies/${id}/management/last-visited-folders`, "DELETE");
-};
-
-export const removeCompanyLastVisitedFolder = async (id: number, folderId: number) => {
-    return await fetchData<unknown>(`/companies/${id}/management/last-visited-folders/${folderId}`, "DELETE");
 };
 
 export const removeCompanyAllLastVisitedJobs = async (id: number) => {
@@ -89,10 +68,6 @@ export const removeCompanyLastVisitedJob = async (id: number, jobId: number) => 
 
 export const removeCompanyEmployee = async (id: number, userId: number) => {
     return await fetchData<unknown>(`/companies/${id}/management/employees/${userId}`, "DELETE");
-};
-
-export const searchCompanySharedFolders = async (id: number, req: SearchCompanySharedFoldersRequest) => {
-    return await fetchData<SearchCompanySharedFoldersRequest, SearchCompanySharedFoldersResponse>(`/companies/${id}/management/job-folders/search`, "GET", {...req});
 };
 
 export const searchCompanySharedJobs = async (id: number, req: GetCompanyManagementJobsRequest) => {
