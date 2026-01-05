@@ -25,7 +25,7 @@ async function fetchJob(id: number) {
     return jobResult.data.job;
 }
 
-async function fetchSuggestedJobs(request: GetJobsRequest) {
+async function fetchSuggestedJobs(request: GetJobsRequest, currentJobId: number) {
 
     const jobCardsResult = await getJobs(request);
 
@@ -34,11 +34,11 @@ async function fetchSuggestedJobs(request: GetJobsRequest) {
         if (jobCardsResult.status !== 404)
             console.error(`Failed to fetch jobs (${jobCardsResult.status})`);
         
-        return { jobCards: [], pagination: { currentPage: 1, pageSize: 4, totalCount: 0, totalPages: 1 } };
+        return { jobCards: [], pagination: { currentPage: 1, pageSize: 5, totalCount: 0, totalPages: 1 } };
     }
 
     return {
-        jobCards: jobCardsResult.data.jobCards,
+        jobCards: jobCardsResult.data.jobCards.filter(jc => jc.id !== currentJobId).slice(0, 5),
         pagination: jobCardsResult.data.paginationResponse,
     };
 }
@@ -59,7 +59,7 @@ export default async function JobPage(props: JobPageProps) {
     const request: GetJobsRequest = {
         query: job.title,
         page: 1,
-        size: 4,
+        size: 5,
         locationIds: null, // job.locations.map(dto => dto.id),
         categoryIds: null, //[job.categoryId],
         contractTypeIds: null, // job.contractTypeIds,
@@ -67,7 +67,7 @@ export default async function JobPage(props: JobPageProps) {
         mustHaveSalaryRecord: null
     };
 
-    const suggestedJobs = await fetchSuggestedJobs(request);
+    const suggestedJobs = await fetchSuggestedJobs(request, id);
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 3 }}>

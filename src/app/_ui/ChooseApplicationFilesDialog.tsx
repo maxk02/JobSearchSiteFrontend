@@ -24,10 +24,10 @@ import ChooseApplicationFilesTable from "@/app/_ui/ChooseApplicationFilesTable";
 
 
 const mockFiles: PersonalFileInfoDto[] = [
-    {id: 1, name: "File 1 owejfiowejfiojeopfjwop", size: 2000000, dateTimeUploadedUtc: "2025-04-19T10:35:24.123Z", extension: "pdf"},
-    {id: 2, name: "File 2", size: 2000000, dateTimeUploadedUtc: "2025-04-19T10:35:24.123Z", extension: "pdf"},
-    {id: 3, name: "File 3", size: 2000000, dateTimeUploadedUtc: "2025-04-19T10:35:24.123Z", extension: "pdf"},
-    {id: 4, name: "File 4", size: 2000000, dateTimeUploadedUtc: "2025-04-19T10:35:24.123Z", extension: "pdf"},
+    {id: 1, name: "File 1 owejfiowejfiojeopfjwop", size: 2000000, extension: "pdf"},
+    {id: 2, name: "File 2", size: 2000000, extension: "pdf"},
+    {id: 3, name: "File 3", size: 2000000, extension: "pdf"},
+    {id: 4, name: "File 4", size: 2000000, extension: "pdf"},
 ];
 
 interface ChangeApplicationStatusDialogDialogProps {
@@ -67,7 +67,7 @@ export default function ChooseApplicationFilesDialog(props: ChangeApplicationSta
         };
 
         fetchFiles();
-    });
+    }, []);
 
     const handleSubmitClick = async () => {
 
@@ -87,7 +87,8 @@ export default function ChooseApplicationFilesDialog(props: ChangeApplicationSta
             else if (setApplicationId) {
                 const request: AddJobApplicationRequest = {
                     jobId: jobId,
-                    personalFileIds: selectedFileIds
+                    personalFileIds: selectedFileIds,
+                    locationId: 0
                 };
 
                 const result = await addJobApplication(request);

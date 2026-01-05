@@ -103,7 +103,7 @@ export default function JobCard({ item }: JobCardProps) {
                                 <Typography lineHeight={1} color="textSecondary">
                                     {employmentOptions
                                         .filter(eo => eo.id === item)
-                                        .map(eo => eo.namePl).join(",")}
+                                        .map(eo => eo.namePl).join(", ")}
                                 </Typography>
                             </ListItem>
                         ))}
