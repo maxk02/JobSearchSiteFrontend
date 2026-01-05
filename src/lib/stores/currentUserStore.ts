@@ -23,7 +23,9 @@ export const useCurrentUserStore = create<CurrentUserState>()((set, get) => ({
             }
             else {
                 set({ currentUser: null, isLoading: false });
-                console.error(`Couldn't load user, error: ${result.error.message}, ${result.error.details}`);
+
+                if (result.status !== 401)
+                    console.error(`Couldn't load user, error: ${result.error.message}, ${result.error.details}`);
             }
         }
     })
