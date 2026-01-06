@@ -8,7 +8,6 @@ import CreateEditJobAnchorCard from "@/app/_ui/CreateEditJob/CreateEditJobAnchor
 import EditJobButtons from "@/app/job/[jobId]/manage/edit/_ui/EditJobButtons";
 import {useParams, usePathname} from "next/navigation";
 import CreateManageJobNavigationCard from "@/app/_ui/CreateEditJob/CreateManageJobNavigationCard";
-import {useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
 import {getJobManagementDto} from "@/lib/api/jobs/jobsApi";
 import {useCurrentJobStore} from "@/lib/stores/currentJobStore";
 
@@ -24,7 +23,6 @@ export default function ManageJobLayout({children}: Readonly<{ children: React.R
     const isActive = () => pathname === `/job/${jobIdParam}/manage/edit`;
 
     const { currentJobState, setCurrentJobState } = useCurrentJobStore();
-    const storeData = useCreateEditJobStateStore();
 
     useEffect(() => {
 
@@ -37,7 +35,7 @@ export default function ManageJobLayout({children}: Readonly<{ children: React.R
         };
 
         fetchManagementDto();
-    });
+    }, []);
 
     return (
         <Container maxWidth="xl" sx={{ mt: 2.5, mb: 2.5 }}>
@@ -53,15 +51,13 @@ export default function ManageJobLayout({children}: Readonly<{ children: React.R
                             <CreateManageJobNavigationCard
                                 companyName={currentJobState.companyName}
                                 companyLogoLink={currentJobState.companyLogoLink}
-                                returnTo={storeData.source}
-                                returnToId={storeData.source === "folder" ? currentJobState.folderId : currentJobState.companyId}
+                                returnToId={currentJobState.companyId}
                             />
                         }
                         <ManageJobViewsCard />
 
                         {isActive() &&
                             <>
-                                {/*<CreateManageJobFolderChosenCard />*/}
                                 <CreateEditJobAnchorCard />
                                 <EditJobButtons />
                             </>

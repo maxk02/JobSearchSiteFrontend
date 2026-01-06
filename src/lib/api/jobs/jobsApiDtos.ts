@@ -58,9 +58,6 @@ export interface JobManagementDto {
     salaryInfoDto: JobSalaryInfoDto | null;
     employmentOptionIds: number[];
     contractTypeIds: number[];
-    folderId: number;
-    folderName: string | null;
-    claimIds: number[];
     isPublic: boolean;
 }
 

@@ -22,7 +22,7 @@ interface CreateManageJobNavigationCardProps {
     returnToId: number;
 }
 
-export default function CreateManageJobNavigationCard({ returnTo, returnToId, companyName, companyLogoLink }: CreateManageJobNavigationCardProps) {
+export default function CreateManageJobNavigationCard({ returnToId, companyName, companyLogoLink }: CreateManageJobNavigationCardProps) {
 
     const navItems = [
         {

@@ -33,11 +33,10 @@ export default function EditJobPage() {
     const methods = useForm<CreateEditJobFormData>({
         resolver: zodResolver(createEditJobSchema),
         defaultValues: {
-            jobFolderId: currentJobState.folderId,
+            companyId: currentJobState.companyId,
             title: currentJobState.title,
             category: currentJobState.categoryId,
             description: currentJobState.description,
-            timeRangeOption: currentJobState.timeRangeOptionId,
             dateTimeExpiringUtc: new Date(currentJobState.dateTimeExpiringUtc),
             isPublic: currentJobState.isPublic,
             employmentOptionIds: currentJobState.employmentOptionIds,
@@ -66,20 +65,18 @@ export default function EditJobPage() {
         });
 
         const updateJobRequest: UpdateJobRequest = {
-            folderId: data.jobFolderId,
             categoryId: data.category,
             title: data.title,
             description: data.description || null,
             isPublic: data.isPublic,
-            timeRangeOptionId: data.timeRangeOption,
             dateTimeExpiringUtc: data.dateTimeExpiringUtc.toISOString(),
             responsibilities: data.responsibilities,
             requirements: data.requirements,
             niceToHaves: data.niceToHaves,
-            salaryInfo: data.salaryInfo ? {
-                minimum: data.salaryInfo.minWage || null,
-                maximum: data.salaryInfo.maxWage || null,
-                currency: 'PLN',
+            salaryInfo: data.salaryInfo !== null ? {
+                minimum: data.salaryInfo.minWage ?? null,
+                maximum: data.salaryInfo.maxWage ?? null,
+                currencyId: 1,
                 unitOfTime: data.salaryInfo.wageTimeUnit,
                 isAfterTaxes: data.salaryInfo.isAfterTaxes,
             } : null,

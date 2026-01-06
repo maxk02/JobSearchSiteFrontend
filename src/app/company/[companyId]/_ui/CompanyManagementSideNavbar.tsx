@@ -12,7 +12,7 @@ import {
     Stack,
     Typography
 } from "@mui/material";
-import {ArrowForward, Business, Dashboard, FileOpen, Policy} from "@mui/icons-material";
+import {ArrowForward, Business, Dashboard, FileOpen, Newspaper, Policy} from "@mui/icons-material";
 import {useParams, usePathname} from "next/navigation";
 import {useEffect} from "react";
 import {getCompanyManagementNavbarDto} from "@/lib/api/companies/companiesApi";
@@ -56,6 +56,8 @@ export default function CompanyManagementSideNavbar() {
             isAccessible: currentCompanyState?.claimIds?.includes(3) },
         { text: "Zarządzanie uprawnieniami", icon: <Policy />, path: `/company/${companyId}/manage/claims`,
             isAccessible: currentCompanyState?.claimIds?.includes(2) },
+        { text: "Zarządzanie ogłoszeniami", icon: <Newspaper />, path: `/company/${companyId}/manage/jobs`,
+            isAccessible: currentCompanyState?.claimIds?.includes(7) },
     ];
 
     return (
@@ -86,18 +88,6 @@ export default function CompanyManagementSideNavbar() {
                         </ListItemButton>
                     </ListItem>
                 ))}
-                <Divider sx={{ mt: 2 }} />
-                <ListItem key="Zarządzaj ofertami pracy" disablePadding sx={{ mt: 0.5 }}>
-                    <ListItemButton sx={{ px: 1.6, py: 1.5 }} href={`/folder/${companyId}/jobs`}>
-                        <ListItemIcon sx={{ minWidth: 36 }}>
-                            <FileOpen />
-                        </ListItemIcon>
-                        <ListItemText primary="Zarządzaj ofertami pracy" />
-                        <ListItemIcon sx={{ minWidth: 24, pl: 3 }}>
-                            <ArrowForward />
-                        </ListItemIcon>
-                    </ListItemButton>
-                </ListItem>
             </List>
         </Paper>
     );

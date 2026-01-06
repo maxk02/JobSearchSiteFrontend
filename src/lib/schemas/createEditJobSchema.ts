@@ -16,12 +16,12 @@ export const listItemsSchema = z.array(
 export const jobSalaryInfoSchema = z.object({
     minWage: z.number().min(1).max(1000000).nullable(),
     maxWage: z.number().min(1).max(1000000).nullable(),
-    wageTimeUnit: z.enum(unitsOfTime),
-    isAfterTaxes: z.boolean(),
+    wageTimeUnit: z.number().min(1).max(7),
+    isAfterTaxes: z.boolean().nullable()
 }).nullable();
 
 export const createEditJobSchema = z.object({
-    jobFolderId: z.number().min(1),
+    companyId: z.number().min(1),
     title: z.string().min(1, 'Nazwa jest wymagana').max(60, 'Zbyt długa nazwa stanowiska'),
     category: z.number().refine(num => jobCategoryIds.includes(num)),
     description: z.string().min(30).max(500).nullable(),

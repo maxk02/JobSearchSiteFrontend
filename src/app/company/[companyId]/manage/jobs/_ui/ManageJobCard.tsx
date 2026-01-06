@@ -12,12 +12,11 @@ import formatSalaryInfoText from "@/app/_ui/_functions/formatSalaryInfoText";
 import {employmentOptions} from "@/lib/seededData/employmentOptions";
 import {jobContractTypes} from "@/lib/seededData/jobContractTypes";
 import {useState} from "react";
-import {useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
 import {useRouter} from "next/navigation";
 import {deleteJob} from "@/lib/api/jobs/jobsApi";
-import {useCurrentJobFolderStore} from "@/lib/stores/currentJobFolderStore";
 import {JobManagementCardDto} from "@/lib/api/jobs/jobsApiDtos";
-
+ 
+//todo!!!
 
 const formatPolishDate = (dateString: string): string => {
     const date = new Date(dateString);
@@ -38,10 +37,6 @@ export default function ManageJobCard({ item, onUpdateTriggered }: ManageJobCard
 
     const router = useRouter();
 
-    const { setCreateEditJobState } = useCreateEditJobStateStore();
-
-    const { currentJobFolderState } = useCurrentJobFolderStore();
-
     const [isLocationsExpanded, setIsLocationsExpanded] = useState(false);
     const [isPublic, setIsPublic] = useState<boolean>(item.isPublic);
 
@@ -50,12 +45,6 @@ export default function ManageJobCard({ item, onUpdateTriggered }: ManageJobCard
     };
 
     const handleGoToJobManagement = (mode: "applications" | "stats" | "edit") => {
-
-        if (!currentJobFolderState) {
-            return;
-        }
-
-        setCreateEditJobState("folder", { id: currentJobFolderState?.id, name: currentJobFolderState?.name });
         router.push(`/job/${item.id}/manage/${mode}`);
     };
 

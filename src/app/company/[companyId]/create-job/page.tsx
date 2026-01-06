@@ -20,7 +20,6 @@ import CreateJobButtons from "@/app/company/[companyId]/create-job/_ui/CreateJob
 import {AddJobRequest} from "@/lib/api/jobs/jobsApiInterfaces";
 import {addJob} from "@/lib/api/jobs/jobsApi";
 import {useParams, useRouter} from "next/navigation";
-import CreateManageJobFolderChosenCard from "@/app/_ui/CreateEditJob/CreateManageJobFolderChosenCard";
 import {getCompany} from "@/lib/api/companies/companiesApi";
 import {useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
 
@@ -36,7 +35,7 @@ export default function CreateJobPage() {
     const storeData = useCreateEditJobStateStore();
 
     const [companyName, setCompanyName] = useState<string | null>(storeData.company?.name ?? null);
-    const [companyLogoLink, setCompanyLogoLink] = useState<string | null>(storeData.company?.logoLink ?? null);
+    const [companyAvatarLink, setCompanyAvatarLink] = useState<string | null>(storeData.company?.avatarLink ?? null);
 
     useEffect(() => {
 
@@ -45,11 +44,11 @@ export default function CreateJobPage() {
 
             if (result.success && result.data.company !== null) {
                 setCompanyName(result.data.company.name);
-                setCompanyLogoLink(result.data.company.logoLink);
+                setCompanyAvatarLink(result.data.company.avatarLink);
             }
         };
 
-        if (companyName === null || companyLogoLink === null) {
+        if (companyName === null || companyAvatarLink === null) {
             fetchCompany();
         }
     });
@@ -57,7 +56,7 @@ export default function CreateJobPage() {
     const methods = useForm<CreateEditJobFormData>({
         resolver: zodResolver(createEditJobSchema),
         defaultValues: {
-            jobFolderId: 0,
+            companyId: companyId,
             title: '',
             category: 1,
             description: '',
@@ -78,7 +77,7 @@ export default function CreateJobPage() {
     const onSubmit = async (data: CreateEditJobFormData) => {
 
         const createJobRequest: AddJobRequest = {
-            jobFolderId: data.jobFolderId,
+            companyId: data.companyId,
             categoryId: data.category,
             title: data.title,
             description: data.description || null,
@@ -124,15 +123,13 @@ export default function CreateJobPage() {
                                      maxHeight: "calc(100vh - 40px)", flex: 1
                                  }}
                             >
-                                {companyName && companyLogoLink &&
+                                {companyName && companyAvatarLink &&
                                     <CreateManageJobNavigationCard
                                         companyName={companyName}
-                                        companyLogoLink={companyLogoLink}
-                                        returnTo={storeData.source}
-                                        returnToId={storeData.folder && storeData.source === "folder" ? storeData.folder.id : companyId}
+                                        companyLogoLink={companyAvatarLink}
+                                        returnToId={companyId}
                                     />
                                 }
-                                <CreateManageJobFolderChosenCard companyId={companyId} />
                                 <CreateEditJobAnchorCard />
                                 <CreateJobButtons />
                             </Box>

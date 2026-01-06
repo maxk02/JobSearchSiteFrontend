@@ -37,7 +37,7 @@ interface RowData {
     text: string;
 }
 
-export default function UserFolderClaimsConfigurationTable(props: CompanyClaimsConfigurationTableProps) {
+export default function CompanyClaimsConfigurationTable(props: CompanyClaimsConfigurationTableProps) {
 
     const { companyId, userId, activeClaimIds, page, rowsPerPage, onPageChange, onRowsPerPageChange } = props;
 

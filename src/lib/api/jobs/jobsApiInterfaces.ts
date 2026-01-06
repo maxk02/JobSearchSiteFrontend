@@ -1,9 +1,8 @@
-import {JobApplicationSortOption, JobCardDto, JobDetailedDto, JobManagementDto} from "@/lib/api/jobs/jobsApiDtos";
-import {JobSalaryInfoDto, PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
+import {JobApplicationSortOption, JobCardDto, JobDetailedDto, JobManagementDto, JobSalaryInfoDto} from "@/lib/api/jobs/jobsApiDtos";
+import {PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
 import {JobApplicationForManagersDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
 
 export interface AddJobRequest {
-    jobFolderId: number;
     categoryId: number;
     title: string;
     description: string | null;
@@ -63,10 +62,8 @@ export interface GetJobsResponse {
 
 export interface UpdateJobRequest {
     title: string | null;
-    folderId: number | null;
     categoryId: number | null;
     description: string | null;
-    timeRangeOptionId: number | null;
     isPublic: boolean | null;
     dateTimeExpiringUtc: string | null;
     responsibilities: string[] | null;

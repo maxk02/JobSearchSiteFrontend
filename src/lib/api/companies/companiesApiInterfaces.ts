@@ -1,7 +1,6 @@
 import {
     CompanyDto,
     CompanyEmployeeDto,
-    CompanyJobFolderListItemDto,
     CompanyJobListItemDto,
     CompanyManagementDetailedDto
 } from "@/lib/api/companies/companiesApiDtos";
