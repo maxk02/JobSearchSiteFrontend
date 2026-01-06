@@ -21,7 +21,6 @@ import {AddJobRequest} from "@/lib/api/jobs/jobsApiInterfaces";
 import {addJob} from "@/lib/api/jobs/jobsApi";
 import {useParams, useRouter} from "next/navigation";
 import {getCompany} from "@/lib/api/companies/companiesApi";
-import {useCreateEditJobStateStore} from "@/lib/stores/createEditJobStore";
 
 
 export default function CreateJobPage() {
@@ -32,10 +31,8 @@ export default function CreateJobPage() {
 
     const companyId = parseInt(params.companyId as string, 10);
 
-    const storeData = useCreateEditJobStateStore();
-
-    const [companyName, setCompanyName] = useState<string | null>(storeData.company?.name ?? null);
-    const [companyAvatarLink, setCompanyAvatarLink] = useState<string | null>(storeData.company?.avatarLink ?? null);
+    const [companyName, setCompanyName] = useState<string | null>(null);
+    const [companyAvatarLink, setCompanyAvatarLink] = useState<string | null>(null);
 
     useEffect(() => {
 
@@ -51,7 +48,7 @@ export default function CreateJobPage() {
         if (companyName === null || companyAvatarLink === null) {
             fetchCompany();
         }
-    });
+    }, [companyId]);
 
     const methods = useForm<CreateEditJobFormData>({
         resolver: zodResolver(createEditJobSchema),
@@ -60,7 +57,6 @@ export default function CreateJobPage() {
             title: '',
             category: 1,
             description: '',
-            timeRangeOption: 1,
             dateTimeExpiringUtc: new Date(),
             isPublic: true,
             employmentOptionIds: [],
@@ -87,10 +83,10 @@ export default function CreateJobPage() {
             requirements: data.requirements ?? [],
             niceToHaves: data.niceToHaves ?? [],
             salaryInfo: data.salaryInfo ? {
-                minimum: data.salaryInfo.minWage || null,
-                maximum: data.salaryInfo.maxWage || null,
-                currency: 'PLN',
-                unitOfTime: data.salaryInfo.wageTimeUnit,
+                minimum: data.salaryInfo.minWage ?? null,
+                maximum: data.salaryInfo.maxWage ?? null,
+                currencyId: 1,
+                unitOfTime: 1,
                 isAfterTaxes: data.salaryInfo.isAfterTaxes,
             } : null,
             employmentOptionIds: data.employmentOptionIds,

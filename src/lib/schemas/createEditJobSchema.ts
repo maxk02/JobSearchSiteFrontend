@@ -25,7 +25,6 @@ export const createEditJobSchema = z.object({
     title: z.string().min(1, 'Nazwa jest wymagana').max(60, 'Zbyt długa nazwa stanowiska'),
     category: z.number().refine(num => jobCategoryIds.includes(num)),
     description: z.string().min(30).max(500).nullable(),
-    timeRangeOption: z.number().min(1).max(4),
     dateTimeExpiringUtc: z.date().min(new Date()),
     isPublic: z.boolean(),
     employmentOptionIds: z.array(z.number())

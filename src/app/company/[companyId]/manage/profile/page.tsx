@@ -20,7 +20,7 @@ export default function CompanySettingsPage() {
     const params = useParams();
     const companyId = parseInt(params.companyId as string, 10);
 
-    const { currentCompanyState } = useCurrentCompanyStore();
+    const { currentCompany: currentCompanyState } = useCurrentCompanyStore();
 
     const {handleSubmit, control, formState: {errors}} = useForm<CompanyFormData>({
         resolver: zodResolver(companySchema),

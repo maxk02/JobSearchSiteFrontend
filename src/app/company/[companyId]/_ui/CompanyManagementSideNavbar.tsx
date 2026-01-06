@@ -32,7 +32,7 @@ export default function CompanyManagementSideNavbar() {
 
     const currentPath = usePathname();
 
-    const { currentCompanyState, setCurrentCompanyState } = useCurrentCompanyStore();
+    const { currentCompany, setCurrentCompany } = useCurrentCompanyStore();
 
     useEffect(() => {
         const fetchCompanyData = async () => {
@@ -40,32 +40,32 @@ export default function CompanyManagementSideNavbar() {
             const result = await getCompanyManagementNavbarDto(companyId);
 
             if (result.success) {
-                setCurrentCompanyState(result.data.company);
+                setCurrentCompany(result.data.company);
             } else {
                 console.error(`couldn't fetch company: ${result.status}, ${result.error.details}`);
             }
         };
 
         fetchCompanyData();
-    }, []);
+    }, [companyId]);
 
     const navItems = [
         { text: "Pulpit", icon: <Dashboard />, path: `/company/${companyId}/manage/dashboard`,
             isAccessible: true },
         { text: "Profil i ustawienia", icon: <Business />, path: `/company/${companyId}/manage/profile`,
-            isAccessible: currentCompanyState?.claimIds?.includes(3) },
+            isAccessible: currentCompany?.claimIds?.includes(3) },
         { text: "Zarządzanie uprawnieniami", icon: <Policy />, path: `/company/${companyId}/manage/claims`,
-            isAccessible: currentCompanyState?.claimIds?.includes(2) },
+            isAccessible: currentCompany?.claimIds?.includes(2) },
         { text: "Zarządzanie ogłoszeniami", icon: <Newspaper />, path: `/company/${companyId}/manage/jobs`,
-            isAccessible: currentCompanyState?.claimIds?.includes(7) },
+            isAccessible: currentCompany?.claimIds?.includes(7) },
     ];
 
     return (
         <Paper sx={{ px: 1, py: 0.5, position: "sticky", top: 20, zIndex: 1 }}>
             <Stack sx={{ gap: 0.7, mt: 1.5, pt: 1.5, pb: 0.5, px: 1.8 }}>
-                <Avatar src={currentCompanyState?.avatarLink ?? ""} variant="rounded" sx={{ height: 64, width: 64 }} />
+                <Avatar src={currentCompany?.avatarLink ?? ""} variant="rounded" sx={{ height: 64, width: 64 }} />
                 <Typography variant="body1" fontWeight={600} gutterBottom marginBottom={0}>
-                    {currentCompanyState?.name}
+                    {currentCompany?.name}
                 </Typography>
             </Stack>
             <List>

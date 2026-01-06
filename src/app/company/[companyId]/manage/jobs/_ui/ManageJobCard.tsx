@@ -15,8 +15,8 @@ import {useState} from "react";
 import {useRouter} from "next/navigation";
 import {deleteJob} from "@/lib/api/jobs/jobsApi";
 import {JobManagementCardDto} from "@/lib/api/jobs/jobsApiDtos";
+import { useCurrentCompanyStore } from "@/lib/stores/currentCompanyStore";
  
-//todo!!!
 
 const formatPolishDate = (dateString: string): string => {
     const date = new Date(dateString);
@@ -40,6 +40,8 @@ export default function ManageJobCard({ item, onUpdateTriggered }: ManageJobCard
     const [isLocationsExpanded, setIsLocationsExpanded] = useState(false);
     const [isPublic, setIsPublic] = useState<boolean>(item.isPublic);
 
+    const { currentCompany } = useCurrentCompanyStore();
+
     const toggleLocations = () => {
         setIsLocationsExpanded(!isLocationsExpanded);
     };
@@ -55,6 +57,12 @@ export default function ManageJobCard({ item, onUpdateTriggered }: ManageJobCard
             onUpdateTriggered();
         }
     };
+
+    if (currentCompany === null)
+    {
+        console.error("No company info present.");
+        return;
+    }
 
     return (
         <Paper sx={{ width: "100%", textAlign: "left", opacity: (isPublic ? 1 : 0.5) }}>
@@ -114,7 +122,7 @@ export default function ManageJobCard({ item, onUpdateTriggered }: ManageJobCard
                     </ListItem>
                 </List>
                 <Stack direction="row" mt={1} sx={{ justifyContent: "left" }} gap={2}>
-                    {currentJobFolderState?.claimIds && currentJobFolderState.claimIds.includes(4) &&
+                    {currentCompany.claimIds.includes(6) &&
                         <Button
                             variant="text"
                             color="primary"
@@ -127,7 +135,7 @@ export default function ManageJobCard({ item, onUpdateTriggered }: ManageJobCard
                         </Button>
                     }
 
-                    {currentJobFolderState?.claimIds && currentJobFolderState.claimIds.includes(6) &&
+                    {currentCompany.claimIds.includes(8) &&
                         <Button
                             variant="text"
                             color="primary"
@@ -140,7 +148,7 @@ export default function ManageJobCard({ item, onUpdateTriggered }: ManageJobCard
                     }
 
 
-                    {currentJobFolderState?.claimIds && currentJobFolderState.claimIds.includes(3) &&
+                    {currentCompany.claimIds.includes(3) &&
                         <Button
                             variant="text"
                             color="error"
@@ -152,7 +160,7 @@ export default function ManageJobCard({ item, onUpdateTriggered }: ManageJobCard
                         </Button>
                     }
 
-                    {currentJobFolderState?.claimIds && currentJobFolderState.claimIds.includes(4) &&
+                    {currentCompany.claimIds.includes(6) &&
                         <>
                             <Button
                                 variant="text"

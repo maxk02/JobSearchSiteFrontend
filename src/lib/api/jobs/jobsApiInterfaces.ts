@@ -3,6 +3,7 @@ import {PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
 import {JobApplicationForManagersDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
 
 export interface AddJobRequest {
+    companyId: number;
     categoryId: number;
     title: string;
     description: string | null;

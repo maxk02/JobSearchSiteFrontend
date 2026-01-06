@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_EXTRA_CA_CERTS=\"./certs/aspnetcorelocalhost.pem\" NODE_TLS_REJECT_UNAUTHORIZED=0 next dev --experimental-https --turbopack",
+    "dev:debug": "cross-env NODE_EXTRA_CA_CERTS=\"./certs/aspnetcorelocalhost.pem\" NODE_TLS_REJECT_UNAUTHORIZED=0 NODE_OPTIONS=--inspect next dev --experimental-https --turbopack",
     "build": "cross-env NODE_EXTRA_CA_CERTS=\"./certs/aspnetcorelocalhost.pem\" next build",
     "start": "cross-env NODE_EXTRA_CA_CERTS=\"./certs/aspnetcorelocalhost.pem\" next start --experimental-https",
     "lint": "cross-env NODE_EXTRA_CA_CERTS=\"./certs/aspnetcorelocalhost.pem\" next lint"

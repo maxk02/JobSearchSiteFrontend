@@ -43,7 +43,7 @@ export default function CreateManageJobNavigationCard({ returnToId, companyName,
             >
                 <ListItem sx={{ pl: 1.5, pr: 0.75, py: 0.5, alignItems: "center", flex: "0 0 fit-content" }}>
                     <Avatar variant="rounded" sx={{ height: 35, width: 35 }}>
-                        {companyLogoLink && <Image src={companyLogoLink} alt="Company logo"></Image>}
+                        {companyLogoLink && <Image src={companyLogoLink} height={35} width={35} alt="Company logo"></Image>}
                     </Avatar>
                 </ListItem>
                 <ListItem sx={{ pl: 0.75, py: 0.5, alignItems: "center", flex: "0 0 fit-content" }}>

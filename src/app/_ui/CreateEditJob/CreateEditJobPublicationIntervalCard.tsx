@@ -7,7 +7,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import {LocalizationProvider, TimePicker} from "@mui/x-date-pickers";
-import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFnsV3";
+import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import React, {useState} from "react";
 import {Controller, useFormContext} from "react-hook-form";
@@ -46,7 +46,7 @@ export default function CreateEditJobPublicationIntervalCard() {
                     </Typography>
                 </Alert>
 
-                <Box sx={{ pt: 0.4, pb: 0.4, maxWidth: "500px" }}>
+                {/* <Box sx={{ pt: 0.4, pb: 0.4, maxWidth: "500px" }}>
                     <FormControl>
                         <Controller
                             name="timeRangeOption"
@@ -86,7 +86,7 @@ export default function CreateEditJobPublicationIntervalCard() {
                             {errors.timeRangeOption.message}
                         </Typography>
                     )}
-                </Box>
+                </Box> */}
 
                 <Box display="flex" flexDirection="column" gap={2} sx={{ maxWidth: "650px", mt: 0.5 }}>
                     <FormGroup>
