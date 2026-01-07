@@ -18,7 +18,7 @@ import {
     getCompanyLastVisitedJobs
 } from "@/lib/api/companies/companiesApi";
 import {
-    GetCompanyManagementJobsRequest
+    GetCompanySharedJobsRequest
 } from "@/lib/api/companies/companiesApiInterfaces";
 
 
@@ -87,7 +87,7 @@ export default function CompanyDashboard() {
 
     useEffect(() => {
         const fetchJobs = async () => {
-            const request: GetCompanyManagementJobsRequest = {
+            const request: GetCompanySharedJobsRequest = {
                 query: jobSearchDialogQuery,
             };
 

@@ -5,7 +5,7 @@ import {
     CompanyManagementDetailedDto
 } from "@/lib/api/companies/companiesApiDtos";
 import {PaginationResponse} from "@/lib/api/sharedDtos";
-import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
+import {JobCardDto, JobManagementCardDto} from "@/lib/api/jobs/jobsApiDtos";
 
 
 export interface AddCompanyEmployeeRequest {
@@ -50,6 +50,22 @@ export interface GetCompanyEmployeesResponse {
     paginationResponse: PaginationResponse;
 }
 
+export interface GetCompanyJobManagementCardDtosRequest {
+    query: string | null;
+    page: number;
+    size: number;
+    mustHaveSalaryRecord: boolean;
+    locationId: number;
+    employmentTypeIds: number[] | null;
+    categoryIds: number[] | null;
+    contractTypeIds: number[] | null;
+}
+
+export interface GetCompanyJobManagementCardDtosResponse {
+    jobManagementCardDtos: JobManagementCardDto[];
+    paginationResponse: PaginationResponse;
+}
+
 export interface GetCompanyJobsRequest {
     query: string | null;
     page: number;
@@ -69,13 +85,7 @@ export interface GetCompanyLastVisitedJobsResponse {
     jobs: CompanyJobListItemDto[];
 }
 
-export interface GetCompanyManagementJobsRequest {
-    query: string; //todo
-}
 
-export interface GetCompanyManagementJobsResponse {
-    jobs: CompanyJobListItemDto[]; //todo
-}
 
 export interface GetCompanyManagementNavbarDtoResponse {
     company: CompanyManagementDetailedDto;

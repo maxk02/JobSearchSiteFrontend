@@ -35,3 +35,5 @@ export interface CompanyManagementListItemDto {
     countryId: number;
     avatarLink: string | null;
 }
+
+export type CompanyJobManagementCardDtosSortOption = 'dateAsc' | 'dateDesc';

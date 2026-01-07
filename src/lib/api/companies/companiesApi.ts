@@ -9,11 +9,10 @@ import {
     GetCompanyJobsRequest,
     GetCompanyJobsResponse,
     GetCompanyManagementNavbarDtoResponse,
-    GetCompanyManagementJobsRequest,
-    GetCompanyManagementJobsResponse,
     GetCompanyResponse,
     GetCompanyLastVisitedJobsResponse,
-    UpdateCompanyRequest
+    UpdateCompanyRequest, SearchCompanySharedJobsRequest, SearchCompanySharedJobsResponse,
+    GetCompanyJobManagementCardDtosRequest, GetCompanyJobManagementCardDtosResponse
 } from "@/lib/api/companies/companiesApiInterfaces";
 
 
@@ -46,6 +45,10 @@ export const getCompanyEmployees = async (id: number, req: GetCompanyEmployeesRe
     return await fetchData<GetCompanyEmployeesRequest, GetCompanyEmployeesResponse>(`/companies/${id}/management/employees`, "GET", req);
 };
 
+export const getCompanyJobManagementCardDtos = async (id: number, req: GetCompanyJobManagementCardDtosRequest) => {
+    return await fetchData<GetCompanyJobManagementCardDtosRequest, GetCompanyJobManagementCardDtosResponse>(`/companies/${id}/management/jobs`, "GET", req);
+};
+
 export const getCompanyJobs = async (id: number, req: GetCompanyJobsRequest) => {
     return await fetchData<GetCompanyJobsRequest, GetCompanyJobsResponse>(`/companies/${id}/jobs`, "GET", req);
 };
@@ -70,8 +73,8 @@ export const removeCompanyEmployee = async (id: number, userId: number) => {
     return await fetchData<unknown>(`/companies/${id}/management/employees/${userId}`, "DELETE");
 };
 
-export const searchCompanySharedJobs = async (id: number, req: GetCompanyManagementJobsRequest) => {
-    return await fetchData<GetCompanyManagementJobsRequest, GetCompanyManagementJobsResponse>(`/companies/${id}/management/jobs/search`, "GET", {...req});
+export const searchCompanySharedJobs = async (id: number, req: SearchCompanySharedJobsRequest) => {
+    return await fetchData<SearchCompanySharedJobsRequest, SearchCompanySharedJobsResponse>(`/companies/${id}/management/jobs/search`, "GET", {...req});
 };
 
 export const updateCompany = async (id: number, req: UpdateCompanyRequest) => {
