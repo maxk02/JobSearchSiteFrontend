@@ -22,7 +22,7 @@ export default function ManageJobLayout({children}: Readonly<{ children: React.R
 
     const isActive = () => pathname === `/job/${jobIdParam}/manage/edit`;
 
-    const { currentJobState, setCurrentJobState } = useCurrentJobStore();
+    const { currentJob: currentJobState, setCurrentJob: setCurrentJobState } = useCurrentJobStore();
 
     useEffect(() => {
 

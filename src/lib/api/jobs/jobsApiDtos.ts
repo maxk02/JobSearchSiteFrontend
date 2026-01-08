@@ -59,6 +59,7 @@ export interface JobManagementDto {
     employmentOptionIds: number[];
     contractTypeIds: number[];
     isPublic: boolean;
+    claimIds: number[];
 }
 
 export interface JobSalaryInfoDto {

@@ -4,23 +4,27 @@ import {List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Typog
 import {Edit, QueryStats, TaskAlt} from "@mui/icons-material";
 import {useParams, usePathname, useRouter} from 'next/navigation';
 import {useCurrentJobStore} from "@/lib/stores/currentJobStore";
+import { useEffect } from "react";
+import { useCurrentCompanyStore } from "@/lib/stores/currentCompanyStore";
 
 
 export default function ManageJobViewsCard() {
-    const { jobId } = useParams();
+    const params = useParams();
+
+    const jobId = parseInt(params.jobId as string, 10);
 
     const router = useRouter();
     const pathname = usePathname();
 
-    const { currentJobState } = useCurrentJobStore();
+    const { currentJob, fetchCurrentJob } = useCurrentJobStore();
 
     const navItems = [
         { text: "Statystyki", icon: <QueryStats />, subpage: "stats",
-            isAccessible: currentJobState?.claimIds?.includes(3) },
+            isAccessible: currentJob?.claimIds?.includes(3) },
         { text: "Aplikacje", icon: <TaskAlt />, subpage: "applications",
-            isAccessible: currentJobState?.claimIds?.includes(6) },
+            isAccessible: currentJob?.claimIds?.includes(6) },
         { text: "Edycja", icon: <Edit />, subpage: "edit",
-            isAccessible: currentJobState?.claimIds?.includes(4) },
+            isAccessible: currentJob?.claimIds?.includes(4) }, //todo
     ];
 
     const navigateTo = (subPage: string) => {
@@ -28,6 +32,10 @@ export default function ManageJobViewsCard() {
     };
 
     const isActive = (subPage: string) => pathname === `/job/${jobId}/manage/${subPage}`;
+
+    useEffect(() => {
+        fetchCurrentJob(jobId);
+    }, [jobId]);
 
     return (
         <Paper sx={{ px: 0, pt: 0, pb: 0, flexShrink: 0 }}>

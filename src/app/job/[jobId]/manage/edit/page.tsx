@@ -1,7 +1,7 @@
 "use client";
 
-import {Box, Typography} from "@mui/material";
-import React from "react";
+import {Box, CircularProgress, Typography} from "@mui/material";
+import React, { useEffect } from "react";
 import CreateEditJobBasicInfoCard from "@/app/_ui/CreateEditJob/CreateEditJobBasicInfoCard";
 import CreateEditJobPublicationIntervalCard from "@/app/_ui/CreateEditJob/CreateEditJobPublicationIntervalCard";
 import CreateEditJobEmploymentOptionCard from "@/app/_ui/CreateEditJob/CreateEditJobEmploymentOptionCard";
@@ -24,28 +24,48 @@ export default function EditJobPage() {
 
     const jobId = parseInt(params.jobId as string, 10);
 
-    const { currentJobState, setCurrentJobState } = useCurrentJobStore();
+    const { currentJob, setCurrentJob, isLoading } = useCurrentJobStore();
 
-    if (!currentJobState) {
-        throw new Error("No job state found.");
-    }
+    useEffect(() => {
+        // Guard clause: If data isn't loaded yet, do nothing
+        if (!currentJob) return;
+
+        // Map your API data to Form Data
+        methods.reset({
+            companyId: currentJob.companyId,
+            title: currentJob.title,
+            category: currentJob.categoryId,
+            description: currentJob.description,
+            // Ensure you handle Date conversion safely
+            dateTimeExpiringUtc: new Date(currentJob.dateTimeExpiringUtc),
+            isPublic: currentJob.isPublic,
+            employmentOptionIds: currentJob.employmentOptionIds,
+            jobContractTypeIds: currentJob.contractTypeIds,
+            // Safe navigation in case locations is undefined
+            locationIds: currentJob.locations?.map(l => l.id) || [],
+            salaryInfo: currentJob.salaryInfoDto,
+            responsibilities: currentJob.responsibilities,
+            requirements: currentJob.requirements,
+            niceToHaves: currentJob.niceToHaves,
+        });
+    }, [currentJob, isLoading]);
 
     const methods = useForm<CreateEditJobFormData>({
         resolver: zodResolver(createEditJobSchema),
         defaultValues: {
-            companyId: currentJobState.companyId,
-            title: currentJobState.title,
-            category: currentJobState.categoryId,
-            description: currentJobState.description,
-            dateTimeExpiringUtc: new Date(currentJobState.dateTimeExpiringUtc),
-            isPublic: currentJobState.isPublic,
-            employmentOptionIds: currentJobState.employmentOptionIds,
-            jobContractTypeIds: currentJobState.contractTypeIds,
-            locationIds: currentJobState.locations?.map(l => l.id),
-            salaryInfo: currentJobState.salaryInfoDto,
-            responsibilities: currentJobState.responsibilities,
-            requirements: currentJobState.requirements,
-            niceToHaves: currentJobState.niceToHaves,
+            companyId: 0,
+            title: "",
+            category: 0,
+            description: "",
+            dateTimeExpiringUtc: new Date(),
+            isPublic: true,
+            employmentOptionIds: [],
+            jobContractTypeIds: [],
+            locationIds: [],
+            salaryInfo: null,
+            responsibilities: [],
+            requirements: [],
+            niceToHaves: [],
         },
         mode: 'onChange'
     });
@@ -93,6 +113,14 @@ export default function EditJobPage() {
             console.log(`Failed (${updateJobResult.status})`)
         }
     };
+
+    if (isLoading || !currentJob) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
 
     return (
         <Box sx={{ width: "800px", maxWidth: "800px" }}>

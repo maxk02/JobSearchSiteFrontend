@@ -61,7 +61,7 @@ export default function CompanyJobsPage() {
             const request: GetCompanyJobManagementCardDtosRequest = {
                 query: null,
                 page: 0,
-                size: 0,
+                size: 10,
                 mustHaveSalaryRecord: false,
                 locationId: 0,
                 employmentTypeIds: null,
@@ -89,7 +89,7 @@ export default function CompanyJobsPage() {
 
     return (
         <>
-            <Stack gap={3} mt={2} sx={{ maxWidth: "850px" }}>
+            <Stack gap={3} mt={0} sx={{ maxWidth: "850px" }}>
                 <MyDefaultSortingCard<JobApplicationSortOption>
                     pxValue="6px"
                     sortModes={sortOptionListItems}

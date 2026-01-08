@@ -53,11 +53,13 @@ export default function JobCard({ item }: JobCardProps) {
                     </Avatar>
                 </Box>
                 <Stack sx={{ p: 2, flexGrow: 1 }}>
+
                     <Typography variant="h5" sx={{ fontWeight: 800, lineHeight: 1 }}>
                         {item.title}
                     </Typography>
+
                     {item.salaryInfoDto &&
-                        <Typography fontWeight="bold" color="textSecondary" lineHeight={1} mt={1.3}>
+                        <Typography fontWeight="bold" color="textSecondary" lineHeight={1} mt={1.35}>
                             {formatSalaryInfoText(item.salaryInfoDto)}
                         </Typography>
                     }
@@ -66,7 +68,7 @@ export default function JobCard({ item }: JobCardProps) {
                     </Typography>
 
                     {item.locations.length === 1 ? (
-                        <Stack direction="row" gap={0.3} sx={{ alignItems: "center", mt: 1.3 }}>
+                        <Stack direction="row" gap={0.3} sx={{ alignItems: "center", mt: 1.35 }}>
                             <LocationPin fontSize="small" sx={{ p: 0 }}></LocationPin>
                             <Typography lineHeight={1}>
                                 {item.locations[0].fullName}
@@ -74,7 +76,7 @@ export default function JobCard({ item }: JobCardProps) {
                         </Stack>
                     ) : (
                         <>
-                            <Box sx={{ display: "flex", alignItems: "center", mt: 1.3, cursor: "pointer" }} onClick={toggleLocations}>
+                            <Box sx={{ display: "flex", alignItems: "center", mt: 1.35, cursor: "pointer" }} onClick={toggleLocations}>
                                 <Typography lineHeight={1}>
                                     Dostępna w {item.locations.length} lokalizacjach
                                 </Typography>
@@ -97,7 +99,7 @@ export default function JobCard({ item }: JobCardProps) {
 
                     <List sx={{ m: 0, p: 0, display: "flex", flexDirection: "row" }}>
                         {item.employmentOptionIds?.map((item) => (
-                            <ListItem key={item} sx={{ m: 0, px: 0, pt: 1.3, pb: 0, width: "auto",
+                            <ListItem key={item} sx={{ m: 0, px: 0, pt: 1.35, pb: 0, width: "auto",
                                 "&::after": { content: '"●"', mx: 0.5, fontSize: "0.7rem", color: "text.secondary" } }}
                             >
                                 <Typography lineHeight={1} color="textSecondary">
@@ -108,7 +110,7 @@ export default function JobCard({ item }: JobCardProps) {
                             </ListItem>
                         ))}
                         
-                        <ListItem sx={{ m: 0, px: 0, pt: 1.3, pb: 0, width: "auto", }}>
+                        <ListItem sx={{ m: 0, px: 0, pt: 1.35, pb: 0, width: "auto", }}>
                             <Typography lineHeight={1} color="textSecondary">
                                 {jobContractTypes
                                     .filter(jct => item.contractTypeIds?.includes(jct.id))
