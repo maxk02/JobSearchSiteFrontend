@@ -27,45 +27,65 @@ import { useFormContext } from "react-hook-form";
 import { CreateEditJobFormData } from "@/lib/schemas/createEditJobSchema";
 import ReactCountryFlag from "react-country-flag";
 import { getItemColor } from "@/lib/functions/listItemColors";
+import { GetLocationsRequest } from "@/lib/api/locations/locationsApiInterfaces";
+import { getLocations } from "@/lib/api/locations/locationsApi";
+import { LocationDto } from "@/lib/api/locations/locationsApiDtos";
 
 const countries = [
     { id: 1, code: "PL", label: "Polska" },
 ];
 
+interface CreateEditJobLocationCardProps
+{
+    locations: LocationDto[];
+}
 
-const mockLocations = [
-    { id: 1, name: "Warszawa" },
-    { id: 2, name: "Kraków" },
-    { id: 3, name: "Wrocław" },
-    { id: 4, name: "Poznań" },
-    { id: 5, name: "Gdańsk" },
-    { id: 6, name: "Łódź" },
-];
-
-export default function CreateEditJobLocationCard() {
+export default function CreateEditJobLocationCard({ locations }: CreateEditJobLocationCardProps) {
     const { watch, setValue, formState: { errors } } = useFormContext<CreateEditJobFormData>();
     const locationIds = watch("locationIds") || [];
 
     const [addDialogOpen, setAddDialogOpen] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-    const [selectedLocationId, setSelectedLocationId] = useState<number | null>(null);
+    const [selectedLocation, setSelectedLocation] = useState<LocationDto | null>(null);
     const [searchText, setSearchText] = useState("");
-    const [filteredLocations, setFilteredLocations] = useState(mockLocations);
+    const [filteredLocations, setFilteredLocations] = useState<LocationDto[]>([]);
     const [isSearching, setIsSearching] = useState(false);
 
+    const [listedLocations, setListedLocations] = useState<LocationDto[]>(locations);
+
     useEffect(() => {
+        const fetchLocations = async () => {
+
+            const request: GetLocationsRequest = {
+                    countryId: 1,
+                    query: searchText,
+                    size: 5
+                };
+
+            const result = await getLocations(request);
+
+            if (result.success) {
+                setFilteredLocations(result.data.locations);
+            }
+            else {
+                setFilteredLocations([]);
+                setIsSearching(false);
+            }
+        };
+
         if (searchText.length > 0) {
             setIsSearching(true);
+
             const timeout = setTimeout(() => {
-                const filtered = mockLocations.filter(loc =>
-                    loc.name.toLowerCase().includes(searchText.toLowerCase())
-                );
-                setFilteredLocations(filtered);
+                
+                fetchLocations();
+                
                 setIsSearching(false);
+
             }, 500);
             return () => clearTimeout(timeout);
         } else {
-            setFilteredLocations(mockLocations);
+            setFilteredLocations([]);
             setIsSearching(false);
         }
     }, [searchText]);
@@ -75,7 +95,7 @@ export default function CreateEditJobLocationCard() {
         setSearchText("");
     };
 
-    const handleLocationSelect = (location: { id: number; name: string }) => {
+    const handleLocationSelect = (location: LocationDto) => {
         if (locationIds.includes(location.id) || locationIds.length >= 5) return;
         setValue("locationIds", [...locationIds, location.id], { shouldValidate: true });
         setAddDialogOpen(false);
@@ -84,33 +104,32 @@ export default function CreateEditJobLocationCard() {
 
     const handleClearSearch = () => {
         setSearchText("");
-        setFilteredLocations(mockLocations);
+        setFilteredLocations([]);
     };
 
-    const handleDeleteStart = (locationId: number) => {
-        setSelectedLocationId(locationId);
+    const handleDeleteStart = (location: LocationDto) => {
+        setSelectedLocation(location);
         setDeleteDialogOpen(true);
     };
 
     const handleDeleteConfirm = () => {
-        if (selectedLocationId === null) return;
-        const updatedLocations = locationIds.filter(id => id !== selectedLocationId);
+        if (selectedLocation === null) return;
+        const updatedLocations = locationIds.filter(id => id !== selectedLocation.id);
         setValue("locationIds", updatedLocations, { shouldValidate: true });
+        setListedLocations(listedLocations => listedLocations.filter(l => l.id != selectedLocation.id));
         setDeleteDialogOpen(false);
-        setSelectedLocationId(null);
+        setSelectedLocation(null);
     };
 
     const handleDialogClose = () => {
         setAddDialogOpen(false);
         setDeleteDialogOpen(false);
-        setSelectedLocationId(null);
+        setSelectedLocation(null);
         setSearchText("");
     };
 
-    const getLocationName = (id: number) => mockLocations.find(loc => loc.id === id)?.name || "";
-
     return (
-        <Paper sx={{ mt: 2, pt: 2, pb: (locationIds.length > 0 ? 1.5 : 2), px: 1.5 }}>
+        <Paper sx={{ mt: 2, pt: 2, pb: (listedLocations.length > 0 ? 1.5 : 2), px: 1.5 }}>
             <Typography variant="h6" fontWeight={600} lineHeight={1} color="primary">Lokalizacje</Typography>
             <Box mt={1.5} display="flex" flexDirection="column">
                 <Alert severity="info" icon={<Info />} sx={{ maxWidth: "500px" }}>
@@ -140,25 +159,25 @@ export default function CreateEditJobLocationCard() {
                     </Typography>
                 )}
 
-                <Box sx={{ maxWidth: "550px", mt: 1.7 }}>
+                <Box sx={{ maxWidth: "500px", mt: 1.7 }}>
                     <Typography sx={{ fontWeight: 600, lineHeight: 1 }}>
-                        {locationIds.length > 0 ? `Dodano lokalizacji: ${locationIds.length}` : `Brak lokalizacji`}
+                        {listedLocations.length > 0 ? `Dodano lokalizacji: ${listedLocations.length}` : `Brak lokalizacji`}
                     </Typography>
 
-                    {locationIds.length > 0 && (
+                    {listedLocations.length > 0 && (
                         <List sx={{ mt: 1, p: 0, '& > :last-child': { pb: 0 } }}>
-                            {locationIds.map((locationId) => (
-                                <ListItem key={locationId} sx={{ px: 0, py: 0.5, lineHeight: 1 }}>
+                            {listedLocations.map((listedLocation) => (
+                                <ListItem key={listedLocation.id} sx={{ px: 0, py: 0.5, lineHeight: 1 }}>
                                     <ListItemAvatar sx={{ minWidth: "25px", mr: 1.3 }}>
-                                        <Avatar variant="rounded" sx={{ backgroundColor: getItemColor(locationId) }}>
+                                        <Avatar variant="rounded" sx={{ backgroundColor: getItemColor(listedLocation.id) }}>
                                             <LocationOn />
                                         </Avatar>
                                     </ListItemAvatar>
-                                    <ListItemText primary={getLocationName(locationId)} />
+                                    <ListItemText primary={listedLocation.fullName} />
                                     <IconButton
                                         edge="end"
                                         aria-label="delete"
-                                        onClick={() => handleDeleteStart(locationId)}
+                                        onClick={() => handleDeleteStart(listedLocation)}
                                         size="small"
                                     >
                                         <Delete />
@@ -233,7 +252,7 @@ export default function CreateEditJobLocationCard() {
                                                     </Avatar>
                                                 </ListItemAvatar>
                                                 <ListItemText
-                                                    primary={loc.name}
+                                                    primary={loc.fullName}
                                                     slotProps={{
                                                         primary: {color: "black"}
                                                     }}
@@ -265,7 +284,7 @@ export default function CreateEditJobLocationCard() {
                 <DialogTitle>Potwierdź usunięcie</DialogTitle>
                 <DialogContent>
                     <Typography>
-                        Czy na pewno chcesz usunąć lokalizację {getLocationName(selectedLocationId || 0)}?
+                        Czy na pewno chcesz usunąć lokalizację {selectedLocation?.fullName}?
                     </Typography>
                 </DialogContent>
                 <DialogActions>

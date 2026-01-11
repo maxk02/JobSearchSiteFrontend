@@ -38,7 +38,7 @@ export interface GetApplicationsForJobResponse {
 }
 
 export interface GetJobManagementDtoResponse {
-    job: JobManagementDto;
+    jobManagementDto: JobManagementDto;
 }
 
 export interface GetJobResponse {

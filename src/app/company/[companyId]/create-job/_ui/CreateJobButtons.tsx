@@ -6,7 +6,7 @@ export default function CreateJobButtons() {
 
     return (
         <Stack direction="row" flexWrap="wrap" spacing={2} sx={{ alignSelf: "center" }}>
-            <Button
+            {/* <Button
                 variant="contained"
                 color="primary"
                 size="large"
@@ -18,7 +18,7 @@ export default function CreateJobButtons() {
                 }}
             >
                 Podgląd
-            </Button>
+            </Button> */}
             <Button
                 variant="contained"
                 color="primary"

@@ -13,6 +13,7 @@ import React from "react";
 import {ArrowBack} from "@mui/icons-material";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 
 
@@ -24,6 +25,8 @@ interface CreateManageJobNavigationCardProps {
 
 export default function CreateManageJobNavigationCard({ returnToId, companyName, companyLogoLink }: CreateManageJobNavigationCardProps) {
 
+    const router = useRouter();
+
     const navItems = [
         {
             text: "Powrót do firmy",
@@ -31,6 +34,10 @@ export default function CreateManageJobNavigationCard({ returnToId, companyName,
             icon: <ArrowBack />
         },
     ];
+
+    const navigateTo = (path: string) => {
+        router.push(path);
+    };
 
     return (
         <Paper sx={{ p: 0, flexShrink: 0 }}>
@@ -55,25 +62,22 @@ export default function CreateManageJobNavigationCard({ returnToId, companyName,
                 </ListItem>
             </Box>
             <List sx={{ p: 0 }}>
-                {navItems.map((item, index) => (
-                    <ListItem
-                        key={index}
-                        disablePadding
-                    >
-                        <Link href={item.path} passHref>
-                            <ListItemButton
-                                sx={{
-                                    pl: 1.5,
-                                    py: 1.2,
-                                    pr: 3
-                                }}
-                            >
-                                <ListItemIcon sx={{ minWidth: 36 }}>
-                                    {item.icon}
-                                </ListItemIcon>
-                                <ListItemText primary={item.text} />
-                            </ListItemButton>
-                        </Link>
+                {navItems.map((item) => (
+                    <ListItem key={item.text} disablePadding>
+                        <ListItemButton
+                            onClick={() => navigateTo(item.path)}
+                            sx={{
+                                pl: 1.5,
+                                py: 1,
+                                pr: 3
+                            }}
+                        >
+                            <ListItemIcon sx={{ minWidth: 36 }}>
+                                {item.icon}
+                            </ListItemIcon>
+                            <ListItemText primary={item.text} />
+
+                        </ListItemButton>
                     </ListItem>
                 ))}
             </List>

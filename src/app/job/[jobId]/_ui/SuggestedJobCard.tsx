@@ -56,7 +56,7 @@ export default function SuggestedJobCard({ item }: SuggestedJobCardProps) {
                         sx={{ lineHeight: 1 }}
                         onClick={toggleBookmark}
                     >
-                        { item.isBookmarked ? <Star /> : <StarBorder /> }
+                        { item.isBookmarked ? <Star sx={{ color: "#202557" }} /> : <StarBorder /> }
                     </IconButton>
                 </Box>
             </Stack>
@@ -66,7 +66,7 @@ export default function SuggestedJobCard({ item }: SuggestedJobCardProps) {
                         {formatSalaryInfoText(item.salaryInfoDto)}
                     </Typography>
                 }
-                <Typography fontWeight="600" lineHeight={1} sx={{ fontWeight: 500, fontSize: "0.93em" }}>
+                <Typography fontWeight="600" mt={item.salaryInfoDto ? 1 : 0} lineHeight={1} sx={{ fontWeight: 500, fontSize: "0.93em" }}>
                     {item.companyName}
                 </Typography>
 

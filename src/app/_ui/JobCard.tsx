@@ -9,6 +9,7 @@ import {employmentOptions} from "@/lib/seededData/employmentOptions";
 import formatSalaryInfoText from "@/app/_ui/_functions/formatSalaryInfoText";
 import {useState} from "react";
 import {addJobBookmark, deleteJobBookmark} from "@/lib/api/userProfiles/userProfilesApi";
+import Link from "next/link";
 
 
 const formatPolishDate = (dateString: string): string => {
@@ -39,6 +40,7 @@ export default function JobCard({ item }: JobCardProps) {
 
         if (result.success) {
             setIsBookmarked(!isBookmarked);
+            console.log(`Toggled bookmark`);
         } else {
             console.log(`Toggle bookmark failed (${result.status})`);
         }
@@ -54,7 +56,20 @@ export default function JobCard({ item }: JobCardProps) {
                 </Box>
                 <Stack sx={{ p: 2, flexGrow: 1 }}>
 
-                    <Typography variant="h5" sx={{ fontWeight: 800, lineHeight: 1 }}>
+                    <Typography
+                        variant="h5"
+                        component={Link}
+                        href={`/job/${item.id}`}
+                        sx={{
+                            fontWeight: 800,
+                            lineHeight: 1,
+                            textDecoration: 'none',
+                            color: 'inherit',
+                            '&:hover': {
+                                textDecoration: 'none',
+                            }
+                        }}
+                        >
                         {item.title}
                     </Typography>
 
@@ -124,9 +139,9 @@ export default function JobCard({ item }: JobCardProps) {
                 <Box sx={{ px: 2, py: 1 }}>
                     <IconButton
                         sx={{ lineHeight: 1 }}
-                        onClick={toggleBookmark}
+                        onClick={() => toggleBookmark()}
                     >
-                        { item.isBookmarked ? <Star /> : <StarBorder /> }
+                        { isBookmarked ? <Star sx={{ color: "#202557" }} /> : <StarBorder /> }
                     </IconButton>
                 </Box>
             </Stack>

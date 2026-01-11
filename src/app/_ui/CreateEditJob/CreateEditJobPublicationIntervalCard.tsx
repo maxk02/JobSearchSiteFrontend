@@ -1,6 +1,6 @@
 "use client";
 
-import {Alert, Box, FormGroup, Paper, Stack, Switch, Typography} from "@mui/material";
+import {Alert, Box, FormGroup, List, Paper, Stack, Switch, Typography} from "@mui/material";
 import {Info} from "@mui/icons-material";
 import FormControl from "@mui/material/FormControl";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -33,7 +33,7 @@ export default function CreateEditJobPublicationIntervalCard() {
 
     return (
         <Paper sx={{ mt: 2, py: 2, px: 1.5 }}>
-            <Typography variant="h6" fontWeight={600} lineHeight={1} color="primary">Przedział czasowy</Typography>
+            <Typography variant="h6" fontWeight={600} lineHeight={1} color="primary">Data i czas wygaśnięcia</Typography>
             <Box mt={1.5} display="flex" flexDirection="column">
                 <Alert
                     severity="info"
@@ -41,9 +41,22 @@ export default function CreateEditJobPublicationIntervalCard() {
                     sx={{ maxWidth: "500px" }}
                 >
                     <Typography>
-                        Możesz również ustawić wcześniejszą datę i czas wygaśnięcia.
-                        W czasie publikacji ogłoszenia konto firmowe musi być zasilone odpowiednią kwotą.
+                        W czasie publikacji ogłoszenia konto firmowe musi być zasilone kwotą odpowiadającą okresowi publikacji.
                     </Typography>
+                    <List>
+                        <Typography>
+                            — od 1 do 5 dni: 35 zł
+                        </Typography>
+                        <Typography>
+                            — od 6 do 30 dni: 60 zł
+                        </Typography>
+                        <Typography>
+                            — od 31 do 60 dni: 90 zł
+                        </Typography>
+                        <Typography>
+                            — od 61 do 90 dni: 120 zł
+                        </Typography>
+                    </List>
                 </Alert>
 
                 {/* <Box sx={{ pt: 0.4, pb: 0.4, maxWidth: "500px" }}>
@@ -88,8 +101,8 @@ export default function CreateEditJobPublicationIntervalCard() {
                     )}
                 </Box> */}
 
-                <Box display="flex" flexDirection="column" gap={2} sx={{ maxWidth: "650px", mt: 0.5 }}>
-                    <FormGroup>
+                <Box display="flex" flexDirection="column" gap={2} sx={{ maxWidth: "650px", mt: 2 }}>
+                    {/* <FormGroup>
                         <FormControlLabel
                             control={
                                 <Switch
@@ -99,7 +112,7 @@ export default function CreateEditJobPublicationIntervalCard() {
                             }
                             label="Ustaw wcześniejszą datę i czas"
                         />
-                    </FormGroup>
+                    </FormGroup> */}
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <Box display="flex" flexDirection="row" flexWrap="wrap" gap={1.5}>
                             <Controller
@@ -112,14 +125,12 @@ export default function CreateEditJobPublicationIntervalCard() {
                                             value={field.value}
                                             onChange={(newValue) => field.onChange(newValue)}
                                             sx={{ flex: "1 1 auto" }}
-                                            disabled={!customDateTimeEnabled}
                                         />
                                         <TimePicker
                                             label="Wybierz czas"
                                             value={field.value}
                                             onChange={(newValue) => field.onChange(newValue)}
                                             sx={{ flex: "1 1 auto" }}
-                                            disabled={!customDateTimeEnabled}
                                         />
                                     </>
                                 )}

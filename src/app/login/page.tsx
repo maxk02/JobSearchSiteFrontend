@@ -84,6 +84,7 @@ export default function LoginPage() {
                                     <TextField
                                         {...field}
                                         label="Hasło"
+                                        type="password"
                                         fullWidth
                                         required
                                         error={!!errors.password}

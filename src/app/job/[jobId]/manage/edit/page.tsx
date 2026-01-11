@@ -9,7 +9,7 @@ import CreateEditJobContractTypeCard from "@/app/_ui/CreateEditJob/CreateEditJob
 import CreateEditJobSalaryDataCard from "@/app/_ui/CreateEditJob/CreateEditJobSalaryDataCard";
 import CreateEditJobLocationCard from "@/app/_ui/CreateEditJob/CreateEditJobLocationCard";
 import CreateEditJobListCard from "@/app/_ui/CreateEditJob/CreateEditJobListCard";
-import {useForm} from "react-hook-form";
+import {FormProvider, useForm} from "react-hook-form";
 import {CreateEditJobFormData, createEditJobSchema} from "@/lib/schemas/createEditJobSchema";
 import {updateJob} from "@/lib/api/jobs/jobsApi";
 import {useParams} from "next/navigation";
@@ -25,30 +25,6 @@ export default function EditJobPage() {
     const jobId = parseInt(params.jobId as string, 10);
 
     const { currentJob, setCurrentJob, isLoading } = useCurrentJobStore();
-
-    useEffect(() => {
-        // Guard clause: If data isn't loaded yet, do nothing
-        if (!currentJob) return;
-
-        // Map your API data to Form Data
-        methods.reset({
-            companyId: currentJob.companyId,
-            title: currentJob.title,
-            category: currentJob.categoryId,
-            description: currentJob.description,
-            // Ensure you handle Date conversion safely
-            dateTimeExpiringUtc: new Date(currentJob.dateTimeExpiringUtc),
-            isPublic: currentJob.isPublic,
-            employmentOptionIds: currentJob.employmentOptionIds,
-            jobContractTypeIds: currentJob.contractTypeIds,
-            // Safe navigation in case locations is undefined
-            locationIds: currentJob.locations?.map(l => l.id) || [],
-            salaryInfo: currentJob.salaryInfoDto,
-            responsibilities: currentJob.responsibilities,
-            requirements: currentJob.requirements,
-            niceToHaves: currentJob.niceToHaves,
-        });
-    }, [currentJob, isLoading]);
 
     const methods = useForm<CreateEditJobFormData>({
         resolver: zodResolver(createEditJobSchema),
@@ -70,7 +46,31 @@ export default function EditJobPage() {
         mode: 'onChange'
     });
 
-    const {formState: {touchedFields} } = methods;
+    const { handleSubmit, reset, formState: {touchedFields} } = methods;
+
+    useEffect(() => {
+        // Guard clause: If data isn't loaded yet, do nothing
+        if (!currentJob) return;
+
+        // Map your API data to Form Data
+        reset({
+            companyId: currentJob.companyId,
+            title: currentJob.title,
+            category: currentJob.categoryId,
+            description: currentJob.description,
+            // Ensure you handle Date conversion safely
+            dateTimeExpiringUtc: new Date(currentJob.dateTimeExpiringUtc),
+            isPublic: currentJob.isPublic,
+            employmentOptionIds: currentJob.employmentOptionIds,
+            jobContractTypeIds: currentJob.contractTypeIds,
+            // Safe navigation in case locations is undefined
+            locationIds: currentJob.locations?.map(l => l.id) || [],
+            salaryInfo: currentJob.salaryInfoDto,
+            responsibilities: currentJob.responsibilities,
+            requirements: currentJob.requirements,
+            niceToHaves: currentJob.niceToHaves,
+        });
+    }, [currentJob, isLoading]);
 
     const onSubmit = async (data: CreateEditJobFormData) => {
 
@@ -130,27 +130,29 @@ export default function EditJobPage() {
                 Dodaj więcej informacji o ofercie, aby zwiększyć jej widoczność i przyciągnąć idealnych kandydatów. Im dokładniej opiszesz stanowisko, firmę i oczekiwania, tym lepiej Twoja oferta będzie dopasowana do właściwych osób.
             </Typography>
 
-            <form onSubmit={methods.handleSubmit(onSubmit)}>
+            <FormProvider {...methods}>
+                <form onSubmit={handleSubmit(onSubmit)}>
 
-                <CreateEditJobBasicInfoCard />
+                    <CreateEditJobBasicInfoCard />
 
-                <CreateEditJobLocationCard />
+                    <CreateEditJobLocationCard locations={currentJob.locations} />
 
-                <CreateEditJobPublicationIntervalCard />
+                    <CreateEditJobPublicationIntervalCard />
 
-                <CreateEditJobEmploymentOptionCard />
+                    <CreateEditJobEmploymentOptionCard />
 
-                <CreateEditJobContractTypeCard />
+                    <CreateEditJobContractTypeCard />
 
-                <CreateEditJobSalaryDataCard />
+                    <CreateEditJobSalaryDataCard />
 
-                <CreateEditJobListCard cardTitle="Obowiązki" fieldName="responsibilities" />
+                    <CreateEditJobListCard cardTitle="Obowiązki" fieldName="responsibilities" />
 
-                <CreateEditJobListCard cardTitle="Wymogi" fieldName="requirements" />
+                    <CreateEditJobListCard cardTitle="Wymogi" fieldName="requirements" />
 
-                <CreateEditJobListCard cardTitle="Mile widziane" fieldName="niceToHaves" />
+                    <CreateEditJobListCard cardTitle="Mile widziane" fieldName="niceToHaves" />
 
-            </form>
+                </form>
+            </FormProvider>
 
         </Box>
     );

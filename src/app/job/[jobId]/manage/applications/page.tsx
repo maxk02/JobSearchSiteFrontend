@@ -45,7 +45,8 @@ export default function AccountApplicationsPage() {
     const fetchApplications = async () => {
 
         const request: GetApplicationsForJobRequest = {
-            paginationSpec: {pageSize: 15, pageNumber: parsedPageParam},
+            page: parsedPageParam,
+            size: 15,
             sortOption: sortOption,
             query: searchQuery,
             statusIds: selectedStatusIds,

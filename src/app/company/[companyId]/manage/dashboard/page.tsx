@@ -17,9 +17,7 @@ import {
     searchCompanySharedJobs,
     getCompanyLastVisitedJobs
 } from "@/lib/api/companies/companiesApi";
-import {
-    GetCompanySharedJobsRequest
-} from "@/lib/api/companies/companiesApiInterfaces";
+import { SearchCompanySharedJobsRequest } from "@/lib/api/companies/companiesApiInterfaces";
 
 
 const mockCounters = {
@@ -87,7 +85,7 @@ export default function CompanyDashboard() {
 
     useEffect(() => {
         const fetchJobs = async () => {
-            const request: GetCompanySharedJobsRequest = {
+            const request: SearchCompanySharedJobsRequest = {
                 query: jobSearchDialogQuery,
             };
 
@@ -178,7 +176,7 @@ export default function CompanyDashboard() {
                         cardTitle="Ostatnio odwiedzane ogłoszenia"
                         items={lastJobs}
                         noItemsPlaceholderText="Brak ogłoszeń do wyświetlenia"
-                        constructPath={(id: number) => `/jobs/${id}/manage`}
+                        constructPath={(id: number) => `/job/${id}/manage`}
                         onDelete={(id: number) => handleDeleteLastJob(id)}
                         onDeleteAll={handleDeleteAllJobs}
                         listItemAvatarIcon={<Work />}

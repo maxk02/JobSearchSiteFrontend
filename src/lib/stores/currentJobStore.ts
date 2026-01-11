@@ -26,14 +26,14 @@ export const useCurrentJobStore = create<CurrentJobState>((set, get) => ({
     fetchCurrentJob: async (id: number) => {
         const result = await getJobManagementDto(id);
         if (result.success) {
-            set({ currentJob: result.data.job, isLoading: false });
-            console.log(`Loaded company ${get().currentJob?.id}`);
+            set({ currentJob: result.data.jobManagementDto, isLoading: false });
+            console.log(`Loaded job ${get().currentJob?.id}`);
         }
         else {
             set({ currentJob: null, isLoading: false });
 
             if (result.status !== 401)
-                console.error(`Couldn't load company id=${id}, error: ${result.error.message}, ${result.error.details}`);
+                console.error(`Couldn't load job id=${id}, error: ${result.error.message}, ${result.error.details}`);
         }
     }
 }));

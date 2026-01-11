@@ -7,6 +7,7 @@ import {useSearchParams} from "next/navigation";
 import {getBookmarkedJobs} from "@/lib/api/userProfiles/userProfilesApi";
 import MyDefaultPagination from "@/app/_ui/MyDefaultPagination";
 import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
+import { GetBookmarkedJobsRequest } from "@/lib/api/userProfiles/userProfilesApiInterfaces";
 
 export default function AccountBookmarksPage() {
 
@@ -21,8 +22,14 @@ export default function AccountBookmarksPage() {
     useEffect(() => {
 
         const fetchJobBookmarks = async () => {
+
+            const request: GetBookmarkedJobsRequest = {
+                page: parsedPageParam,
+                size: 10
+            };
+
             const result =
-                await getBookmarkedJobs({pageSize: 15, pageNumber: parsedPageParam});
+                await getBookmarkedJobs(request);
 
             if (result.success) {
                 setJobCards(result.data.jobInfos);

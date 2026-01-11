@@ -8,25 +8,32 @@ import {JobApplicationInUserProfileDto} from "@/lib/api/jobApplications/jobAppli
 import {useSearchParams} from "next/navigation";
 import {getJobApplications} from "@/lib/api/userProfiles/userProfilesApi";
 import {jobApplicationStatuses} from "@/lib/seededData/jobApplicationStatuses";
+import { GetJobApplicationsRequest } from "@/lib/api/userProfiles/userProfilesApiInterfaces";
 
 
 export default function AccountApplicationsPage() {
-    const [selectedApplicationStatusId, setSelectedApplicationStatusId] = useState<number | null>(null);
+    const [selectedApplicationStatusId, setSelectedApplicationStatusId] = useState<number>(0);
+    const [page, setPage] = useState<number>(1);
+    const [totalPages, setTotalPages] = useState<number>(1);
     const [applications, setApplications] = useState<JobApplicationInUserProfileDto[]>([]);
 
-    const searchParams = useSearchParams();
-    const pageParam = searchParams.get("page");
-    const parsedPageParam = pageParam && !isNaN(parseInt(pageParam, 10)) ? parseInt(pageParam, 10) : 1;
-
-    const [totalPages, setTotalPages] = useState<number>(1);
+    // const searchParams = useSearchParams();
+    // const pageParam = searchParams.get("page");
+    // const parsedPageParam = pageParam && !isNaN(parseInt(pageParam, 10)) ? parseInt(pageParam, 10) : 1;
 
     const [updateTriggerCounter, setUpdateTriggerCounter] = useState<number>(0);
 
     useEffect(() => {
 
         const fetchApplications = async () => {
-            const result = await getJobApplications(selectedApplicationStatusId,
-                {pageSize: 15, pageNumber: parsedPageParam});
+            
+            const request: GetJobApplicationsRequest = {
+                statusId: selectedApplicationStatusId === 0 ? null : selectedApplicationStatusId,
+                page: page,
+                size: 10
+            };
+
+            const result = await getJobApplications(request);
             
             if (result.success) {
                 setApplications(result.data.jobApplications);
@@ -39,7 +46,7 @@ export default function AccountApplicationsPage() {
         
         fetchApplications();
 
-    }, [parsedPageParam, selectedApplicationStatusId, updateTriggerCounter]);
+    }, [page, selectedApplicationStatusId, updateTriggerCounter]);
 
     return (
         <>
@@ -72,7 +79,7 @@ export default function AccountApplicationsPage() {
                         onDeletionTriggered={() => setUpdateTriggerCounter(prev => prev + 1)}
                     />
                 ))}
-                <MyDefaultPagination currentPage={parsedPageParam} totalPages={totalPages} />
+                <MyDefaultPagination currentPage={page} totalPages={totalPages} />
             </Stack>
 
         </>

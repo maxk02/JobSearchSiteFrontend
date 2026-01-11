@@ -119,7 +119,7 @@ export default function ApplicationFilteringCard(props: ApplicationFilteringCard
                                         </Typography>
                                     )}
                             >
-                                {jobApplicationStatuses.map((item) => (
+                                {jobApplicationStatuses.filter(s => s.id !== 0).map((item) => (
                                     <MenuItem key={item.id} value={item.id} sx={{px: 1, py: 0.5}}>
                                         <Checkbox
                                             checked={selectedStatusIds.indexOf(item.id) > -1}

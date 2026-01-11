@@ -30,12 +30,12 @@ export default function ManageJobLayout({children}: Readonly<{ children: React.R
             const result = await getJobManagementDto(jobIdParam);
 
             if (result.success) {
-                setCurrentJobState(result.data.job);
+                setCurrentJobState(result.data.jobManagementDto);
             }
         };
 
         fetchManagementDto();
-    }, []);
+    }, [jobIdParam]);
 
     return (
         <Container maxWidth="xl" sx={{ mt: 2.5, mb: 2.5 }}>
@@ -54,6 +54,7 @@ export default function ManageJobLayout({children}: Readonly<{ children: React.R
                                 returnToId={currentJobState.companyId}
                             />
                         }
+
                         <ManageJobViewsCard />
 
                         {isActive() &&

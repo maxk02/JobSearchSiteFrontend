@@ -19,9 +19,9 @@ type RoutePattern = {
 };
 
 const hiddenLayoutRoutePatterns: RoutePattern[] = [
-    { regex: /^\/company\/\d+\/create-job$/, name: "/company/id/create-job" },
-    { regex: /^\/job-creator$/, name: "/job-creator" },
-    { regex: /^\/job\/\d+\/manage.*$/, name: "/job/id/manage" },
+    // { regex: /^\/company\/\d+\/create-job$/, name: "/company/id/create-job" },
+    // { regex: /^\/job-creator$/, name: "/job-creator" },
+    // { regex: /^\/job\/\d+\/manage.*$/, name: "/job/id/manage" },
 ];
 
 function evaluateRoutePatterns(pathname: string): boolean {

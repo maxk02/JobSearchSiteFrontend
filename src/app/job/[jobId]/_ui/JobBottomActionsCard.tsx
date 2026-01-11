@@ -47,11 +47,11 @@ export default function JobBottomActionsCard({ item }: JobBottomActionsCardProps
 
                 <Button
                     size="large"
-                    startIcon={ item.isBookmarked ? <Star /> : <StarBorder /> }
+                    startIcon={ isBookmarked ? <Star sx={{ color: "#202557" }} /> : <StarBorder /> }
                     sx={{ borderRadius: "50px" }}
                     onClick={toggleBookmark}
                 >
-                    { item.isBookmarked ? "Usuń z zapisanych" : "Zapisz" }
+                    { isBookmarked ? "Usuń z zapisanych" : "Zapisz" }
                 </Button>
             </Stack>
 

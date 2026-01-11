@@ -47,15 +47,17 @@ export default function JobOverviewCard({job} : JobOverviewCardProps) {
             <Divider />
             <List sx={{ m: 0, px: 0, py: 1 }}>
                 <Grid container spacing={0}>
-                    <Grid size={{ xs: 12, md: 12, lg: 6 }}>
-                        <ListItem sx={{ px: 3, display: "flex", flexDirection: "row", gap: 1.5 }}>
-                            <Avatar variant="rounded" sx={{ height: 45, width: 45,
-                                backgroundColor: "#dde2e9" }}>
-                                <PinDrop color="primary" />
-                            </Avatar>
-                            <Typography lineHeight={1} sx={{ fontSize: "0.95em" }}>Warszawa, Mazowieckie</Typography>
-                        </ListItem>
-                    </Grid>
+                    {job.locations.map(l =>
+                        <Grid key={l.id} size={{ xs: 12, md: 12, lg: 6 }}>
+                            <ListItem sx={{ px: 3, display: "flex", flexDirection: "row", gap: 1.5 }}>
+                                <Avatar variant="rounded" sx={{ height: 45, width: 45,
+                                    backgroundColor: "#dde2e9" }}>
+                                    <PinDrop color="primary" />
+                                </Avatar>
+                                <Typography lineHeight={1.25} sx={{ fontSize: "0.95em" }}>{l.fullName}</Typography>
+                            </ListItem>
+                        </Grid>
+                    )}
                     <Grid size={{ xs: 12, md: 12, lg: 6 }}>
                         <ListItem sx={{ px: 3, display: "flex", flexDirection: "row", gap: 1.5 }}>
                             <Avatar variant="rounded" sx={{ height: 45, width: 45,
@@ -64,7 +66,7 @@ export default function JobOverviewCard({job} : JobOverviewCardProps) {
                             </Avatar>
                             <Stack gap={0.5}>
                                 {/*<Typography lineHeight={1} sx={{ fontSize: "0.95em" }}>ważna jeszcze 10 dni</Typography>*/}
-                                <Typography lineHeight={1} sx={{ fontSize: "0.95em" }}>
+                                <Typography lineHeight={1.25} sx={{ fontSize: "0.95em" }}>
                                     Ważna do: {formatPolishDate(job.dateTimeExpiringUtc)}
                                 </Typography>
                             </Stack>
@@ -99,9 +101,9 @@ export default function JobOverviewCard({job} : JobOverviewCardProps) {
                                 <Typography lineHeight={1.25} sx={{ fontSize: "0.95em" }}>
                                     {
                                         employmentMobilityOptions
-                                            .filter(eo => (job.contractTypeIds ?? []).includes(eo.id))
+                                            .filter(eo => (job.employmentOptionIds ?? []).includes(eo.id))
                                             .map(eo => eo.namePl)
-                                            .join(',')
+                                            .join(', ')
                                     }
                                 </Typography>
                             </ListItem>
@@ -118,9 +120,9 @@ export default function JobOverviewCard({job} : JobOverviewCardProps) {
                                 <Typography lineHeight={1.25} sx={{ fontSize: "0.95em" }}>
                                     {
                                         employmentTimeOptions
-                                            .filter(eo => (job.contractTypeIds ?? []).includes(eo.id))
+                                            .filter(eo => (job.employmentOptionIds ?? []).includes(eo.id))
                                             .map(eo => eo.namePl)
-                                            .join(',')
+                                            .join(', ')
                                     }
                                 </Typography>
                             </ListItem>

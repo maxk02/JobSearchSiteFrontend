@@ -109,7 +109,7 @@ export default function CreateEditJobSalaryDataCard() {
                                 {...field}
                                 select
                                 label="Wymiar wynagrodzenia"
-                                value={field.value === undefined ? "" : field.value.toString()}
+                                value={(field.value === undefined || field.value === null) ? "" : field.value.toString()}
                                 onChange={(e) => field.onChange(e.target.value === "true")}
                                 sx={{ minWidth: "320px" }}
                                 error={!!errors.salaryInfo?.isAfterTaxes}

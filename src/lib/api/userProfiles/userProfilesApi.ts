@@ -51,19 +51,19 @@ export const deleteJobBookmark = async (jobId: number) => {
 //     );
 // };
 
-export const getBookmarkedJobs = async (page: number, size: number) => {
+export const getBookmarkedJobs = async (req: GetBookmarkedJobsRequest) => {
     return await fetchData<GetBookmarkedJobsRequest, GetBookmarkedJobsResponse>(
         `/users/current/bookmarks/jobs`,
         "GET",
-        { page: page, size: size }
+        req
     );
 };
 
-export const getJobApplications = async (statusId: number | null, page: number, size: number) => {
+export const getJobApplications = async (req: GetJobApplicationsRequest) => {
     return await fetchData<GetJobApplicationsRequest, GetJobApplicationsResponse>(
         `/users/current/job-applications`,
         "GET",
-        { statusId: statusId, page: page, size: size }
+        req
     );
 };
 
