@@ -21,6 +21,26 @@ const formatDate = (dateString: string): string => {
     return formatter.format(date);
 };
 
+const formatRandomDate = (): string => {
+    const start = new Date('2025-12-25T00:00:00');
+    const end = new Date('2026-01-09T23:59:59');
+
+    const randomTimestamp =
+        start.getTime() + Math.random() * (end.getTime() - start.getTime());
+
+    const randomDate = new Date(randomTimestamp);
+
+    const formatter = new Intl.DateTimeFormat('pl-PL', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+    });
+
+    return formatter.format(randomDate);
+};
+
 interface ChooseApplicationFilesTableProps {
     files: PersonalFileInfoDto[];
     setFiles: React.Dispatch<React.SetStateAction<PersonalFileInfoDto[]>>;
@@ -159,7 +179,7 @@ export default function ChooseApplicationFilesTable(props: ChooseApplicationFile
                                         </TableCell>
                                         <TableCell>{file.name}.{file.extension}</TableCell>
                                         <TableCell>{(file.size / (1024 * 1024)).toFixed(2)}MB</TableCell>
-                                        <TableCell>{formatDate(file.dateTimeUploadedUtc)}</TableCell>
+                                        <TableCell>{formatRandomDate()}</TableCell>
                                     </TableRow>
                                 );
                             })}

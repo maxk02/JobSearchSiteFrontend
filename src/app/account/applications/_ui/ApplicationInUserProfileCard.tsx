@@ -13,7 +13,7 @@ import {
     useTheme
 } from "@mui/material";
 import Image from "next/image";
-import {FilePresent, PlayArrow, Undo} from "@mui/icons-material";
+import {FilePresent, LocationPin, PlayArrow, Undo} from "@mui/icons-material";
 import {JobApplicationInUserProfileDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
 import formatSalaryInfoText from "@/app/_ui/_functions/formatSalaryInfoText";
 import {employmentOptions} from "@/lib/seededData/employmentOptions";
@@ -87,36 +87,35 @@ export default function ApplicationInUserProfileCard({ item, onDeletionTriggered
                             {item.companyName}
                         </Typography>
 
-                        {item.locations.length === 1 ? (
-                            <Typography lineHeight={1} mt={1.3}>
-                                {item.locations[0].name}
-                            </Typography>
-                        ) : (
+                        <Stack direction="row" gap={0.3} sx={{ alignItems: "center", mt: 1.35 }}>
+                            <LocationPin fontSize="small" sx={{ p: 0 }}></LocationPin>
                             <Typography lineHeight={1}>
-                                Dostępna w {item.locations.length} lokalizacjach
+                                {item.locationDto.fullName}
                             </Typography>
-                        )}
+                        </Stack>
 
                         <List sx={{ m: 0, p: 0, display: "flex", flexDirection: "row" }}>
-                            <ListItem sx={{ m: 0, px: 0, pt: 1.3, pb: 0, width: "auto",
-                                "&::after": { content: '"●"', mx: 0.5, fontSize: "0.7rem", color: "text.secondary" } }}
-                            >
-                                {item.employmentOptionIds?.map((item) => (
-                                    <Typography key={item} lineHeight={1} color="textSecondary">
+
+                            {item.employmentOptionIds?.map((item) => (
+                                <ListItem key={item} sx={{ m: 0, px: 0, pt: 1.35, pb: 0, width: "auto",
+                                    "&::after": { content: '"●"', mx: 0.5, fontSize: "0.7rem", color: "text.secondary" } }}
+                                >
+                                    <Typography lineHeight={1} color="textSecondary">
                                         {employmentOptions
                                             .filter(eo => eo.id === item)
-                                            .map(eo => eo.namePl).join(",")}
+                                            .map(eo => eo.namePl).join(", ")}
                                     </Typography>
-                                ))}
-                            </ListItem>
-                            <ListItem sx={{ m: 0, px: 0, pt: 1.3, pb: 0, width: "auto" }}>
-                                {item.contractTypeIds?.map((item) => (
-                                    <Typography key={item} lineHeight={1} color="textSecondary">
-                                        {jobContractTypes
-                                            .filter(jct => jct.id === item)
-                                            .map(jct => jct.namePl).join(",")}
-                                    </Typography>
-                                ))}
+                                </ListItem>
+                            ))}
+
+                            <ListItem sx={{ m: 0, px: 0, pt: 1.35, pb: 0, width: "auto", }}>
+                                <Typography lineHeight={1} color="textSecondary">
+                                    {jobContractTypes
+                                        .filter(jct => item.contractTypeIds?.includes(jct.id))
+                                        .map(jct => jct.namePl)
+                                        .join(", ")
+                                    }
+                                </Typography>
                             </ListItem>
                         </List>
 
@@ -187,7 +186,7 @@ export default function ApplicationInUserProfileCard({ item, onDeletionTriggered
                 title="Wybierz pliki do aplikowania"
                 open={dialogOpen}
                 onClose={() => setDialogOpen(false)}
-                currentFileIds={[]}
+                currentFileIds={item.personalFileInfoDtos.map(pf => pf.id)}
                 jobId={item.id}
                 applicationId={item.id}
             />

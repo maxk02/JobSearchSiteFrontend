@@ -21,6 +21,7 @@ import {
     UpdateJobApplicationFilesRequest
 } from "@/lib/api/jobApplications/jobApplicationsApiInterfaces";
 import ChooseApplicationFilesTable from "@/app/_ui/ChooseApplicationFilesTable";
+import { GetPersonalFilesRequest } from "@/lib/api/userProfiles/userProfilesApiInterfaces";
 
 
 const mockFiles: PersonalFileInfoDto[] = [
@@ -59,7 +60,13 @@ export default function ChooseApplicationFilesDialog(props: ChangeApplicationSta
     useEffect(() => {
 
         const fetchFiles = async () => {
-            const result = await getPersonalFiles();
+
+            const request: GetPersonalFilesRequest = {
+                page: 1,
+                size: 15
+            };
+
+            const result = await getPersonalFiles(request);
 
             if (result.success) {
                 setFiles(result.data.personalFileInfos);
@@ -88,7 +95,7 @@ export default function ChooseApplicationFilesDialog(props: ChangeApplicationSta
                 const request: AddJobApplicationRequest = {
                     jobId: jobId,
                     personalFileIds: selectedFileIds,
-                    locationId: 0
+                    locationId: 0 //todo
                 };
 
                 const result = await addJobApplication(request);

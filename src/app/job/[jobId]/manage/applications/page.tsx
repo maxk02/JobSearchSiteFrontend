@@ -15,8 +15,8 @@ import {JobApplicationSortOption} from "@/lib/api/jobs/jobsApiDtos";
 
 
 const sortOptionListItems: { value: JobApplicationSortOption, label: string }[] = [
-    { value: "dateAsc", label: "Najstarsze" },
-    { value: "dateDesc", label: "Najnowsze" },
+    { value: "dateAppliedAsc", label: "Najstarsze" },
+    { value: "dateAppliedDesc", label: "Najnowsze" },
 ];
 
 export default function AccountApplicationsPage() {
@@ -31,7 +31,7 @@ export default function AccountApplicationsPage() {
     const pageParam = searchParams.get("page");
     const parsedPageParam = pageParam && !isNaN(parseInt(pageParam, 10)) ? parseInt(pageParam, 10) : 1;
 
-    const [sortOption, setSortOption] = useState<JobApplicationSortOption>("dateDesc");
+    const [sortOption, setSortOption] = useState<JobApplicationSortOption>("dateAppliedDesc");
 
     const [totalPages, setTotalPages] = useState<number>(1);
 

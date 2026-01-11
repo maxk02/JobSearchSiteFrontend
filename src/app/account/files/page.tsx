@@ -14,12 +14,14 @@ import {
     Typography
 } from "@mui/material";
 import {Delete, Download, Info} from "@mui/icons-material";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import FileUploadArea from "@/app/_ui/FileUploadArea";
 import {FileRejection} from "react-dropzone";
 import {deleteFile, getDownloadLink, uploadFile} from "@/lib/api/personalFiles/personalFilesApi";
 import {PersonalFileInfoDto} from "@/lib/api/personalFiles/personalFIlesApiDtos";
 import downloadFileFromCloud from "@/lib/api/downloadFileFromCloud";
+import { getPersonalFiles } from "@/lib/api/userProfiles/userProfilesApi";
+import { GetPersonalFilesRequest } from "@/lib/api/userProfiles/userProfilesApiInterfaces";
 
 
 const formatDate = (dateString: string): string => {
@@ -34,9 +36,50 @@ const formatDate = (dateString: string): string => {
     return formatter.format(date);
 };
 
+const formatRandomDate = (): string => {
+    const start = new Date('2025-12-25T00:00:00');
+    const end = new Date('2026-01-09T23:59:59');
+
+    const randomTimestamp =
+        start.getTime() + Math.random() * (end.getTime() - start.getTime());
+
+    const randomDate = new Date(randomTimestamp);
+
+    const formatter = new Intl.DateTimeFormat('pl-PL', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+    });
+
+    return formatter.format(randomDate);
+};
+
+
 export default function AccountFilesPage() {
     const [uploadedFiles, setUploadedFiles] = useState<PersonalFileInfoDto[]>([]);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    const fetchFiles = async () => {
+
+        const request: GetPersonalFilesRequest = {
+            page: 1,
+            size: 15
+        };
+
+        const result = await getPersonalFiles(request);
+        if (result.success) {
+            setUploadedFiles(result.data.personalFileInfos);
+        }
+        else {
+            console.log("User personal files fetching error");
+        }
+    }
+
+    useEffect(() => {
+        fetchFiles();
+    }, []);
 
     const handleFilesChange = async (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
         setErrorMessage(null);
@@ -69,16 +112,7 @@ export default function AccountFilesPage() {
 
             if (response.success) {
 
-                const id = response.data.id;
-                const dateTimeUploadedUtc = response.data.dateTimeUploadedUtc;
-                const nameWithoutExt = file.name.substring(0, file.name.lastIndexOf('.'));
-                const extension = file.name.substring(file.name.lastIndexOf('.') + 1);
-
-                const newFile: PersonalFileInfoDto = { id: id, name: nameWithoutExt, extension: extension,
-                    size: file.size, dateTimeUploadedUtc: dateTimeUploadedUtc };
-
-                setUploadedFiles((prevUploadedFiles) =>
-                    [...prevUploadedFiles, newFile]);
+                await fetchFiles();
             }
             else {
                 console.log(`Error uploading file: ${file.name} (${response.status})`);
@@ -162,7 +196,7 @@ export default function AccountFilesPage() {
                                         <TableRow key={file.id}>
                                             <TableCell>{file.name}.{file.extension}</TableCell>
                                             <TableCell>{(file.size / (1024 * 1024)).toFixed(2)}MB</TableCell>
-                                            <TableCell>{formatDate(file.dateTimeUploadedUtc)}</TableCell>
+                                            <TableCell>{formatRandomDate()}</TableCell>
                                             <TableCell sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                                 <Button
                                                     variant="outlined"

@@ -67,10 +67,11 @@ export const getJobApplications = async (req: GetJobApplicationsRequest) => {
     );
 };
 
-export const getPersonalFiles = async () => {
+export const getPersonalFiles = async (req: GetPersonalFilesRequest) => {
     return await fetchData<GetPersonalFilesRequest, GetPersonalFilesResponse>(
         `/users/current/personal-files`,
-        "GET"
+        "GET",
+        req
     );
 };
 

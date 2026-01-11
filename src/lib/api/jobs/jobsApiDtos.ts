@@ -1,7 +1,7 @@
 import {LocationDto} from "@/lib/api/locations/locationsApiDtos";
 
 
-export type JobApplicationSortOption = "dateAsc" | "dateDesc";
+export type JobApplicationSortOption = "dateAppliedAsc" | "dateAppliedDesc";
 
 export interface JobCardDto {
     id: number;
