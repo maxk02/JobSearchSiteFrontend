@@ -65,7 +65,7 @@ export default function MyAccountMenuButton() {
         <Box key="user-info" sx={{ display: "flex", flexDirection: "row", alignItems: "center", p: 2, pt: 1 }}>
             <Avatar src={currentUser.avatarLink ?? ""} sx={{ height: 50, width: 50, mr: 1.5 }} />
             {currentUser?.fullName &&
-                <Typography variant="body1" fontWeight={600} gutterBottom>
+                <Typography variant="body1" fontWeight={600}>
                     {currentUser?.fullName}
                 </Typography>
             }

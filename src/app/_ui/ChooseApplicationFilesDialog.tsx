@@ -22,6 +22,7 @@ import {
 } from "@/lib/api/jobApplications/jobApplicationsApiInterfaces";
 import ChooseApplicationFilesTable from "@/app/_ui/ChooseApplicationFilesTable";
 import { GetPersonalFilesRequest } from "@/lib/api/userProfiles/userProfilesApiInterfaces";
+import JobApplicationLocationAutoComplete from "./JobApplicationLocationAutoComplete";
 
 
 const mockFiles: PersonalFileInfoDto[] = [
@@ -37,6 +38,8 @@ interface ChangeApplicationStatusDialogDialogProps {
     onClose: () => void;
     jobId: number;
     currentFileIds: number[];
+    currentLocationId: number;
+    currentLocationName: string;
     applicationId: number | null;
     setApplicationId?: React.Dispatch<React.SetStateAction<number | null>>;
 }
@@ -82,6 +85,7 @@ export default function ChooseApplicationFilesDialog(props: ChangeApplicationSta
 
             if (applicationId) {
                 const request: UpdateJobApplicationFilesRequest = {
+                    locationId: selectedLocationId,
                     personalFileIds: selectedFileIds,
                 };
 
@@ -131,6 +135,11 @@ export default function ChooseApplicationFilesDialog(props: ChangeApplicationSta
             </DialogTitle>
             <DialogContent sx={{ height: "500px", minHeight: "500px" }}>
                 <Stack sx={{ height: "100%", minHeight: "100%" }}>
+
+                    <Stack direction="row">
+                        <JobApplicationLocationAutoComplete />
+                    </Stack>
+
                     <Alert severity="info" icon={<Info />} sx={{ flex: "0 0 auto", width: "100%" }}>
                         <Typography>Wybierz co najmniej 1 plik, który będzie podpięty do tej aplikacji.</Typography>
                     </Alert>

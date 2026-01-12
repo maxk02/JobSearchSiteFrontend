@@ -13,6 +13,7 @@ export interface AddJobApplicationTagRequest {
 }
 
 export interface UpdateJobApplicationFilesRequest {
+    locationId: number;
     personalFileIds: number[];
 }
 

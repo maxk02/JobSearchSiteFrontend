@@ -163,7 +163,7 @@ export default function ApplicationInUserProfileCard({ item, onDeletionTriggered
                                 size="medium"
                                 onClick={() => setDialogOpen(true)}
                             >
-                                Edytuj pliki
+                                Edytuj aplikację
                             </Button>
                         </Stack>
                     </Stack>
@@ -187,6 +187,8 @@ export default function ApplicationInUserProfileCard({ item, onDeletionTriggered
                 open={dialogOpen}
                 onClose={() => setDialogOpen(false)}
                 currentFileIds={item.personalFileInfoDtos.map(pf => pf.id)}
+                currentLocationId={1}
+                currentLocationName={""}
                 jobId={item.id}
                 applicationId={item.id}
             />
