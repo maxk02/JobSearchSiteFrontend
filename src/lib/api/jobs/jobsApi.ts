@@ -3,6 +3,7 @@ import {
     AddJobResponse,
     GetApplicationsForJobRequest,
     GetApplicationsForJobResponse,
+    GetJobDataForCurrentAccountResponse,
     GetJobManagementDtoResponse,
     GetJobResponse,
     GetJobsRequest,
@@ -22,6 +23,10 @@ export const deleteJob = async (id: number) => {
 
 export const getApplicationsForJob = async (id: number, req: GetApplicationsForJobRequest) => {
     return await fetchData<GetApplicationsForJobRequest, GetApplicationsForJobResponse>(`/jobs/${id}/applications`, "GET", req);
+};
+
+export const getJobDataForCurrentAccount = async (id: number) => {
+    return await fetchData<unknown, GetJobDataForCurrentAccountResponse>(`/jobs/${id}/current-account-data`, "GET");
 };
 
 export const getJob = async (id: number) => {

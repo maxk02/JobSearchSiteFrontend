@@ -32,3 +32,11 @@ export interface JobApplicationInUserProfileDto {
     personalFileInfoDtos: PersonalFileInfoDto[];
     status: number;
 }
+
+export interface JobApplicationOnJobPageDto {
+    id: number;
+    locationDto: LocationDto;
+    dateTimeAppliedUtc: string;
+    personalFileIds: number[];
+    statusId: number;
+}

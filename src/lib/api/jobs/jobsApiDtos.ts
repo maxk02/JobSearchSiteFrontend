@@ -36,8 +36,6 @@ export interface JobDetailedDto {
     salaryInfoDto: JobSalaryInfoDto | null;
     employmentOptionIds: number[] | null;
     contractTypeIds: number[] | null;
-    isBookmarked: boolean;
-    applicationId: number | null;
 }
 
 export interface JobManagementDto {

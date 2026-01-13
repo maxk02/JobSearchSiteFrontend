@@ -1,6 +1,6 @@
 import {JobApplicationSortOption, JobCardDto, JobDetailedDto, JobManagementDto, JobSalaryInfoDto} from "@/lib/api/jobs/jobsApiDtos";
 import {PaginationResponse, PaginationSpec} from "@/lib/api/sharedDtos";
-import {JobApplicationForManagersDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
+import {JobApplicationForManagersDto, JobApplicationOnJobPageDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
 
 export interface AddJobRequest {
     companyId: number;
@@ -35,6 +35,11 @@ export interface GetApplicationsForJobRequest {
 export interface GetApplicationsForJobResponse {
     jobApplications: JobApplicationForManagersDto[];
     paginationResponse: PaginationResponse;
+}
+
+export interface GetJobDataForCurrentAccountResponse {
+    jobApplicationOnJobPageDto: JobApplicationOnJobPageDto | null;
+    isBookmarked: boolean;
 }
 
 export interface GetJobManagementDtoResponse {

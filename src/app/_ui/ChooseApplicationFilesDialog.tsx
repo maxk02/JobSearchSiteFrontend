@@ -22,7 +22,9 @@ import {
 } from "@/lib/api/jobApplications/jobApplicationsApiInterfaces";
 import ChooseApplicationFilesTable from "@/app/_ui/ChooseApplicationFilesTable";
 import { GetPersonalFilesRequest } from "@/lib/api/userProfiles/userProfilesApiInterfaces";
-import JobApplicationLocationAutoComplete from "./JobApplicationLocationAutoComplete";
+import JobApplicationLocationAutoComplete from "./JobApplicationLocationSelect";
+import { LocationDto } from "@/lib/api/locations/locationsApiDtos";
+import { getJob } from "@/lib/api/jobs/jobsApi";
 
 
 const mockFiles: PersonalFileInfoDto[] = [
@@ -32,24 +34,27 @@ const mockFiles: PersonalFileInfoDto[] = [
     {id: 4, name: "File 4", size: 2000000, extension: "pdf"},
 ];
 
-interface ChangeApplicationStatusDialogDialogProps {
+interface ChangeApplicationFilesDialogDialogProps {
     title: string;
     open: boolean;
     onClose: () => void;
     jobId: number;
     currentFileIds: number[];
-    currentLocationId: number;
-    currentLocationName: string;
+    currentLocation: LocationDto | null;
     applicationId: number | null;
     setApplicationId?: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-export default function ChooseApplicationFilesDialog(props: ChangeApplicationStatusDialogDialogProps) {
+export default function ChooseApplicationFilesDialog(props: ChangeApplicationFilesDialogDialogProps) {
 
-    const { title, open, onClose, jobId, applicationId, currentFileIds, setApplicationId } = props;
+    const { title, open, onClose, jobId, applicationId,
+        currentFileIds, currentLocation, setApplicationId } = props;
 
+    const [selectedLocation, setSelectedLocation] = useState<LocationDto | null>(currentLocation);
+    const [availableLocations, setAvailableLocations] = useState<LocationDto[]>([]);
     const [files, setFiles] = useState<PersonalFileInfoDto[]>(mockFiles);
     const [selectedFileIds, setSelectedFileIds] = useState<number[]>(currentFileIds);
+    const [loading, setLoading] = useState(false);
     
     const handleClose = (
         _event: unknown, reason: string
@@ -61,31 +66,46 @@ export default function ChooseApplicationFilesDialog(props: ChangeApplicationSta
     };
 
     useEffect(() => {
+        if (open) {
+            const fetchData = async () => {
+                setLoading(true);
+                
+                // Reset state to match props when opening again
+                setSelectedLocation(currentLocation);
+                setSelectedFileIds(currentFileIds);
 
-        const fetchFiles = async () => {
+                // Fetch Files
+                const filesResult = await getPersonalFiles({ page: 1, size: 15 });
+                if (filesResult.success) {
+                    setFiles(filesResult.data.personalFileInfos);
+                }
 
-            const request: GetPersonalFilesRequest = {
-                page: 1,
-                size: 15
+                // Fetch Locations
+                const jobResult = await getJob(jobId);
+                if (jobResult.success) {
+                    setAvailableLocations(jobResult.data.job.locations);
+                }
+                
+                setLoading(false);
             };
 
-            const result = await getPersonalFiles(request);
-
-            if (result.success) {
-                setFiles(result.data.personalFileInfos);
-            }
-        };
-
-        fetchFiles();
-    }, []);
+            fetchData();
+        }
+    }, [open, jobId, currentLocation, currentFileIds]);
 
     const handleSubmitClick = async () => {
 
         const addOrUpdateApplication = async () => {
 
+            if (!selectedLocation)
+            {
+                console.error("Nie wybrano lokalizacji do aplikowania");
+                return;
+            }
+
             if (applicationId) {
                 const request: UpdateJobApplicationFilesRequest = {
-                    locationId: selectedLocationId,
+                    locationId: selectedLocation?.id,
                     personalFileIds: selectedFileIds,
                 };
 
@@ -136,11 +156,15 @@ export default function ChooseApplicationFilesDialog(props: ChangeApplicationSta
             <DialogContent sx={{ height: "500px", minHeight: "500px" }}>
                 <Stack sx={{ height: "100%", minHeight: "100%" }}>
 
-                    <Stack direction="row">
-                        <JobApplicationLocationAutoComplete />
+                    <Stack direction="row" sx={{ mt: 0.5 }}>
+                        <JobApplicationLocationAutoComplete
+                            availableValues={availableLocations}
+                            value={selectedLocation}
+                            onChange={(l) => setSelectedLocation(l)}
+                        />
                     </Stack>
 
-                    <Alert severity="info" icon={<Info />} sx={{ flex: "0 0 auto", width: "100%" }}>
+                    <Alert severity="info" icon={<Info />} sx={{ flex: "0 0 auto", width: "100%", mt: 1.5 }}>
                         <Typography>Wybierz co najmniej 1 plik, który będzie podpięty do tej aplikacji.</Typography>
                     </Alert>
                     <Alert

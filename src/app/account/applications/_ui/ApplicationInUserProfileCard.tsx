@@ -1,3 +1,5 @@
+// "use client";
+
 import {
     Avatar,
     Box,
@@ -183,12 +185,11 @@ export default function ApplicationInUserProfileCard({ item, onDeletionTriggered
             </Paper>
 
             <ChooseApplicationFilesDialog
-                title="Wybierz pliki do aplikowania"
+                title="Zatwierdź szczegóły aplikacji"
                 open={dialogOpen}
                 onClose={() => setDialogOpen(false)}
                 currentFileIds={item.personalFileInfoDtos.map(pf => pf.id)}
-                currentLocationId={1}
-                currentLocationName={""}
+                currentLocation={item.locationDto}
                 jobId={item.id}
                 applicationId={item.id}
             />

@@ -18,12 +18,15 @@ import React from "react";
 import {useCurrentUserStore} from "@/lib/stores/currentUserStore";
 import Link from "next/link";
 import {logOut} from "@/lib/api/account/accountApi";
+import { useRouter } from "next/navigation";
 
 
 export default function MyAccountMenuButton() {
 
     const currentUser = useCurrentUserStore((state) => state.currentUser);
     const clearCurrentUser = useCurrentUserStore((state) => state.clearCurrentUser);
+
+    const router = useRouter();
 
     const loggedInItems = [
         { text: "Mój profil", icon: <ContactPage />, path: "/account/profile" },
@@ -58,6 +61,7 @@ export default function MyAccountMenuButton() {
         if (result.success) {
             clearCurrentUser();
             handleClose();
+            router.push('/');
         }
     }
 

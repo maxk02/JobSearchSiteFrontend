@@ -129,11 +129,11 @@ export default function CreateEditJobLocationCard({ locations }: CreateEditJobLo
     };
 
     return (
-        <Paper sx={{ mt: 2, pt: 2, pb: (listedLocations.length > 0 ? 1.5 : 2), px: 1.5 }}>
+        <Paper sx={{ mt: 2, pt: 2, pb: (listedLocations && listedLocations.length > 0 ? 1.5 : 2), px: 1.5 }}>
             <Typography variant="h6" fontWeight={600} lineHeight={1} color="primary">Lokalizacje</Typography>
             <Box mt={1.5} display="flex" flexDirection="column">
                 <Alert severity="info" icon={<Info />} sx={{ maxWidth: "500px" }}>
-                    <Typography>Możesz dodać maksymalnie 5 lokalizacji.</Typography>
+                    <Typography>Wymagane. Możesz dodać maksymalnie 5 lokalizacji.</Typography>
                 </Alert>
 
                 <TextField
@@ -161,10 +161,10 @@ export default function CreateEditJobLocationCard({ locations }: CreateEditJobLo
 
                 <Box sx={{ maxWidth: "500px", mt: 1.7 }}>
                     <Typography sx={{ fontWeight: 600, lineHeight: 1 }}>
-                        {listedLocations.length > 0 ? `Dodano lokalizacji: ${listedLocations.length}` : `Brak lokalizacji`}
+                        {listedLocations?.length > 0 ? `Dodano lokalizacji: ${listedLocations.length}` : `Brak lokalizacji`}
                     </Typography>
 
-                    {listedLocations.length > 0 && (
+                    {listedLocations?.length > 0 && (
                         <List sx={{ mt: 1, p: 0, '& > :last-child': { pb: 0 } }}>
                             {listedLocations.map((listedLocation) => (
                                 <ListItem key={listedLocation.id} sx={{ px: 0, py: 0.5, lineHeight: 1 }}>
