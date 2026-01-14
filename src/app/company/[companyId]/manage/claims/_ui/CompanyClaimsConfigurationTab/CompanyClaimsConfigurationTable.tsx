@@ -55,12 +55,14 @@ export default function CompanyClaimsConfigurationTable(props: CompanyClaimsConf
     const emptyRows =
         page > 0 ? Math.max(0, page * rowsPerPage - rows.length) : 0;
 
-    const visibleRows = useMemo(
-        () =>
-            [...rows]
-                .slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage),
-        [page, rows, rowsPerPage],
-    );
+    // const visibleRows = useMemo(
+    //     () =>
+    //         [...rows]
+    //             .slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage),
+    //     [page, rows, rowsPerPage],
+    // );
+
+    const visibleRows = rows;
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
@@ -91,7 +93,7 @@ export default function CompanyClaimsConfigurationTable(props: CompanyClaimsConf
     };
 
     const handleChangePage = (event: unknown, newPage: number) => {
-        onPageChange(newPage);
+        onPageChange(newPage + 1);
     };
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {

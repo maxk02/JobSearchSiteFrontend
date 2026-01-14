@@ -43,6 +43,7 @@ export default function CompanyClaimsOverviewTab() {
     
     const [page, setPage] = useState<number>(1);
     const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+    const [totalCount, setTotalCount] = useState<number>(0);
     const [rows, setRows] = useState<CompanyClaimOverviewDto[]>([]);
     
     const [searchText, setSearchText] = useState<string>("");
@@ -55,7 +56,8 @@ export default function CompanyClaimsOverviewTab() {
     const handleClearInputs = () => {
         setSelectedClaimIds([]);
         setSearchText("");
-        setPage(0);
+        setPage(1);
+        setTotalCount(0);
     };
 
     const [refreshButtonCounter, setRefreshButtonCounter] = useState<number>(0);
@@ -74,6 +76,8 @@ export default function CompanyClaimsOverviewTab() {
 
             if (result.success) {
                 setRows(result.data.companyClaimOverviewDtos);
+                setTotalCount(result.data.paginationResponse.totalCount);
+                setPage(result.data.paginationResponse.currentPage);
             }
         };
 
@@ -139,6 +143,7 @@ export default function CompanyClaimsOverviewTab() {
                     rows={rows}
                     page={page}
                     rowsPerPage={rowsPerPage}
+                    totalCount={totalCount}
                     onPageChange={(newPage: number) => setPage(() => newPage)}
                     onRowsPerPageChange={(newRowsPerPage: number) => setRowsPerPage(newRowsPerPage)}
                 />

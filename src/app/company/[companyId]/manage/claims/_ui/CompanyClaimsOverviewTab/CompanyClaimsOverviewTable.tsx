@@ -20,14 +20,22 @@ interface CompanyClaimsOverviewTableProps {
     rows: CompanyClaimOverviewDto[];
     page: number;
     rowsPerPage: number;
+    totalCount: number;
     onPageChange: (page: number) => void;
     onRowsPerPageChange: (rowsPerPage: number) => void;
 }
 
 export default function CompanyClaimsOverviewTable(props: CompanyClaimsOverviewTableProps) {
 
-    const { rows, page, rowsPerPage, onPageChange, onRowsPerPageChange } = props;
+    const { rows, page, rowsPerPage, totalCount, onPageChange, onRowsPerPageChange } = props;
 
+    const getClaimLabel = (id: number) => {
+        const claim = companyClaims.find(c => c.id === id);
+
+        if (!claim) return 'N/A';
+
+        return `${claim.namePl} (${claim.id})`;
+    };
 
     // const emptyRows =
     //     page > 1 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -35,15 +43,17 @@ export default function CompanyClaimsOverviewTable(props: CompanyClaimsOverviewT
     const emptyRows =
         page > 1 ? Math.max(0, (page - 1) * rowsPerPage - rows.length) : 0;
 
-    const visibleRows = React.useMemo(
-        () =>
-            [...rows]
-                .slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage),
-        [page, rows, rowsPerPage],
-    );
+    // const visibleRows = React.useMemo(
+    //     () =>
+    //         [...rows]
+    //             .slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage),
+    //     [page, rows, rowsPerPage],
+    // );
+
+    const visibleRows = rows;
     
     const handleChangePage = (event: unknown, newPage: number) => {
-        onPageChange(newPage);
+        onPageChange(newPage + 1);
     };
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,9 +89,7 @@ export default function CompanyClaimsOverviewTable(props: CompanyClaimsOverviewT
                             >
                                 <TableCell>{`${row.userFirstName} ${row.userLastName}`}</TableCell>
                                 <TableCell>{row.userEmail}</TableCell>
-                                <TableCell>
-                                    { companyClaims.find(c => c.id == row.claimId)?.namePl }
-                                </TableCell>
+                                <TableCell>{ getClaimLabel(row.claimId) }</TableCell>
                                 <TableCell sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                     <Button
                                         variant="text"
@@ -108,7 +116,7 @@ export default function CompanyClaimsOverviewTable(props: CompanyClaimsOverviewT
             <TablePagination
                 rowsPerPageOptions={[10]}
                 component="div"
-                count={rows.length}
+                count={totalCount}
                 rowsPerPage={rowsPerPage}
                 page={page - 1}
                 onPageChange={handleChangePage}

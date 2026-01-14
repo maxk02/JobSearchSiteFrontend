@@ -90,7 +90,7 @@ export default function CompanyJobsPage() {
     return (
         <>
             <Stack gap={3} mt={0} sx={{ maxWidth: "850px" }}>
-                <MyDefaultSortingCard<JobApplicationSortOption>
+                <MyDefaultSortingCard<CompanyJobManagementCardDtosSortOption>
                     pxValue="6px"
                     sortModes={sortOptionListItems}
                     defaultMode={sortOptionListItems[1]}
