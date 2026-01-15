@@ -7,7 +7,7 @@ import {
 } from "@/lib/api/companyClaims/companyClaimsApiInterfaces";
 
 export const getCompanyClaimIdsForUser = async (companyId: number, userId: number) => {
-    return await fetchData<unknown, GetCompanyClaimIdsForUserResponse>(`/company-claims/company/${companyId}/user/${userId}`, "GET");
+    return await fetchData<unknown, GetCompanyClaimIdsForUserResponse>(`/company-claims/company/${companyId}/user/${userId}/claim-ids`, "GET");
 };
 
 export const getCompanyClaimsOverview = async (companyId: number, req: GetCompanyClaimsOverviewRequest) => {
@@ -20,7 +20,7 @@ export const updateCompanyClaimIdsForUser = async (
     req: UpdateCompanyClaimIdsForUserRequest
 ) => {
     return await fetchData<UpdateCompanyClaimIdsForUserRequest>(
-        `/company-claims/company/${companyId}/user/${userId}`,
+        `/company-claims/company/${companyId}/user/${userId}/claim-ids`,
         "PUT",
         req
     );

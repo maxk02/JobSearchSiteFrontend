@@ -33,8 +33,8 @@ export default function CompanyClaimsConfigurationTab() {
     const params = useParams();
     const companyId = parseInt(params.companyId as string, 10);
 
-    const [page, setPage] = useState<number>(1);
-    const [rowsPerPage, setRowsPerPage] = useState<number>(5);
+    // const [page, setPage] = useState<number>(1);
+    // const [rowsPerPage, setRowsPerPage] = useState<number>(5);
     const [activeCompanyClaimIds, setActiveCompanyClaimIds] = useState<number[]>([]);
 
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
@@ -61,6 +61,9 @@ export default function CompanyClaimsConfigurationTab() {
 
             if (claimIdsResult.success) {
                 setActiveCompanyClaimIds(claimIdsResult.data.claimIds);
+            }
+            else {
+                console.error('couldnt fetch claim ids');
             }
         };
 
@@ -283,10 +286,10 @@ export default function CompanyClaimsConfigurationTab() {
                             companyId={companyId}
                             userId={displayedUser.id}
                             activeClaimIds={activeCompanyClaimIds}
-                            page={page}
-                            rowsPerPage={rowsPerPage}
-                            onPageChange={(newPage: number) => setPage(() => newPage)}
-                            onRowsPerPageChange={(newRowsPerPage: number) => setRowsPerPage(newRowsPerPage)}
+                            // page={page}
+                            // rowsPerPage={rowsPerPage}
+                            // onPageChange={(newPage: number) => setPage(() => newPage)}
+                            // onRowsPerPageChange={(newRowsPerPage: number) => setRowsPerPage(newRowsPerPage)}
                         />
                     </Box>
                 </>

@@ -1,17 +1,17 @@
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack, Typography,} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, ListItem, Stack, Typography,} from "@mui/material";
 import React from "react";
 import {Close} from "@mui/icons-material";
+import {companyClaims} from "@/lib/seededData/companyClaims";
 
 
-interface BasicInfoDialogProps {
-    title: string;
-    text: string;
+interface ClaimConfigurationErrorInfoDialogProps {
     open: boolean;
     onClose: () => void;
-    maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | false
+    maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | false;
+    lackingClaimIds: number[];
 }
 
-export default function BasicInfoDialog({ title, text, open, onClose, maxWidth }: BasicInfoDialogProps) {
+export default function ClaimConfigurationErrorInfoDialog({ open, onClose, maxWidth, lackingClaimIds }: ClaimConfigurationErrorInfoDialogProps) {
     
     const handleClose = (
         _event: unknown, reason: string
@@ -21,6 +21,10 @@ export default function BasicInfoDialog({ title, text, open, onClose, maxWidth }
         }
         onClose();
     };
+
+    const text =
+        `Po operacji z uprawnieniami lista końcowa nie zawierałaby zależności uprawnień pozostawionych
+         we włączonym stanie. W proponowanej konfiguracji brakuje uprawnień:`;
 
     return (
         <Dialog
@@ -33,17 +37,24 @@ export default function BasicInfoDialog({ title, text, open, onClose, maxWidth }
             <DialogTitle sx={{ pb: 1, pr: 1.5 }}>
                 <Stack direction="row" spacing={2} sx={{ justifyContent: "space-between", alignItems: "center" }}>
                     <Typography variant="h5">
-                        {title}
+                        Operacja z uprawnieniami nie może zostać przeprowadzona
                     </Typography>
                     <IconButton onClick={() => handleClose({}, "")}>
                         <Close />
                     </IconButton>
                 </Stack>
             </DialogTitle>
-            <DialogContent sx={{ height: "500px" }}>
+            <DialogContent>
                 <Typography>
                     {text}
                 </Typography>
+                <List sx={{ listStyleType: "disc", pl: 4 }}>
+                    {companyClaims.filter(c => lackingClaimIds.includes(c.id)).map((claim) => (
+                        <ListItem key={claim.id} sx={{ display: "list-item" }}>
+                            {`${claim.namePl} (id=${claim.id})`}
+                        </ListItem>
+                    ))}
+                </List>
             </DialogContent>
             <DialogActions>
                 <Stack direction="row" spacing={2}>
