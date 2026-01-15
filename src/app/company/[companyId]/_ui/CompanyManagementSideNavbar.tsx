@@ -12,7 +12,7 @@ import {
     Stack,
     Typography
 } from "@mui/material";
-import {ArrowForward, Business, Dashboard, FileOpen, Newspaper, Policy} from "@mui/icons-material";
+import {ArrowForward, Business, Dashboard, FileOpen, MonetizationOn, Money, Newspaper, Policy} from "@mui/icons-material";
 import {useParams, usePathname} from "next/navigation";
 import {useEffect} from "react";
 import {getCompanyManagementNavbarDto} from "@/lib/api/companies/companiesApi";
@@ -54,9 +54,11 @@ export default function CompanyManagementSideNavbar() {
             isAccessible: true },
         { text: "Profil i ustawienia", icon: <Business />, path: `/company/${companyId}/manage/profile`,
             isAccessible: currentCompany?.claimIds?.includes(3) },
-        { text: "Zarządzanie uprawnieniami", icon: <Policy />, path: `/company/${companyId}/manage/claims`,
+        { text: "Rachunek i transakcje", icon: <MonetizationOn />, path: `/company/${companyId}/manage/balance`,
+            isAccessible: currentCompany?.claimIds?.includes(5) },
+        { text: "Uprawnienia", icon: <Policy />, path: `/company/${companyId}/manage/claims`,
             isAccessible: currentCompany?.claimIds?.includes(2) },
-        { text: "Zarządzanie ogłoszeniami", icon: <Newspaper />, path: `/company/${companyId}/manage/jobs`,
+        { text: "Ogłoszenia", icon: <Newspaper />, path: `/company/${companyId}/manage/jobs`,
             isAccessible: currentCompany?.claimIds?.includes(7) },
     ];
 

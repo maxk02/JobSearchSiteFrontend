@@ -1,3 +1,11 @@
+export interface CompanyBalanceTransactionDto {
+    id: number;
+    dateTime: string;
+    userName: string | null;
+    userEmail: string | null;
+    amount: number;
+    description: string | null;
+}
 
 export interface CompanyDto {
     id: number;
