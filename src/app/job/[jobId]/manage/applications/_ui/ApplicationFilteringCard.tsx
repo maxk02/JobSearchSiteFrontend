@@ -19,6 +19,8 @@ import {jobApplicationStatuses} from "@/lib/seededData/jobApplicationStatuses";
 import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
 import ApplicationTagSearchDialog from "@/app/job/[jobId]/manage/applications/_ui/ApplicationTagSearchDialog";
+import JobApplicationLocationSelect from "@/app/_ui/JobApplicationLocationSelect";
+import { LocationDto } from "@/lib/api/locations/locationsApiDtos";
 
 
 
@@ -38,12 +40,13 @@ interface ApplicationFilteringCardProps {
     selectedStatusIds: number[];
     setSelectedStatusIds: React.Dispatch<React.SetStateAction<number[]>>;
     onSearchButtonClick: () => void;
+    locationsAvailable: LocationDto[];
 }
 
 export default function ApplicationFilteringCard(props: ApplicationFilteringCardProps) {
 
     const { setSearchQuery, includedTags, setIncludedTags, excludedTags,
-        setExcludedTags, selectedStatusIds, setSelectedStatusIds, onSearchButtonClick } = props;
+        setExcludedTags, selectedStatusIds, setSelectedStatusIds, onSearchButtonClick, locationsAvailable } = props;
 
     const handleSelectChange = (event: SelectChangeEvent<number[]>) => {
         const value = event.target.value as number[];
@@ -78,7 +81,7 @@ export default function ApplicationFilteringCard(props: ApplicationFilteringCard
 
                 <Grid container sx={{ mt: 1 }}>
 
-                    <Grid size={5}>
+                    <Grid size={3.7}>
                         <TextField
                             label="Słowa kluczowe"
                             variant="outlined"
@@ -91,7 +94,11 @@ export default function ApplicationFilteringCard(props: ApplicationFilteringCard
                         />
                     </Grid>
 
-                    <Grid size={4.5}>
+                    <Grid size={3.3}>
+                        <JobApplicationLocationSelect value={null} availableValues={locationsAvailable} onChange={() => {}} />
+                    </Grid>
+
+                    <Grid size={3}>
                         <FormControl sx={{ width: "100%" }}>
                             <InputLabel id={`select-job-application-statuses-label`}>Status</InputLabel>
                             <Select
@@ -132,7 +139,7 @@ export default function ApplicationFilteringCard(props: ApplicationFilteringCard
                         </FormControl>
                     </Grid>
 
-                    <Grid size={2.5}>
+                    <Grid size={2}>
                         <Button
                             variant="contained"
                             color="primary"
@@ -189,19 +196,27 @@ export default function ApplicationFilteringCard(props: ApplicationFilteringCard
                 </Stack>
 
             </Paper>
+
             <ApplicationTagSearchDialog
                 title="Wyszukiwanie tagów do uwzględnienia"
+                searchBarPlaceholder="Wyszukaj..."
                 open={includeTagSearchDialogOpen}
                 onClose={handleCloseDialogs}
                 onSubmit={(tag: string) => handleTagSearchDialogSubmit("include", tag)}
                 data={mockTags}
+                mode="search"
+                excludeFromSearch={[...includedTags, ...excludedTags]}
             />
+
             <ApplicationTagSearchDialog
                 title="Wyszukiwanie tagów do wykluczenia"
+                searchBarPlaceholder="Wyszukaj..."
                 open={excludeTagSearchDialogOpen}
                 onClose={handleCloseDialogs}
                 onSubmit={(tag: string) => handleTagSearchDialogSubmit("exclude", tag)}
                 data={mockTags}
+                mode="search"
+                excludeFromSearch={[...includedTags, ...excludedTags]}
             />
         </>
     );

@@ -35,11 +35,11 @@ export default function JobApplicationLocationSelect({
                 label="Miejscowość"
                 
                 // Bind to the name string, or empty string if null
-                value={value ? value.fullName : ''} 
+                value={value?.fullName ?? availableValues[0]?.fullName ?? ''} 
                 onChange={handleChange}
                 
                 sx={{
-                    height: "56px",
+                    height: "57px",
                     borderRadius: "0",
                     backgroundColor: "white"
                 }}

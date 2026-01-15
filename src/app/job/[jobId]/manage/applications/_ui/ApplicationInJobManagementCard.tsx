@@ -12,7 +12,7 @@ import {
     Typography,
     useTheme
 } from "@mui/material";
-import {Add, Close, Download, PlayArrow} from "@mui/icons-material";
+import {Add, Approval, Close, Download, InsertInvitation, PlayArrow} from "@mui/icons-material";
 import {JobApplicationForManagersDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
 import ApplicationTagSearchDialog from "@/app/job/[jobId]/manage/applications/_ui/ApplicationTagSearchDialog";
 import React, {useState} from "react";
@@ -144,7 +144,7 @@ export default function ApplicationInJobManagementCard({ item, onUpdateTriggered
                         </Stack>
 
                         <List sx={{ mt: 1.3, pl: 0, pb: 0.3, pt: 0.3, borderLeft: `4px solid ${theme.palette.primary.main}` }}>
-                            <ListItem sx={{ px: 0, pb: 0, pt: 0, height: "32px" }}>
+                            <ListItem sx={{ px: 0, pb: 0, pt: 0, height: "35px" }}>
                                 <ListItemIcon sx={{ color: theme.palette.primary.main, px: 0.5, lineHeight: 1, minWidth: 24 }}>
                                     <PlayArrow sx={{ fontSize: "1rem" }} />
                                 </ListItemIcon>
@@ -155,7 +155,7 @@ export default function ApplicationInJobManagementCard({ item, onUpdateTriggered
                                     }
                                 </Typography>
                             </ListItem>
-                            <ListItem sx={{ px: 0, pb: 0, pt: 0, height: "32px" }}>
+                            <ListItem sx={{ px: 0, pb: 0, pt: 0, height: "35px" }}>
                                 <ListItemIcon sx={{ color: theme.palette.primary.main, px: 0.5, lineHeight: 1, minWidth: 24 }}>
                                     <PlayArrow sx={{ fontSize: "1rem" }} />
                                 </ListItemIcon>
@@ -179,9 +179,20 @@ export default function ApplicationInJobManagementCard({ item, onUpdateTriggered
                                 color="error"
                                 startIcon={<Close />}
                                 size="medium"
+                                disabled={item.status === 4}
                                 onClick={() => setConfirmRejectionDialogOpen(true)}
                             >
                                 Odrzuć
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                color="primary"
+                                startIcon={<InsertInvitation />}
+                                size="medium"
+                                disabled={item.status === 3}
+                                onClick={() => setConfirmRejectionDialogOpen(true)}
+                            >
+                                Zaproś do kolejnych etapów
                             </Button>
                             <Button
                                 variant="outlined"
@@ -206,11 +217,14 @@ export default function ApplicationInJobManagementCard({ item, onUpdateTriggered
             </Paper>
 
             <ApplicationTagSearchDialog
-                title="Wyszukiwanie tagów do dodania"
+                title="Dodaj tag do aplikacji"
+                searchBarPlaceholder="Wyszukaj istniejący lub wprowadź nowy..."
                 open={addTagSearchDialogOpen}
                 onClose={handleCloseDialogs}
                 onSubmit={(tag: string) => handleTagAdd(tag)}
                 data={mockTags}
+                mode="searchOrAdd"
+                excludeFromSearch={item.tags} //todo
             />
 
             <BasicConfirmationDialog

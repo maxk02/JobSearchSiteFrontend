@@ -26,13 +26,16 @@ interface ApplicationTagSearchDialogItem {
 
 interface ApplicationTagSearchDialogProps {
     title: string;
+    searchBarPlaceholder: string;
     open: boolean;
     onClose: () => void;
     onSubmit: (tag: string) => void;
     data: ApplicationTagSearchDialogItem[];
+    mode: "search" | "searchOrAdd";
+    excludeFromSearch: string[];
 }
 
-export default function ApplicationTagSearchDialog({ title, open, onClose, onSubmit, data }: ApplicationTagSearchDialogProps) {
+export default function ApplicationTagSearchDialog({ title, searchBarPlaceholder: searchBarTitle, open, onClose, onSubmit, data }: ApplicationTagSearchDialogProps) {
 
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -81,7 +84,7 @@ export default function ApplicationTagSearchDialog({ title, open, onClose, onSub
                 <TextField
                     id="manage-company-dashboard-job-search-input"
                     sx={{ mt: 0.5 }}
-                    placeholder="Szukaj..."
+                    placeholder={searchBarTitle}
                     variant="outlined"
                     fullWidth
                     value={searchQuery}

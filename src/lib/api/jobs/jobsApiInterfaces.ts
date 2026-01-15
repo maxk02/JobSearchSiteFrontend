@@ -25,7 +25,7 @@ export interface AddJobResponse {
 export interface GetApplicationsForJobRequest {
     statusIds: number[];
     query: string | null;
-    sortOption: JobApplicationSortOption;
+    sortOption: JobApplicationSortOption | null;
     includedTags: string[];
     excludedTags: string[];
     page: number;

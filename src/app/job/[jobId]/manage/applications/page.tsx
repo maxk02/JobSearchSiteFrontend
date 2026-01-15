@@ -1,6 +1,6 @@
 "use client";
 
-import {Box, Stack, Typography} from "@mui/material";
+import {Box, CircularProgress, Stack, Typography} from "@mui/material";
 import MyDefaultSortingCard from "@/app/_ui/MyDefaultSortingCard";
 import MyDefaultPagination from "@/app/_ui/MyDefaultPagination"
 import ApplicationInJobManagementCard from "./_ui/ApplicationInJobManagementCard";
@@ -11,6 +11,7 @@ import {useParams, useSearchParams} from "next/navigation";
 import {getApplicationsForJob} from "@/lib/api/jobs/jobsApi";
 import {GetApplicationsForJobRequest} from "@/lib/api/jobs/jobsApiInterfaces";
 import {JobApplicationSortOption} from "@/lib/api/jobs/jobsApiDtos";
+import { useCurrentJobStore } from "@/lib/stores/currentJobStore";
 
 
 
@@ -42,6 +43,8 @@ export default function AccountApplicationsPage() {
 
     const [updateTriggerCounter, setUpdateTriggerCounter] = useState<number>(0);
 
+    const { currentJob, isLoading } = useCurrentJobStore();
+
     const fetchApplications = async () => {
 
         const request: GetApplicationsForJobRequest = {
@@ -70,7 +73,15 @@ export default function AccountApplicationsPage() {
 
         fetchApplications();
 
-    }, [excludedTags, fetchApplications, includedTags, parsedJobIdParam, parsedPageParam, sortOption, updateTriggerCounter]);
+    }, [excludedTags, includedTags, parsedJobIdParam, parsedPageParam, sortOption, updateTriggerCounter]);
+
+    if (isLoading || !currentJob) {
+            return (
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
+                    <CircularProgress />
+                </Box>
+            );
+        }
 
     return (
         <>
@@ -87,6 +98,7 @@ export default function AccountApplicationsPage() {
                     selectedStatusIds={selectedStatusIds}
                     setSelectedStatusIds={setSelectedStatusIds}
                     onSearchButtonClick={fetchApplications}
+                    locationsAvailable={currentJob.locations}
                 />
 
                 <Stack gap={3} sx={{ mt: 3 }}>
