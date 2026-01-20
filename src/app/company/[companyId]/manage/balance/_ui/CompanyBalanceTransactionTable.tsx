@@ -1,5 +1,4 @@
 import {
-    Button,
     Paper,
     Table,
     TableBody,
@@ -7,15 +6,24 @@ import {
     TableContainer,
     TableHead,
     TablePagination,
-    TableRow
+    TableRow,
+    Typography,
+    Box
 } from "@mui/material";
-import {ArrowForward} from "@mui/icons-material";
 import React from "react";
-import {CompanyClaimOverviewDto} from "@/lib/api/companyClaims/companyClaimsApiDtos";
-import {companyClaims} from "@/lib/seededData/companyClaims";
 import {CompanyBalanceTransactionDto} from "@/lib/api/companies/companiesApiDtos";
 
-
+const formatPolishDateTime = (dateString: string): string => {
+    const date = new Date(dateString);
+    const formatter = new Intl.DateTimeFormat('pl-PL', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+    });
+    return formatter.format(date);
+};
 
 interface CompanyBalanceTransactionTableProps {
     rows: CompanyBalanceTransactionDto[];
@@ -30,18 +38,8 @@ export default function CompanyBalanceTransactionTable(props: CompanyBalanceTran
 
     const { rows, page, rowsPerPage, totalCount, onPageChange, onRowsPerPageChange } = props;
 
-    // const emptyRows =
-    //     page > 1 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
     const emptyRows =
         page > 1 ? Math.max(0, (page - 1) * rowsPerPage - rows.length) : 0;
-
-    // const visibleRows = React.useMemo(
-    //     () =>
-    //         [...rows]
-    //             .slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage),
-    //     [page, rows, rowsPerPage],
-    // );
 
     const visibleRows = rows;
     
@@ -59,41 +57,62 @@ export default function CompanyBalanceTransactionTable(props: CompanyBalanceTran
                 <Table sx={{ tableLayout: "auto" }}>
                     <TableHead>
                         <TableRow>
+                            {/* Removed the 'Opis' header */}
                             <TableCell>Data i czas</TableCell>
                             <TableCell>Użytkownik</TableCell>
                             <TableCell>Email</TableCell>
                             <TableCell>Kwota</TableCell>
-                            <TableCell>Opis</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {visibleRows.map((row) => (
-                            <TableRow
-                                key={row.id}
-                                hover
-                                sx={{
-                                    height: 68.9,
-                                    '& .MuiTableCell-root': {
-                                        height: 68.9,
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis',
-                                        whiteSpace: 'nowrap'
-                                    }
-                                }}
-                            >
-                                <TableCell>{`data do formatowania`}</TableCell>
-                                <TableCell>{row.userName}</TableCell>
-                                <TableCell>{row.userEmail}</TableCell>
-                                <TableCell>{row.amount}</TableCell>
-                                <TableCell>{row.description}</TableCell>
-                            </TableRow>
+                            <React.Fragment key={row.id}>
+                                {/* ROW 1: Main Data */}
+                                <TableRow
+                                    hover
+                                    sx={{
+                                        '& .MuiTableCell-root': {
+                                            borderBottom: 'none', // Remove border to merge visually with description
+                                            paddingBottom: 0,     // Tighten space between data and description
+                                            paddingTop: 2         // Add some space at top
+                                        }
+                                    }}
+                                >
+                                    <TableCell>{formatPolishDateTime(row.dateTime)}</TableCell>
+                                    <TableCell>{row.userName}</TableCell>
+                                    <TableCell>{row.userEmail}</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>{row.amount}</TableCell>
+                                </TableRow>
+
+                                {/* ROW 2: Description (Full Width) */}
+                                <TableRow
+                                    hover
+                                    sx={{
+                                        '& .MuiTableCell-root': {
+                                            paddingTop: 0.5,      // Tight space top
+                                            paddingBottom: 2      // Standard space bottom
+                                        }
+                                    }}
+                                >
+                                    <TableCell colSpan={4}>
+                                        <Typography 
+                                            variant="body2" 
+                                            color="text.secondary" 
+                                            sx={{ 
+                                                whiteSpace: 'normal', // Allows text to wrap to multiple lines
+                                                wordBreak: 'break-word' // Prevents long words from breaking layout
+                                            }}
+                                        >
+                                            {/* Fallback text if description is empty to keep layout consistent */}
+                                            {row.description || <span style={{ opacity: 0.5 }}>Brak opisu</span>}
+                                        </Typography>
+                                    </TableCell>
+                                </TableRow>
+                            </React.Fragment>
                         ))}
+                        
                         {emptyRows > 0 && (
-                            <TableRow
-                                style={{
-                                    height: emptyRows * 68.9,
-                                }}
-                            >
+                            <TableRow style={{ height: 68.9 * emptyRows }}>
                                 <TableCell colSpan={4} />
                             </TableRow>
                         )}
