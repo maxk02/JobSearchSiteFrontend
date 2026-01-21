@@ -12,6 +12,7 @@ import {
     Typography,
     useTheme
 } from "@mui/material";
+import Image from "next/image";
 import {Add, Approval, Close, Download, InsertInvitation, PlayArrow} from "@mui/icons-material";
 import {JobApplicationForManagersDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
 import ApplicationTagSearchDialog from "@/app/job/[jobId]/manage/applications/_ui/ApplicationTagSearchDialog";
@@ -114,7 +115,9 @@ export default function ApplicationInJobManagementCard({ item, onUpdateTriggered
             <Paper sx={{ width: "100%", textAlign: "left" }}>
                 <Stack direction="row">
                     <Box py={2.1} pl={3} pr={1}>
-                        <Avatar src={item.avatarLink ?? "/avatar2.webp"} sx={{ height: 80, width: 80 }} />
+                        <Avatar src={item.avatarLink ?? "/avatar2.webp"} sx={{ height: 80, width: 80 }}>
+                            {item.avatarLink && <Image src={item.avatarLink} width="80" height="80" alt="" />}
+                        </Avatar>
                     </Box>
                     <Stack sx={{ px: 2, pt: 2, pb: 2 }}>
                         <Typography variant="h5" sx={{ fontWeight: 800, lineHeight: 1 }}>

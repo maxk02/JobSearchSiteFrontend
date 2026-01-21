@@ -1,7 +1,7 @@
 "use client";
 
-import {Alert, Box, Button, FormGroup, List, Paper, Stack, Switch, Typography} from "@mui/material";
-import {Add, Info, Refresh} from "@mui/icons-material";
+import {Alert, Box, Button, FormGroup, Icon, List, Paper, Stack, Switch, Typography} from "@mui/material";
+import {Add, Info, Refresh, Warning} from "@mui/icons-material";
 import FormControl from "@mui/material/FormControl";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -59,10 +59,10 @@ export default function CreateEditJobPublicationIntervalCard() {
                     </List>
                 </Alert>
 
-                <Stack direction="row" gap={2} sx={{ alignItems: "center", mt: 1.3 }}>
+                <Stack direction="row" gap={2} sx={{ alignItems: "center", mt: 1.8 }}>
                     <Stack direction="column">
 
-                        <Typography sx={{ fontSize: "1.05em", fontWeight: "500" }}>
+                        <Typography sx={{ fontSize: "1.05em", fontWeight: "500", lineHeight: 1 }}>
                             Stan konta dla wybranej daty:
                         </Typography>
                         <Typography color="primary" sx={{ fontSize: "1.2em", fontWeight: "bold", color: "green" }}>
@@ -82,6 +82,26 @@ export default function CreateEditJobPublicationIntervalCard() {
                     >
                         Odśwież
                     </Button>
+
+                    <Stack direction="row" sx={{ alignItems: "center", ml: 2.2 }}>
+
+                        <Icon color="warning" sx={{ mb: 1, p: 0 }}>
+                            <Warning />
+                        </Icon>
+
+                        <Stack direction="column" sx={{ ml: 1.6 }}>
+
+                            <Typography sx={{ fontSize: "1.05em", fontWeight: "500", lineHeight: 1 }}>
+                                Zmiana przedziału czasowego:
+                            </Typography>
+                            <Typography color="warning" sx={{ fontSize: "1.2em", fontWeight: "bold" }}>
+                                dopłata 50 PLN
+                            </Typography>
+
+                        </Stack>
+
+                    </Stack>
+                    
 
                 </Stack>
 

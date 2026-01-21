@@ -36,6 +36,7 @@ export default function JobApplicationLocationSelect({
                 
                 // Bind to the name string, or empty string if null
                 value={value?.fullName ?? availableValues[0]?.fullName ?? ''} 
+                disabled={availableValues.length < 2}
                 onChange={handleChange}
                 
                 sx={{
@@ -44,10 +45,6 @@ export default function JobApplicationLocationSelect({
                     backgroundColor: "white"
                 }}
             >
-
-                <MenuItem value="">
-                    <em>Wybierz</em>
-                </MenuItem>
 
                 {availableValues.map((location) => (
                     <MenuItem 

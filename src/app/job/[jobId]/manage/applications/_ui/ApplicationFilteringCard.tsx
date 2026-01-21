@@ -81,7 +81,7 @@ export default function ApplicationFilteringCard(props: ApplicationFilteringCard
 
                 <Grid container sx={{ mt: 1 }}>
 
-                    <Grid size={3.7}>
+                    <Grid size={5}>
                         <TextField
                             label="Słowa kluczowe"
                             variant="outlined"
@@ -94,11 +94,7 @@ export default function ApplicationFilteringCard(props: ApplicationFilteringCard
                         />
                     </Grid>
 
-                    <Grid size={3.3}>
-                        <JobApplicationLocationSelect value={null} availableValues={locationsAvailable} onChange={() => {}} />
-                    </Grid>
-
-                    <Grid size={3}>
+                    <Grid size={4.5}>
                         <FormControl sx={{ width: "100%" }}>
                             <InputLabel id={`select-job-application-statuses-label`}>Status</InputLabel>
                             <Select
@@ -139,7 +135,7 @@ export default function ApplicationFilteringCard(props: ApplicationFilteringCard
                         </FormControl>
                     </Grid>
 
-                    <Grid size={2}>
+                    <Grid size={2.5}>
                         <Button
                             variant="contained"
                             color="primary"
@@ -158,6 +154,10 @@ export default function ApplicationFilteringCard(props: ApplicationFilteringCard
                     </Grid>
 
                 </Grid>
+
+                <Stack sx={{ width: "500px", maxWidth: "500px", mt: 1.8 }}>
+                    <JobApplicationLocationSelect value={null} availableValues={locationsAvailable} onChange={() => {}} />
+                </Stack>
 
                 <Stack direction="row" spacing={1} sx={{ ml: 0.3, mt: 1.2, alignItems: "center" }}>
                     <Typography variant="body2">Ma mieć tagi:</Typography>
