@@ -1,7 +1,7 @@
 "use client";
 
-import {Alert, Box, FormGroup, List, Paper, Stack, Switch, Typography} from "@mui/material";
-import {Info} from "@mui/icons-material";
+import {Alert, Box, Button, FormGroup, List, Paper, Stack, Switch, Typography} from "@mui/material";
+import {Add, Info, Refresh} from "@mui/icons-material";
 import FormControl from "@mui/material/FormControl";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -34,7 +34,7 @@ export default function CreateEditJobPublicationIntervalCard() {
     return (
         <Paper sx={{ mt: 2, py: 2, px: 1.5 }}>
             <Typography variant="h6" fontWeight={600} lineHeight={1} color="primary">Data i czas wygaśnięcia</Typography>
-            <Box mt={1.5} display="flex" flexDirection="column">
+            <Stack mt={1.5} direction="column">
                 <Alert
                     severity="info"
                     icon={<Info />}
@@ -59,49 +59,33 @@ export default function CreateEditJobPublicationIntervalCard() {
                     </List>
                 </Alert>
 
-                {/* <Box sx={{ pt: 0.4, pb: 0.4, maxWidth: "500px" }}>
-                    <FormControl>
-                        <Controller
-                            name="timeRangeOption"
-                            control={control}
-                            render={({ field }) => (
-                                <RadioGroup
-                                    aria-labelledby="time-range-options"
-                                    value={field.value}
-                                    onChange={(e) => field.onChange(Number(e.target.value))}
-                                >
-                                    <Stack direction="column" spacing={0.3}>
-                                        {expiryOptions.map((item) => (
-                                            <Stack direction="row" alignItems="center" key={item.id}>
-                                                <FormControlLabel
-                                                    value={item.id}
-                                                    control={<Radio />}
-                                                    label={undefined}
-                                                    sx={{ mr: 0 }}
-                                                />
-                                                <Stack direction="row" alignItems="center" flexWrap="wrap">
-                                                    <Typography sx={{ mr: 0.8 }} lineHeight={1}>
-                                                        {item.title}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="text.secondary" lineHeight={1}>
-                                                        {item.description}
-                                                    </Typography>
-                                                </Stack>
-                                            </Stack>
-                                        ))}
-                                    </Stack>
-                                </RadioGroup>
-                            )}
-                        />
-                    </FormControl>
-                    {errors.timeRangeOption && (
-                        <Typography color="error" variant="caption" sx={{ mt: 1 }}>
-                            {errors.timeRangeOption.message}
-                        </Typography>
-                    )}
-                </Box> */}
+                <Stack direction="row" gap={2} sx={{ alignItems: "center", mt: 1.3 }}>
+                    <Stack direction="column">
 
-                <Box display="flex" flexDirection="column" gap={2} sx={{ maxWidth: "650px", mt: 2 }}>
+                        <Typography sx={{ fontSize: "1.05em", fontWeight: "500" }}>
+                            Stan konta dla wybranej daty:
+                        </Typography>
+                        <Typography color="primary" sx={{ fontSize: "1.2em", fontWeight: "bold", color: "green" }}>
+                            wystarczający
+                        </Typography>
+
+                    </Stack>
+
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        // size="large"
+                        startIcon={<Refresh />}
+                        // onClick={() => setIsDialogOpen(true)}
+                        // disabled={items.length >= 10}
+                        sx={{ borderRadius: "50px", width: "fit-content" }}
+                    >
+                        Odśwież
+                    </Button>
+
+                </Stack>
+
+                <Box display="flex" flexDirection="column" gap={2} sx={{ maxWidth: "650px", mt: 2.3 }}>
                     {/* <FormGroup>
                         <FormControlLabel
                             control={
@@ -143,7 +127,8 @@ export default function CreateEditJobPublicationIntervalCard() {
                         </Typography>
                     )}
                 </Box>
-            </Box>
+            </Stack>
+
         </Paper>
     );
 }
