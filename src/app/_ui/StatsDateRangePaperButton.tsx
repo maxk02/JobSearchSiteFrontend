@@ -5,11 +5,12 @@ import React, {useRef} from "react";
 
 interface StatsDateRangePaperButtonProps {
     options: string[];
+    defaultOption?: string;
 }
 
-export default function StatsDateRangePaperButton({ options } : StatsDateRangePaperButtonProps) {
+export default function StatsDateRangePaperButton({ options, defaultOption } : StatsDateRangePaperButtonProps) {
 
-    const [timePeriod, setTimePeriod] = React.useState<string>(options[0]);
+    const [timePeriod, setTimePeriod] = React.useState<string>(defaultOption ?? options[0]);
 
     const theme = useTheme();
 

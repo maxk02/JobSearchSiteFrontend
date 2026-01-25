@@ -7,19 +7,23 @@ import StatsDateRangePaperButton from "@/app/_ui/StatsDateRangePaperButton";
 
 
 const mockJobViewsData = [
-    { month: "Listopad", views: 200 },
-    { month: "Grudzień", views: 250 },
-    { month: "Styczeń", views: 180 },
-    { month: "Luty", views: 300 },
-    { month: "Marzec", views: 270 },
+    { month: "12 sty", views: 200 },
+    { month: "13 sty", views: 250 },
+    { month: "14 sty", views: 180 },
+    { month: "15 sty", views: 300 },
+    { month: "16 sty", views: 270 },
+    { month: "17 sty", views: 230 },
+    { month: "18 sty", views: 210 },
 ];
 
 const mockApplicationsData = [
-    { month: "Listopad", applications: 10 },
-    { month: "Grudzień", applications: 15 },
-    { month: "Styczeń", applications: 8 },
-    { month: "Luty", applications: 20 },
-    { month: "Marzec", applications: 18 },
+    { month: "12 sty", applications: 10 },
+    { month: "13 sty", applications: 15 },
+    { month: "14 sty", applications: 8 },
+    { month: "15 sty", applications: 20 },
+    { month: "16 sty", applications: 18 },
+    { month: "17 sty", applications: 15 },
+    { month: "18 sty", applications: 14 },
 ];
 
 
@@ -40,7 +44,7 @@ export default function JobStatsPage() {
             {/*<Typography mt={1}>Tutaj możesz obejrzeć statystyki tego ogłoszenia pracy.</Typography>*/}
 
             <Stack sx={{ maxWidth: 800, mt: 1.5 }}>
-                <StatsDateRangePaperButton options={timePeriods} />
+                <StatsDateRangePaperButton options={timePeriods} defaultOption="Ostatni tydzień" />
 
                 <Paper sx={{ p: 2, mt: 2, maxWidth: "800px" }}>
                     <Typography variant="h6" gutterBottom>

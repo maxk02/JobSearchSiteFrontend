@@ -1,18 +1,16 @@
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack, Typography,} from "@mui/material";
-import React from "react";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, ListItem, Stack, TextField, Typography,} from "@mui/material";
+import React, { useState } from "react";
 import {Close} from "@mui/icons-material";
+import {companyClaims} from "@/lib/seededData/companyClaims";
 
 
-interface BasicConfirmationDialogProps {
-    title: string;
-    text: string;
+interface ProceedWithApplicationDialogProps {
     open: boolean;
     onClose: () => void;
-    onConfirm: () => void;
-    height?: string;
+    maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | false;
 }
 
-export default function BasicConfirmationDialog({ title, text, open, onClose, onConfirm, height }: BasicConfirmationDialogProps) {
+export default function ProceedWithApplicationDialog({ open, onClose, maxWidth }: ProceedWithApplicationDialogProps) {
     
     const handleClose = (
         _event: unknown, reason: string
@@ -23,33 +21,41 @@ export default function BasicConfirmationDialog({ title, text, open, onClose, on
         onClose();
     };
 
-    const handleConfirmClick = () => {
-        onConfirm();
-        onClose();
-    };
+    const text =
+        `Wpisz tekst do wysłania kandydatowi w celu zaproszenia do uczestnictwa w rekrutacji.`;
+
+    const [messageText, setMessageText] = useState<string>("");
 
     return (
         <Dialog
             open={open}
             onClose={handleClose}
             fullWidth
-            maxWidth="sm"
+            maxWidth={maxWidth ?? "md"}
             scroll="paper"
         >
             <DialogTitle sx={{ pb: 1, pr: 1.5 }}>
                 <Stack direction="row" spacing={2} sx={{ justifyContent: "space-between", alignItems: "center" }}>
                     <Typography variant="h5">
-                        {title}
+                        Zaproszenie do dalszej rekrutacji
                     </Typography>
                     <IconButton onClick={() => handleClose({}, "")}>
                         <Close />
                     </IconButton>
                 </Stack>
             </DialogTitle>
-            <DialogContent sx={{ height: height }}>
+            <DialogContent>
                 <Typography>
                     {text}
                 </Typography>
+                <TextField
+                    multiline
+                    rows={7}
+                    label="Tekst"
+                    fullWidth
+                    sx={{ mt: 2 }}
+                    value={messageText}
+                />
             </DialogContent>
             <DialogActions>
                 <Stack direction="row" spacing={2}>
@@ -60,7 +66,7 @@ export default function BasicConfirmationDialog({ title, text, open, onClose, on
                         Anuluj
                     </Button>
                     <Button
-                        onClick={handleConfirmClick}
+                        onClick={() => handleClose(null, '')}
                         sx={{fontSize: "1.1em"}}
                     >
                         Zatwierdź

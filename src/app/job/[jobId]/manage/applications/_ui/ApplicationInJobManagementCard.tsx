@@ -30,6 +30,7 @@ import {
 } from "@/lib/api/jobApplications/jobApplicationsApi";
 import {getDownloadLink} from "@/lib/api/personalFiles/personalFilesApi";
 import downloadFileFromCloud from "@/lib/api/downloadFileFromCloud";
+import ProceedWithApplicationDialog from "./ProceedWithApplicationDialog";
 
 
 const mockTags = [
@@ -81,10 +82,12 @@ export default function ApplicationInJobManagementCard({ item, onUpdateTriggered
 
     const [addTagSearchDialogOpen, setAddTagSearchDialogOpen] = useState(false);
     const [confirmRejectionDialogOpen, setConfirmRejectionDialogOpen] = useState(false);
+    const [proceedWithApplicationDialogOpen, setProceedWithApplicationDialogOpen] = useState(false);
 
     const handleCloseDialogs = () => {
         setAddTagSearchDialogOpen(false);
         setConfirmRejectionDialogOpen(false);
+        setProceedWithApplicationDialogOpen(false);
     };
 
     const handleDownloadFile = async (id: number, fullName: string) => {
@@ -193,7 +196,7 @@ export default function ApplicationInJobManagementCard({ item, onUpdateTriggered
                                 startIcon={<InsertInvitation />}
                                 size="medium"
                                 disabled={item.status === 3}
-                                onClick={() => setConfirmRejectionDialogOpen(true)}
+                                onClick={() => setProceedWithApplicationDialogOpen(true)}
                             >
                                 Zaproś do kolejnych etapów
                             </Button>
@@ -236,6 +239,11 @@ export default function ApplicationInJobManagementCard({ item, onUpdateTriggered
                 open={confirmRejectionDialogOpen}
                 onClose={handleCloseDialogs}
                 onConfirm={handleRejectApplication}
+            />
+
+            <ProceedWithApplicationDialog
+                open={proceedWithApplicationDialogOpen}
+                onClose={handleCloseDialogs}
             />
         </>
     );
