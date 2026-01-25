@@ -26,6 +26,7 @@ import {
 import {
     addJobApplicationTag,
     deleteJobApplicationTag,
+    getFileDownloadLinkFromJobApplication,
     updateJobApplicationStatus
 } from "@/lib/api/jobApplications/jobApplicationsApi";
 import {getDownloadLink} from "@/lib/api/personalFiles/personalFilesApi";
@@ -91,10 +92,10 @@ export default function ApplicationInJobManagementCard({ item, onUpdateTriggered
     };
 
     const handleDownloadFile = async (id: number, fullName: string) => {
-        const result = await getDownloadLink(id);
+        const result = await getFileDownloadLinkFromJobApplication(item.id, id);
 
         if (result.success) {
-            downloadFileFromCloud(result.data.link, fullName);
+            downloadFileFromCloud(result.data.downloadLink, fullName);
         }
         else {
             console.error("Failed to obtain link");

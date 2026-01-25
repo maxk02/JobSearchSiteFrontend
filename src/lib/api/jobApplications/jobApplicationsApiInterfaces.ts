@@ -12,6 +12,10 @@ export interface AddJobApplicationTagRequest {
     name: string;
 }
 
+export interface GetFileDownloadLinkFromJobApplicationResponse {
+    downloadLink: string;
+}
+
 export interface UpdateJobApplicationFilesRequest {
     locationId: number;
     personalFileIds: number[];

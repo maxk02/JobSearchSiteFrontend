@@ -2,6 +2,7 @@ import fetchData from "@/lib/api/fetchData";
 import {
     AddJobApplicationRequest,
     AddJobApplicationResponse, AddJobApplicationTagRequest,
+    GetFileDownloadLinkFromJobApplicationResponse,
     UpdateJobApplicationFilesRequest,
     UpdateJobApplicationStatusRequest
 } from "@/lib/api/jobApplications/jobApplicationsApiInterfaces";
@@ -20,6 +21,10 @@ export const deleteJobApplication = async (id: number) => {
 
 export const deleteJobApplicationTag = async (id: number, tag: string) => {
     return await fetchData<unknown>(`/job-applications/${id}/tags/${tag}`, "DELETE");
+};
+
+export const getFileDownloadLinkFromJobApplication = async (id: number, fileId: number) => {
+    return await fetchData<unknown, GetFileDownloadLinkFromJobApplicationResponse>(`/job-applications/${id}/files/${fileId}`, "GET");
 };
 
 export const updateJobApplicationFiles = async (id: number, req: UpdateJobApplicationFilesRequest) => {
