@@ -62,7 +62,7 @@ export default function CreateEditJobBasicInfoCard() {
                                         onChange={(e) => field.onChange(e.target.checked)}
                                     />
                                 }
-                                label="Widoczność po utworzeniu"
+                                label="Widoczność dla wszystkich"
                             />
                         )}
                     />

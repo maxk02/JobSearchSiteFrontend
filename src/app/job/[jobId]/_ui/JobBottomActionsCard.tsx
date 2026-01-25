@@ -2,10 +2,13 @@
 
 import {Button, Stack} from "@mui/material";
 import {ArrowForward, Star, StarBorder, TaskAlt} from "@mui/icons-material";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {addJobBookmark, deleteJobBookmark} from "@/lib/api/userProfiles/userProfilesApi";
 import {JobDetailedDto} from "@/lib/api/jobs/jobsApiDtos";
 import ChooseApplicationFilesDialog from "@/app/_ui/ChooseApplicationFilesDialog";
+import { useParams } from "next/navigation";
+import { JobApplicationOnJobPageDto } from "@/lib/api/jobApplications/jobApplicationsApiDtos";
+import { getJobDataForCurrentAccount } from "@/lib/api/jobs/jobsApi";
 
 
 interface JobBottomActionsCardProps {
@@ -14,9 +17,29 @@ interface JobBottomActionsCardProps {
 
 export default function JobBottomActionsCard({ item }: JobBottomActionsCardProps) {
 
-    const [applicationId, setApplicationId] = React.useState<number | null>(item.applicationId);
-    const [isBookmarked, setIsBookmarked] = useState<boolean>(item.isBookmarked);
+    const params = useParams();
+        
+    const jobId = parseInt(params.jobId as string, 10);
+
+    const [jobApplication, setJobApplication] = React.useState<JobApplicationOnJobPageDto | null>(null);
+    const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
     const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+    const [updateDataTriggerCounter, setUpdateDataTriggerCounter] = useState<number>(0);
+
+    useEffect(() => {
+            const fetchData = async () => {
+                const result = await getJobDataForCurrentAccount(jobId);
+                if (result.success) {
+                    setJobApplication(result.data.jobApplicationOnJobPageDto);
+                    setIsBookmarked(result.data.isBookmarked);
+                }
+                else {
+                    console.log("Job data for current profilel fetching error");
+                }
+            }
+            
+            fetchData();
+        }, [jobId, updateDataTriggerCounter]);
 
     const toggleBookmark = async () => {
         const result = isBookmarked ? await deleteJobBookmark(item.id) : await addJobBookmark(item.id);
@@ -34,7 +57,8 @@ export default function JobBottomActionsCard({ item }: JobBottomActionsCardProps
                 <Button
                     variant="contained"
                     color="primary"
-                    startIcon={applicationId !== null ? <ArrowForward /> : <TaskAlt />}
+                    startIcon={jobApplication !== null ? <ArrowForward /> : <TaskAlt />}
+                    onClick={() => setDialogOpen(true)}
                     sx={{
                         px: 8,
                         borderRadius: "50px",
@@ -42,7 +66,7 @@ export default function JobBottomActionsCard({ item }: JobBottomActionsCardProps
                         "& .MuiButton-startIcon > :nth-of-type(1)": { fontSize: "1.5rem", lineHeight: 1 }
                     }}
                 >
-                    {applicationId !== null ? "Przejdź do aplikacji" : "Aplikuj teraz"}
+                    {jobApplication !== null ? "Przejdź do aplikacji" : "Aplikuj teraz"}
                 </Button>
 
                 <Button
@@ -56,13 +80,14 @@ export default function JobBottomActionsCard({ item }: JobBottomActionsCardProps
             </Stack>
 
             <ChooseApplicationFilesDialog
-                title="Wybierz pliki do aplikowania"
+                title="Wybierz miescowość i pliki do aplikowania"
                 open={dialogOpen}
                 onClose={() => setDialogOpen(false)}
-                currentFileIds={[]}
-                jobId={item.id}
-                applicationId={applicationId}
-                setApplicationId={setApplicationId}
+                currentFileIds={jobApplication?.personalFileIds ?? []}
+                jobId={jobId}
+                applicationId={jobApplication?.id ?? null}
+                currentLocation={jobApplication?.locationDto ?? null}
+                triggerApplicationInfoUpdate={() => setUpdateDataTriggerCounter(x => x + 1)}
             />
         </>
     );

@@ -137,7 +137,10 @@ export default function EditJobPage() {
 
                     <CreateEditJobLocationCard locations={currentJob.locations} />
 
-                    <CreateEditJobPublicationIntervalCard />
+                    <CreateEditJobPublicationIntervalCard
+                        dateTimePublishedUtc={new Date(currentJob.dateTimePublishedUtc)}
+                        maxDateTimeExpiringUtcEverSet={new Date(currentJob.maxDateTimeExpiringUtcEverSet)}
+                    />
 
                     <CreateEditJobEmploymentOptionCard />
 

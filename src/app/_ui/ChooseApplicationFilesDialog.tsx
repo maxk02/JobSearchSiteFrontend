@@ -42,13 +42,13 @@ interface ChangeApplicationFilesDialogDialogProps {
     currentFileIds: number[];
     currentLocation: LocationDto | null;
     applicationId: number | null;
-    setApplicationId?: React.Dispatch<React.SetStateAction<number | null>>;
+    triggerApplicationInfoUpdate?: () => void;
 }
 
 export default function ChooseApplicationFilesDialog(props: ChangeApplicationFilesDialogDialogProps) {
 
     const { title, open, onClose, jobId, applicationId,
-        currentFileIds, currentLocation, setApplicationId } = props;
+        currentFileIds, currentLocation, triggerApplicationInfoUpdate } = props;
 
     const [selectedLocation, setSelectedLocation] = useState<LocationDto | null>(currentLocation);
     const [availableLocations, setAvailableLocations] = useState<LocationDto[]>([]);
@@ -115,7 +115,7 @@ export default function ChooseApplicationFilesDialog(props: ChangeApplicationFil
 
                 }
             }
-            else if (setApplicationId) {
+            else if (triggerApplicationInfoUpdate) {
                 const request: AddJobApplicationRequest = {
                     jobId: jobId,
                     personalFileIds: selectedFileIds,
@@ -125,7 +125,7 @@ export default function ChooseApplicationFilesDialog(props: ChangeApplicationFil
                 const result = await addJobApplication(request);
 
                 if (result.success) {
-                    setApplicationId(() => result.data.id);
+                    triggerApplicationInfoUpdate();
                 }
             }
         };

@@ -50,6 +50,7 @@ export interface JobManagementDto {
     description: string | null;
     dateTimePublishedUtc: string;
     dateTimeExpiringUtc: string;
+    maxDateTimeExpiringUtcEverSet: string;
     responsibilities: string[];
     requirements: string[];
     niceToHaves: string[];

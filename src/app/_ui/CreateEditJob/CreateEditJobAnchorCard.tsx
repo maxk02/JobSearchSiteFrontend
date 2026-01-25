@@ -5,7 +5,8 @@ import {Description, Settings} from "@mui/icons-material";
 
 const navItems = [
     { text: "Informacje podstawowe", icon: <Description /> },
-    { text: "Przedział czasowy", icon: <Settings /> },
+    { text: "Lokalizacje", icon: <Settings /> },
+    { text: "Data i czas wygaśnięcia", icon: <Settings /> },
     { text: "Rodzaj zatrudnienia", icon: <Settings /> },
     { text: "Umowa zatrudnienia", icon: <Settings /> },
     { text: "Dane o wynagrodzeniu", icon: <Settings /> },

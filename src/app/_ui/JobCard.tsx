@@ -7,9 +7,10 @@ import {JobCardDto} from "@/lib/api/jobs/jobsApiDtos";
 import {jobContractTypes} from "@/lib/seededData/jobContractTypes";
 import {employmentOptions} from "@/lib/seededData/employmentOptions";
 import formatSalaryInfoText from "@/app/_ui/_functions/formatSalaryInfoText";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {addJobBookmark, deleteJobBookmark} from "@/lib/api/userProfiles/userProfilesApi";
 import Link from "next/link";
+import { getJobDataForCurrentAccount } from "@/lib/api/jobs/jobsApi";
 
 
 const formatPolishDate = (dateString: string): string => {
@@ -30,6 +31,20 @@ export default function JobCard({ item }: JobCardProps) {
 
     const [isBookmarked, setIsBookmarked] = useState(item.isBookmarked);
     const [isLocationsExpanded, setIsLocationsExpanded] = useState(false);
+
+    useEffect(() => {
+            const fetchData = async () => {
+                const result = await getJobDataForCurrentAccount(item.id);
+                if (result.success) {
+                    setIsBookmarked(result.data.isBookmarked);
+                }
+                else {
+                    console.log("Job data for current profilel fetching error");
+                }
+            }
+            
+            fetchData();
+        }, [item]);
 
     const toggleLocations = () => {
         setIsLocationsExpanded(!isLocationsExpanded);

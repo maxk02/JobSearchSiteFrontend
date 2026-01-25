@@ -2,34 +2,58 @@
 
 import {Alert, Box, Button, FormGroup, Icon, List, Paper, Stack, Switch, Typography} from "@mui/material";
 import {Add, Info, Refresh, Warning} from "@mui/icons-material";
-import FormControl from "@mui/material/FormControl";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Radio from "@mui/material/Radio";
 import {LocalizationProvider, TimePicker} from "@mui/x-date-pickers";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import React, {useState} from "react";
-import {Controller, useFormContext} from "react-hook-form";
+import { differenceInCalendarDays, isValid, addDays, isSameDay } from "date-fns";
+import {Controller, useFormContext, useWatch} from "react-hook-form";
 import {CreateEditJobFormData} from "@/lib/schemas/createEditJobSchema";
 
 
-const expiryOptions = [
-    { id: 1, title: "0-4 dni", description: "Wartość: 10 kredytów" },
-    { id: 2, title: "5-30 dni", description: "Wartość: 20 kredytów" },
-    { id: 3, title: "31-60 dni", description: "Wartość: 30 kredytów" },
-    { id: 4, title: "61-90 dni", description: "Wartość: 40 kredytów" },
-];
+const calculatePrice = (days: number): number => {
+    if (days <= 0) return 0;
+    if (days <= 5) return 35;
+    if (days <= 30) return 60;
+    if (days <= 60) return 90;
+    if (days <= 90) return 120;
+    return 120; // Default cap
+};
 
+interface CreateEditJobPublicationIntervalCardProps {
+    dateTimePublishedUtc?: Date;
+    maxDateTimeExpiringUtcEverSet?: Date;
+}
 
-export default function CreateEditJobPublicationIntervalCard() {
+export default function CreateEditJobPublicationIntervalCard({ dateTimePublishedUtc, maxDateTimeExpiringUtcEverSet } : CreateEditJobPublicationIntervalCardProps) {
 
     const { control, formState: { errors } } = useFormContext<CreateEditJobFormData>();
-    const [customDateTimeEnabled, setCustomDateTimeEnabled] = useState<boolean>(false);
 
-    const handleCustomDateTimeSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setCustomDateTimeEnabled(event.target.checked);
-    };
+    const watchedExpiryDate = useWatch({
+        control,
+        name: "dateTimeExpiringUtc",
+    });
+
+    const currentDateTime = new Date();
+
+    const isValidDate = watchedExpiryDate && isValid(new Date(watchedExpiryDate));
+
+    let durationInDays = 0;
+
+    if (maxDateTimeExpiringUtcEverSet) {
+        durationInDays = isValidDate ? differenceInCalendarDays(new Date(watchedExpiryDate), maxDateTimeExpiringUtcEverSet) : 0;
+    } else {
+        durationInDays = isValidDate ? differenceInCalendarDays(new Date(watchedExpiryDate), currentDateTime) : 0;
+    }
+
+    const estimatedPrice = calculatePrice(durationInDays);
+
+    const currentBalance = 100;
+    const isBalanceSufficient = currentBalance >= estimatedPrice;
+
+    // date picker locking
+    const minDateTime = dateTimePublishedUtc ?? new Date();
+    const maxDateTime = addDays(minDateTime, 90); // 90 days from now
 
     return (
         <Paper sx={{ mt: 2, py: 2, px: 1.5 }}>
@@ -65,8 +89,15 @@ export default function CreateEditJobPublicationIntervalCard() {
                         <Typography sx={{ fontSize: "1.05em", fontWeight: "500", lineHeight: 1 }}>
                             Stan konta dla wybranej daty:
                         </Typography>
-                        <Typography color="primary" sx={{ fontSize: "1.2em", fontWeight: "bold", color: "green" }}>
-                            wystarczający
+                        <Typography
+                            color="primary"
+                            sx={{
+                                fontSize: "1.2em",
+                                fontWeight: "bold",
+                                color: isBalanceSufficient ? "green" : "error.main"
+                            }}
+                        >
+                            {isBalanceSufficient ? "wystarczający" : "niewystarczający"}
                         </Typography>
 
                     </Stack>
@@ -83,25 +114,26 @@ export default function CreateEditJobPublicationIntervalCard() {
                         Odśwież
                     </Button>
 
-                    <Stack direction="row" sx={{ alignItems: "center", ml: 2.2 }}>
+                    {estimatedPrice > 0 && 
+                        <Stack direction="row" sx={{ alignItems: "center", ml: 2.2 }}>
 
-                        <Icon color="warning" sx={{ mb: 1, p: 0 }}>
-                            <Warning />
-                        </Icon>
+                            <Icon color="warning" sx={{ mb: 1, p: 0 }}>
+                                <Warning />
+                            </Icon>
 
-                        <Stack direction="column" sx={{ ml: 1.6 }}>
+                            <Stack direction="column" sx={{ ml: 1.6 }}>
 
-                            <Typography sx={{ fontSize: "1.05em", fontWeight: "500", lineHeight: 1 }}>
-                                Zmiana przedziału czasowego:
-                            </Typography>
-                            <Typography color="warning" sx={{ fontSize: "1.2em", fontWeight: "bold" }}>
-                                dopłata 50 PLN
-                            </Typography>
+                                <Typography sx={{ fontSize: "1.05em", fontWeight: "500", lineHeight: 1 }}>
+                                    Zmiana przedziału czasowego:
+                                </Typography>
+                                <Typography color="warning" sx={{ fontSize: "1.2em", fontWeight: "bold" }}>
+                                    dopłata {estimatedPrice} PLN
+                                </Typography>
+
+                            </Stack>
 
                         </Stack>
-
-                    </Stack>
-                    
+                    }
 
                 </Stack>
 
@@ -129,12 +161,25 @@ export default function CreateEditJobPublicationIntervalCard() {
                                             value={field.value}
                                             onChange={(newValue) => field.onChange(newValue)}
                                             sx={{ flex: "1 1 auto" }}
+                                            minDate={minDateTime}
+                                            maxDate={maxDateTime}
                                         />
                                         <TimePicker
                                             label="Wybierz czas"
                                             value={field.value}
                                             onChange={(newValue) => field.onChange(newValue)}
                                             sx={{ flex: "1 1 auto" }}
+                                            minTime={
+                                                field.value && isSameDay(field.value, minDateTime)
+                                                    ? minDateTime
+                                                    : undefined
+                                            }
+                                            // If the selected date is the Max Date (90th day), block future hours/minutes
+                                            maxTime={
+                                                field.value && isSameDay(field.value, maxDateTime)
+                                                    ? maxDateTime
+                                                    : undefined
+                                            }
                                         />
                                     </>
                                 )}
