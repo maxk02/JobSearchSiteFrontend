@@ -8,6 +8,7 @@ import {
     Button,
     FormControlLabel,
     FormLabel,
+    Icon,
     ListItem,
     ListItemAvatar,
     ListItemText,
@@ -18,7 +19,7 @@ import {
     Typography
 } from "@mui/material";
 import React, {ChangeEvent, useEffect, useState} from "react";
-import {Add, Info, Refresh} from "@mui/icons-material";
+import {Add, CheckCircle, Info, Refresh, Warning} from "@mui/icons-material";
 import CompanyClaimsConfigurationTable from "./CompanyClaimsConfigurationTable";
 import {useParams} from "next/navigation";
 import {getCompanyClaimIdsForUser} from "@/lib/api/companyClaims/companyClaimsApi";
@@ -235,26 +236,39 @@ export default function CompanyClaimsConfigurationTab() {
                     </Button>
                 </Stack>
             ) : (
-                <Box display="flex" flexDirection="row" sx={{ alignItems: "center" }} mt={1.2}>
-                    <FormLabel>Dodanie użytkownika:</FormLabel>
-                    <TextField
-                        label="Email nowego użytkownika"
-                        value={newUserEmail}
-                        onChange={(e) => setNewUserEmail(e.target.value)}
-                        sx={{ ml: 1.1, width: "400px" }}
-                    />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        startIcon={<Add />}
-                        disabled={!newUserEmail}
-                        onClick={() => handleAddNewUser(newUserEmail)}
-                        sx={{ ml: 2.5, borderRadius: "50px", width: "125px" }}
-                    >
-                        Dodaj
-                    </Button>
-                </Box>
+                <>
+                    <Stack direction="row" sx={{ alignItems: "center" }} mt={1.2}>
+                        <FormLabel>Dodanie użytkownika:</FormLabel>
+                        <TextField
+                            label="Email nowego użytkownika"
+                            value={newUserEmail}
+                            onChange={(e) => setNewUserEmail(e.target.value)}
+                            sx={{ ml: 1.1, width: "400px" }}
+                        />
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            startIcon={<Add />}
+                            disabled={!newUserEmail}
+                            onClick={() => handleAddNewUser(newUserEmail)}
+                            sx={{ ml: 2.5, borderRadius: "50px", width: "125px" }}
+                        >
+                            Dodaj
+                        </Button>
+                    </Stack>
+                    <Stack direction="row" gap={1} sx={{ alignItems: "center", mt: 1.3 }}>
+
+                        <Icon color="success" sx={{ mb: 0.7, p: 0 }}>
+                            <CheckCircle />
+                        </Icon>
+
+                        <Typography color="success" sx={{ fontSize: "1.2em", fontWeight: "bold" }}>
+                            Zaproszenie wysłane
+                        </Typography>
+
+                    </Stack>
+                </>
             )}
 
             {displayedUser &&
