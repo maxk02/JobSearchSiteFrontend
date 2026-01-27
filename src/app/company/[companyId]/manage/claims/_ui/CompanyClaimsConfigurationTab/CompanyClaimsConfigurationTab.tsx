@@ -23,8 +23,8 @@ import {Add, CheckCircle, Info, Refresh, Warning} from "@mui/icons-material";
 import CompanyClaimsConfigurationTable from "./CompanyClaimsConfigurationTable";
 import {useParams} from "next/navigation";
 import {getCompanyClaimIdsForUser} from "@/lib/api/companyClaims/companyClaimsApi";
-import {addCompanyEmployee, getCompanyEmployees} from "@/lib/api/companies/companiesApi";
-import {AddCompanyEmployeeRequest, GetCompanyEmployeesRequest} from "@/lib/api/companies/companiesApiInterfaces";
+import {addCompanyEmployee, addCompanyEmployeeInvitation, getCompanyEmployees} from "@/lib/api/companies/companiesApi";
+import {AddCompanyEmployeeInvitationRequest, AddCompanyEmployeeRequest, GetCompanyEmployeesRequest} from "@/lib/api/companies/companiesApiInterfaces";
 import Image from "next/image";
 import {CompanyEmployeeDto} from "@/lib/api/companies/companiesApiDtos";
 
@@ -49,6 +49,7 @@ export default function CompanyClaimsConfigurationTab() {
 
     const [userMode, setUserMode] = useState<'existing' | 'new'>('existing');
     const [newUserEmail, setNewUserEmail] = useState('');
+    const [invitationSendingStatus, setInvitationSendingStatus] = useState<"none" | "success" | "error">("none");
 
     useEffect(() => {
 
@@ -127,23 +128,18 @@ export default function CompanyClaimsConfigurationTab() {
         setUserMode(e.target.value as 'existing' | 'new');
         setDisplayedUser(null);
         setSelectedUserId(null);
+        setInvitationSendingStatus("none");
     };
 
     const handleAddNewUser = async (email: string) => {
-        const request: AddCompanyEmployeeRequest = {
-            email: email,
+        const request: AddCompanyEmployeeInvitationRequest = {
+            invitedUserEmail: email,
         };
 
-        const result = await addCompanyEmployee(companyId, request);
+        const result = await addCompanyEmployeeInvitation(companyId, request);
 
         if (result.success) {
-            const newDisplayedUser: CompanyEmployeeDto = {
-                id: result.data.id,
-                email: email,
-                fullName: '',
-                avatarLink: null,
-            };
-            setDisplayedUser(newDisplayedUser);
+            setInvitationSendingStatus("success");
         }
     };
 
@@ -257,17 +253,20 @@ export default function CompanyClaimsConfigurationTab() {
                             Dodaj
                         </Button>
                     </Stack>
-                    <Stack direction="row" gap={1} sx={{ alignItems: "center", mt: 1.3 }}>
+                    {invitationSendingStatus === "success" &&
+                        <Stack direction="row" gap={1} sx={{ alignItems: "center", mt: 1.3 }}>
 
-                        <Icon color="success" sx={{ mb: 0.7, p: 0 }}>
-                            <CheckCircle />
-                        </Icon>
+                            <Icon color="success" sx={{ mb: 0.7, p: 0 }}>
+                                <CheckCircle />
+                            </Icon>
 
-                        <Typography color="success" sx={{ fontSize: "1.2em", fontWeight: "bold" }}>
-                            Zaproszenie wysłane
-                        </Typography>
+                            
+                                <Typography color="success" sx={{ fontSize: "1.2em", fontWeight: "bold" }}>
+                                    Zaproszenie wysłane
+                                </Typography>
 
-                    </Stack>
+                        </Stack>
+                    }
                 </>
             )}
 

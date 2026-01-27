@@ -12,7 +12,8 @@ import {
     GetCompanyResponse,
     GetCompanyLastVisitedJobsResponse,
     UpdateCompanyRequest, SearchCompanySharedJobsRequest, SearchCompanySharedJobsResponse,
-    GetCompanyJobManagementCardDtosRequest, GetCompanyJobManagementCardDtosResponse
+    GetCompanyJobManagementCardDtosRequest, GetCompanyJobManagementCardDtosResponse,
+    AddCompanyEmployeeInvitationRequest
 } from "@/lib/api/companies/companiesApiInterfaces";
 
 
@@ -31,6 +32,10 @@ export const addCompany = async (req: AddCompanyRequest, avatarFile: File | null
 
 export const addCompanyEmployee = async (id: number, req: AddCompanyEmployeeRequest) => {
     return await fetchData<AddCompanyEmployeeRequest, AddCompanyEmployeeResponse>(`/companies/${id}/management/employees`, "POST", req);
+};
+
+export const addCompanyEmployeeInvitation = async (id: number, req: AddCompanyEmployeeInvitationRequest) => {
+    return await fetchData<AddCompanyEmployeeInvitationRequest, unknown>(`/companies/${id}/management/employees/invitations`, "POST", req);
 };
 
 export const deleteCompany = async (id: number) => {

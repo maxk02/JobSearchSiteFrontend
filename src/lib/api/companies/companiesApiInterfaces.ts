@@ -16,6 +16,10 @@ export interface AddCompanyEmployeeResponse {
     id: number; //todo
 }
 
+export interface AddCompanyEmployeeInvitationRequest {
+    invitedUserEmail: string;
+}
+
 export interface AddCompanyRequest {
     name: string;
     description: string | null;
