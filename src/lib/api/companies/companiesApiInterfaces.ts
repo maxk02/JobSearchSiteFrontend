@@ -1,4 +1,5 @@
 import {
+    CompanyBalanceTransactionDto,
     CompanyDto,
     CompanyEmployeeDto,
     CompanyJobListItemDto,
@@ -42,6 +43,21 @@ export interface AddCompanyResponse {
 //     companyInfoDtos: CompanyDto[];
 //     paginationResponse: PaginationResponse;
 // }
+
+export interface GetCompanyBalanceResponse {
+    currencyCode: string;
+    balance: number;
+}
+
+export interface GetCompanyBalanceTransactionsRequest {
+    page: number;
+    size: number;
+}
+
+export interface GetCompanyBalanceTransactionsResponse {
+    companyBalanceTransactionDtos: CompanyBalanceTransactionDto[];
+    paginationResponse: PaginationResponse;
+}
 
 export interface GetCompanyEmployeesRequest {
     query: string | null;
@@ -88,8 +104,6 @@ export interface GetCompanyJobsResponse {
 export interface GetCompanyLastVisitedJobsResponse {
     jobs: CompanyJobListItemDto[];
 }
-
-
 
 export interface GetCompanyManagementNavbarDtoResponse {
     company: CompanyManagementDetailedDto;

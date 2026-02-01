@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import {CompanyBalanceTransactionDto} from "@/lib/api/companies/companiesApiDtos";
+import { currencies } from "@/lib/seededData/currencies";
 
 const formatPolishDateTime = (dateString: string): string => {
     const date = new Date(dateString);
@@ -57,11 +58,11 @@ export default function CompanyBalanceTransactionTable(props: CompanyBalanceTran
                 <Table sx={{ tableLayout: "auto" }}>
                     <TableHead>
                         <TableRow>
-                            {/* Removed the 'Opis' header */}
                             <TableCell>Data i czas</TableCell>
                             <TableCell>Użytkownik</TableCell>
-                            <TableCell>Email</TableCell>
+                            <TableCell>Email użytkownika</TableCell>
                             <TableCell>Kwota</TableCell>
+                            <TableCell>Waluta</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -78,10 +79,19 @@ export default function CompanyBalanceTransactionTable(props: CompanyBalanceTran
                                         }
                                     }}
                                 >
-                                    <TableCell>{formatPolishDateTime(row.dateTime)}</TableCell>
-                                    <TableCell>{row.userName}</TableCell>
+                                    <TableCell>{formatPolishDateTime(row.dateTimeCommittedUtc)}</TableCell>
+                                    <TableCell>{row.userFullName}</TableCell>
                                     <TableCell>{row.userEmail}</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>{row.amount}</TableCell>
+                                    <TableCell>
+                                        <Typography
+                                            fontWeight="bold"
+                                            color={row.amount > 0 ? "success" : "error"}>
+                                                {row.amount > 0 ? "+" : ""}{row.amount}
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography fontWeight="bold">PLN</Typography>
+                                    </TableCell>
                                 </TableRow>
 
                                 {/* ROW 2: Description (Full Width) */}
@@ -89,12 +99,12 @@ export default function CompanyBalanceTransactionTable(props: CompanyBalanceTran
                                     hover
                                     sx={{
                                         '& .MuiTableCell-root': {
-                                            paddingTop: 0.5,      // Tight space top
+                                            paddingTop: 0.8,      // Tight space top
                                             paddingBottom: 2      // Standard space bottom
                                         }
                                     }}
                                 >
-                                    <TableCell colSpan={4}>
+                                    <TableCell colSpan={5}>
                                         <Typography 
                                             variant="body2" 
                                             color="text.secondary" 

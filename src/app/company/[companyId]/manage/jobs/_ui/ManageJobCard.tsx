@@ -29,6 +29,18 @@ const formatPolishDate = (dateString: string): string => {
     return formatter.format(date);
 };
 
+const formatPolishDateTime = (dateString: string): string => {
+    const date = new Date(dateString);
+    const formatter = new Intl.DateTimeFormat('pl-PL', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+    });
+    return formatter.format(date);
+};
+
 interface ManageJobCardProps {
     item: JobManagementCardDto;
     onUpdateTriggered: () => void;
@@ -130,14 +142,14 @@ export default function ManageJobCard({ item, onUpdateTriggered }: ManageJobCard
                         </Typography>
                     </ListItem>
                 </List>
-                <Stack direction="row" mt={1} sx={{ justifyContent: "left" }} gap={2}>
+                <Stack direction="row" mt={1.6} sx={{ justifyContent: "left" }} gap={2.5}>
                     {currentCompany.claimIds.includes(6) &&
                         <Button
-                            variant="text"
+                            variant="outlined"
                             color="primary"
                             startIcon={<Edit />}
                             size="medium"
-                            sx={{ pl: 0.7 }}
+                            sx={{ borderRadius: "50px" }}
                             onClick={() => handleGoToJobManagement("edit")}
                         >
                             Edycja
@@ -146,10 +158,11 @@ export default function ManageJobCard({ item, onUpdateTriggered }: ManageJobCard
 
                     {currentCompany.claimIds.includes(8) &&
                         <Button
-                            variant="text"
+                            variant="outlined"
                             color="primary"
                             startIcon={<DocumentScanner />}
                             size="medium"
+                            sx={{ borderRadius: "50px" }}
                             onClick={() => handleGoToJobManagement("applications")}
                         >
                             Aplikacje
@@ -159,10 +172,11 @@ export default function ManageJobCard({ item, onUpdateTriggered }: ManageJobCard
 
                     {currentCompany.claimIds.includes(3) &&
                         <Button
-                            variant="text"
-                            color="error"
+                            variant="outlined"
+                            color="primary"
                             startIcon={<QueryStats />}
                             size="medium"
+                            sx={{ borderRadius: "50px" }}
                             onClick={() => handleGoToJobManagement("stats")}
                         >
                             Statystyki
@@ -172,19 +186,21 @@ export default function ManageJobCard({ item, onUpdateTriggered }: ManageJobCard
                     {currentCompany.claimIds.includes(6) &&
                         <>
                             <Button
-                                variant="text"
+                                variant="outlined"
                                 color={isPublic ? "error" : "primary"}
                                 startIcon={isPublic ? <WebAssetOff /> : <WebAsset />}
                                 size="medium"
+                                sx={{ borderRadius: "50px" }}
                                 onClick={() => setIsPublic((prev) => !prev)}
                             >
-                                {isPublic ? "Ukryj" : "Opublikuj"}
+                                {isPublic ? "Ukryj" : "Zrób widocznym"}
                             </Button>
                             <Button
-                                variant="text"
+                                variant="outlined"
                                 color="error"
                                 startIcon={<DeleteForever />}
                                 size="medium"
+                                sx={{ borderRadius: "50px" }}
                                 onClick={handleDelete}
                             >
                                 Usuń
@@ -194,11 +210,14 @@ export default function ManageJobCard({ item, onUpdateTriggered }: ManageJobCard
                 </Stack>
             </Stack>
             <Divider />
-            <Box sx={{ py: 1, px: 2 }}>
-                <Typography variant="body2" width="100%" color="text.secondary" textAlign="right">
-                    Ważna do: {formatPolishDate(item.dateTimeExpiringUtc)}
+            <Stack direction="row" sx={{ py: 1, px: 2, justifyContent: "space-between" }}>
+                <Typography variant="body2" color="text.secondary">
+                    Utworzono: {formatPolishDateTime(item.dateTimePublishedUtc)}
                 </Typography>
-            </Box>
+                <Typography variant="body2" color="text.secondary" sx={{  }}>
+                    Ważna do: {formatPolishDateTime(item.dateTimeExpiringUtc)}
+                </Typography>
+            </Stack>
         </Paper>
     );
 }

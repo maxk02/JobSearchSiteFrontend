@@ -1,23 +1,62 @@
 "use client";
 
 import {Box, Button, Paper, Stack, Tab, Tabs, Typography} from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CompanyBalanceTransactionTable
     from "@/app/company/[companyId]/manage/balance/_ui/CompanyBalanceTransactionTable";
 import { CompanyBalanceTransactionDto } from "@/lib/api/companies/companiesApiDtos";
 import { Add } from "@mui/icons-material";
 import TopUpCompanyBalanceDialog from "./_ui/TopUpCompanyBalanceDialog";
+import { useParams } from "next/navigation";
+import { GetCompanyBalanceTransactionsRequest } from "@/lib/api/companies/companiesApiInterfaces";
+import { getCompanyBalance, getCompanyBalanceTransactions } from "@/lib/api/companies/companiesApi";
 
 
 export default function ManageCompanyBalancePage() {
-    const [value, setValue] = React.useState(0);
+
+    const params = useParams();
+    const companyId = parseInt(params.companyId as string, 10);
+
+    const [currentBalance, setCurrentBalance] = useState<string>("brak danych");
+    const [currentBalanceCurrency, setCurrentBalanceCurrency] = useState<string>("");
 
     const [page, setPage] = useState<number>(1);
-    const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+    const [rowsPerPage, setRowsPerPage] = useState<number>(15);
     const [totalCount, setTotalCount] = useState<number>(0);
     const [rows, setRows] = useState<CompanyBalanceTransactionDto[]>([]);
 
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+
+    useEffect(() => {
+
+        const fetchBalance = async () => {
+            const result = await getCompanyBalance(companyId);
+
+            if (result.success) {
+                setCurrentBalance(result.data.balance.toString());
+                setCurrentBalanceCurrency(result.data.currencyCode);
+            }
+        };
+    
+        const fetchBalanceTransactions = async () => {
+            const request: GetCompanyBalanceTransactionsRequest = {
+                page: page,
+                size: rowsPerPage,
+            };
+
+            const result = await getCompanyBalanceTransactions(companyId, request);
+
+            if (result.success) {
+                setRows(result.data.companyBalanceTransactionDtos);
+                setTotalCount(result.data.paginationResponse.totalCount);
+                setPage(result.data.paginationResponse.currentPage);
+            }
+        };
+
+        fetchBalance();
+        fetchBalanceTransactions();
+        
+    }, [companyId, page, rowsPerPage]);
 
     return (
         <>
@@ -31,7 +70,7 @@ export default function ManageCompanyBalancePage() {
                             Środki na koncie:
                         </Typography>
                         <Typography color="primary" sx={{ mt: 0.3, fontSize: "1.3em", fontWeight: "bold" }}>
-                            150 PLN
+                            {currentBalance} {currentBalanceCurrency}
                         </Typography>
                         
                     </Stack>

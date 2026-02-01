@@ -1,9 +1,11 @@
 export interface CompanyBalanceTransactionDto {
     id: number;
-    dateTime: string;
-    userName: string | null;
+    dateTimeCommittedUtc: string;
+    userId: number | null;
+    userFullName: string | null;
     userEmail: string | null;
     amount: number;
+    currencyId: number;
     description: string | null;
 }
 

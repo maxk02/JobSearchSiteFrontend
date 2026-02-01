@@ -13,7 +13,10 @@ import {
     GetCompanyLastVisitedJobsResponse,
     UpdateCompanyRequest, SearchCompanySharedJobsRequest, SearchCompanySharedJobsResponse,
     GetCompanyJobManagementCardDtosRequest, GetCompanyJobManagementCardDtosResponse,
-    AddCompanyEmployeeInvitationRequest
+    AddCompanyEmployeeInvitationRequest,
+    GetCompanyBalanceTransactionsResponse,
+    GetCompanyBalanceTransactionsRequest,
+    GetCompanyBalanceResponse
 } from "@/lib/api/companies/companiesApiInterfaces";
 
 
@@ -44,6 +47,14 @@ export const deleteCompany = async (id: number) => {
 
 export const getCompany = async (id: number) => {
     return await fetchData<unknown, GetCompanyResponse>(`/companies/${id}`, "GET");
+};
+
+export const getCompanyBalance = async (id: number) => {
+    return await fetchData<unknown, GetCompanyBalanceResponse>(`/companies/${id}/management/balance`, "GET");
+};
+
+export const getCompanyBalanceTransactions = async (id: number, req: GetCompanyBalanceTransactionsRequest) => {
+    return await fetchData<GetCompanyBalanceTransactionsRequest, GetCompanyBalanceTransactionsResponse>(`/companies/${id}/management/balance/transactions`, "GET", req);
 };
 
 export const getCompanyEmployees = async (id: number, req: GetCompanyEmployeesRequest) => {
