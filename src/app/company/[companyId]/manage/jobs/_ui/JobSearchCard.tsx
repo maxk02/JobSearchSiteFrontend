@@ -1,39 +1,65 @@
-"use client";
-
-import {Box, Button, Container, MenuItem, TextField} from "@mui/material";
+import {
+    Button,
+    Checkbox,
+    Chip, InputLabel,
+    ListItemText,
+    MenuItem,
+    OutlinedInput,
+    Paper,
+    Select,
+    SelectChangeEvent,
+    Stack,
+    TextField,
+    Typography
+} from "@mui/material";
+import {Add} from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
-import React from "react";
-import {jobCategories} from "@/lib/seededData/jobCategories";
+import React, {useState} from "react";
+import {jobApplicationStatuses} from "@/lib/seededData/jobApplicationStatuses";
 import Grid from "@mui/material/Grid";
-import JobSearchSelectOptionsInput from "@/app/_ui/JobSearchInputs/JobSearchSelectOptionsInput";
-import {jobContractTypes} from "@/lib/seededData/jobContractTypes";
-import {employmentOptions} from "@/lib/seededData/employmentOptions";
-import {Controller, FormProvider, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {SearchJobFormData, searchJobSchema} from "@/lib/schemas/searchJobSchema";
-import {useRouter, useSearchParams} from "next/navigation";
+import FormControl from "@mui/material/FormControl";
+import ApplicationTagSearchDialog from "@/app/job/[jobId]/manage/applications/_ui/ApplicationTagSearchDialog";
+import JobApplicationLocationSelect from "@/app/_ui/JobApplicationLocationSelect";
+import { LocationDto } from "@/lib/api/locations/locationsApiDtos";
+import { SearchJobFormData, searchJobSchema } from "@/lib/schemas/searchJobSchema";
+import { Controller, FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import JobSearchLocationAutoComplete from "@/app/_ui/JobSearchInputs/JobSearchLocationAutoComplete";
+import { countries } from "@/lib/seededData/countries";
 import ReactCountryFlag from "react-country-flag";
-import {countries} from "@/lib/seededData/countries";
+import JobSearchSelectOptionsInput from "@/app/_ui/JobSearchInputs/JobSearchSelectOptionsInput";
+import { jobCategories } from "@/lib/seededData/jobCategories";
+import { jobContractTypes } from "@/lib/seededData/jobContractTypes";
+import { employmentOptions } from "@/lib/seededData/employmentOptions";
+import { SearchCompanyJobManagementCardDtosFormData, searchCompanyJobManagementCardDtosSchema } from "@/lib/schemas/searchCompanyJobManagementCardDtosSchema";
 
 
-export default function JobSearchInputs() {
+// interface JobSearchCardProps {
+//     // searchQuery: string;
+//     setSearchQuery: React.Dispatch<React.SetStateAction<string | null>>;
+//     onSearchButtonClick: () => void;
+// }
 
-    const router  = useRouter();
+export default function JobSearchCard() {
+
+    const router = useRouter();
     const searchParams = useSearchParams();
+
+    const params = useParams();
+    const companyId = parseInt(params.companyId as string, 10);
 
     const getNumericArrayParam = (key: string) => {
         const param = searchParams.get(key);
         return param ? param.split(',').map(Number) : [];
     };
 
-    const methods = useForm<SearchJobFormData>({
-        resolver: zodResolver(searchJobSchema),
+    const methods = useForm<SearchCompanyJobManagementCardDtosFormData>({
+        resolver: zodResolver(searchCompanyJobManagementCardDtosSchema),
         defaultValues: {
             query: searchParams.get('query') || '', 
             locationId: Number(searchParams.get('locationId')) || 0,
-            countryId: Number(searchParams.get('countryId')) || 1,
-            companyId: Number(searchParams.get('companyId')) || 0,
+            mustHaveSalaryRecord: false,            
             categoryIds: getNumericArrayParam('categoryIds'),
             contractTypeIds: getNumericArrayParam('contractTypeIds'),
             employmentTimeOptionIds: getNumericArrayParam('employmentOptionIds').filter(x => employmentOptions.filter(y => y.type === "EmploymentTime").map(y => y.id).includes(x)), 
@@ -44,7 +70,7 @@ export default function JobSearchInputs() {
 
     const { control, handleSubmit, formState: { errors } } = methods;
 
-    const onSubmit = async (data: SearchJobFormData) => {
+    const onSubmit = async (data: SearchCompanyJobManagementCardDtosFormData) => {
         const queryParams = new URLSearchParams();
 
         if (data.query) queryParams.set("query", data.query);
@@ -57,29 +83,19 @@ export default function JobSearchInputs() {
         }
 
         const searchString = queryParams.toString();
-        const redirectPath = searchString ? `/search?${searchString}` : "/";
+        const redirectPath = searchString ? `/company/${companyId}/manage/jobs?${searchString}` : `/company/${companyId}/manage/jobs`;
         router.push(redirectPath);
     };
 
     return (
-        <Box sx={{
-            background: "white",
-            borderBottomWidth: "1px",
-            borderBottomStyle: "solid",
-            borderBottomColor: "lightgray",
-            textAlign: "center",
-            pt: 2, pb: 0, m: 0,
-            position: "sticky",
-            top: "0",
-            "z-index": "2"
-        }}
-        >
+        <>
+            <Paper elevation={3} sx={{ px: 2, pt: 1.5, pb: 2.5}}>
+                <Typography variant="h5" fontWeight={600} color="primary" sx={{ mb: 1.5 }}>Wyszukiwanie</Typography>
 
-            <Container>
                 <FormProvider {...methods}>
                     <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
                         <Grid container sx={{mb: 2}}>
-                            <Grid size={3.9}>
+                            <Grid size={4.5}>
                                 <Controller
                                     name="query"
                                     control={control}
@@ -99,54 +115,10 @@ export default function JobSearchInputs() {
                                     )}
                                 />
                             </Grid>
-                            <Grid size={3.9}>
+                            <Grid size={4.5}>
                                 <JobSearchLocationAutoComplete />
                             </Grid>
-                            <Grid size={2.2}>
-                                <Controller
-                                    name="countryId"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            select
-                                            required
-                                            fullWidth
-                                            label=""
-                                            value={field.value}
-                                            onChange={(e) => field.onChange(e.target.value)}
-                                            error={!!errors.countryId}
-                                            helperText={errors.countryId?.message}
-                                            sx={{
-                                                maxHeight: "56px",
-                                                height: "56px",
-                                                "& .MuiOutlinedInput-root": {borderRadius: "0", backgroundColor: "white"}
-                                            }}
-                                            SelectProps={{
-                                                sx: {
-                                                    textAlign: 'left',
-                                                },
-                                                MenuProps: {
-                                                    PaperProps: {
-                                                        sx: {
-                                                            textAlign: 'left',
-                                                        },
-                                                    },
-                                                },
-                                            }}
-
-                                        >
-                                            {countries.map((item) => (
-                                                <MenuItem key={item.id} value={item.id}>
-                                                    <ReactCountryFlag countryCode={item.code} style={{ marginRight: 8 }} />
-                                                    {item.namePL}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    )}
-                                />
-                            </Grid>
-                            <Grid size={2}>
+                            <Grid size={3}>
                                 <Button
                                     type="submit"
                                     variant="contained"
@@ -166,7 +138,7 @@ export default function JobSearchInputs() {
                             </Grid>
                         </Grid>
 
-                        <Grid container spacing={2} sx={{mb: 2}}>
+                        <Grid container spacing={2}>
                             <Grid size={3}>
                                 <JobSearchSelectOptionsInput
                                     labelName="Kategorie"
@@ -224,8 +196,8 @@ export default function JobSearchInputs() {
                         </Grid>
                     </form>
                 </FormProvider>
-            </Container>
 
-        </Box>
+            </Paper>
+        </>
     );
 }

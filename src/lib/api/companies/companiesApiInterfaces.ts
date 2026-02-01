@@ -60,9 +60,9 @@ export interface GetCompanyJobManagementCardDtosRequest {
     size: number;
     mustHaveSalaryRecord: boolean;
     locationId: number;
-    employmentTypeIds: number[] | null;
     categoryIds: number[] | null;
     contractTypeIds: number[] | null;
+    employmentOptionIds: number[] | null;
 }
 
 export interface GetCompanyJobManagementCardDtosResponse {

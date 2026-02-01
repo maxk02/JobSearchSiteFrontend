@@ -25,6 +25,27 @@ export default async function fetchData<TRequest = unknown, TResponse = unknown>
             data: method !== "GET" ? data : undefined,
             params: method === "GET" ? data : undefined,
             headers: headers,
+            paramsSerializer: {
+                serialize: (params) => {
+                    const searchParams = new URLSearchParams();
+                    
+                    for (const key in params) {
+                        const value = params[key];
+                        
+                        if (value === null || value === undefined) continue;
+
+                        if (Array.isArray(value)) {
+                            // Join arrays with commas: categoryIds=1,2
+                            if (value.length > 0) {
+                                searchParams.append(key, value.join(','));
+                            }
+                        } else {
+                            searchParams.append(key, String(value));
+                        }
+                    }
+                    return searchParams.toString();
+                }
+            }
         });
 
         // Check if status code is in the 2xx range

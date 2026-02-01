@@ -41,7 +41,7 @@ export default function JobApplicationLocationSelect({
                 
                 sx={{
                     height: "57px",
-                    borderRadius: "0",
+                    borderRadius: "50px",
                     backgroundColor: "white"
                 }}
             >

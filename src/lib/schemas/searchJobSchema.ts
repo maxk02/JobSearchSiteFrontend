@@ -8,6 +8,7 @@ import {countryIds} from "@/lib/seededData/countries";
 export const searchJobSchema = z.object({
     query: z.string().max(70),
     locationId: z.number(),
+    companyId: z.number(),
     countryId: z.number().refine(num => countryIds.includes(num)),
     categoryIds: z.array(z.number())
         .refine((arr) => arr.every(num => jobCategoryIds.includes(num))),

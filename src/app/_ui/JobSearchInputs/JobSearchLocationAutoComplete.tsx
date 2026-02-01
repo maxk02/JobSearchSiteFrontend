@@ -17,11 +17,6 @@ export default function JobSearchLocationAutoComplete() {
     const [loading, setLoading] = useState(false);
     const [inputValue, setInputValue] = useState('');
 
-    const handleClearSearch = () => {
-        setInputValue("");
-        setOptions([]);
-    };
-
     useEffect(() => {
         const fetchOptions = async (query: string) => {
             if (!query) {

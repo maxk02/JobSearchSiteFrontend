@@ -10,7 +10,7 @@ import {
     Typography
 } from "@mui/material";
 import React, {useState} from "react";
-import {Control, Controller, FieldErrors} from "react-hook-form";
+import {Control, Controller, FieldErrors, FieldValues, Path } from "react-hook-form";
 import {SearchJobFormData} from "@/lib/schemas/searchJobSchema";
 
 
@@ -19,26 +19,28 @@ interface WithIdAndName {
     name: string;
 }
 
-interface JobSearchSelectOptionsInputProps<T extends WithIdAndName> {
+// interface JobSearchSelectOptionsInputProps<T extends WithIdAndName> {
+//     labelName: string;
+//     controllerName: keyof SearchJobFormData;
+//     columnsNo: number;
+//     items: T[];
+//     control: Control<SearchJobFormData>;
+//     errors: FieldErrors<SearchJobFormData>;
+// }
+
+interface JobSearchSelectOptionsInputProps<TItem extends WithIdAndName, TFieldValues extends FieldValues> {
     labelName: string;
-    controllerName: keyof SearchJobFormData;
+    controllerName: Path<TFieldValues>;
     columnsNo: number;
-    items: T[];
-    control: Control<SearchJobFormData>;
-    errors: FieldErrors<SearchJobFormData>;
+    items: TItem[];
+    control: Control<TFieldValues>;
+    errors: FieldErrors<TFieldValues>;
 }
 
 
-export default function JobSearchSelectOptionsInput<T extends WithIdAndName>(props: JobSearchSelectOptionsInputProps<T>) {
+export default function JobSearchSelectOptionsInput<T extends WithIdAndName, TFieldValues extends FieldValues>(props: JobSearchSelectOptionsInputProps<T, TFieldValues>) {
 
     const {labelName, controllerName, columnsNo, items, control, errors } = props;
-
-    const [selected, setSelected] = useState<T["id"][]>([]);
-
-    const handleChange = (event: SelectChangeEvent<T["id"][]>) => {
-        const value = event.target.value as T["id"][];
-        setSelected(value);
-    };
 
     return (
         <FormControl sx={{width: "100%"}}>
@@ -53,8 +55,8 @@ export default function JobSearchSelectOptionsInput<T extends WithIdAndName>(pro
                         id={`select-job-${controllerName}`}
                         multiple
                         fullWidth
-                        value={selected}
-                        onChange={handleChange}
+                        value={Array.isArray(field.value) ? field.value : []}
+                        onChange={(e) => field.onChange(e.target.value)}
                         input={<OutlinedInput label={labelName} />}
                         size="small"
                         error={!!errors[controllerName]}
@@ -113,7 +115,7 @@ export default function JobSearchSelectOptionsInput<T extends WithIdAndName>(pro
                         {items.map((item) => (
                             <MenuItem key={item.id} value={item.id} sx={{px: 1, py: 0.5}}>
                                 <Checkbox
-                                    checked={selected.indexOf(item.id) > -1}
+                                    checked={(field.value as any[])?.includes(item.id)}
                                     sx={{py: 0.5}}
                                 />
                                 <ListItemText primary={item.name}/>

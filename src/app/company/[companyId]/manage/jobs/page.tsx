@@ -5,7 +5,7 @@ import MyDefaultSortingCard from "@/app/_ui/MyDefaultSortingCard";
 import MyDefaultPagination from "@/app/_ui/MyDefaultPagination";
 import React, {useEffect, useState} from "react";
 import {JobApplicationSortOption, JobManagementCardDto} from "@/lib/api/jobs/jobsApiDtos";
-import {useParams, useSearchParams} from "next/navigation";
+import {ReadonlyURLSearchParams, useParams, useRouter, useSearchParams} from "next/navigation";
 import ManageJobCard from "./_ui/ManageJobCard";
 import {getCompanyJobManagementCardDtos} from "@/lib/api/companies/companiesApi";
 import {GetCompanyJobManagementCardDtosRequest} from "@/lib/api/companies/companiesApiInterfaces";
@@ -17,11 +17,48 @@ import {
     SearchCompanyJobManagementCardDtosFormData,
     searchCompanyJobManagementCardDtosSchema
 } from "@/lib/schemas/searchCompanyJobManagementCardDtosSchema";
+import JobSearchCard from "./_ui/JobSearchCard";
+import { employmentOptions } from "@/lib/seededData/employmentOptions";
+
+
+
+export interface TypedJobSearchParams {
+    query: string;
+    page: number;
+    countryId: number;
+    locationId: number;
+    categoryIds: number[];
+    contractTypeIds: number[];
+    employmentOptionIds: number[];
+}
+
+// Helper function to handle both single values, arrays, and comma-separated strings
+function parseIds(value: string | string[] | undefined | null): number[] {
+    if (!value) return [];
+    if (Array.isArray(value)) return value.map(Number);
+    return value.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
+}
+
+export function parseSearchParams(
+    searchParams: ReadonlyURLSearchParams
+): TypedJobSearchParams {
+    return {
+        query: (searchParams.get("query") as string) || "",
+        page: parseInt(searchParams.get("page") as string) || 1,
+        countryId: parseInt(searchParams.get("countryIds") as string) || 0,
+        locationId: parseInt(searchParams.get("locationIds") as string) || 0,
+        categoryIds: parseIds(searchParams.get("categoryIds")),
+        contractTypeIds: parseIds(searchParams.get("contractTypeIds")),
+        employmentOptionIds: parseIds(searchParams.get("employmentTypeIds"))
+    };
+}
+
 
 const sortOptionListItems: { value: CompanyJobManagementCardDtosSortOption, label: string }[] = [
     { value: "dateAsc", label: "Najstarsze" },
     { value: "dateDesc", label: "Najnowsze" },
 ];
+
 
 export default function CompanyJobsPage() {
     
@@ -32,41 +69,26 @@ export default function CompanyJobsPage() {
     const companyId = parseInt(params.companyId as string, 10);
 
     const searchParams = useSearchParams();
+    const paramsString = searchParams.toString();
     const pageParam = searchParams.get("page");
     const parsedPageParam = pageParam && !isNaN(parseInt(pageParam, 10)) ? parseInt(pageParam, 10) : 1;
 
     const [totalPages, setTotalPages] = useState<number>(1);
     const [updateTriggerCounter, setUpdateTriggerCounter] = useState<number>(0);
 
-    const methods = useForm<SearchCompanyJobManagementCardDtosFormData>({
-        resolver: zodResolver(searchCompanyJobManagementCardDtosSchema),
-        defaultValues: {
-            query: '',
-            locationId: 0,
-            mustHaveSalaryRecord: false,
-            categoryIds: [],
-            contractTypeIds: [],
-            employmentTimeOptionIds: [],
-            employmentMobilityOptionIds: [],
-        },
-        mode: 'onChange'
-    });
-
-    const { control, handleSubmit, formState: { errors } } = methods;
-
     useEffect(() => {
 
-        const fetchJobs = async () => {
+        const fetchJobs = async (params: TypedJobSearchParams) => {
 
             const request: GetCompanyJobManagementCardDtosRequest = {
-                query: null,
-                page: 0,
-                size: 10,
+                query: params.query,
+                page: params.page,
+                size: 15,
                 mustHaveSalaryRecord: false,
-                locationId: 0,
-                employmentTypeIds: null,
-                categoryIds: null,
-                contractTypeIds: null //todo
+                locationId: params.locationId,
+                categoryIds: params.categoryIds,
+                contractTypeIds: params.contractTypeIds,
+                employmentOptionIds: params.employmentOptionIds,
             };
 
             const result =
@@ -81,15 +103,18 @@ export default function CompanyJobsPage() {
             }
         }
 
-        fetchJobs();
+        const typedSearchParams = parseSearchParams(searchParams);
 
-    }, [companyId, parsedPageParam, updateTriggerCounter]);
+        fetchJobs(typedSearchParams);
+
+    }, [companyId, parsedPageParam, updateTriggerCounter, paramsString]);
 
     const [sortOption, setSortOption] = useState<CompanyJobManagementCardDtosSortOption>("dateDesc");
 
     return (
         <>
             <Stack gap={3} mt={0} sx={{ maxWidth: "850px" }}>
+                <JobSearchCard />
                 <MyDefaultSortingCard<CompanyJobManagementCardDtosSortOption>
                     pxValue="6px"
                     sortModes={sortOptionListItems}

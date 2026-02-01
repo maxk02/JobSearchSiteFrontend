@@ -18,6 +18,12 @@ export interface TypedJobSearchParams {
     employmentOptionIds: number[];
 }
 
+// Helper function to handle both single values, arrays, and comma-separated strings
+function parseIds(value: string | string[] | undefined): number[] {
+    if (!value) return [];
+    if (Array.isArray(value)) return value.map(Number);
+    return value.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
+}
 
 export function parseSearchParams(
     searchParams: { [key: string]: string | string[] | undefined }
@@ -27,21 +33,9 @@ export function parseSearchParams(
         page: parseInt(searchParams.page as string) || 1,
         countryId: parseInt(searchParams.countryIds as string) || 0,
         locationId: parseInt(searchParams.locationIds as string) || 0,
-        categoryIds: Array.isArray(searchParams.categoryIds)
-            ? (searchParams.categoryIds as string[]).map(Number)
-            : searchParams.categoryIds
-                ? [parseInt(searchParams.categoryIds as string)]
-                : [],
-        contractTypeIds: Array.isArray(searchParams.contractTypeIds)
-            ? (searchParams.contractTypeIds as string[]).map(Number)
-            : searchParams.contractTypeIds
-                ? [parseInt(searchParams.contractTypeIds as string)]
-                : [],
-        employmentOptionIds: Array.isArray(searchParams.employmentTypeIds)
-            ? (searchParams.employmentTypeIds as string[]).map(Number)
-            : searchParams.employmentTypeIds
-                ? [parseInt(searchParams.employmentTypeIds as string)]
-                : [],
+        categoryIds: parseIds(searchParams.categoryIds),
+        contractTypeIds: parseIds(searchParams.contractTypeIds),
+        employmentOptionIds: parseIds(searchParams.employmentTypeIds)
     };
 }
 
