@@ -113,6 +113,16 @@ export interface GetCompanyResponse {
     company: CompanyDto;
 }
 
+export interface GetJobApplicationTagsRequest {
+    searchQuery: string | null;
+    size: number;
+}
+
+export interface GetJobApplicationTagsResponse {
+    tags: string[];
+    paginationResponse: PaginationResponse;
+}
+
 export interface SearchCompanySharedJobsRequest {
     query: string; //todo
 }

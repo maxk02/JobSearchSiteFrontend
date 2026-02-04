@@ -16,7 +16,9 @@ import {
     AddCompanyEmployeeInvitationRequest,
     GetCompanyBalanceTransactionsResponse,
     GetCompanyBalanceTransactionsRequest,
-    GetCompanyBalanceResponse
+    GetCompanyBalanceResponse,
+    GetJobApplicationTagsRequest,
+    GetJobApplicationTagsResponse
 } from "@/lib/api/companies/companiesApiInterfaces";
 
 
@@ -75,6 +77,10 @@ export const getCompanyLastVisitedJobs = async (id: number) => {
 
 export const getCompanyManagementNavbarDto = async (id: number) => {
     return await fetchData<unknown, GetCompanyManagementNavbarDtoResponse>(`/companies/${id}/management`, "GET");
+};
+
+export const getJobApplicationTags = async (id: number, req: GetJobApplicationTagsRequest) => {
+    return await fetchData<GetJobApplicationTagsRequest, GetJobApplicationTagsResponse>(`/companies/${id}/management/job-application-tags`, "GET", req);
 };
 
 export const removeCompanyAllLastVisitedJobs = async (id: number) => {

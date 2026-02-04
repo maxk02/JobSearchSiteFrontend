@@ -186,6 +186,7 @@ export default function ApplicationInJobManagementCard({ item, onUpdateTriggered
                                 color="error"
                                 startIcon={<Close />}
                                 size="medium"
+                                sx={{ borderRadius: "50px" }}
                                 disabled={item.status === 4}
                                 onClick={() => setConfirmRejectionDialogOpen(true)}
                             >
@@ -196,6 +197,7 @@ export default function ApplicationInJobManagementCard({ item, onUpdateTriggered
                                 color="primary"
                                 startIcon={<InsertInvitation />}
                                 size="medium"
+                                sx={{ borderRadius: "50px" }}
                                 disabled={item.status === 3}
                                 onClick={() => setProceedWithApplicationDialogOpen(true)}
                             >
@@ -206,6 +208,7 @@ export default function ApplicationInJobManagementCard({ item, onUpdateTriggered
                                 color="primary"
                                 startIcon={<Download />}
                                 size="medium"
+                                sx={{ borderRadius: "50px" }}
                             >
                                 Pobierz wszystkie pliki
                             </Button>
