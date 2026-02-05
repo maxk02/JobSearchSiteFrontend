@@ -13,7 +13,7 @@ import {
     useTheme
 } from "@mui/material";
 import Image from "next/image";
-import {Add, Approval, Close, Download, InsertInvitation, PlayArrow} from "@mui/icons-material";
+import {Add, Approval, Close, Download, InsertInvitation, LocationPin, PlayArrow} from "@mui/icons-material";
 import {JobApplicationForManagersDto} from "@/lib/api/jobApplications/jobApplicationsApiDtos";
 import ApplicationTagSearchDialog from "@/app/job/[jobId]/manage/applications/_ui/ApplicationTagSearchDialog";
 import React, {useState} from "react";
@@ -120,7 +120,7 @@ export default function ApplicationInJobManagementCard({ companyId, item, onUpda
             <Paper sx={{ width: "100%", textAlign: "left" }}>
                 <Stack direction="row">
                     <Box py={2.1} pl={3} pr={1}>
-                        <Avatar src={item.avatarLink ?? "/avatar2.webp"} sx={{ height: 80, width: 80 }}>
+                        <Avatar sx={{ height: 80, width: 80 }}>
                             {item.avatarLink && <Image src={item.avatarLink} width="80" height="80" alt="" />}
                         </Avatar>
                     </Box>
@@ -133,7 +133,14 @@ export default function ApplicationInJobManagementCard({ companyId, item, onUpda
                             {item.email}{item.phone && ` / ${item.phone}`}
                         </Typography>
 
-                        <Stack direction="row" spacing={1} sx={{ mt: 1.6, alignItems: "center" }}>
+                        <Stack direction="row" gap={0.3} sx={{ alignItems: "center", mt: 1.5 }}>
+                            <LocationPin fontSize="small" sx={{ p: 0 }}></LocationPin>
+                            <Typography lineHeight={1}>
+                                {item.locationDto.fullName}
+                            </Typography>
+                        </Stack>
+
+                        <Stack direction="row" spacing={1} sx={{ mt: 1.5, alignItems: "center" }}>
                             {item.tags.map(tag => (
                                 <Chip
                                     key={tag}

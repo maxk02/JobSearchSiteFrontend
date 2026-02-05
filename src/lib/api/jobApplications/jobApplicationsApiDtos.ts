@@ -14,6 +14,7 @@ export interface JobApplicationForManagersDto {
     dateTimeAppliedUtc: string;
     personalFiles: PersonalFileInfoDto[];
     status: number;
+    locationDto: LocationDto;
 }
 
 export interface JobApplicationInUserProfileDto {

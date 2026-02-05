@@ -23,8 +23,7 @@ export default function ClaimConfigurationErrorInfoDialog({ open, onClose, maxWi
     };
 
     const text =
-        `Po operacji z uprawnieniami lista końcowa nie zawierałaby zależności uprawnień pozostawionych
-         we włączonym stanie. W proponowanej konfiguracji brakuje uprawnień:`;
+        `Po operacji z uprawnieniami konto nie miałoby następujących zależności włączanych uprawnień:`;
 
     return (
         <Dialog

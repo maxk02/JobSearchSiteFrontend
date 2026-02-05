@@ -6,7 +6,7 @@ export interface CompanyClaim {
 }
 
 export const companyClaims: CompanyClaim[] = [
-    { id: 1, namePl: "Właściciel", dependencies: [2, 3, 4], commentPl: "Aktywacja spowoduje usunięcie uprawnień właściciela z obecnie zalogowanego konta i włączenie wszystkich uprawnień na koncie docelowym (przekazanie uprawnień właściciela)." },
+    { id: 1, namePl: "Właściciel", dependencies: [2, 3, 4, 5, 6, 7, 8], commentPl: "Aktywacja spowoduje usunięcie uprawnień właściciela z obecnie zalogowanego konta i włączenie wszystkich uprawnień na koncie docelowym (przekazanie uprawnień właściciela)." },
     { id: 2, namePl: "Administrator", dependencies: [7], commentPl: "Możliwość dodania nowych kont pracowników do firmy oraz zarządzania uprawnieniami zwykłych użytkowników w zakresie zezwolonym dla tego konta." },
     { id: 3, namePl: "Dostęp do statystyk", dependencies: [7], commentPl: "Dostęp do statystyk przeglądów ofert pracy i aplikacji. Wymaga dostępu do ofert pracy." },
     { id: 4, namePl: "Edycja profilu", dependencies: [], commentPl: "Zmiana nazwy, logotypu oraz opisu firmy." },
