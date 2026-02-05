@@ -90,6 +90,7 @@ export default function AccountApplicationsPage() {
                 <Typography variant="h5" fontWeight={600} mt={0.5}>Specjalista ds księgowości</Typography>
 
                 <ApplicationFilteringCard
+                    companyId={currentJob.companyId}
                     setSearchQuery={setSearchQuery}
                     includedTags={includedTags}
                     setIncludedTags={setIncludedTags}
@@ -113,6 +114,7 @@ export default function AccountApplicationsPage() {
                     {applications.map((application) => (
                         <ApplicationInJobManagementCard
                             key={application.id}
+                            companyId={currentJob.companyId}
                             item={application}
                             onUpdateTriggered={() => setUpdateTriggerCounter(prev => prev + 1)}
                         />

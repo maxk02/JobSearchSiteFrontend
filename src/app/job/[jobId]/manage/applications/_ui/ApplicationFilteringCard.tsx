@@ -24,14 +24,9 @@ import { LocationDto } from "@/lib/api/locations/locationsApiDtos";
 
 
 
-const mockTags = [
-    {id: 1, title: "1 etap"},
-    {id: 2, title: "2 etap"},
-    {id: 3, title: "Do przeglądu 7 lipca"},
-];
-
 interface ApplicationFilteringCardProps {
     // searchQuery: string;
+    companyId: number;
     setSearchQuery: React.Dispatch<React.SetStateAction<string | null>>;
     includedTags: string[];
     setIncludedTags: React.Dispatch<React.SetStateAction<string[]>>;
@@ -45,7 +40,7 @@ interface ApplicationFilteringCardProps {
 
 export default function ApplicationFilteringCard(props: ApplicationFilteringCardProps) {
 
-    const { setSearchQuery, includedTags, setIncludedTags, excludedTags,
+    const { companyId, setSearchQuery, includedTags, setIncludedTags, excludedTags,
         setExcludedTags, selectedStatusIds, setSelectedStatusIds, onSearchButtonClick, locationsAvailable } = props;
 
     const handleSelectChange = (event: SelectChangeEvent<number[]>) => {
@@ -198,24 +193,22 @@ export default function ApplicationFilteringCard(props: ApplicationFilteringCard
             </Paper>
 
             <ApplicationTagSearchDialog
+                companyId={companyId}
                 title="Wyszukiwanie tagów do uwzględnienia"
                 searchBarPlaceholder="Wyszukaj..."
                 open={includeTagSearchDialogOpen}
                 onClose={handleCloseDialogs}
                 onSubmit={(tag: string) => handleTagSearchDialogSubmit("include", tag)}
-                data={mockTags}
-                mode="search"
                 excludeFromSearch={[...includedTags, ...excludedTags]}
             />
 
             <ApplicationTagSearchDialog
+                companyId={companyId}
                 title="Wyszukiwanie tagów do wykluczenia"
                 searchBarPlaceholder="Wyszukaj..."
                 open={excludeTagSearchDialogOpen}
                 onClose={handleCloseDialogs}
                 onSubmit={(tag: string) => handleTagSearchDialogSubmit("exclude", tag)}
-                data={mockTags}
-                mode="search"
                 excludeFromSearch={[...includedTags, ...excludedTags]}
             />
         </>

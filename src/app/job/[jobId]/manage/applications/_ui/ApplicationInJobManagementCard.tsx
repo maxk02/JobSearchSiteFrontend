@@ -53,11 +53,12 @@ const formatDate = (dateString: string): string => {
 };
 
 interface ApplicationInJobManagementCardProps {
+    companyId: number;
     item: JobApplicationForManagersDto;
     onUpdateTriggered: () => void;
 }
 
-export default function ApplicationInJobManagementCard({ item, onUpdateTriggered }: ApplicationInJobManagementCardProps) {
+export default function ApplicationInJobManagementCard({ companyId, item, onUpdateTriggered }: ApplicationInJobManagementCardProps) {
 
     const theme = useTheme();
 
@@ -227,14 +228,14 @@ export default function ApplicationInJobManagementCard({ item, onUpdateTriggered
             </Paper>
 
             <ApplicationTagSearchDialog
+                companyId={companyId}
                 title="Dodaj tag do aplikacji"
-                searchBarPlaceholder="Wyszukaj istniejący lub wprowadź nowy..."
+                searchBarPlaceholder="Wyszukaj wcześniej używany lub dodaj nowy..."
                 open={addTagSearchDialogOpen}
                 onClose={handleCloseDialogs}
                 onSubmit={(tag: string) => handleTagAdd(tag)}
-                data={mockTags}
                 mode="searchOrAdd"
-                excludeFromSearch={item.tags} //todo
+                excludeFromSearch={item.tags}
             />
 
             <BasicConfirmationDialog
