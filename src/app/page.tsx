@@ -31,8 +31,8 @@ export function parseSearchParams(
     return {
         query: (searchParams.query as string) || "",
         page: parseInt(searchParams.page as string) || 1,
-        countryId: parseInt(searchParams.countryIds as string) || 0,
-        locationId: parseInt(searchParams.locationIds as string) || 0,
+        countryId: parseInt(searchParams.countryIds as string) || 1,
+        locationId: parseInt(searchParams.locationId as string) || 0,
         categoryIds: parseIds(searchParams.categoryIds),
         contractTypeIds: parseIds(searchParams.contractTypeIds),
         employmentOptionIds: parseIds(searchParams.employmentTypeIds)
@@ -46,6 +46,7 @@ async function fetchJobs(params: TypedJobSearchParams) {
         page: params.page,
         size: 15,
         locationIds: [params.locationId],
+        countryIds: [params.countryId],
         categoryIds: params.categoryIds,
         contractTypeIds: params.contractTypeIds,
         employmentOptionIds: params.employmentOptionIds,

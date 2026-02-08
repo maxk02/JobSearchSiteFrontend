@@ -75,7 +75,7 @@ export interface GetCompanyJobManagementCardDtosRequest {
     page: number;
     size: number;
     mustHaveSalaryRecord: boolean;
-    locationId: number;
+    locationId: number | null;
     categoryIds: number[] | null;
     contractTypeIds: number[] | null;
     employmentOptionIds: number[] | null;

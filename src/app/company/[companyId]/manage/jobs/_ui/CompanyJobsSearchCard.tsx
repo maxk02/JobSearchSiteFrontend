@@ -33,21 +33,18 @@ import { jobCategories } from "@/lib/seededData/jobCategories";
 import { jobContractTypes } from "@/lib/seededData/jobContractTypes";
 import { employmentOptions } from "@/lib/seededData/employmentOptions";
 import { SearchCompanyJobManagementCardDtosFormData, searchCompanyJobManagementCardDtosSchema } from "@/lib/schemas/searchCompanyJobManagementCardDtosSchema";
+import { useCurrentCompanyStore } from "@/lib/stores/currentCompanyStore";
 
 
-// interface JobSearchCardProps {
-//     // searchQuery: string;
-//     setSearchQuery: React.Dispatch<React.SetStateAction<string | null>>;
-//     onSearchButtonClick: () => void;
-// }
-
-export default function JobSearchCard() {
+export default function CompanyJobsSearchCard() {
 
     const router = useRouter();
     const searchParams = useSearchParams();
 
     const params = useParams();
     const companyId = parseInt(params.companyId as string, 10);
+
+    const { currentCompany } = useCurrentCompanyStore();
 
     const getNumericArrayParam = (key: string) => {
         const param = searchParams.get(key);
@@ -59,6 +56,7 @@ export default function JobSearchCard() {
         defaultValues: {
             query: searchParams.get('query') || '', 
             locationId: Number(searchParams.get('locationId')) || 0,
+            countryId: currentCompany?.countryId ?? 1,
             mustHaveSalaryRecord: false,            
             categoryIds: getNumericArrayParam('categoryIds'),
             contractTypeIds: getNumericArrayParam('contractTypeIds'),
@@ -74,7 +72,7 @@ export default function JobSearchCard() {
         const queryParams = new URLSearchParams();
 
         if (data.query) queryParams.set("query", data.query);
-        if (data.locationId) queryParams.set("locationId", data.locationId.toString());
+        if (data.locationId && data.locationId !== 0) queryParams.set("locationId", data.locationId.toString());
         if (data.categoryIds.length > 0) queryParams.set("categoryIds", data.categoryIds.join(","));
         if (data.contractTypeIds.length > 0) queryParams.set("contractTypeIds", data.contractTypeIds.join(","));
         if (data.employmentTimeOptionIds.length > 0 || data.employmentMobilityOptionIds.length > 0) {
@@ -116,7 +114,10 @@ export default function JobSearchCard() {
                                 />
                             </Grid>
                             <Grid size={4.5}>
-                                <JobSearchLocationAutoComplete />
+                                <JobSearchLocationAutoComplete
+                                    name="locationId"
+                                    countryDependency="countryId"
+                                />
                             </Grid>
                             <Grid size={3}>
                                 <Button

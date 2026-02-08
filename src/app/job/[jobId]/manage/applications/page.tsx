@@ -20,7 +20,7 @@ const sortOptionListItems: { value: JobApplicationSortOption, label: string }[] 
     { value: "dateAppliedDesc", label: "Najnowsze" },
 ];
 
-export default function AccountApplicationsPage() {
+export default function JobApplicationsPage() {
 
     const [applications, setApplications] = useState<JobApplicationForManagersDto[]>([]);
 
@@ -36,6 +36,9 @@ export default function AccountApplicationsPage() {
 
     const [totalPages, setTotalPages] = useState<number>(1);
 
+    const { currentJob, isLoading } = useCurrentJobStore();
+
+    const [locationId, setLocationId] = useState<number | undefined>(undefined);
     const [searchQuery, setSearchQuery] = useState<string | null>(null);
     const [includedTags, setIncludedTags] = useState<string[]>([]);
     const [excludedTags, setExcludedTags] = useState<string[]>([]);
@@ -43,11 +46,19 @@ export default function AccountApplicationsPage() {
 
     const [updateTriggerCounter, setUpdateTriggerCounter] = useState<number>(0);
 
-    const { currentJob, isLoading } = useCurrentJobStore();
+    useEffect(() => {
+        if (currentJob?.locations?.length && locationId === undefined) {
+            setLocationId(currentJob.locations[0].id);
+        }
+    }, [currentJob, locationId]);
 
     const fetchApplications = async () => {
 
+        if (!locationId)
+            return;
+
         const request: GetApplicationsForJobRequest = {
+            locationId: locationId,
             page: parsedPageParam,
             size: 15,
             sortOption: sortOption,
@@ -73,15 +84,15 @@ export default function AccountApplicationsPage() {
 
         fetchApplications();
 
-    }, [excludedTags, includedTags, parsedJobIdParam, parsedPageParam, sortOption, updateTriggerCounter]);
+    }, [currentJob, locationId, excludedTags, includedTags, parsedJobIdParam, parsedPageParam, sortOption, updateTriggerCounter]);
 
     if (isLoading || !currentJob) {
-            return (
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
-                    <CircularProgress />
-                </Box>
-            );
-        }
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
 
     return (
         <>
@@ -100,6 +111,8 @@ export default function AccountApplicationsPage() {
                     setSelectedStatusIds={setSelectedStatusIds}
                     onSearchButtonClick={fetchApplications}
                     locationsAvailable={currentJob.locations}
+                    locationId={locationId}
+                    setLocationId={setLocationId}
                 />
 
                 <Stack gap={3} sx={{ mt: 3 }}>

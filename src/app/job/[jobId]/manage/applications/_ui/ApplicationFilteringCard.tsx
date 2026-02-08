@@ -36,12 +36,14 @@ interface ApplicationFilteringCardProps {
     setSelectedStatusIds: React.Dispatch<React.SetStateAction<number[]>>;
     onSearchButtonClick: () => void;
     locationsAvailable: LocationDto[];
+    locationId: number | undefined;
+    setLocationId: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
 export default function ApplicationFilteringCard(props: ApplicationFilteringCardProps) {
 
-    const { companyId, setSearchQuery, includedTags, setIncludedTags, excludedTags,
-        setExcludedTags, selectedStatusIds, setSelectedStatusIds, onSearchButtonClick, locationsAvailable } = props;
+    const { companyId, setSearchQuery, includedTags, setIncludedTags, excludedTags, setExcludedTags,
+        selectedStatusIds, setSelectedStatusIds, onSearchButtonClick, locationsAvailable, locationId, setLocationId } = props;
 
     const handleSelectChange = (event: SelectChangeEvent<number[]>) => {
         const value = event.target.value as number[];
@@ -151,7 +153,11 @@ export default function ApplicationFilteringCard(props: ApplicationFilteringCard
                 </Grid>
 
                 <Stack sx={{ width: "500px", maxWidth: "500px", mt: 1.8 }}>
-                    <JobApplicationLocationSelect value={null} availableValues={locationsAvailable} onChange={() => {}} />
+                    <JobApplicationLocationSelect
+                        value={locationsAvailable.find(l => l.id === locationId) ?? null}
+                        availableValues={locationsAvailable}
+                        onChange={(lDto) => setLocationId(lDto?.id)}
+                    />
                 </Stack>
 
                 <Stack direction="row" spacing={1} sx={{ ml: 0.3, mt: 1.2, alignItems: "center" }}>

@@ -17,7 +17,7 @@ import {
     SearchCompanyJobManagementCardDtosFormData,
     searchCompanyJobManagementCardDtosSchema
 } from "@/lib/schemas/searchCompanyJobManagementCardDtosSchema";
-import JobSearchCard from "./_ui/JobSearchCard";
+import CompanyJobsSearchCard from "./_ui/CompanyJobsSearchCard";
 import { employmentOptions } from "@/lib/seededData/employmentOptions";
 
 
@@ -46,7 +46,7 @@ export function parseSearchParams(
         query: (searchParams.get("query") as string) || "",
         page: parseInt(searchParams.get("page") as string) || 1,
         countryId: parseInt(searchParams.get("countryIds") as string) || 0,
-        locationId: parseInt(searchParams.get("locationIds") as string) || 0,
+        locationId: parseInt(searchParams.get("locationId") as string) || 0,
         categoryIds: parseIds(searchParams.get("categoryIds")),
         contractTypeIds: parseIds(searchParams.get("contractTypeIds")),
         employmentOptionIds: parseIds(searchParams.get("employmentTypeIds"))
@@ -60,7 +60,7 @@ const sortOptionListItems: { value: CompanyJobManagementCardDtosSortOption, labe
 ];
 
 
-export default function CompanyJobsPage() {
+export default function CompanyJobsManagementPage() {
     
     const [jobs, setJobs] = useState<JobManagementCardDto[]>([]);
 
@@ -81,11 +81,11 @@ export default function CompanyJobsPage() {
         const fetchJobs = async (params: TypedJobSearchParams) => {
 
             const request: GetCompanyJobManagementCardDtosRequest = {
-                query: params.query,
+                query: params.query && params.query.length > 0 ? params.query : null,
                 page: params.page,
                 size: 15,
                 mustHaveSalaryRecord: false,
-                locationId: params.locationId,
+                locationId: params.locationId && params.locationId != 0 ? params.locationId as number : null,
                 categoryIds: params.categoryIds,
                 contractTypeIds: params.contractTypeIds,
                 employmentOptionIds: params.employmentOptionIds,
@@ -114,7 +114,7 @@ export default function CompanyJobsPage() {
     return (
         <>
             <Stack gap={3} mt={0} sx={{ maxWidth: "850px" }}>
-                <JobSearchCard />
+                <CompanyJobsSearchCard />
                 <MyDefaultSortingCard<CompanyJobManagementCardDtosSortOption>
                     pxValue="6px"
                     sortModes={sortOptionListItems}

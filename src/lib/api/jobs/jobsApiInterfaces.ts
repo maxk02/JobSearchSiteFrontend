@@ -23,6 +23,7 @@ export interface AddJobResponse {
 }
 
 export interface GetApplicationsForJobRequest {
+    locationId: number;
     statusIds: number[];
     query: string | null;
     sortOption: JobApplicationSortOption | null;
@@ -57,6 +58,7 @@ export interface GetJobsRequest {
     mustHaveSalaryRecord: boolean | null;
     employmentOptionIds: number[] | null;
     locationIds: number[] | null;
+    countryIds: number[] | null;
     categoryIds: number[] | null;
     contractTypeIds: number[] | null;
 }

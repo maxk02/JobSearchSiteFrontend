@@ -42,13 +42,15 @@ export default function JobSearchInputs() {
         mode: 'onChange'
     });
 
-    const { control, handleSubmit, formState: { errors } } = methods;
+    const { control, handleSubmit, formState: { errors }, setValue } = methods;
 
     const onSubmit = async (data: SearchJobFormData) => {
         const queryParams = new URLSearchParams();
 
         if (data.query) queryParams.set("query", data.query);
-        if (data.locationId) queryParams.set("locationId", data.locationId.toString());
+        if (data.locationId && data.locationId !== 0) {
+            queryParams.set("locationId", data.locationId.toString());
+        }
         if (data.categoryIds.length > 0) queryParams.set("categoryIds", data.categoryIds.join(","));
         if (data.contractTypeIds.length > 0) queryParams.set("contractTypeIds", data.contractTypeIds.join(","));
         if (data.employmentTimeOptionIds.length > 0 || data.employmentMobilityOptionIds.length > 0) {
@@ -100,7 +102,10 @@ export default function JobSearchInputs() {
                                 />
                             </Grid>
                             <Grid size={3.9}>
-                                <JobSearchLocationAutoComplete />
+                                <JobSearchLocationAutoComplete
+                                    name="locationId"
+                                    countryDependency="countryId"
+                                />
                             </Grid>
                             <Grid size={2.2}>
                                 <Controller
@@ -114,7 +119,13 @@ export default function JobSearchInputs() {
                                             fullWidth
                                             label=""
                                             value={field.value}
-                                            onChange={(e) => field.onChange(e.target.value)}
+                                            onChange={(e) => {
+                                                // A. Update the Country
+                                                field.onChange(e.target.value);
+                                                
+                                                // B. Reset Location to 0 immediately
+                                                setValue("locationId", 0); 
+                                            }}
                                             error={!!errors.countryId}
                                             helperText={errors.countryId?.message}
                                             sx={{

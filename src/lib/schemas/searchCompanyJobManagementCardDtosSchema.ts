@@ -8,6 +8,7 @@ import {countryIds} from "@/lib/seededData/countries";
 export const searchCompanyJobManagementCardDtosSchema = z.object({
     query: z.string().max(70),
     mustHaveSalaryRecord: z.boolean(),
+    countryId: z.number(),
     locationId: z.number(),
     categoryIds: z.array(z.number())
         .refine((arr) => arr.every(num => jobCategoryIds.includes(num))),

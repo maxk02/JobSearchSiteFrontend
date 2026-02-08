@@ -61,6 +61,7 @@ export default async function JobPage(props: JobPageProps) {
         page: 1,
         size: 5,
         locationIds: null, // job.locations.map(dto => dto.id),
+        countryIds: null,
         categoryIds: null, //[job.categoryId],
         contractTypeIds: null, // job.contractTypeIds,
         employmentOptionIds: null, // job.employmentOptionIds,
@@ -99,7 +100,7 @@ export default async function JobPage(props: JobPageProps) {
                 </Grid>
                 <Grid size={{ xs: 12, md: 12, lg: 4.1 }}>
                     <Stack sx={{ position: "sticky", top: 20, zIndex: 1 }}>
-                        <JobSideActionsCard item={job} />
+                        <JobSideActionsCard />
                         {
                             suggestedJobs.jobCards.length > 0 &&
                             <>

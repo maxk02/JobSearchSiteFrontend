@@ -2,16 +2,24 @@
 
 import React, {useEffect, useState} from 'react';
 import {Autocomplete, CircularProgress, IconButton, InputAdornment, TextField,} from '@mui/material';
-import {Controller, useFormContext} from 'react-hook-form';
+import { Controller, useFormContext, FieldValues, Path } from 'react-hook-form';
 import {Close} from "@mui/icons-material";
 import {SearchJobFormData} from "@/lib/schemas/searchJobSchema";
 import {getLocations} from "@/lib/api/locations/locationsApi";
 import { LocationDto } from '@/lib/api/locations/locationsApiDtos';
 
 
-export default function JobSearchLocationAutoComplete() {
+interface JobSearchLocationAutoCompleteProps<T extends FieldValues> {
+    name: Path<T>;
+    countryDependency?: Path<T>;
+    label?: string;
+}
 
-    const {control, getValues, formState: {errors}} = useFormContext<SearchJobFormData>();
+export default function JobSearchLocationAutoComplete<T extends FieldValues>(props: JobSearchLocationAutoCompleteProps<T>) {
+
+    const { name, countryDependency, label = "Miejscowość" } = props;
+
+    const { control, getValues, formState: { errors } } = useFormContext<T>();
 
     const [options, setOptions] = useState<LocationDto[]>([]);
     const [loading, setLoading] = useState(false);
@@ -26,8 +34,10 @@ export default function JobSearchLocationAutoComplete() {
 
             setLoading(true);
 
+            const countryId = countryDependency ? getValues(countryDependency) : null;
+
             const result = await getLocations({
-                countryId: getValues("countryId"), query: query, size: 5
+                countryId: countryId as unknown as number, query: query, size: 5
             });
 
             if (result.success) {
@@ -42,11 +52,17 @@ export default function JobSearchLocationAutoComplete() {
         }, 100);
 
         return () => clearTimeout(timeoutId);
-    }, [getValues, inputValue]);
+    }, [getValues, inputValue, countryDependency]);
+
+    // Helper to safely access nested errors (e.g., "address.city")
+    const getError = (name: string) => {
+        return name.split('.').reduce((obj, key) => obj && obj[key], errors as any);
+    };
+    const error = getError(name);
 
     return (
         <Controller
-            name="locationId"
+            name={name}
             control={control}
             render={({field}) => (
                 <Autocomplete
@@ -62,9 +78,6 @@ export default function JobSearchLocationAutoComplete() {
 
                     inputValue={inputValue}
                     onInputChange={(_, newInputValue, reason) => {
-                        // if (reason === 'input' || reason === 'clear') {
-                            
-                        // }
                         setInputValue(newInputValue);
                     }}
 
@@ -77,9 +90,9 @@ export default function JobSearchLocationAutoComplete() {
                     renderInput={(params) => (
                         <TextField
                             {...params}
-                            label="Miejscowość"
-                            // error={!!errors.locationId}
-                            // helperText={errors.locationId?.message}
+                            label={label}
+                            error={!!error}
+                            helperText={error?.message}
                             sx={{
                                 maxHeight: "56px",
                                 height: "56px",
@@ -87,22 +100,6 @@ export default function JobSearchLocationAutoComplete() {
                             }}
                             InputProps={{
                                 ...params.InputProps,
-                                // endAdornment: inputValue.length > 0 && (
-                                //     <>
-                                //         {/*{loading &&*/}
-                                //         {/*    <InputAdornment position="end">*/}
-                                //         {/*        <CircularProgress size={20}/>*/}
-                                //         {/*    </InputAdornment>*/}
-                                //         {/*}*/}
-                                //         {inputValue.length > 0 &&
-                                //             <InputAdornment position="end">
-                                //                 <IconButton onClick={handleClearSearch} size="small">
-                                //                     <Close/>
-                                //                 </IconButton>
-                                //             </InputAdornment>
-                                //         }
-                                //     </>
-                                // ),
                                 endAdornment: (
                                     <React.Fragment>
                                         {loading ? <CircularProgress color="inherit" size={20} /> : null}
