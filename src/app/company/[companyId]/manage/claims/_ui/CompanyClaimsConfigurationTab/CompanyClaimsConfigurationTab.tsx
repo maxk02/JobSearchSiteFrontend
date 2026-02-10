@@ -23,8 +23,8 @@ import {Add, CheckCircle, Info, Refresh, Warning} from "@mui/icons-material";
 import CompanyClaimsConfigurationTable from "./CompanyClaimsConfigurationTable";
 import {useParams} from "next/navigation";
 import {getCompanyClaimIdsForUser} from "@/lib/api/companyClaims/companyClaimsApi";
-import {addCompanyEmployee, addCompanyEmployeeInvitation, getCompanyEmployees} from "@/lib/api/companies/companiesApi";
-import {AddCompanyEmployeeInvitationRequest, AddCompanyEmployeeRequest, GetCompanyEmployeesRequest} from "@/lib/api/companies/companiesApiInterfaces";
+import {addCompanyEmployeeInvitation, getCompanyEmployees} from "@/lib/api/companies/companiesApi";
+import {AddCompanyEmployeeInvitationRequest, GetCompanyEmployeesRequest} from "@/lib/api/companies/companiesApiInterfaces";
 import Image from "next/image";
 import {CompanyEmployeeDto} from "@/lib/api/companies/companiesApiDtos";
 

@@ -9,6 +9,13 @@ export interface CompanyBalanceTransactionDto {
     description: string | null;
 }
 
+export interface CompanyEmployeeInvitationDto {
+    id: number;
+    dateTimeCreatedUtc: string;
+    dateTimeValidUtc: string;
+    isAccepted: boolean;
+}
+
 export interface CompanyDto {
     id: number;
     name: string;

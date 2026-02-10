@@ -1,7 +1,5 @@
 import fetchData from "@/lib/api/fetchData";
 import {
-    AddCompanyEmployeeRequest,
-    AddCompanyEmployeeResponse,
     AddCompanyRequest,
     AddCompanyResponse,
     GetCompanyEmployeesRequest,
@@ -18,7 +16,8 @@ import {
     GetCompanyBalanceTransactionsRequest,
     GetCompanyBalanceResponse,
     GetJobApplicationTagsRequest,
-    GetJobApplicationTagsResponse
+    GetJobApplicationTagsResponse, AcceptCompanyEmployeeInvitationRequest, GetCompanyEmployeeInvitationRequest,
+    GetCompanyEmployeeInvitationResponse, SendCompanyEmployeeInvitationRequest
 } from "@/lib/api/companies/companiesApiInterfaces";
 
 
@@ -35,8 +34,8 @@ export const addCompany = async (req: AddCompanyRequest, avatarFile: File | null
     return await fetchData<FormData, AddCompanyResponse>("/companies", "POST", form, {});
 };
 
-export const addCompanyEmployee = async (id: number, req: AddCompanyEmployeeRequest) => {
-    return await fetchData<AddCompanyEmployeeRequest, AddCompanyEmployeeResponse>(`/companies/${id}/management/employees`, "POST", req);
+export const acceptCompanyEmployeeInvitation = async (id: number, req: AcceptCompanyEmployeeInvitationRequest) => {
+    return await fetchData<AcceptCompanyEmployeeInvitationRequest, unknown>(`/companies/${id}/management/employees`, "POST", req);
 };
 
 export const addCompanyEmployeeInvitation = async (id: number, req: AddCompanyEmployeeInvitationRequest) => {
@@ -57,6 +56,10 @@ export const getCompanyBalance = async (id: number) => {
 
 export const getCompanyBalanceTransactions = async (id: number, req: GetCompanyBalanceTransactionsRequest) => {
     return await fetchData<GetCompanyBalanceTransactionsRequest, GetCompanyBalanceTransactionsResponse>(`/companies/${id}/management/balance/transactions`, "GET", req);
+};
+
+export const getCompanyEmployeeInvitation = async (id: number, req: GetCompanyEmployeeInvitationRequest) => {
+    return await fetchData<GetCompanyEmployeeInvitationRequest, GetCompanyEmployeeInvitationResponse>(`/companies/${id}/management/employees/invitation`, "GET", req);
 };
 
 export const getCompanyEmployees = async (id: number, req: GetCompanyEmployeesRequest) => {
@@ -97,6 +100,10 @@ export const removeCompanyEmployee = async (id: number, userId: number) => {
 
 export const searchCompanySharedJobs = async (id: number, req: SearchCompanySharedJobsRequest) => {
     return await fetchData<SearchCompanySharedJobsRequest, SearchCompanySharedJobsResponse>(`/companies/${id}/management/jobs/search`, "GET", {...req});
+};
+
+export const sendCompanyEmployeeInvitation = async (id: number, req: SendCompanyEmployeeInvitationRequest) => {
+    return await fetchData<SendCompanyEmployeeInvitationRequest, unknown>(`/companies/${id}/management/employees/invitations`, "POST", req);
 };
 
 export const updateCompany = async (id: number, req: UpdateCompanyRequest) => {

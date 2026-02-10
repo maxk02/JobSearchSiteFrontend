@@ -1,7 +1,7 @@
 import {
     CompanyBalanceTransactionDto,
     CompanyDto,
-    CompanyEmployeeDto,
+    CompanyEmployeeDto, CompanyEmployeeInvitationDto,
     CompanyJobListItemDto,
     CompanyManagementDetailedDto
 } from "@/lib/api/companies/companiesApiDtos";
@@ -9,12 +9,9 @@ import {PaginationResponse} from "@/lib/api/sharedDtos";
 import {JobCardDto, JobManagementCardDto} from "@/lib/api/jobs/jobsApiDtos";
 
 
-export interface AddCompanyEmployeeRequest {
-    email: string; //todo
-}
-
-export interface AddCompanyEmployeeResponse {
-    id: number; //todo
+export interface AcceptCompanyEmployeeInvitationRequest {
+    userId: number;
+    token: string;
 }
 
 export interface AddCompanyEmployeeInvitationRequest {
@@ -57,6 +54,14 @@ export interface GetCompanyBalanceTransactionsRequest {
 export interface GetCompanyBalanceTransactionsResponse {
     companyBalanceTransactionDtos: CompanyBalanceTransactionDto[];
     paginationResponse: PaginationResponse;
+}
+
+export interface GetCompanyEmployeeInvitationRequest {
+    invitedUserEmail: string;
+}
+
+export interface GetCompanyEmployeeInvitationResponse {
+    companyEmployeeInvitationDto: CompanyEmployeeInvitationDto;
 }
 
 export interface GetCompanyEmployeesRequest {
@@ -129,6 +134,10 @@ export interface SearchCompanySharedJobsRequest {
 
 export interface SearchCompanySharedJobsResponse {
     jobs: CompanyJobListItemDto[]; //todo
+}
+
+export interface SendCompanyEmployeeInvitationRequest {
+    invitedUserEmail: string;
 }
 
 export interface UpdateCompanyRequest {

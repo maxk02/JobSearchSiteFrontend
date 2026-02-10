@@ -25,7 +25,6 @@ import {Info} from "@mui/icons-material";
 
 export default function AccountSettingsPage() {
 
-    // const [userSessions, setUserSessions] = useState<UserSessionDto[]>([]);
     const [isReceivingApplicationStatusUpdates, setIsReceivingApplicationStatusUpdates] = useState<boolean>(true);
 
     const router = useRouter();
@@ -74,22 +73,6 @@ export default function AccountSettingsPage() {
         }
 
     };
-
-    // const handleTerminateSession = async (token: string, isCurrent: boolean) => {
-    //     const result = await terminateSession(token);
-    //
-    //     if (!result.success) {
-    //         console.log("Failed to terminate session");
-    //         return;
-    //     }
-    //
-    //     if (isCurrent) {
-    //         router.push("/");
-    //     }
-    //     else {
-    //         setUserSessions(prevSessions => prevSessions.filter(s => s.token !== token));
-    //     }
-    // };
 
     const handleToggleApplicationStatusUpdates = async (currentVal: boolean) => {
 
@@ -177,39 +160,6 @@ export default function AccountSettingsPage() {
                             </Button>
                         </Stack>
                     </form>
-
-                    {/*<Typography variant="h5" fontWeight={600} color="primary" mt={2}>Aktywne sesje</Typography>*/}
-                    {/*<Typography mt={0.7}>Tutaj możesz przejrzeć aktywne sesje i zakończyć sesje z podejrzanych lub starych urządzeń.</Typography>*/}
-                    {/*<TableContainer component={Paper} sx={{mt: 1.7, width: "750px", maxWidth: "750px"}}>*/}
-                    {/*    <Table sx={{tableLayout: "auto", width: "750px", maxWidth: "750px"}}>*/}
-                    {/*        <TableHead>*/}
-                    {/*            <TableRow>*/}
-                    {/*                <TableCell>Data pierwszego logowania</TableCell>*/}
-                    {/*                <TableCell>Klient</TableCell>*/}
-                    {/*                <TableCell></TableCell>*/}
-                    {/*            </TableRow>*/}
-                    {/*        </TableHead>*/}
-                    {/*        <TableBody>*/}
-                    {/*            {userSessions.map((item) => (*/}
-                    {/*                <TableRow key={item.token}>*/}
-                    {/*                    <TableCell>{item.firstTimeIssuedUtc}</TableCell>*/}
-                    {/*                    <TableCell>*/}
-                    {/*                        {[item.clientDeviceName, item.clientOs, item.clientBrowser].join(',')}*/}
-                    {/*                    </TableCell>*/}
-                    {/*                    <TableCell sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>*/}
-                    {/*                        <Button*/}
-                    {/*                            variant="outlined"*/}
-                    {/*                            color="error"*/}
-                    {/*                            onClick={() => handleTerminateSession(item.token, item.isCurrent)}*/}
-                    {/*                        >*/}
-                    {/*                            Zakończ*/}
-                    {/*                        </Button>*/}
-                    {/*                    </TableCell>*/}
-                    {/*                </TableRow>*/}
-                    {/*            ))}*/}
-                    {/*        </TableBody>*/}
-                    {/*    </Table>*/}
-                    {/*</TableContainer>*/}
 
                     <Typography variant="h5" fontWeight={600} mt={2} color="primary">Usunięcie konta</Typography>
                     <Typography mt={0.7} sx={{ width: "500px" }}>Usuwając konto, stracisz wszystkie zapisane na nim dane, m.in. historię
