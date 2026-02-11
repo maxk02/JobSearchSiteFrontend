@@ -19,15 +19,43 @@ import {
     Typography
 } from "@mui/material";
 import React, {ChangeEvent, useEffect, useState} from "react";
-import {Add, CheckCircle, Info, Refresh, Warning} from "@mui/icons-material";
+import {
+    CheckCircle,
+    Error,
+    Help,
+    HighlightOff,
+    Info,
+    Refresh,
+    Replay,
+    ScreenSearchDesktop,
+    Send
+} from "@mui/icons-material";
 import CompanyClaimsConfigurationTable from "./CompanyClaimsConfigurationTable";
 import {useParams} from "next/navigation";
 import {getCompanyClaimIdsForUser} from "@/lib/api/companyClaims/companyClaimsApi";
-import {addCompanyEmployeeInvitation, getCompanyEmployees} from "@/lib/api/companies/companiesApi";
-import {AddCompanyEmployeeInvitationRequest, GetCompanyEmployeesRequest} from "@/lib/api/companies/companiesApiInterfaces";
+import {
+    getCompanyEmployeeInvitation,
+    getCompanyEmployees,
+    sendCompanyEmployeeInvitation
+} from "@/lib/api/companies/companiesApi";
+import {
+    GetCompanyEmployeeInvitationRequest,
+    GetCompanyEmployeesRequest,
+    SendCompanyEmployeeInvitationRequest
+} from "@/lib/api/companies/companiesApiInterfaces";
 import Image from "next/image";
-import {CompanyEmployeeDto} from "@/lib/api/companies/companiesApiDtos";
+import {CompanyEmployeeDto, CompanyEmployeeInvitationDto} from "@/lib/api/companies/companiesApiDtos";
 
+
+const formatPolishDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    const formatter = new Intl.DateTimeFormat('pl-PL', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+    });
+    return formatter.format(date);
+};
 
 export default function CompanyClaimsConfigurationTab() {
 
@@ -49,7 +77,8 @@ export default function CompanyClaimsConfigurationTab() {
 
     const [userMode, setUserMode] = useState<'existing' | 'new'>('existing');
     const [newUserEmail, setNewUserEmail] = useState('');
-    const [invitationSendingStatus, setInvitationSendingStatus] = useState<"none" | "success" | "error">("none");
+    const [invitationSendingError, setInvitationSendingError] = useState<boolean>(false);
+    const [companyEmployeeInvitation, setCompanyEmployeeInvitation] = useState<CompanyEmployeeInvitationDto | null>(null);
 
     useEffect(() => {
 
@@ -96,22 +125,6 @@ export default function CompanyClaimsConfigurationTab() {
             }
             else {
                 console.error(`couldnt get users, ${result.status}, ${result.error.message}`);
-                setFindUserOptions(() => [
-                    {
-                        id: 1,
-                        email: "wojdwopejp@gmail.com",
-                        fullName: "Full Name",
-                        avatarLink: null,
-                        companiesManaged: [],
-                    },
-                    {
-                        id: 2,
-                        email: "wojdwowefefpejp@gmail.com",
-                        fullName: "Full Name 2",
-                        avatarLink: null,
-                        companiesManaged: [],
-                    },
-                ]);
             }
 
             setLoading(false);
@@ -128,18 +141,32 @@ export default function CompanyClaimsConfigurationTab() {
         setUserMode(e.target.value as 'existing' | 'new');
         setDisplayedUser(null);
         setSelectedUserId(null);
-        setInvitationSendingStatus("none");
+        setInvitationSendingError(false);
     };
 
-    const handleAddNewUser = async (email: string) => {
-        const request: AddCompanyEmployeeInvitationRequest = {
+    const handleCheckUser = async (email: string) => {
+        const request: GetCompanyEmployeeInvitationRequest = {
             invitedUserEmail: email,
         };
 
-        const result = await addCompanyEmployeeInvitation(companyId, request);
+        const result = await getCompanyEmployeeInvitation(companyId, request);
 
         if (result.success) {
-            setInvitationSendingStatus("success");
+            setCompanyEmployeeInvitation(result.data.companyEmployeeInvitationDto);
+        }
+    };
+
+    const handleSendUserInvitation = async (email: string) => {
+        const request: SendCompanyEmployeeInvitationRequest = {
+            invitedUserEmail: email,
+        };
+
+        const result = await sendCompanyEmployeeInvitation(companyId, request);
+
+        if (result.success) {
+            setCompanyEmployeeInvitation(result.data.companyEmployeeInvitationDto);
+        } else {
+            setInvitationSendingError(true);
         }
     };
 
@@ -156,7 +183,7 @@ export default function CompanyClaimsConfigurationTab() {
                 sx={{ mt: 1 }}
             >
                 <FormControlLabel value="existing" control={<Radio />} label="Wybór użytkownika" />
-                <FormControlLabel value="new" control={<Radio />} label="Dodanie użytkownika" />
+                <FormControlLabel value="new" control={<Radio />} label="Zaproszenie użytkownika" />
             </RadioGroup>
 
             {userMode === 'existing' ? (
@@ -234,9 +261,9 @@ export default function CompanyClaimsConfigurationTab() {
             ) : (
                 <>
                     <Stack direction="row" sx={{ alignItems: "center" }} mt={1.2}>
-                        <FormLabel>Dodanie użytkownika:</FormLabel>
+                        <FormLabel>Wprowadź email:</FormLabel>
                         <TextField
-                            label="Email nowego użytkownika"
+                            // label="Wprowadź email..."
                             value={newUserEmail}
                             onChange={(e) => setNewUserEmail(e.target.value)}
                             sx={{ ml: 1.1, width: "400px" }}
@@ -245,26 +272,89 @@ export default function CompanyClaimsConfigurationTab() {
                             variant="contained"
                             color="primary"
                             size="large"
-                            startIcon={<Add />}
+                            startIcon={<ScreenSearchDesktop />}
                             disabled={!newUserEmail}
-                            onClick={() => handleAddNewUser(newUserEmail)}
-                            sx={{ ml: 2.5, borderRadius: "50px", width: "125px" }}
+                            onClick={() => handleCheckUser(newUserEmail)}
+                            sx={{ ml: 2.5, borderRadius: "50px" }}
                         >
-                            Dodaj
+                            Sprawdź status
                         </Button>
                     </Stack>
-                    {invitationSendingStatus === "success" &&
-                        <Stack direction="row" gap={1} sx={{ alignItems: "center", mt: 1.3 }}>
-
-                            <Icon color="success" sx={{ mb: 0.7, p: 0 }}>
+                    {companyEmployeeInvitation &&
+                        <Stack direction="row" gap={1} sx={{ alignItems: "center", mt: 1.8 }}>
+                            <Icon color="success" sx={{ mb: 0.8, p: 0 }}>
                                 <CheckCircle />
                             </Icon>
 
-                            
-                                <Typography color="success" sx={{ fontSize: "1.2em", fontWeight: "bold" }}>
-                                    Zaproszenie wysłane
-                                </Typography>
+                            <Typography color="success" sx={{ fontSize: "1.2em", fontWeight: "bold" }}>
+                                Zaproszenie ważne do: {formatPolishDate(companyEmployeeInvitation.dateTimeValidUtc)}
+                            </Typography>
 
+                            <Button
+                                variant="outlined"
+                                color="primary"
+                                size="medium"
+                                startIcon={<Replay />}
+                                onClick={() => handleCheckUser(newUserEmail)}
+                                sx={{ ml: 1, borderRadius: "50px" }}
+                            >
+                                Wyślij ponownie
+                            </Button>
+
+                            <Button
+                                variant="outlined"
+                                color="error"
+                                size="medium"
+                                startIcon={<HighlightOff />}
+                                onClick={() => handleCheckUser(newUserEmail)} //todo
+                                sx={{ ml: 1, borderRadius: "50px" }}
+                            >
+                                Unieważnij
+                            </Button>
+                        </Stack>
+                    }
+                    {companyEmployeeInvitation === null && !invitationSendingError &&
+                        <Stack direction="row" gap={1} sx={{ alignItems: "center", mt: 1.8 }}>
+                            <Icon color="info" sx={{ mb: 0.8, p: 0 }}>
+                                <Help />
+                            </Icon>
+
+                            <Typography color="info" sx={{ fontSize: "1.2em", fontWeight: "bold" }}>
+                                Brak zaproszenia
+                            </Typography>
+
+                            <Button
+                                variant="outlined"
+                                color="primary"
+                                size="medium"
+                                startIcon={<Send />}
+                                onClick={() => handleSendUserInvitation(newUserEmail)}
+                                sx={{ ml: 1, borderRadius: "50px" }}
+                            >
+                                Wyślij
+                            </Button>
+                        </Stack>
+                    }
+                    {companyEmployeeInvitation === null && invitationSendingError &&
+                        <Stack direction="row" gap={1} sx={{ alignItems: "center", mt: 1.8 }}>
+                            <Icon color="error" sx={{ mb: 0.8, p: 0 }}>
+                                <Error />
+                            </Icon>
+
+                            <Typography color="error" sx={{ fontSize: "1.2em", fontWeight: "bold" }}>
+                                Nie udało się wysłać zaproszenia
+                            </Typography>
+
+                            <Button
+                                variant="outlined"
+                                color="primary"
+                                size="medium"
+                                startIcon={<Replay />}
+                                onClick={() => handleSendUserInvitation(newUserEmail)}
+                                sx={{ ml: 1, borderRadius: "50px" }}
+                            >
+                                Spróbuj ponownie
+                            </Button>
                         </Stack>
                     }
                 </>

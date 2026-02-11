@@ -14,10 +14,6 @@ export interface AcceptCompanyEmployeeInvitationRequest {
     token: string;
 }
 
-export interface AddCompanyEmployeeInvitationRequest {
-    invitedUserEmail: string;
-}
-
 export interface AddCompanyRequest {
     name: string;
     description: string | null;
@@ -138,6 +134,10 @@ export interface SearchCompanySharedJobsResponse {
 
 export interface SendCompanyEmployeeInvitationRequest {
     invitedUserEmail: string;
+}
+
+export interface SendCompanyEmployeeInvitationResponse {
+    companyEmployeeInvitationDto: CompanyEmployeeInvitationDto;
 }
 
 export interface UpdateCompanyRequest {
