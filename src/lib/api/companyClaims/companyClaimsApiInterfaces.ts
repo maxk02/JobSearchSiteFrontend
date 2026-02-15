@@ -19,4 +19,5 @@ export interface GetCompanyClaimsOverviewResponse {
 
 export interface UpdateCompanyClaimIdsForUserRequest {
     companyClaimIds: number[];
+    passwordForConfirmation: string | null;
 }

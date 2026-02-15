@@ -21,10 +21,13 @@ import BasicInfoDialog from "@/app/_ui/BasicInfoDialog";
 import { UpdateCompanyClaimIdsForUserRequest } from "@/lib/api/companyClaims/companyClaimsApiInterfaces";
 import ClaimConfigurationErrorInfoDialog
     from "@/app/company/[companyId]/manage/claims/_ui/CompanyClaimsConfigurationTab/ClaimConfigurationErrorInfoDialog";
+import TransferOwnershipConfirmationDialog
+    from "@/app/company/[companyId]/manage/claims/_ui/CompanyClaimsConfigurationTab/TransferOwnershipConfirmationDialog";
+import {CompanyEmployeeDto} from "@/lib/api/companies/companiesApiDtos";
 
 interface CompanyClaimsConfigurationTableProps {
     companyId: number;
-    userId: number;
+    user: CompanyEmployeeDto;
     activeClaimIds: number[];
 }
 
@@ -37,7 +40,7 @@ interface RowData {
 
 export default function CompanyClaimsConfigurationTable(props: CompanyClaimsConfigurationTableProps) {
 
-    const { companyId, userId, activeClaimIds } = props;
+    const { companyId, user, activeClaimIds } = props;
 
     const rows = useMemo((): RowData[] =>
             companyClaims
@@ -49,7 +52,10 @@ export default function CompanyClaimsConfigurationTable(props: CompanyClaimsConf
 
     const [selected, setSelected] = useState<number[]>([]);
     const [infoDialogOpen, setInfoDialogOpen] = useState<boolean>(false);
+    const [transferOwnershipDialogOpen, setTransferOwnershipDialogOpen] = useState<boolean>(false);
+    const [password, setPassword] = useState<string>("");
     const [lackingClaimIds, setLackingClaimIds] = useState<number[]>([]);
+    const [finalClaimIds, setFinalClaimIds] = useState<Set<number>>(new Set());
 
     const visibleRows = rows;
 
@@ -85,8 +91,10 @@ export default function CompanyClaimsConfigurationTable(props: CompanyClaimsConf
         const originalSet = new Set(activeClaimIds);
         const appliedSet = new Set(claimIdsSwitched);
 
-        const finalClaimIds = enable ? new Set([...originalSet, ...appliedSet])
+        const newFinalClaimIds = enable ? new Set([...originalSet, ...appliedSet])
             : new Set([...originalSet].filter(x => !appliedSet.has(x)));
+
+        setFinalClaimIds(() => newFinalClaimIds);
 
         let lackingDependencyIds: number[] = [];
 
@@ -96,19 +104,27 @@ export default function CompanyClaimsConfigurationTable(props: CompanyClaimsConf
             }
         }
 
-        if (!lackingDependencyIds.length) {
-            const request: UpdateCompanyClaimIdsForUserRequest = {
-                companyClaimIds: [...finalClaimIds]
-            };
-            const result = await updateCompanyClaimIdsForUser(companyId, userId, request);
-            if (!result.success) {
-                console.error(result);
-            }
-        }
-        else {
-
+        if (lackingDependencyIds.length) {
             setLackingClaimIds(lackingDependencyIds);
             setInfoDialogOpen(true);
+            return;
+        }
+
+        if (newFinalClaimIds.has(1)) {
+            setTransferOwnershipDialogOpen(true);
+        } else {
+            await performClaimUpdate(newFinalClaimIds);
+        }
+    };
+
+    const performClaimUpdate = async (claimIds: Set<number>) => {
+        const request: UpdateCompanyClaimIdsForUserRequest = {
+            companyClaimIds: [...claimIds],
+            passwordForConfirmation: password
+        };
+        const result = await updateCompanyClaimIdsForUser(companyId, user.id, request);
+        if (!result.success) {
+            console.error(result);
         }
     };
 
@@ -209,10 +225,10 @@ export default function CompanyClaimsConfigurationTable(props: CompanyClaimsConf
                                         <TableCell>
                                             {row.isActive ?
                                                 <Typography variant="body2" color="success" sx={{ fontWeight: "500" }}>
-                                                    Aktywne
+                                                    Aktywny
                                                 </Typography>
                                                 : <Typography variant="body2" color="error" sx={{ fontWeight: "500" }}>
-                                                    Nieaktywne
+                                                    Nieaktywny
                                                 </Typography>
                                             }
                                         </TableCell>
@@ -261,6 +277,14 @@ export default function CompanyClaimsConfigurationTable(props: CompanyClaimsConf
                 maxWidth="md"
                 lackingClaimIds={lackingClaimIds}
             />
+            <TransferOwnershipConfirmationDialog
+                open={transferOwnershipDialogOpen}
+                onClose={() => { setTransferOwnershipDialogOpen(false); setFinalClaimIds(new Set()); setPassword(""); }}
+                onConfirm={() => performClaimUpdate(finalClaimIds)}
+                userFullName={user.fullName}
+                userEmail={user.email}
+                password={password}
+                setPassword={setPassword} />
         </>
     );
 }
