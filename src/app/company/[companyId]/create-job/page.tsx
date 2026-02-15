@@ -140,7 +140,7 @@ export default function CreateJobPage() {
 
                                 <CreateEditJobBasicInfoCard />
 
-                                <CreateEditJobLocationCard />
+                                <CreateEditJobLocationCard locations={[]} />
 
                                 <CreateEditJobPublicationIntervalCard />
 
