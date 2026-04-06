@@ -7,23 +7,23 @@ import StatsDateRangePaperButton from "@/app/_ui/StatsDateRangePaperButton";
 
 
 const mockJobViewsData = [
-    { month: "12 sty", views: 200 },
-    { month: "13 sty", views: 250 },
-    { month: "14 sty", views: 180 },
-    { month: "15 sty", views: 300 },
-    { month: "16 sty", views: 270 },
-    { month: "17 sty", views: 230 },
-    { month: "18 sty", views: 210 },
+    { month: "30.03", views: 200 },
+    { month: "31.03", views: 250 },
+    { month: "01.04", views: 180 },
+    { month: "02.04", views: 300 },
+    { month: "03.04", views: 270 },
+    { month: "04.04", views: 230 },
+    { month: "05.04", views: 210 },
 ];
 
 const mockApplicationsData = [
-    { month: "12 sty", applications: 10 },
-    { month: "13 sty", applications: 15 },
-    { month: "14 sty", applications: 8 },
-    { month: "15 sty", applications: 20 },
-    { month: "16 sty", applications: 18 },
-    { month: "17 sty", applications: 15 },
-    { month: "18 sty", applications: 14 },
+    { month: "30.03", applications: 10 },
+    { month: "31.03", applications: 15 },
+    { month: "01.04", applications: 8 },
+    { month: "02.04", applications: 20 },
+    { month: "03.04", applications: 18 },
+    { month: "04.04", applications: 15 },
+    { month: "05.04", applications: 14 },
 ];
 
 
@@ -31,7 +31,6 @@ const timePeriods = [
     "Ostatni dzień",
     "Ostatni tydzień",
     "Ostatni miesiąc",
-    "Ostatni rok",
 ];
 
 
@@ -40,12 +39,16 @@ export default function JobStatsPage() {
 
     return (
         <>
-            <Typography variant="h4" fontWeight={600} color="primary">Statystyki</Typography>
+            <Stack direction="row" sx={{ justifyContent: "space-between", maxWidth: 800 }}>
+                <Typography variant="h4" fontWeight={600} color="primary">Statystyki</Typography>
+                <StatsDateRangePaperButton options={timePeriods} defaultOption="Ostatni tydzień" />
+            </Stack>
+
+            <Typography variant="h5" fontWeight={600} mt={0.5}>Magazynier z uprawnieniami UDT</Typography>
+
             {/*<Typography mt={1}>Tutaj możesz obejrzeć statystyki tego ogłoszenia pracy.</Typography>*/}
 
-            <Stack sx={{ maxWidth: 800, mt: 1.5 }}>
-                <StatsDateRangePaperButton options={timePeriods} defaultOption="Ostatni tydzień" />
-
+            <Stack sx={{ maxWidth: 800 }}>
                 <Paper sx={{ p: 2, mt: 2, maxWidth: "800px" }}>
                     <Typography variant="h6" gutterBottom>
                         Wyświetlenia

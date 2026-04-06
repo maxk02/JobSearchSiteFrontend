@@ -1,7 +1,7 @@
 "use client";
 
 import {Box, CircularProgress, Typography} from "@mui/material";
-import React, { useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import CreateEditJobBasicInfoCard from "@/app/_ui/CreateEditJob/CreateEditJobBasicInfoCard";
 import CreateEditJobPublicationIntervalCard from "@/app/_ui/CreateEditJob/CreateEditJobPublicationIntervalCard";
 import CreateEditJobEmploymentOptionCard from "@/app/_ui/CreateEditJob/CreateEditJobEmploymentOptionCard";
@@ -16,6 +16,7 @@ import {useParams} from "next/navigation";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {UpdateJobRequest} from "@/lib/api/jobs/jobsApiInterfaces";
 import {useCurrentJobStore} from "@/lib/stores/currentJobStore";
+import BasicInfoDialog from "@/app/_ui/BasicInfoDialog";
 
 
 export default function EditJobPage() {
@@ -25,6 +26,8 @@ export default function EditJobPage() {
     const jobId = parseInt(params.jobId as string, 10);
 
     const { currentJob, setCurrentJob, isLoading } = useCurrentJobStore();
+
+    const [topUpNeededDialogOpen, setTopUpNeededDialogOpen] = useState(false);
 
     const methods = useForm<CreateEditJobFormData>({
         resolver: zodResolver(createEditJobSchema),
@@ -49,21 +52,17 @@ export default function EditJobPage() {
     const { handleSubmit, reset, formState: {touchedFields} } = methods;
 
     useEffect(() => {
-        // Guard clause: If data isn't loaded yet, do nothing
         if (!currentJob) return;
 
-        // Map your API data to Form Data
         reset({
             companyId: currentJob.companyId,
             title: currentJob.title,
             category: currentJob.categoryId,
             description: currentJob.description,
-            // Ensure you handle Date conversion safely
             dateTimeExpiringUtc: new Date(currentJob.dateTimeExpiringUtc),
             isPublic: currentJob.isPublic,
             employmentOptionIds: currentJob.employmentOptionIds,
             jobContractTypeIds: currentJob.contractTypeIds,
-            // Safe navigation in case locations is undefined
             locationIds: currentJob.locations?.map(l => l.id) || [],
             salaryInfo: currentJob.salaryInfoDto,
             responsibilities: currentJob.responsibilities,
@@ -94,10 +93,10 @@ export default function EditJobPage() {
             requirements: data.requirements,
             niceToHaves: data.niceToHaves,
             salaryInfo: data.salaryInfo !== null ? {
-                minimum: data.salaryInfo.minWage ?? null,
-                maximum: data.salaryInfo.maxWage ?? null,
+                minimum: data.salaryInfo.minimum ?? null,
+                maximum: data.salaryInfo.maximum ?? null,
                 currencyId: 1,
-                unitOfTime: data.salaryInfo.wageTimeUnit,
+                unitOfTime: "Hour",
                 isAfterTaxes: data.salaryInfo.isAfterTaxes,
             } : null,
             employmentOptionIds: data.employmentOptionIds,
@@ -123,40 +122,61 @@ export default function EditJobPage() {
     }
 
     return (
-        <Box sx={{ width: "800px", maxWidth: "800px" }}>
+        <>
+            <Box sx={{ width: "800px", maxWidth: "800px" }}>
 
-            <Typography variant="h4" fontWeight={600} color="primary">Edycja oferty pracy</Typography>
-            <Typography mt={0.7} sx={{ fontSize: "1.05em" }}>
-                Dodaj więcej informacji o ofercie, aby zwiększyć jej widoczność i przyciągnąć idealnych kandydatów. Im dokładniej opiszesz stanowisko, firmę i oczekiwania, tym lepiej Twoja oferta będzie dopasowana do właściwych osób.
-            </Typography>
+                <Typography variant="h4" fontWeight={600} color="primary">Edycja oferty pracy</Typography>
+                <Typography mt={0.7} sx={{ fontSize: "1.05em" }}>
+                    Dodaj więcej informacji o ofercie, aby zwiększyć jej widoczność i przyciągnąć idealnych kandydatów. Im dokładniej opiszesz stanowisko, firmę i oczekiwania, tym lepiej Twoja oferta będzie dopasowana do właściwych osób.
+                </Typography>
 
-            <FormProvider {...methods}>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <FormProvider {...methods}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
 
-                    <CreateEditJobBasicInfoCard />
+                        <CreateEditJobBasicInfoCard />
 
-                    <CreateEditJobLocationCard locations={currentJob.locations} />
+                        <CreateEditJobLocationCard locations={currentJob.locations} initialLocations={currentJob.locations} />
 
-                    <CreateEditJobPublicationIntervalCard
-                        dateTimePublishedUtc={new Date(currentJob.dateTimePublishedUtc)}
-                        maxDateTimeExpiringUtcEverSet={new Date(currentJob.maxDateTimeExpiringUtcEverSet)}
-                    />
+                        <CreateEditJobPublicationIntervalCard
+                            dateTimePublishedUtc={new Date(currentJob.dateTimePublishedUtc)}
+                            maxDateTimeExpiringUtcEverSet={new Date(currentJob.maxDateTimeExpiringUtcEverSet)}
+                        />
 
-                    <CreateEditJobEmploymentOptionCard />
+                        <CreateEditJobEmploymentOptionCard />
 
-                    <CreateEditJobContractTypeCard />
+                        <CreateEditJobContractTypeCard />
 
-                    <CreateEditJobSalaryDataCard />
+                        <CreateEditJobSalaryDataCard />
 
-                    <CreateEditJobListCard cardTitle="Obowiązki" fieldName="responsibilities" />
+                        <CreateEditJobListCard
+                            cardTitle="Obowiązki"
+                            fieldName="responsibilities"
+                            infoText="Ta sekcja ma zawierać od 2 do 10 elementów."
+                        />
 
-                    <CreateEditJobListCard cardTitle="Wymogi" fieldName="requirements" />
+                        <CreateEditJobListCard
+                            cardTitle="Wymogi"
+                            fieldName="requirements"
+                            infoText="Ta sekcja ma zawierać od 2 do 10 elementów."
+                        />
 
-                    <CreateEditJobListCard cardTitle="Mile widziane" fieldName="niceToHaves" />
+                        <CreateEditJobListCard
+                            cardTitle="Mile widziane"
+                            fieldName="niceToHaves"
+                            infoText="Ta sekcja jest opcjonalna. Możesz dodać do 10 elementów."
+                        />
 
-                </form>
-            </FormProvider>
+                    </form>
+                </FormProvider>
 
-        </Box>
+            </Box>
+
+            <BasicInfoDialog
+                title="Nie udało się przedłużyć ogłoszenia"
+                text="Na koncie firmy brakuje środków do wykonania operacji. Prosimy o zapisanie zmian ze wcześniejszą datą wygaśnięcia ogłoszenia lub doładowanie konta."
+                open={topUpNeededDialogOpen}
+                onClose={() => setTopUpNeededDialogOpen(false)}
+            />
+        </>
     );
 }

@@ -98,7 +98,7 @@ export default function JobApplicationsPage() {
         <>
             <Box sx={{ maxWidth: 1000 }}>
                 <Typography variant="h4" fontWeight={600} color="primary">Aplikacje</Typography>
-                <Typography variant="h5" fontWeight={600} mt={0.5}>Specjalista ds księgowości</Typography>
+                <Typography variant="h5" fontWeight={600} mt={0.5}>Magazynier z uprawnieniami UDT</Typography>
 
                 <ApplicationFilteringCard
                     companyId={currentJob.companyId}

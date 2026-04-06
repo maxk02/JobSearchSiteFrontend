@@ -25,7 +25,7 @@ export default function CompanyAcceptInvitationPage() {
                     </Stack>
 
                     <Typography variant="body1" sx={{ mt: 2.5 }}>
-                        Od teraz możesz uzyskać uprawnienia do zarządzania kontem i ogłoszeniami pracy w firmie "Trans-World".
+                        Od teraz możesz uzyskać uprawnienia do zarządzania kontem i ogłoszeniami pracy w firmie "Logistyka Trans-World".
                     </Typography>
                 </Stack>
             </Paper>

@@ -20,6 +20,7 @@ const steps = ['Podstawowe dane', 'Logo', 'Potwierdzenie', 'Weryfikacja'];
 export default function RegisterCompanyPage() {
 
     const [avatarFile, setAvatarFile] = useState<File | null>(null);
+    const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -54,6 +55,8 @@ export default function RegisterCompanyPage() {
 
             if (result.success) {
                 router.push(`/for-employers/register?step=${activeStep + 2}`);
+            } else {
+                router.push(`/for-employers/register?step=${activeStep + 2}`);
             }
         }
     };
@@ -69,11 +72,11 @@ export default function RegisterCompanyPage() {
             case 0:
                 return <BasicInfoStep />;
             case 1:
-                return <LogoStep setAvatarFile={setAvatarFile} />;
+                return <LogoStep setAvatarFile={setAvatarFile} avatarPreview={avatarPreview} setAvatarPreview={setAvatarPreview} />;
             case 2:
-                return <ConfirmationStep />;
+                return <ConfirmationStep avatarPreview={avatarPreview} />;
             case 3:
-                return <VerificationStep />;
+                return <VerificationStep avatarPreview={avatarPreview} />;
             default:
                 return null;
         }

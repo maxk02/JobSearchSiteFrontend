@@ -62,12 +62,12 @@ export default function CreateJobPage() {
             employmentOptionIds: [],
             jobContractTypeIds: [],
             locationIds: [],
-            salaryInfo: undefined,
+            salaryInfo: null,
             responsibilities: [],
             requirements: [],
             niceToHaves: [],
         },
-        mode: 'onChange'
+        mode: 'onSubmit'
     });
 
     const onSubmit = async (data: CreateEditJobFormData) => {
@@ -86,7 +86,7 @@ export default function CreateJobPage() {
                 minimum: data.salaryInfo.minWage ?? null,
                 maximum: data.salaryInfo.maxWage ?? null,
                 currencyId: 1,
-                unitOfTime: 1,
+                unitOfTime: "Hour",
                 isAfterTaxes: data.salaryInfo.isAfterTaxes,
             } : null,
             employmentOptionIds: data.employmentOptionIds,
@@ -109,7 +109,7 @@ export default function CreateJobPage() {
 
             <FormProvider {...methods}>
 
-                <form onSubmit={methods.handleSubmit(onSubmit)}>
+                <form noValidate onSubmit={methods.handleSubmit(onSubmit)}>
 
                     <Grid container spacing={3.5}>
                         <Grid size={{ xs: 12, md: 12, lg: 3.3 }}>
@@ -150,11 +150,23 @@ export default function CreateJobPage() {
 
                                 <CreateEditJobSalaryDataCard />
 
-                                <CreateEditJobListCard cardTitle="Obowiązki" fieldName="responsibilities" />
+                                <CreateEditJobListCard
+                                    cardTitle="Obowiązki"
+                                    fieldName="responsibilities"
+                                    infoText="Ta sekcja ma zawierać od 2 do 10 elementów."
+                                />
 
-                                <CreateEditJobListCard cardTitle="Wymogi" fieldName="requirements" />
+                                <CreateEditJobListCard
+                                    cardTitle="Wymogi"
+                                    fieldName="requirements"
+                                    infoText="Ta sekcja ma zawierać od 2 do 10 elementów."
+                                />
 
-                                <CreateEditJobListCard cardTitle="Mile widziane" fieldName="niceToHaves" />
+                                <CreateEditJobListCard
+                                    cardTitle="Mile widziane"
+                                    fieldName="niceToHaves"
+                                    infoText="Ta sekcja jest opcjonalna. Możesz dodać do 10 elementów."
+                                />
 
                             </Box>
                         </Grid>

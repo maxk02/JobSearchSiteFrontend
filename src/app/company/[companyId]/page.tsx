@@ -6,6 +6,7 @@ import JobCard from "@/app/_ui/JobCard";
 import {redirect} from "next/navigation";
 import {getCompany, getCompanyJobs} from "@/lib/api/companies/companiesApi";
 import {GetCompanyJobsRequest} from "@/lib/api/companies/companiesApiInterfaces";
+import CompanyJobsSearchCard from "@/app/company/[companyId]/manage/jobs/_ui/CompanyJobsSearchCard";
 
 
 async function fetchCompanyJobs(id: number, params: TypedCompanySearchParams) {
@@ -122,7 +123,11 @@ export default async function CompanyPage(props: CompanyPageProps) {
             </Stack>
 
             <Container maxWidth="lg" sx={{ my: 3 }}>
-                <Stack gap={3} mt={2} sx={{ maxWidth: "900px" }}>
+                <Stack gap={3} mt={3} sx={{ maxWidth: "900px" }}>
+                    <CompanyJobsSearchCard />
+                </Stack>
+
+                <Stack gap={3} mt={3} sx={{ maxWidth: "900px" }}>
                     {jobCards.map((jobCard: JobCardDto) => (
                         <JobCard
                             key={jobCard.id}

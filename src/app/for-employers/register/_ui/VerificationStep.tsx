@@ -3,8 +3,9 @@ import { Info } from '@mui/icons-material';
 import { useFormContext } from 'react-hook-form';
 import { CompanyFormData } from '@/lib/schemas/companySchema';
 import React from "react";
+import Image from "next/image";
 
-export default function VerificationStep() {
+export default function VerificationStep({ avatarPreview} : {avatarPreview: string | null}) {
     const { getValues } = useFormContext<CompanyFormData>();
     const values = getValues();
 
@@ -19,7 +20,7 @@ export default function VerificationStep() {
                     </Typography>
                     <Typography>z konta powiązanego z rejestrowaną firmą z opisem:</Typography>
                     <Typography sx={{ fontWeight: "bold" }}>
-                        Rejestracja na stronie znajdzprace.pl jankowalski9226@gmail.com
+                        Rejestracja na stronie znajdzprace.pl admin@transworld.pl
                     </Typography>
                 </Alert>
 
@@ -27,7 +28,9 @@ export default function VerificationStep() {
                     <Typography variant="h6" sx={{ mt: 2 }}>
                         Dane rejestrowanej firmy:
                     </Typography>
-                    <Avatar variant="rounded" src="/company2.webp" sx={{ width: 50, height: 50, m: 0 }} />
+                    <Avatar variant="rounded" sx={{ width: 50, height: 50, m: 0 }}>
+                        {avatarPreview && <Image width={50} height={50} src={avatarPreview} alt="Avatar preview" />}
+                    </Avatar>
                     <Typography sx={{ fontSize: "1.05em" }}>Nazwa: {values.name}</Typography>
                     <Typography sx={{ fontSize: "1.05em" }}>NIP: {values.nip}</Typography>
                     {values.description && <Typography sx={{ fontSize: "1.05em" }}>Opis: {values.description}</Typography>}

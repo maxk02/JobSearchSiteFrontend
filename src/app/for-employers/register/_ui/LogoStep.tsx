@@ -3,12 +3,15 @@ import { DeleteForever, Info } from '@mui/icons-material';
 import FileUploadArea from '@/app/_ui/FileUploadArea';
 import { FileRejection } from 'react-dropzone';
 import React, {useState} from "react";
+import Image from "next/image";
 
 interface LogoStepProps {
     setAvatarFile: (file: File | null) => void;
+    avatarPreview: string | null;
+    setAvatarPreview: (avatarPreview: string | null) => void;
 }
 
-export default function LogoStep({ setAvatarFile }: LogoStepProps) {
+export default function LogoStep({ setAvatarFile, avatarPreview, setAvatarPreview }: LogoStepProps) {
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -36,6 +39,14 @@ export default function LogoStep({ setAvatarFile }: LogoStepProps) {
         }
 
         const file = acceptedFiles[0];
+
+        const reader = new FileReader();
+
+        reader.readAsDataURL(file);
+
+        reader.onloadend = () => {
+            setAvatarPreview(reader.result as string ?? null);
+        };
 
         setAvatarFile(file);
     };
@@ -72,21 +83,26 @@ export default function LogoStep({ setAvatarFile }: LogoStepProps) {
                             border: "2px dashed lightgray",
                         }}
                     >
-                        <Avatar variant="rounded" src="/company2.webp" sx={{ width: 128, height: 128, m: 0 }} />
+                        <Avatar variant="rounded" sx={{ width: 128, height: 128, m: 0 }}>
+                            {avatarPreview && <Image width={128} height={128} src={avatarPreview} alt="Avatar preview" />}
+                        </Avatar>
                         <Typography textAlign="center">Obecne zdjęcie</Typography>
-                        <Button
-                            size="small"
-                            color="error"
-                            startIcon={<DeleteForever />}
-                            sx={{
-                                padding: 0,
-                                '&:hover': { backgroundColor: 'transparent' },
-                                '&:active': { backgroundColor: 'transparent' },
-                                '&:focus': { outline: 'none' },
-                            }}
-                        >
-                            Usuń
-                        </Button>
+                        {avatarPreview &&
+                            <Button
+                                size="small"
+                                color="error"
+                                startIcon={<DeleteForever />}
+                                onClick={() => {setAvatarFile(null); setAvatarPreview(null);}}
+                                sx={{
+                                    padding: 0,
+                                    '&:hover': { backgroundColor: 'transparent' },
+                                    '&:active': { backgroundColor: 'transparent' },
+                                    '&:focus': { outline: 'none' },
+                                }}
+                            >
+                                Usuń
+                            </Button>
+                        }
                     </Paper>
                     <Box sx={{ width: 270, height: 250 }}>
                         <FileUploadArea
@@ -95,7 +111,8 @@ export default function LogoStep({ setAvatarFile }: LogoStepProps) {
                                 "image/jpeg": [".jpg", ".jpeg"],
                                 "image/png": [".png"],
                                 "image/gif": [".gif"],
-                                "image/webp": [".webp"]
+                                "image/webp": [".webp"],
+                                "image/svg": [".svg"]
                             }}
                             maxSize={5 * 1024 * 1024}
                             maxFiles={1}

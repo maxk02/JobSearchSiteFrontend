@@ -51,9 +51,9 @@ export default function AccountApplicationsPage() {
     return (
         <>
             <Typography variant="h4" fontWeight={600} color="primary">Historia aplikacji</Typography>
-            <Typography mt={0.5}>W tej zakładce sprawdzisz status swoich aplikacji.</Typography>
+            <Typography mt={1}>W tej zakładce sprawdzisz status swoich aplikacji.</Typography>
 
-            <Stack direction="row" spacing={1.3} sx={{ mt: 1.5, alignItems: "center" }}>
+            <Stack direction="row" spacing={1.3} sx={{ mt: 1.7, alignItems: "center" }}>
                 <Typography variant="body1" color="text.secondary">
                     Filtruj:
                 </Typography>
@@ -71,7 +71,7 @@ export default function AccountApplicationsPage() {
                 ))}
             </Stack>
 
-            <Stack gap={3} mt={2} sx={{ maxWidth: "900px" }}>
+            <Stack gap={3} mt={2.2} sx={{ maxWidth: "900px" }}>
                 {applications.map((application) => (
                     <ApplicationInUserProfileCard
                         key={application.id}

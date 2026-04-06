@@ -24,6 +24,8 @@ import ClaimConfigurationErrorInfoDialog
 import TransferOwnershipConfirmationDialog
     from "@/app/company/[companyId]/manage/claims/_ui/CompanyClaimsConfigurationTab/TransferOwnershipConfirmationDialog";
 import {CompanyEmployeeDto} from "@/lib/api/companies/companiesApiDtos";
+import {useCurrentCompanyStore} from "@/lib/stores/currentCompanyStore";
+import {useCurrentUserStore} from "@/lib/stores/currentUserStore";
 
 interface CompanyClaimsConfigurationTableProps {
     companyId: number;
@@ -36,25 +38,38 @@ interface RowData {
     isActive: boolean;
     text: string;
     description: string | null;
+    selectDisabled: boolean;
+}
+
+export interface LackingClaimDependencies {
+    claimId: number;
+    lackingClaimIds: number[];
 }
 
 export default function CompanyClaimsConfigurationTable(props: CompanyClaimsConfigurationTableProps) {
 
     const { companyId, user, activeClaimIds } = props;
 
+    const { currentCompany } = useCurrentCompanyStore();
+    const { currentUser } = useCurrentUserStore();
+
     const rows = useMemo((): RowData[] =>
             companyClaims
-                .map(c => ({ id: c.id,
+                .filter(c => currentCompany?.claimIds.includes(c.id))
+                .map(c => ({
+                    id: c.id,
                     isActive: activeClaimIds.includes(c.id),
                     text: `${c.namePl} (${c.id})`,
-                    description: c.commentPl })),
+                    description: c.commentPl,
+                    selectDisabled: ( activeClaimIds.includes(2) && !currentCompany?.claimIds.includes(1) ) || user.id == currentUser?.id
+                })),
         [activeClaimIds]);
 
     const [selected, setSelected] = useState<number[]>([]);
     const [infoDialogOpen, setInfoDialogOpen] = useState<boolean>(false);
     const [transferOwnershipDialogOpen, setTransferOwnershipDialogOpen] = useState<boolean>(false);
     const [password, setPassword] = useState<string>("");
-    const [lackingClaimIds, setLackingClaimIds] = useState<number[]>([]);
+    const [lackingClaimDependencies, setLackingClaimDependencies] = useState<LackingClaimDependencies[]>([]);
     const [finalClaimIds, setFinalClaimIds] = useState<Set<number>>(new Set());
 
     const visibleRows = rows;
@@ -96,16 +111,18 @@ export default function CompanyClaimsConfigurationTable(props: CompanyClaimsConf
 
         setFinalClaimIds(() => newFinalClaimIds);
 
-        let lackingDependencyIds: number[] = [];
+        let lackingClaimDependenciesFound: LackingClaimDependencies[] = [];
 
         for (const c of companyClaims.filter(c => finalClaimIds.has(c.id))) {
             if (!c.dependencies.every(depId => finalClaimIds.has(depId))) {
-                lackingDependencyIds = [...lackingDependencyIds, ...c.dependencies.filter(dep => !finalClaimIds.has(dep))];
+                lackingClaimDependenciesFound = [...lackingClaimDependenciesFound,
+                    { claimId: c.id, lackingClaimIds: c.dependencies.filter(dep => !finalClaimIds.has(dep)) }
+                ];
             }
         }
 
-        if (lackingDependencyIds.length) {
-            setLackingClaimIds(lackingDependencyIds);
+        if (lackingClaimDependenciesFound.length) {
+            setLackingClaimDependencies(lackingClaimDependenciesFound);
             setInfoDialogOpen(true);
             return;
         }
@@ -144,6 +161,7 @@ export default function CompanyClaimsConfigurationTable(props: CompanyClaimsConf
                                         inputProps={{
                                             'aria-label': 'select all claims',
                                         }}
+                                        disabled={!visibleRows.some(r => !r.selectDisabled)}
                                     />
                                 </TableCell>
                                 <TableCell>Uprawnienie (id)</TableCell>
@@ -204,6 +222,7 @@ export default function CompanyClaimsConfigurationTable(props: CompanyClaimsConf
                                                     'aria-labelledby': labelId,
                                                 }}
                                                 onClick={(event) => handleClick(event, row.id)}
+                                                disabled={row.selectDisabled}
                                             />
                                         </TableCell>
                                         <TableCell sx={{ width: '400px', maxWidth: '400px' }}>
@@ -247,6 +266,7 @@ export default function CompanyClaimsConfigurationTable(props: CompanyClaimsConf
                                                         startIcon={<AddModerator/>}
                                                         sx={{mr: 2, width: '130px'}}
                                                         onClick={() => handleClaimsSwitch([row.id], true)}
+                                                        disabled={row.selectDisabled}
                                                     >
                                                         Aktywuj
                                                     </Button>
@@ -258,6 +278,7 @@ export default function CompanyClaimsConfigurationTable(props: CompanyClaimsConf
                                                         startIcon={<RemoveModerator/>}
                                                         sx={{mr: 2, width: '130px'}}
                                                         onClick={() => handleClaimsSwitch([row.id], false)}
+                                                        disabled={row.selectDisabled}
                                                     >
                                                         Wyłącz
                                                     </Button>
@@ -272,10 +293,10 @@ export default function CompanyClaimsConfigurationTable(props: CompanyClaimsConf
                 </TableContainer>
             </Paper>
             <ClaimConfigurationErrorInfoDialog
-                onClose={() => { setInfoDialogOpen(false); setLackingClaimIds([]); }}
+                onClose={() => { setInfoDialogOpen(false); setLackingClaimDependencies([]); }}
                 open={infoDialogOpen}
                 maxWidth="md"
-                lackingClaimIds={lackingClaimIds}
+                lackingClaimDependencies={lackingClaimDependencies}
             />
             <TransferOwnershipConfirmationDialog
                 open={transferOwnershipDialogOpen}

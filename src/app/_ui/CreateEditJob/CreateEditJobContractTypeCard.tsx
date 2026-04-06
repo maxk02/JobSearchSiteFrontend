@@ -8,6 +8,7 @@ import React from "react";
 import {Controller, useFormContext} from "react-hook-form";
 import {CreateEditJobFormData} from "@/lib/schemas/createEditJobSchema";
 import {jobContractTypes} from "@/lib/seededData/jobContractTypes";
+import Grid from "@mui/material/Grid";
 
 
 
@@ -29,32 +30,34 @@ export default function CreateEditJobContractTypeCard() {
                     </Typography>
                 </Alert>
 
-                <Box sx={{ mt: 0.4, maxWidth: "500px" }}>
+                <Box sx={{ mt: 0.4, maxWidth: "100%" }}>
                     <FormControl>
                         <FormGroup>
                             <Controller
                                 name="jobContractTypeIds"
                                 control={control}
                                 render={({ field }) => (
-                                    <>
+                                    <Grid container spacing={0.5}>
                                         {jobContractTypes.map((item) => (
-                                            <FormControlLabel
-                                                key={item.id}
-                                                control={
-                                                    <Checkbox
-                                                        checked={field.value?.includes(item.id) || false}
-                                                        onChange={(e) => {
-                                                            const newValue = e.target.checked
-                                                                ? [...(field.value || []), item.id]
-                                                                : (field.value || []).filter((id) => id !== item.id);
-                                                            field.onChange(newValue);
-                                                        }}
-                                                    />
-                                                }
-                                                label={item.namePl}
-                                            />
+                                            <Grid key={item.id} size={6}>
+                                                <FormControlLabel
+                                                    // key={item.id}
+                                                    control={
+                                                        <Checkbox
+                                                            checked={field.value?.includes(item.id) || false}
+                                                            onChange={(e) => {
+                                                                const newValue = e.target.checked
+                                                                    ? [...(field.value || []), item.id]
+                                                                    : (field.value || []).filter((id) => id !== item.id);
+                                                                field.onChange(newValue);
+                                                            }}
+                                                        />
+                                                    }
+                                                    label={item.namePl}
+                                                />
+                                            </Grid>
                                         ))}
-                                    </>
+                                    </Grid>
                                 )}
                             />
                         </FormGroup>

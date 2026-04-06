@@ -8,7 +8,7 @@ import {UserProfileFormData, userProfileSchema} from "@/lib/schemas/userProfileS
 import {UpdateUserProfileRequest} from "@/lib/api/userProfiles/userProfilesApiInterfaces";
 import {getUserProfile, updateUserProfile, uploadAvatar} from "@/lib/api/userProfiles/userProfilesApi";
 import Image from "next/image";
-import {Info} from "@mui/icons-material";
+import {DeleteForever, Info} from "@mui/icons-material";
 import FileUploadArea from "@/app/_ui/FileUploadArea";
 import {FileRejection} from "react-dropzone";
 
@@ -140,6 +140,21 @@ export default function AccountProfilePage() {
                             {avatarLink && <Image src={avatarLink} width={128} height={128} alt="User's avatar" />}
                         </Avatar>
                         <Typography textAlign="center">Obecne zdjęcie</Typography>
+                        {avatarLink &&
+                            <Button
+                                size="small"
+                                color="error"
+                                startIcon={<DeleteForever />}
+                                sx={{
+                                    padding: 0,
+                                    '&:hover': { backgroundColor: 'transparent' },
+                                    '&:active': { backgroundColor: 'transparent' },
+                                    '&:focus': { outline: 'none' },
+                                }}
+                            >
+                                Usuń
+                            </Button>
+                        }
                     </Paper>
                     <Box sx={{ width: 270, height: 250 }}>
                         <FileUploadArea

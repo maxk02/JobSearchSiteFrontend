@@ -1,21 +1,37 @@
 "use client";
 
 import {Button, Paper, Stack} from "@mui/material";
-import {ArrowForward, Star, StarBorder, TaskAlt} from "@mui/icons-material";
+import {ArrowForward, Delete, Edit, Star, StarBorder, TaskAlt, Undo} from "@mui/icons-material";
 import React, {useEffect, useState} from "react";
 import {addJobBookmark, deleteJobBookmark} from "@/lib/api/userProfiles/userProfilesApi";
 import {JobDetailedDto} from "@/lib/api/jobs/jobsApiDtos";
 import ChooseApplicationFilesDialog from "@/app/_ui/ChooseApplicationFilesDialog";
 import { JobApplicationOnJobPageDto } from "@/lib/api/jobApplications/jobApplicationsApiDtos";
-import { useParams } from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import { getJobDataForCurrentAccount } from "@/lib/api/jobs/jobsApi";
+import BasicConfirmationDialog from "@/app/_ui/BasicConfirmationDialog";
+import LogInRequiredDialog from "@/app/_ui/LogInRequiredDialog";
+import {UpdateJobApplicationStatusRequest} from "@/lib/api/jobApplications/jobApplicationsApiInterfaces";
+import {updateJobApplicationStatus} from "@/lib/api/jobApplications/jobApplicationsApi";
 
 
 export default function JobSideActionsCard() {
 
     const params = useParams();
+
+    const router = useRouter();
     
     const jobId = parseInt(params.jobId as string, 10);
+
+    const [logInRequiredDialogOpen, setLogInRequiredDialogOpen] = useState(false);
+
+    const handleCloseDialogs = () => {
+        setLogInRequiredDialogOpen(false);
+    };
+
+    const handleProceedWithLoggingIn = async () => {
+        router.push(`/login`);
+    };
 
     const [jobApplication, setJobApplication] = React.useState<JobApplicationOnJobPageDto | null>(null);
     const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
@@ -30,7 +46,7 @@ export default function JobSideActionsCard() {
                 setIsBookmarked(result.data.isBookmarked);
             }
             else {
-                console.log("Job data for current profilel fetching error");
+                console.log("Job data for current profile fetching error");
             }
         }
         
@@ -42,7 +58,11 @@ export default function JobSideActionsCard() {
 
         if (result.success) {
             setIsBookmarked(!isBookmarked);
-        } else {
+        }
+        else if (result.status === 401) {
+            setLogInRequiredDialogOpen(true);
+        }
+        else {
             console.log(`Toggle bookmark failed (${result.status})`);
         }
     }
@@ -54,18 +74,38 @@ export default function JobSideActionsCard() {
                     <Button
                         variant="contained"
                         color="primary"
-                        startIcon={jobApplication !== null ? <ArrowForward /> : <TaskAlt />}
+                        startIcon={jobApplication !== null ? <Edit /> : <TaskAlt />}
                         onClick={() => setDialogOpen(true)}
                         sx={{
-                            px: 8,
+                            px: 2,
                             maxWidth: "90%",
                             borderRadius: "50px",
                             fontSize: '1.1rem',
-                            "& .MuiButton-startIcon > :nth-of-type(1)": { fontSize: "1.5rem", lineHeight: 1 }
+                            "& .MuiButton-startIcon > :nth-of-type(1)": { fontSize: "1.5rem", lineHeight: 1 },
+                            width: "100%"
                         }}
                     >
-                        {jobApplication !== null ? "Przejdź do aplikacji" : "Aplikuj teraz"}
+                        {jobApplication !== null ? "Edytuj aplikację" : "Aplikuj teraz"}
                     </Button>
+
+                    {jobApplication !== null &&
+                        <Button
+                            variant="outlined"
+                            color="error"
+                            startIcon={<Undo />}
+                            onClick={() => setDialogOpen(true)}
+                            sx={{
+                                px: 2,
+                                maxWidth: "90%",
+                                borderRadius: "50px",
+                                fontSize: '1.1rem',
+                                "& .MuiButton-startIcon > :nth-of-type(1)": { fontSize: "1.5rem", lineHeight: 1 },
+                                width: "100%"
+                            }}
+                        >
+                            Wycofaj aplikację
+                        </Button>
+                    }
 
 
                     <Stack direction="row" sx={{ justifyContent: "center" }}>
@@ -89,6 +129,12 @@ export default function JobSideActionsCard() {
                 applicationId={jobApplication?.id ?? null}
                 currentLocation={jobApplication?.locationDto ?? null}
                 triggerApplicationInfoUpdate={() => setUpdateDataTriggerCounter(x => x + 1)}
+            />
+
+            <LogInRequiredDialog
+                open={logInRequiredDialogOpen}
+                onClose={handleCloseDialogs}
+                onConfirm={handleProceedWithLoggingIn}
             />
         </>
     );

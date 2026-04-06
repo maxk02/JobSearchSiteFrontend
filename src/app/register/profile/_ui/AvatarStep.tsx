@@ -53,7 +53,7 @@ export default function AvatarStep({ setAvatarFile }: LogoStepProps) {
 
     return (
         <>
-            <Typography variant="h4">Zdjęcie profilu</Typography>
+            <Typography variant="h4">Zdjęcie profilowe</Typography>
             <Stack sx={{ gap: 2, mt: 2 }}>
                 <Typography>
                     Tu możesz dodać zdjęcie profilu, które również będzie widoczne w Twoich aplikacjach.
@@ -65,7 +65,7 @@ export default function AvatarStep({ setAvatarFile }: LogoStepProps) {
                 </Alert>
 
                 {errorMessage && (
-                    <Alert severity="error" sx={{ mt: 2, maxWidth: "650px" }}>
+                    <Alert severity="error" sx={{ maxWidth: "650px" }}>
                         <Typography>{errorMessage}</Typography>
                     </Alert>
                 )}
@@ -83,7 +83,7 @@ export default function AvatarStep({ setAvatarFile }: LogoStepProps) {
                             border: "2px dashed lightgray",
                         }}
                     >
-                        <Avatar variant="rounded" sx={{ width: 128, height: 128, m: 0 }}>
+                        <Avatar variant="circular" sx={{ width: 128, height: 128, m: 0 }}>
                             {avatarPreview && <Image width={128} height={128} src={avatarPreview} alt="Avatar preview" />}
                         </Avatar>
                         <Typography textAlign="center">

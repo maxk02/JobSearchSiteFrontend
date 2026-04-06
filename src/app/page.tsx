@@ -35,7 +35,7 @@ export function parseSearchParams(
         locationId: parseInt(searchParams.locationId as string) || 0,
         categoryIds: parseIds(searchParams.categoryIds),
         contractTypeIds: parseIds(searchParams.contractTypeIds),
-        employmentOptionIds: parseIds(searchParams.employmentTypeIds)
+        employmentOptionIds: parseIds(searchParams.employmentOptionIds)
     };
 }
 

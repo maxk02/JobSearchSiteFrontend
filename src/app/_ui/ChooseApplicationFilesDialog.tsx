@@ -21,10 +21,9 @@ import {
     UpdateJobApplicationFilesRequest
 } from "@/lib/api/jobApplications/jobApplicationsApiInterfaces";
 import ChooseApplicationFilesTable from "@/app/_ui/ChooseApplicationFilesTable";
-import { GetPersonalFilesRequest } from "@/lib/api/userProfiles/userProfilesApiInterfaces";
-import JobApplicationLocationAutoComplete from "./JobApplicationLocationSelect";
 import { LocationDto } from "@/lib/api/locations/locationsApiDtos";
 import { getJob } from "@/lib/api/jobs/jobsApi";
+import JobApplicationLocationSelect from "./JobApplicationLocationSelect";
 
 
 const mockFiles: PersonalFileInfoDto[] = [
@@ -34,7 +33,7 @@ const mockFiles: PersonalFileInfoDto[] = [
     {id: 4, name: "File 4", size: 2000000, extension: "pdf"},
 ];
 
-interface ChangeApplicationFilesDialogDialogProps {
+interface ChangeApplicationFilesDialogProps {
     title: string;
     open: boolean;
     onClose: () => void;
@@ -45,7 +44,7 @@ interface ChangeApplicationFilesDialogDialogProps {
     triggerApplicationInfoUpdate?: () => void;
 }
 
-export default function ChooseApplicationFilesDialog(props: ChangeApplicationFilesDialogDialogProps) {
+export default function ChooseApplicationFilesDialog(props: ChangeApplicationFilesDialogProps) {
 
     const { title, open, onClose, jobId, applicationId,
         currentFileIds, currentLocation, triggerApplicationInfoUpdate } = props;
@@ -83,7 +82,17 @@ export default function ChooseApplicationFilesDialog(props: ChangeApplicationFil
                 // Fetch Locations
                 const jobResult = await getJob(jobId);
                 if (jobResult.success) {
-                    setAvailableLocations(jobResult.data.job.locations);
+                    const fetchedLocations = jobResult.data.job.locations;
+                    setAvailableLocations(fetchedLocations);
+
+                    // Automatically select the first location if none is selected
+                    if (!currentLocation && fetchedLocations.length > 0) {
+                        setSelectedLocation(fetchedLocations[0]);
+                    }
+
+                    if (currentLocation && !fetchedLocations.map(l => l.id).includes(currentLocation.id)) {
+                        setSelectedLocation(fetchedLocations[0]);
+                    }
                 }
                 
                 setLoading(false);
@@ -156,15 +165,7 @@ export default function ChooseApplicationFilesDialog(props: ChangeApplicationFil
             <DialogContent sx={{ height: "500px", minHeight: "500px" }}>
                 <Stack sx={{ height: "100%", minHeight: "100%" }}>
 
-                    <Stack direction="row" sx={{ mt: 0.5 }}>
-                        <JobApplicationLocationAutoComplete
-                            availableValues={availableLocations}
-                            value={selectedLocation}
-                            onChange={(l) => setSelectedLocation(l)}
-                        />
-                    </Stack>
-
-                    <Alert severity="info" icon={<Info />} sx={{ flex: "0 0 auto", width: "100%", mt: 1.5 }}>
+                    <Alert severity="info" icon={<Info />} sx={{ flex: "0 0 auto", width: "100%" }}>
                         <Typography>Wybierz co najmniej 1 plik, który będzie podpięty do tej aplikacji.</Typography>
                     </Alert>
                     <Alert
@@ -182,6 +183,14 @@ export default function ChooseApplicationFilesDialog(props: ChangeApplicationFil
                             Maksymalnie możesz dodać: 15 plików
                         </Typography>
                     </Alert>
+
+                    <Stack direction="row" sx={{ mt: 2.5 }}>
+                        <JobApplicationLocationSelect
+                            availableValues={availableLocations}
+                            value={selectedLocation}
+                            onChange={(l) => setSelectedLocation(l)}
+                        />
+                    </Stack>
 
                     <ChooseApplicationFilesTable
                         files={files}

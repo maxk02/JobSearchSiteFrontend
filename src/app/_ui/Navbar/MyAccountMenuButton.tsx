@@ -19,6 +19,7 @@ import {useCurrentUserStore} from "@/lib/stores/currentUserStore";
 import Link from "next/link";
 import {logOut} from "@/lib/api/account/accountApi";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 
 export default function MyAccountMenuButton() {
@@ -67,7 +68,11 @@ export default function MyAccountMenuButton() {
 
     const menuItems = currentUser ? [
         <Box key="user-info" sx={{ display: "flex", flexDirection: "row", alignItems: "center", p: 2, pt: 1 }}>
-            <Avatar src={currentUser.avatarLink ?? ""} sx={{ height: 50, width: 50, mr: 1.5 }} />
+            <Avatar sx={{ height: 50, width: 50, mr: 1.5 }}>
+                {currentUser.avatarLink &&
+                    <Image width={50} height={50} src={currentUser.avatarLink} alt="User's avatar image" />
+                }
+            </Avatar>
             {currentUser?.fullName &&
                 <Typography variant="body1" fontWeight={600}>
                     {currentUser?.fullName}
@@ -90,7 +95,7 @@ export default function MyAccountMenuButton() {
     ] : [
         <Box key="guest-info" sx={{ display: "flex", flexDirection: "row", alignItems: "center", p: 2, pt: 1 }}>
             <Avatar sx={{ height: 50, width: 50, mr: 1.5 }} />
-            <Typography variant="body1" fontWeight={600} gutterBottom>
+            <Typography variant="body1" fontWeight={600}>
                 Zaloguj się lub załóż konto
             </Typography>
         </Box>,

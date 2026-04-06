@@ -1,75 +1,115 @@
 "use client";
 
-import { useState } from "react";
+import React, {useState} from "react";
 import {
-    Container,
-    TextField,
-    Checkbox,
-    FormControlLabel,
+    Alert,
     Button,
-    Typography,
-    Box,
+    Checkbox,
+    Container,
+    FormControlLabel,
     Link,
-    Card,
-    CardContent
+    Paper,
+    Stack,
+    TextField,
+    Typography
 } from "@mui/material";
+import {Controller, useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {LogInFormData, logInSchema} from "@/lib/schemas/logInSchema";
+import {logIn, sendPasswordResetLink} from "@/lib/api/account/accountApi";
+import {LogInRequest, SendPasswordResetLinkRequest} from "@/lib/api/account/accountApiInterfaces";
+import {useCurrentUserStore} from "@/lib/stores/currentUserStore";
+import {useRouter} from "next/navigation";
+import {CheckCircle, Info} from "@mui/icons-material";
+import {ResetPasswordFormData, resetPasswordSchema} from "@/lib/schemas/resetPasswordSchema";
 
-export default function LoginPage() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [rememberMe, setRememberMe] = useState(false);
 
-    const handleLogin = () => {
-        console.log({ email, password, rememberMe });
+export default function ResetPasswordPage() {
+    const { setCurrentUser } = useCurrentUserStore();
+
+    const router = useRouter();
+
+    const [isSentSuccessfully, setIsSentSuccessfully] = useState<boolean | null>(null);
+
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<ResetPasswordFormData>({
+        resolver: zodResolver(resetPasswordSchema),
+        defaultValues: {
+            email: '',
+        },
+    });
+
+    const onSubmit = async (data: ResetPasswordFormData) => {
+        const request: SendPasswordResetLinkRequest = {
+            email: data.email,
+        };
+
+        const result = await sendPasswordResetLink(request);
+
+        if (result.success) {
+            setIsSentSuccessfully(true);
+        }
+        else {
+            console.log(`Failed (${result.status})`)
+        }
     };
 
     return (
         <Container maxWidth="sm" sx={{ mt: 8 }}>
-            <Card sx={{ boxShadow: 1.5, p: 4 }}>
-                <CardContent>
-                    <Container maxWidth="xs">
-                        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                            <Typography variant="h4" gutterBottom>
-                                Logowanie
+            <Paper sx={{ width: "100%", px: 9, pt: 6, pb: 8 }}>
+                <Stack sx={{ width: "100%", alignItems: "center" }}>
+                    <Typography variant="h4" mb={1.5} sx={{ textAlign: "center" }}>
+                        Resetowanie hasła
+                    </Typography>
+                    <Stack direction="row" spacing={1} sx={{ justifyContent: "center" }}>
+                        <Typography>
+                            Nie potrzebujesz resetowania hasła?
+                        </Typography>
+                        <Link href="#" variant="body1">
+                            Zaloguj się
+                        </Link>
+                    </Stack>
+
+                    {isSentSuccessfully &&
+                        <Alert severity="success" icon={<CheckCircle />} sx={{ mt: 3 }}>
+                            <Typography>
+                                Link do ustawienia nowego hasła wysłano pomyślnie. Skorzystaj z niego w ciągu 15 minut.
                             </Typography>
-                            <TextField
-                                fullWidth
-                                margin="normal"
-                                label="Email"
-                                variant="outlined"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                            <TextField
-                                fullWidth
-                                margin="normal"
-                                label="Hasło"
-                                type="password"
-                                variant="outlined"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                            <FormControlLabel
-                                control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />}
-                                label="Zapamiętaj konto"
+                        </Alert>
+                    }
+
+                    <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
+                        <Stack sx={{ mt: 3.5, gap: 2, width: "100%", alignItems: "center" }}>
+                            <Controller
+                                name="email"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        label="Email"
+                                        fullWidth
+                                        required
+                                        error={!!errors.email}
+                                        helperText={errors.email?.message}
+                                    />
+                                )}
                             />
                             <Button
-                                fullWidth
+                                type="submit"
                                 variant="contained"
                                 color="primary"
-                                sx={{ mt: 2, mb: 1 }}
-                                onClick={handleLogin}
+                                sx={{ mt: 2, py: 1.5, width: "75%", fontSize: "1.02rem" }}
                                 size="large"
                             >
-                                Zaloguj się
+                                Wyślij link
                             </Button>
-                            <Link href="#" variant="body2" sx={{ mt: 1 }}>
-                                Zapomniałeś hasła?
-                            </Link>
-                        </Box>
-                    </Container>
-                </CardContent>
-            </Card>
+                        </Stack>
+                    </form>
+                </Stack>
+            </Paper>
         </Container>
     );
 }

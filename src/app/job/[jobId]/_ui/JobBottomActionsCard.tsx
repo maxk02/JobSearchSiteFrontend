@@ -60,10 +60,11 @@ export default function JobBottomActionsCard({ item }: JobBottomActionsCardProps
                     startIcon={jobApplication !== null ? <ArrowForward /> : <TaskAlt />}
                     onClick={() => setDialogOpen(true)}
                     sx={{
-                        px: 8,
+                        px: 2,
                         borderRadius: "50px",
                         fontSize: '1.1rem',
-                        "& .MuiButton-startIcon > :nth-of-type(1)": { fontSize: "1.5rem", lineHeight: 1 }
+                        "& .MuiButton-startIcon > :nth-of-type(1)": { fontSize: "1.5rem", lineHeight: 1 },
+                        width: "40%"
                     }}
                 >
                     {jobApplication !== null ? "Przejdź do aplikacji" : "Aplikuj teraz"}

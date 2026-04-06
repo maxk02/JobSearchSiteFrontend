@@ -144,7 +144,7 @@ export default function AccountFilesPage() {
     return (
         <>
             <Typography variant="h4" fontWeight={600} color="primary">Moje pliki</Typography>
-            <Typography mt={0.5}>W tej zakładce możesz zarządzać plikami, z którymi będziesz aplikować na oferty.</Typography>
+            <Typography mt={1}>W tej sekcji możesz zarządzać plikami, z którymi będziesz aplikować na oferty.</Typography>
 
             <Paper sx={{ mt: 2, p: 2, maxWidth: "900px" }}>
                 <Alert severity="info" icon={<Info />} sx={{ maxWidth: "500px" }}>

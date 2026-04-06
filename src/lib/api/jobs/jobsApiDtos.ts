@@ -65,7 +65,7 @@ export interface JobSalaryInfoDto {
     minimum: number | null;
     maximum: number | null;
     currencyId: number;
-    unitOfTime: number;
+    unitOfTime: string;
     isAfterTaxes: boolean | null;
 }
 

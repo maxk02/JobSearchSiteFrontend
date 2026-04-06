@@ -16,7 +16,7 @@ import {confirmEmail} from "@/lib/api/account/accountApi";
 import {CreateUserProfileFormData, createUserProfileSchema} from "@/lib/schemas/createUserProfileSchema";
 
 
-const steps = ['Potwierdzenie email', 'Podstawowe dane', 'Zdjęcie'];
+const steps = ['Podstawowe dane', 'Zdjęcie profilowe'];
 
 export default function RegisterProfilePage() {
 
@@ -32,7 +32,6 @@ export default function RegisterProfilePage() {
         defaultValues: {
             firstName: '',
             lastName: '',
-            phone: null,
             code: ''
         },
         mode: 'onChange'
@@ -86,11 +85,11 @@ export default function RegisterProfilePage() {
 
     const renderStepContent = (step: number) => {
         switch (step) {
+            // case 0:
+            //     return <ConfirmEmailStep />
             case 0:
-                return <ConfirmEmailStep />
-            case 1:
                 return <BasicInfoStep />;
-            case 2:
+            case 1:
                 return <AvatarStep setAvatarFile={setAvatarFile} />;
             default:
                 return null;
@@ -130,6 +129,7 @@ export default function RegisterProfilePage() {
                                 type="submit"
                                 endIcon={<ArrowForward />}
                                 sx={{ fontSize: "1.02em" }}
+                                disabled={activeStep === 0}
                             >
                                 {activeStep < steps.length - 1 ? 'Dalej' : 'Zarejestruj się'}
                             </Button>

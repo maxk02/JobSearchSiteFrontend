@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import {Button, Container, Link, Paper, Stack, TextField, Typography} from "@mui/material";
+import React, {useState} from "react";
+import {Alert, Button, Container, Link, Paper, Stack, TextField, Typography} from "@mui/material";
 import {useCurrentUserStore} from "@/lib/stores/currentUserStore";
 import {useRouter} from "next/navigation";
 import {Controller, useForm} from "react-hook-form";
@@ -10,8 +10,11 @@ import {CreateAccountRequest} from "@/lib/api/account/accountApiInterfaces";
 import {createAccount} from "@/lib/api/account/accountApi";
 import {AccountDataDto} from "@/lib/api/account/accountDtos";
 import {CreateAccountFormData, createAccountSchema} from "@/lib/schemas/createAccountSchema";
+import {CheckCircle} from "@mui/icons-material";
 
 export default function RegisterPage() {
+
+    const [isRegistrationSuccessful, setIsRegistrationSuccessful] = useState<boolean | null>(null);
 
     const { setCurrentUser } = useCurrentUserStore();
 
@@ -39,16 +42,17 @@ export default function RegisterPage() {
         const result = await createAccount(request);
 
         if (result.success) {
-            const newCurrentUser: AccountDataDto = {
-                id: result.data.id,
-                email: data.email,
-                fullName: null,
-                avatarLink: null,
-                companiesManaged: []
-            };
-
-            setCurrentUser(newCurrentUser);
-            router.push("/register/profile?step=1");
+            // const newCurrentUser: AccountDataDto = {
+            //     id: result.data.id,
+            //     email: data.email,
+            //     fullName: null,
+            //     avatarLink: null,
+            //     companiesManaged: []
+            // };
+            //
+            // setCurrentUser(newCurrentUser);
+            // router.push("/register/profile?step=1");
+            setIsRegistrationSuccessful(true);
         }
         else {
             console.log(`Failed (${result.status})`)
@@ -62,78 +66,89 @@ export default function RegisterPage() {
                     <Typography variant="h4" mb={1.5} sx={{ textAlign: "center" }}>
                         Rejestracja
                     </Typography>
-                    <Stack direction="row" spacing={1} sx={{ justifyContent: "center" }}>
-                        <Typography>
-                            Masz konto?
-                        </Typography>
-                        <Link href="/login" variant="body1">
-                            Zaloguj się
-                        </Link>
-                    </Stack>
-                    <form
-                        noValidate
-                        onSubmit={handleSubmit(
-                            onSubmit,
-                            (errors) => console.log("FORM ERRORS", errors)
-                        )}
-                        style={{ width: "100%" }}
-                    >
-                        <Stack sx={{ mt: 3.5, gap: 2, width: "100%", alignItems: "center" }}>
-                            <Controller
-                                name="email"
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        label="Email"
-                                        fullWidth
-                                        // required
-                                        error={!!errors.email}
-                                        helperText={errors.email?.message}
-                                    />
+                    {isRegistrationSuccessful === null && (
+                        <>
+                            <Stack direction="row" spacing={1} sx={{ justifyContent: "center" }}>
+                                <Typography>
+                                    Masz konto?
+                                </Typography>
+                                <Link href="/login" variant="body1">
+                                    Zaloguj się
+                                </Link>
+                            </Stack>
+                            <form
+                                noValidate
+                                onSubmit={handleSubmit(
+                                    onSubmit,
+                                    (errors) => console.log("FORM ERRORS", errors)
                                 )}
-                            />
-                            <Controller
-                                name="password"
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        label="Hasło"
-                                        fullWidth
-                                        // required
-                                        type="password"
-                                        error={!!errors.password}
-                                        helperText={errors.password?.message}
-                                    />
-                                )}
-                            />
-                            <Controller
-                                name="confirmPassword"
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        label="Powtórz hasło"
-                                        fullWidth
-                                        // required
-                                        type="password"
-                                        error={!!errors.confirmPassword}
-                                        helperText={errors.confirmPassword?.message}
-                                    />
-                                )}
-                            />
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                sx={{ mt: 2, py: 1.5, width: "75%", fontSize: "1.02rem" }}
-                                size="large"
+                                style={{ width: "100%" }}
                             >
-                                Zarejestruj się
-                            </Button>
-                        </Stack>
-                    </form>
+                                <Stack sx={{ mt: 3.5, gap: 2, width: "100%", alignItems: "center" }}>
+                                    <Controller
+                                        name="email"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <TextField
+                                                {...field}
+                                                label="Email"
+                                                fullWidth
+                                                // required
+                                                error={!!errors.email}
+                                                helperText={errors.email?.message}
+                                            />
+                                        )}
+                                    />
+                                    <Controller
+                                        name="password"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <TextField
+                                                {...field}
+                                                label="Hasło"
+                                                fullWidth
+                                                // required
+                                                type="password"
+                                                error={!!errors.password}
+                                                helperText={errors.password?.message}
+                                            />
+                                        )}
+                                    />
+                                    <Controller
+                                        name="confirmPassword"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <TextField
+                                                {...field}
+                                                label="Powtórz hasło"
+                                                fullWidth
+                                                // required
+                                                type="password"
+                                                error={!!errors.confirmPassword}
+                                                helperText={errors.confirmPassword?.message}
+                                            />
+                                        )}
+                                    />
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        color="primary"
+                                        sx={{ mt: 2, py: 1.5, width: "75%", fontSize: "1.02rem" }}
+                                        size="large"
+                                    >
+                                        Zarejestruj się
+                                    </Button>
+                                </Stack>
+                            </form>
+                        </>
+                    )}
+                    {isRegistrationSuccessful === true && (
+                        <Alert severity="success" icon={<CheckCircle />} sx={{ mt: 1 }}>
+                            <Typography>
+                                Pomyślnie wysłano żądanie utworzenia konta. Sprawdź email w celu aktywacji przed pierwszym logowaniem.
+                            </Typography>
+                        </Alert>
+                    )}
                 </Stack>
             </Paper>
         </Container>

@@ -23,9 +23,10 @@ import { CreateEditJobFormData } from "@/lib/schemas/createEditJobSchema";
 interface CreateEditJobListCardProps {
     cardTitle: string;
     fieldName: keyof CreateEditJobFormData;
+    infoText: string;
 }
 
-export default function CreateEditJobListCard({ cardTitle, fieldName }: CreateEditJobListCardProps) {
+export default function CreateEditJobListCard({ cardTitle, fieldName, infoText }: CreateEditJobListCardProps) {
     const { watch, setValue, formState: { errors } } = useFormContext<CreateEditJobFormData>();
     const items = watch(fieldName) as string[] || [];
 
@@ -96,7 +97,7 @@ export default function CreateEditJobListCard({ cardTitle, fieldName }: CreateEd
             </Typography>
             <Box mt={1.5} display="flex" flexDirection="column">
                 <Alert severity="info" icon={<Info />} sx={{ maxWidth: "500px" }}>
-                    <Typography>Ta sekcja jest opcjonalna. Możesz dodać do 10 elementów.</Typography>
+                    <Typography>{infoText}</Typography>
                 </Alert>
 
                 {errors[fieldName] && (

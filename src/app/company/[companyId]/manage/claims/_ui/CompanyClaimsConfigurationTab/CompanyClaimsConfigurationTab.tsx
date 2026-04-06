@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import React, {ChangeEvent, useEffect, useState} from "react";
 import {
-    CheckCircle,
+    CheckCircle, DeleteForever,
     Error,
     Help,
     HighlightOff,
@@ -45,6 +45,8 @@ import {
 } from "@/lib/api/companies/companiesApiInterfaces";
 import Image from "next/image";
 import {CompanyEmployeeDto, CompanyEmployeeInvitationDto} from "@/lib/api/companies/companiesApiDtos";
+import {useCurrentCompanyStore} from "@/lib/stores/currentCompanyStore";
+import {useCurrentUserStore} from "@/lib/stores/currentUserStore";
 
 
 const formatPolishDateTime = (dateString: string): string => {
@@ -63,6 +65,9 @@ export default function CompanyClaimsConfigurationTab() {
 
     const params = useParams();
     const companyId = parseInt(params.companyId as string, 10);
+
+    const { currentCompany } = useCurrentCompanyStore();
+    const { currentUser } = useCurrentUserStore();
 
     // const [page, setPage] = useState<number>(1);
     // const [rowsPerPage, setRowsPerPage] = useState<number>(5);
@@ -183,7 +188,7 @@ export default function CompanyClaimsConfigurationTab() {
         <Box sx={{ pt: 1.2, pb: 2, px: 2.1 }}>
             <Alert severity="info" icon={<Info />} sx={{ maxWidth: "550px", mt: 0.5 }}>
                 <Typography>By zarządzać uprawnieniami, wybierz istniejącego użytkownika z puli Twojej
-                    firmy lub wyślij mailowo zaproszenie nowemu użytkownikowi poprzez formularz dodania.</Typography>
+                    firmy lub wyślij mailowo zaproszenie nowemu użytkownikowi poprzez formularz zaproszenia.</Typography>
             </Alert>
             <RadioGroup
                 row
@@ -381,13 +386,13 @@ export default function CompanyClaimsConfigurationTab() {
                         <Typography variant="h5">
                             Wybrany użytkownik
                         </Typography>
-                        <Stack direction="row" spacing={1.5} sx={{ alignItems: "center" }}>
+                        <Stack direction="row" sx={{ alignItems: "center" }}>
                             <Avatar variant="circular" sx={{ height: 60, width: 60 }}>
                                 {displayedUser.avatarLink &&
                                     <Image width={60} height={60} src={displayedUser.avatarLink} alt="User's avatar" />
                                 }
                             </Avatar>
-                            <Stack>
+                            <Stack sx={{ ml: 1.5 }}>
                                 <Typography variant="body1" fontWeight={600} gutterBottom m={0} sx={{ flex: "none" }}>
                                     {displayedUser.fullName}
                                 </Typography>
@@ -395,7 +400,18 @@ export default function CompanyClaimsConfigurationTab() {
                                     {displayedUser.email}
                                 </Typography>
                             </Stack>
-
+                            { currentCompany?.claimIds.includes(1) && displayedUser.id !== currentUser?.id &&
+                                <Button
+                                    variant="contained"
+                                    color="error"
+                                    size="large"
+                                    startIcon={<DeleteForever />}
+                                    onClick={() => setRefreshButtonCounter(prevVal => prevVal + 1)}
+                                    sx={{ ml: 2.5, borderRadius: "50px" }}
+                                >
+                                    Usuń z firmy
+                                </Button>
+                            }
                         </Stack>
                     </Stack>
 

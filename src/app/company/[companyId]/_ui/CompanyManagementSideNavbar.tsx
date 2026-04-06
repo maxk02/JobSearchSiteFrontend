@@ -53,7 +53,7 @@ export default function CompanyManagementSideNavbar() {
         { text: "Pulpit", icon: <Dashboard />, path: `/company/${companyId}/manage/dashboard`,
             isAccessible: true },
         { text: "Profil i ustawienia", icon: <Business />, path: `/company/${companyId}/manage/profile`,
-            isAccessible: currentCompany?.claimIds?.includes(3) },
+            isAccessible: currentCompany?.claimIds?.includes(4) },
         { text: "Rachunek i transakcje", icon: <MonetizationOn />, path: `/company/${companyId}/manage/balance`,
             isAccessible: currentCompany?.claimIds?.includes(5) },
         { text: "Uprawnienia", icon: <Policy />, path: `/company/${companyId}/manage/claims`,
@@ -71,7 +71,9 @@ export default function CompanyManagementSideNavbar() {
                 </Typography>
             </Stack>
             <List>
-                {navItems.map((item) => (
+                {navItems
+                    .filter(item => item.isAccessible)
+                    .map((item) => (
                     <ListItem key={item.text} disablePadding>
                         <ListItemButton
                             selected={isRouteActive(currentPath, item.path)}

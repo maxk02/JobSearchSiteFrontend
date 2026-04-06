@@ -26,6 +26,18 @@ import ChooseApplicationFilesDialog from "@/app/_ui/ChooseApplicationFilesDialog
 import React, {useState} from "react";
 
 
+const getApplicationStatusColor = (id: number): string => {
+
+    let muiColor = "black";
+
+    if (id === 2)
+        muiColor = "blue";
+    else if (id === 4)
+        muiColor = "red";
+
+    return muiColor;
+};
+
 const formatPolishDate = (dateString: string): string => {
     const date = new Date(dateString);
     const formatter = new Intl.DateTimeFormat('pl-PL', {
@@ -122,15 +134,18 @@ export default function ApplicationInUserProfileCard({ item, onDeletionTriggered
                         </List>
 
                         <List sx={{ mt: 1.6, pl: 0, pb: 0.3, pt: 0.3, borderLeft: `4px solid ${theme.palette.primary.main}` }}>
-                            <ListItem sx={{ px: 0, pb: 0, pt: 0, height: "32px" }}>
+                            <ListItem sx={{ px: 0, py: 2.5, height: "34px" }}>
                                 <ListItemIcon sx={{ color: theme.palette.primary.main, px: 0.5, lineHeight: 1, minWidth: 24 }}>
                                     <PlayArrow sx={{ fontSize: "1rem" }} />
                                 </ListItemIcon>
                                 <Typography lineHeight={1}>
-                                    Status: {jobApplicationStatuses.find(s => s.id === item.status)?.namePl}
+                                    Status:{" "}
+                                    <span style={{ color: getApplicationStatusColor(item.status) }}>
+                                        {jobApplicationStatuses.find(s => s.id === item.status)?.namePl}
+                                    </span>
                                 </Typography>
                             </ListItem>
-                            <ListItem sx={{ px: 0, pb: 0, pt: 0, height: "32px" }}>
+                            <ListItem sx={{ px: 0, py: 2.5, height: "34px" }}>
                                 <ListItemIcon sx={{ color: theme.palette.primary.main, px: 0.5, lineHeight: 1, minWidth: 24 }}>
                                     <PlayArrow sx={{ fontSize: "1rem" }} />
                                 </ListItemIcon>
@@ -174,9 +189,9 @@ export default function ApplicationInUserProfileCard({ item, onDeletionTriggered
                 <Divider />
 
                 <Box display="flex" flexDirection="column" py={1} px={2} gap={0.7}>
-                    <Typography variant="body2" width="100%" color="text.secondary" textAlign="right">
-                        Opublikowana: {formatPolishDate(item.dateTimePublishedUtc)}
-                    </Typography>
+                    {/*<Typography variant="body2" width="100%" color="text.secondary" textAlign="right">*/}
+                    {/*    Opublikowana: {formatPolishDate(item.dateTimePublishedUtc)}*/}
+                    {/*</Typography>*/}
                     <Typography variant="body2" width="100%" color="text.secondary" textAlign="right">
                         Zaaplikowano: {formatPolishDateTime(item.dateTimeAppliedUtc)}
                     </Typography>
@@ -190,7 +205,7 @@ export default function ApplicationInUserProfileCard({ item, onDeletionTriggered
                 onClose={() => setDialogOpen(false)}
                 currentFileIds={item.personalFileInfoDtos.map(pf => pf.id)}
                 currentLocation={item.locationDto}
-                jobId={item.id}
+                jobId={item.jobId}
                 applicationId={item.id}
             />
         </>

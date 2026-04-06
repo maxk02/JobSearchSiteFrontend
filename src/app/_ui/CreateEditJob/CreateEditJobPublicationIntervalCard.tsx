@@ -17,7 +17,20 @@ const calculatePrice = (days: number): number => {
     if (days <= 30) return 60;
     if (days <= 60) return 90;
     if (days <= 90) return 120;
-    return 120; // Default cap
+    return 120;
+};
+
+const formatPolishDate = (date: Date | null | undefined): string => {
+
+    if (!date)
+        return "brak daty";
+
+    const formatter = new Intl.DateTimeFormat('pl-PL', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+    });
+    return formatter.format(date);
 };
 
 interface CreateEditJobPublicationIntervalCardProps {
@@ -34,26 +47,31 @@ export default function CreateEditJobPublicationIntervalCard({ dateTimePublished
         name: "dateTimeExpiringUtc",
     });
 
-    const currentDateTime = new Date();
+    const isValidExpiryDate = watchedExpiryDate && isValid(new Date(watchedExpiryDate));
+    const isValidDateTimePublished = dateTimePublishedUtc && isValid(new Date(dateTimePublishedUtc));
+    const isValidMaxDateTimeExpiring = maxDateTimeExpiringUtcEverSet && isValid(new Date(maxDateTimeExpiringUtcEverSet));
 
-    const isValidDate = watchedExpiryDate && isValid(new Date(watchedExpiryDate));
+    const newDurationInDays = isValidDateTimePublished && isValidExpiryDate ? differenceInCalendarDays(new Date(watchedExpiryDate), dateTimePublishedUtc) : 0;
 
-    let durationInDays = 0;
+    // let newDurationInDays = 0;
 
-    if (maxDateTimeExpiringUtcEverSet) {
-        durationInDays = isValidDate ? differenceInCalendarDays(new Date(watchedExpiryDate), maxDateTimeExpiringUtcEverSet) : 0;
-    } else {
-        durationInDays = isValidDate ? differenceInCalendarDays(new Date(watchedExpiryDate), currentDateTime) : 0;
-    }
+    // if (maxDateTimeExpiringUtcEverSet) {
+    //     newDurationInDays = isValidDate ? differenceInCalendarDays(new Date(watchedExpiryDate), maxDateTimeExpiringUtcEverSet) : 0;
+    // } else {
+    //     newDurationInDays = isValidDate ? differenceInCalendarDays(new Date(watchedExpiryDate), currentDateTime) : 0;
+    // }
 
-    const estimatedPrice = calculatePrice(durationInDays);
+    const maximumDurationInDaysEverPresent = isValidDateTimePublished && isValidMaxDateTimeExpiring
+        ? differenceInCalendarDays(maxDateTimeExpiringUtcEverSet, dateTimePublishedUtc) : 0;
 
-    const currentBalance = 100;
+    const estimatedPrice = calculatePrice(newDurationInDays) - calculatePrice(maximumDurationInDaysEverPresent);
+
+    const currentBalance = 0;
     const isBalanceSufficient = currentBalance >= estimatedPrice;
 
     // date picker locking
-    const minDateTime = dateTimePublishedUtc ?? new Date();
-    const maxDateTime = addDays(minDateTime, 90); // 90 days from now
+    const minDateTime = new Date();
+    const maxDateTime = addDays(dateTimePublishedUtc ?? minDateTime, 90);
 
     return (
         <Paper sx={{ mt: 2, py: 2, px: 1.5 }}>
@@ -83,7 +101,15 @@ export default function CreateEditJobPublicationIntervalCard({ dateTimePublished
                     </List>
                 </Alert>
 
-                <Stack direction="row" gap={2} sx={{ alignItems: "center", mt: 1.8 }}>
+                <Typography sx={{ fontSize: "1.05em", fontWeight: "500", lineHeight: 1, mt: 2}}>
+                    Opublikowano: {formatPolishDate(dateTimePublishedUtc)}
+                </Typography>
+
+                <Typography sx={{ fontSize: "1.05em", fontWeight: "500", lineHeight: 1, mt: 2.2}}>
+                    Maksymalna ustawiana data końcowa: {formatPolishDate(maxDateTimeExpiringUtcEverSet)}
+                </Typography>
+
+                <Stack direction="row" gap={2} sx={{ alignItems: "center", mt: 2.2 }}>
                     <Stack direction="column">
 
                         <Typography sx={{ fontSize: "1.05em", fontWeight: "500", lineHeight: 1 }}>
@@ -124,10 +150,10 @@ export default function CreateEditJobPublicationIntervalCard({ dateTimePublished
                             <Stack direction="column" sx={{ ml: 1.6 }}>
 
                                 <Typography sx={{ fontSize: "1.05em", fontWeight: "500", lineHeight: 1 }}>
-                                    Zmiana przedziału czasowego:
+                                    {!!dateTimePublishedUtc ? "Zmiana przedziału czasowego:" : "Opłata za publikację:"}
                                 </Typography>
                                 <Typography color="warning" sx={{ fontSize: "1.2em", fontWeight: "bold" }}>
-                                    dopłata {estimatedPrice} PLN
+                                    {!!dateTimePublishedUtc && "dopłata "}{estimatedPrice} PLN
                                 </Typography>
 
                             </Stack>

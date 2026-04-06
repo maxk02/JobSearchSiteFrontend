@@ -47,7 +47,7 @@ export default function CreateEditJobSalaryDataCard() {
                     gap: 1.5, maxWidth: "500px"
                 }}>
                     <Controller
-                        name="salaryInfo.minWage"
+                        name="salaryInfo.minimum"
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -56,14 +56,14 @@ export default function CreateEditJobSalaryDataCard() {
                                 value={field.value ?? ""}
                                 onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
                                 label="Od"
-                                error={!!errors.salaryInfo?.minWage}
-                                helperText={errors.salaryInfo?.minWage?.message}
+                                error={!!errors.salaryInfo?.minimum}
+                                helperText={errors.salaryInfo?.minimum?.message}
                             />
                         )}
                     />
 
                     <Controller
-                        name="salaryInfo.maxWage"
+                        name="salaryInfo.maximum"
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -72,14 +72,14 @@ export default function CreateEditJobSalaryDataCard() {
                                 value={field.value ?? ""}
                                 onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
                                 label="Do"
-                                error={!!errors.salaryInfo?.maxWage}
-                                helperText={errors.salaryInfo?.maxWage?.message}
+                                error={!!errors.salaryInfo?.maximum}
+                                helperText={errors.salaryInfo?.maximum?.message}
                             />
                         )}
                     />
 
                     <Controller
-                        name="salaryInfo.wageTimeUnit"
+                        name="salaryInfo.unitOfTime"
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -89,8 +89,8 @@ export default function CreateEditJobSalaryDataCard() {
                                 value={field.value ?? ""}
                                 onChange={(e) => field.onChange(e.target.value || undefined)}
                                 sx={{ minWidth: "320px" }}
-                                error={!!errors.salaryInfo?.wageTimeUnit}
-                                helperText={errors.salaryInfo?.wageTimeUnit?.message}
+                                error={!!errors.salaryInfo?.unitOfTime}
+                                helperText={errors.salaryInfo?.unitOfTime?.message}
                             >
                                 {timeUnits.map((item) => (
                                     <MenuItem key={item.value} value={item.value}>
@@ -109,7 +109,8 @@ export default function CreateEditJobSalaryDataCard() {
                                 {...field}
                                 select
                                 label="Wymiar wynagrodzenia"
-                                value={(field.value === undefined || field.value === null) ? "" : field.value.toString()}
+                                // value={(field.value === undefined || field.value === null) ? "" : field.value.toString()}
+                                value={field?.value?.toString() ?? ""}
                                 onChange={(e) => field.onChange(e.target.value === "true")}
                                 sx={{ minWidth: "320px" }}
                                 error={!!errors.salaryInfo?.isAfterTaxes}

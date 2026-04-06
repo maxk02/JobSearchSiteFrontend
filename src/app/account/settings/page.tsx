@@ -21,7 +21,7 @@ import {ChangePasswordRequest} from "@/lib/api/account/accountApiInterfaces";
 import {useRouter} from "next/navigation";
 import {getUserProfile, updateUserProfile} from "@/lib/api/userProfiles/userProfilesApi";
 import {UpdateUserProfileRequest} from "@/lib/api/userProfiles/userProfilesApiInterfaces";
-import {Info} from "@mui/icons-material";
+import {Info, Warning} from "@mui/icons-material";
 
 export default function AccountSettingsPage() {
 
@@ -95,8 +95,7 @@ export default function AccountSettingsPage() {
     return (
         <>
             <Typography variant="h4" fontWeight={600} color="primary">Ustawienia konta</Typography>
-            <Typography mt={1}>Tutaj możesz zmienić dane konta i edytować ustawienia prywatności oraz
-                powiadomień.</Typography>
+            <Typography mt={1}>Tutaj możesz edytować ustawienia bezpieczeństwa oraz powiadomień, a także usunąć konto.</Typography>
 
 
             <Paper sx={{mt: 2, maxWidth: "900px"}}>
@@ -114,13 +113,13 @@ export default function AccountSettingsPage() {
                     </FormGroup>
 
                     <Typography variant="h5" fontWeight={600} mt={1.5} color="primary">Zmiana hasła</Typography>
-                    <Alert severity="info" icon={<Info />} sx={{ maxWidth: "450px", mt: 0.5 }}>
+                    <Alert severity="info" icon={<Info />} sx={{ maxWidth: "450px", mt: 1 }}>
                         <Typography>
                             Po zmianie hasła zostaniesz wylogowany ze wszystkich pozostałych urządzeń.
                         </Typography>
                     </Alert>
                     <form onSubmit={handleSubmit(onChangePasswordSubmit)}>
-                        <Stack sx={{gap: 1.5, mt: 1}}>
+                        <Stack sx={{ gap: 1.5, mt: 1.5 }}>
                             <Controller
                                 name="currentPassword"
                                 control={control}
@@ -154,7 +153,7 @@ export default function AccountSettingsPage() {
                                 color="primary"
                                 size="large"
                                 type="submit"
-                                sx={{borderRadius: "50px", width: "125px"}}
+                                sx={{ borderRadius: "50px", width: "fit-content" }}
                             >
                                 Zmień
                             </Button>
@@ -162,12 +161,17 @@ export default function AccountSettingsPage() {
                     </form>
 
                     <Typography variant="h5" fontWeight={600} mt={2} color="primary">Usunięcie konta</Typography>
-                    <Typography mt={0.7} sx={{ width: "500px" }}>Usuwając konto, stracisz wszystkie zapisane na nim dane, m.in. historię
-                        aplikowań i ulubione oferty.</Typography>
+                    <Alert severity="warning" icon={<Warning />} sx={{ maxWidth: "450px", mt: 1 }}>
+                        <Typography>
+                            Usuwając konto, stracisz wszystkie zapisane na nim dane, m.in. historię aplikacji i zapisane oferty.
+                        </Typography>
+                    </Alert>
                     <Button
-                        variant="text"
+                        variant="contained"
                         color="error"
-                        sx={{mt: 1.7, p: 0}}
+                        size="large"
+                        type="submit"
+                        sx={{ borderRadius: "50px", width: "fit-content", mt: 1.5 }}
                         onClick={handleAccountDeletion}
                     >
                         Usuń konto

@@ -31,9 +31,14 @@ export default function formatSalaryInfoText(jobSalaryInfoDto: JobSalaryInfoDto)
         result += ` ${jobSalaryInfoDto.isAfterTaxes ? "netto" : "brutto"}`;
     }
 
-    if (jobSalaryInfoDto.unitOfTime) {
-        // result += ` / ${getUnitOfTimeSign(jobSalaryInfoDto.unitOfTime)}`; todo
+    if (jobSalaryInfoDto.unitOfTime === "Hour") {
+        result += ' / godz.';
+    }
+    else if (jobSalaryInfoDto.unitOfTime === "Month") {
         result += ' / mies.';
+    }
+    else if (jobSalaryInfoDto.unitOfTime === "Year") {
+        result += ' / rok';
     }
     else {
         return null;

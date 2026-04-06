@@ -47,7 +47,7 @@ export default function AccountBookmarksPage() {
     return (
         <>
             <Typography variant="h4" fontWeight={600} color="primary">Zapisane</Typography>
-            <Typography mt={0.5}>W tej zakładce znajdziesz oferty zapisane podczas korzystania z serwisu.</Typography>
+            <Typography mt={1}>W tej sekcji znajdziesz oferty zapisane podczas korzystania z serwisu.</Typography>
 
             <Stack gap={3} mt={2} sx={{ maxWidth: "900px" }}>
                 {jobCards.map((jobCard) => (

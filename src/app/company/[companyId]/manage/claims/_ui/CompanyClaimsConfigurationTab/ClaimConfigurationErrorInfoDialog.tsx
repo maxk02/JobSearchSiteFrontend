@@ -2,16 +2,29 @@ import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, L
 import React from "react";
 import {Close} from "@mui/icons-material";
 import {companyClaims} from "@/lib/seededData/companyClaims";
+import {
+    LackingClaimDependencies
+} from "@/app/company/[companyId]/manage/claims/_ui/CompanyClaimsConfigurationTab/CompanyClaimsConfigurationTable";
 
 
 interface ClaimConfigurationErrorInfoDialogProps {
     open: boolean;
     onClose: () => void;
     maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | false;
-    lackingClaimIds: number[];
+    lackingClaimDependencies: LackingClaimDependencies[];
 }
 
-export default function ClaimConfigurationErrorInfoDialog({ open, onClose, maxWidth, lackingClaimIds }: ClaimConfigurationErrorInfoDialogProps) {
+const getClaimName = (id: number): string => {
+    const companyClaim = companyClaims.find(c => c.id == id);
+
+    if (!companyClaim) {
+        return "";
+    }
+
+    return companyClaim.namePl;
+};
+
+export default function ClaimConfigurationErrorInfoDialog({ open, onClose, maxWidth, lackingClaimDependencies }: ClaimConfigurationErrorInfoDialogProps) {
     
     const handleClose = (
         _event: unknown, reason: string
@@ -23,7 +36,7 @@ export default function ClaimConfigurationErrorInfoDialog({ open, onClose, maxWi
     };
 
     const text =
-        `Po operacji z uprawnieniami konto nie miałoby następujących zależności włączanych uprawnień:`;
+        `Po operacji z uprawnieniami nie zostałyby spełnione następujące zależności:`;
 
     return (
         <Dialog
@@ -44,15 +57,27 @@ export default function ClaimConfigurationErrorInfoDialog({ open, onClose, maxWi
                 </Stack>
             </DialogTitle>
             <DialogContent>
-                <Typography>
+                <Typography sx={{ mt: 0.5 }}>
                     {text}
                 </Typography>
-                <List sx={{ listStyleType: "disc", pl: 4 }}>
-                    {companyClaims.filter(c => lackingClaimIds.includes(c.id)).map((claim) => (
-                        <ListItem key={claim.id} sx={{ display: "list-item" }}>
-                            {`${claim.namePl} (id=${claim.id})`}
+                <List sx={{ listStyleType: "disc", pl: 4, mt: 1 }}>
+                    {lackingClaimDependencies.map(lcd =>
+                        <ListItem key={lcd.claimId} sx={{ display: "list-item" }}>
+                            Dla aktywnego uprawnienia <span style={{ fontWeight: "bold" }}>{getClaimName(lcd.claimId)}</span> (id: {lcd.claimId}):
+                            <List sx={{ listStyleType: "disc", pl: 4 }}>
+                                {lcd.lackingClaimIds.map(lackingId =>
+                                    <ListItem key={lackingId} sx={{ display: "list-item" }}>
+                                        {getClaimName(lackingId)} (id: {lackingId})
+                                    </ListItem>
+                                )}
+                            </List>
                         </ListItem>
-                    ))}
+                    )}
+                    {/*{companyClaims.filter(c => lackingClaimIds.includes(c.id)).map((claim) => (*/}
+                    {/*    <ListItem key={claim.id} sx={{ display: "list-item" }}>*/}
+                    {/*        {`${claim.namePl} (id=${claim.id})`}*/}
+                    {/*    </ListItem>*/}
+                    {/*))}*/}
                 </List>
             </DialogContent>
             <DialogActions>

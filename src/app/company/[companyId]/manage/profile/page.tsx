@@ -26,7 +26,7 @@ export default function CompanySettingsPage() {
         resolver: zodResolver(companySchema),
         values: {
             name: currentCompanyState?.name ?? '',
-            nip: '1112223334',
+            nip: '7771122334',
             description: currentCompanyState?.description ?? '',
         },
         mode: 'onChange'

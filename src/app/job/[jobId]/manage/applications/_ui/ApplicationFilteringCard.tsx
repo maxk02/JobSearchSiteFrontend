@@ -161,7 +161,7 @@ export default function ApplicationFilteringCard(props: ApplicationFilteringCard
                 </Stack>
 
                 <Stack direction="row" spacing={1} sx={{ ml: 0.3, mt: 1.2, alignItems: "center" }}>
-                    <Typography variant="body2">Ma mieć tagi:</Typography>
+                    <Typography variant="body2">Ma mieć oznaczenia:</Typography>
                     {includedTags.map((item) => (
                         <Chip
                             key={item}
@@ -172,14 +172,14 @@ export default function ApplicationFilteringCard(props: ApplicationFilteringCard
                     ))}
                     <Chip
                         icon={<Add />}
-                        label="Dodaj tag"
+                        label="Dodaj znacznik"
                         variant="outlined"
                         onClick={() => {setIncludeTagSearchDialogOpen(true)}}
                         sx={{ borderStyle: "dashed" }} />
                 </Stack>
 
                 <Stack direction="row" spacing={1} sx={{ ml: 0.3, mt: 1.2, alignItems: "center" }}>
-                    <Typography variant="body2">Wyklucz tagi:</Typography>
+                    <Typography variant="body2">Wyklucz oznaczenia:</Typography>
                     {excludedTags.map((item) => (
                         <Chip
                             key={item}
@@ -190,7 +190,7 @@ export default function ApplicationFilteringCard(props: ApplicationFilteringCard
                     ))}
                     <Chip
                         icon={<Add />}
-                        label="Dodaj tag"
+                        label="Dodaj znacznik"
                         variant="outlined"
                         onClick={() => {setExcludeTagSearchDialogOpen(true)}}
                         sx={{ borderStyle: "dashed" }} />

@@ -10,7 +10,7 @@ interface JobApplicationLocationSelectProps {
     onChange: (location: LocationDto | null) => void;
 }
 
-export default function JobApplicationLocationSelect({ 
+export default function JobApplicationLocationSelect({
     value, 
     availableValues, 
     onChange 
@@ -33,10 +33,9 @@ export default function JobApplicationLocationSelect({
             <Select
                 labelId="location-select-label"
                 label="Miejscowość"
-                
                 // Bind to the name string, or empty string if null
-                value={value?.fullName ?? availableValues[0]?.fullName ?? ''} 
-                disabled={availableValues.length < 2}
+                value={value?.fullName ?? ''}
+                // disabled={availableValues.length < 2}
                 onChange={handleChange}
                 
                 sx={{

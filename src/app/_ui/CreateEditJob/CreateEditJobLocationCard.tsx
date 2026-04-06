@@ -19,7 +19,7 @@ import {
     InputAdornment,
     CircularProgress,
     Avatar,
-    MenuItem, ListItemButton,
+    MenuItem, ListItemButton, Stack,
 } from "@mui/material";
 import {Add, Close, Delete, Info, LocationOn} from "@mui/icons-material";
 import React, { useState, useEffect } from "react";
@@ -35,12 +35,12 @@ const countries = [
     { id: 1, code: "PL", label: "Polska" },
 ];
 
-interface CreateEditJobLocationCardProps
-{
+interface CreateEditJobLocationCardProps {
     locations: LocationDto[];
+    initialLocations?: LocationDto[];
 }
 
-export default function CreateEditJobLocationCard({ locations }: CreateEditJobLocationCardProps) {
+export default function CreateEditJobLocationCard({ locations, initialLocations }: CreateEditJobLocationCardProps) {
     const { watch, setValue, formState: { errors } } = useFormContext<CreateEditJobFormData>();
     const locationIds = watch("locationIds") || [];
 
@@ -57,10 +57,11 @@ export default function CreateEditJobLocationCard({ locations }: CreateEditJobLo
         const fetchLocations = async () => {
 
             const request: GetLocationsRequest = {
-                    countryId: 1,
-                    query: searchText,
-                    size: 5
-                };
+                countryId: 1,
+                query: searchText,
+                isConcrete: true,
+                size: 5
+            };
 
             const result = await getLocations(request);
 
@@ -98,6 +99,7 @@ export default function CreateEditJobLocationCard({ locations }: CreateEditJobLo
     const handleLocationSelect = (location: LocationDto) => {
         if (locationIds.includes(location.id) || locationIds.length >= 5) return;
         setValue("locationIds", [...locationIds, location.id], { shouldValidate: true });
+        setListedLocations(listedLocations => [...listedLocations, location]);
         setAddDialogOpen(false);
         setSearchText("");
     };
@@ -179,6 +181,7 @@ export default function CreateEditJobLocationCard({ locations }: CreateEditJobLo
                                         aria-label="delete"
                                         onClick={() => handleDeleteStart(listedLocation)}
                                         size="small"
+                                        disabled={initialLocations?.map(l => l.id).includes(listedLocation.id)}
                                     >
                                         <Delete />
                                     </IconButton>
@@ -229,7 +232,7 @@ export default function CreateEditJobLocationCard({ locations }: CreateEditJobLo
                         }}
                     />
                     {searchText.length > 0 ? (
-                        <>
+                        <Box sx={{ pl: 0.5 }}>
                             <Typography variant="body2" sx={{ mt: 1.2 }}>
                                 Znaleziono elementów: {filteredLocations.length}
                             </Typography>
@@ -266,7 +269,7 @@ export default function CreateEditJobLocationCard({ locations }: CreateEditJobLo
                                     </Typography>
                                 )}
                             </List>
-                        </>
+                        </Box>
                     ) : (
                         <Typography color="text.secondary" sx={{ mt: 4, mb: 2, textAlign: "center" }}>
                             Brak wyników.

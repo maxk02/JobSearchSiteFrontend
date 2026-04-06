@@ -105,7 +105,7 @@ export default function ApplicationInJobManagementCard({ companyId, item, onUpda
 
     const handleRejectApplication = async () => {
         const request: UpdateJobApplicationStatusRequest = {
-            statusId: 3,
+            statusId: 4,
         };
 
         const result = await updateJobApplicationStatus(item.id, request);
@@ -151,7 +151,7 @@ export default function ApplicationInJobManagementCard({ companyId, item, onUpda
                             ))}
                             <Chip
                                 icon={<Add />}
-                                label="Dodaj tag"
+                                label="Dodaj znacznik"
                                 variant="outlined"
                                 sx={{ borderStyle: "dashed" }}
                                 onClick={() => setAddTagSearchDialogOpen(true)}
@@ -200,17 +200,17 @@ export default function ApplicationInJobManagementCard({ companyId, item, onUpda
                             >
                                 Odrzuć
                             </Button>
-                            <Button
-                                variant="outlined"
-                                color="primary"
-                                startIcon={<InsertInvitation />}
-                                size="medium"
-                                sx={{ borderRadius: "50px" }}
-                                disabled={item.status === 3}
-                                onClick={() => setProceedWithApplicationDialogOpen(true)}
-                            >
-                                Zaproś do kolejnych etapów
-                            </Button>
+                            {/*<Button*/}
+                            {/*    variant="outlined"*/}
+                            {/*    color="primary"*/}
+                            {/*    startIcon={<InsertInvitation />}*/}
+                            {/*    size="medium"*/}
+                            {/*    sx={{ borderRadius: "50px" }}*/}
+                            {/*    disabled={item.status === 3}*/}
+                            {/*    onClick={() => setProceedWithApplicationDialogOpen(true)}*/}
+                            {/*>*/}
+                            {/*    Zaproś do kolejnych etapów*/}
+                            {/*</Button>*/}
                             <Button
                                 variant="outlined"
                                 color="primary"

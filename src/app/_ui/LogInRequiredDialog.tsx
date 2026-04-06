@@ -3,15 +3,14 @@ import React from "react";
 import {Close} from "@mui/icons-material";
 
 
-interface BasicInfoDialogProps {
-    title: string;
-    text: string;
+interface LogInRequiredDialogProps {
     open: boolean;
     onClose: () => void;
-    maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | false
+    onConfirm: () => void;
+    height?: string;
 }
 
-export default function BasicInfoDialog({ title, text, open, onClose, maxWidth }: BasicInfoDialogProps) {
+export default function LogInRequiredDialog({ open, onClose, onConfirm, height }: LogInRequiredDialogProps) {
     
     const handleClose = (
         _event: unknown, reason: string
@@ -22,36 +21,55 @@ export default function BasicInfoDialog({ title, text, open, onClose, maxWidth }
         onClose();
     };
 
+    const handleConfirmClick = () => {
+        onConfirm();
+        onClose();
+    };
+
+    const text = `Dla wykonania tej czynności musisz być zalogowany. Czy chcesz przejść do strony logowania lub rejestracji?`;
+
     return (
         <Dialog
             open={open}
             onClose={handleClose}
             fullWidth
-            maxWidth={maxWidth}
+            maxWidth="sm"
             scroll="paper"
         >
             <DialogTitle sx={{ pb: 1, pr: 1.5 }}>
                 <Stack direction="row" spacing={2} sx={{ justifyContent: "space-between", alignItems: "center" }}>
                     <Typography variant="h5">
-                        {title}
+                        Wymagane jest logowanie
                     </Typography>
-                    <IconButton onClick={() => handleClose({}, "")}>
+                    <IconButton onClick={() => handleClose({}, "")} sx={{ color: "slategray" }}>
                         <Close />
                     </IconButton>
                 </Stack>
             </DialogTitle>
-            <DialogContent>
+            <DialogContent sx={{ height: height }}>
                 <Typography>
                     {text}
                 </Typography>
             </DialogContent>
-            <DialogActions>
-                <Stack direction="row" spacing={2}>
+            <DialogActions sx={{ pr: 2.5 }}>
+                <Stack direction="row" spacing={3}>
                     <Button
                         onClick={() => handleClose(null, '')}
+                        sx={{fontSize: "1.1em", color: "slategray"}}
+                    >
+                        Anuluj
+                    </Button>
+                    <Button
+                        onClick={handleConfirmClick}
                         sx={{fontSize: "1.1em"}}
                     >
-                        OK
+                        Zarejestruj się
+                    </Button>
+                    <Button
+                        onClick={handleConfirmClick}
+                        sx={{fontSize: "1.1em"}}
+                    >
+                        Zaloguj się
                     </Button>
                 </Stack>
             </DialogActions>

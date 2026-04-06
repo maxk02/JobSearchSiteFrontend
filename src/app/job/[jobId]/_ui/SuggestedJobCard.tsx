@@ -62,7 +62,7 @@ export default function SuggestedJobCard({ item }: SuggestedJobCardProps) {
             </Stack>
             <Stack pl={1.5} pt={1.5} pb={2}>
                 {item.salaryInfoDto &&
-                    <Typography fontWeight="bold" color="textSecondary" lineHeight={1} sx={{ fontWeight: 500, fontSize: "0.9em" }}>
+                    <Typography fontWeight="bold" color="textSecondary" lineHeight={1} sx={{ fontWeight: 500, fontSize: "0.9em", mb: 0.2 }}>
                         {formatSalaryInfoText(item.salaryInfoDto)}
                     </Typography>
                 }

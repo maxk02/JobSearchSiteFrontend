@@ -112,7 +112,7 @@ export default function LoginPage() {
                                 type="submit"
                                 variant="contained"
                                 color="primary"
-                                sx={{ mt: 0.5, py: 1.5, width: "75%", fontSize: "1.02rem" }}
+                                sx={{ mt: 2, py: 1.5, width: "75%", fontSize: "1.02rem" }}
                                 size="large"
                             >
                                 Zaloguj się
