@@ -24,6 +24,13 @@ export interface CompanyDto {
     avatarLink: string | null;
 }
 
+export interface CompanyDashboardStatsDto {
+    jobViewsToday: number;
+    jobViewsLastWeek: number;
+    jobApplicationsToday: number;
+    jobApplicationsLastWeek: number;
+}
+
 export interface CompanyEmployeeDto {
     id: number;
     email: string;

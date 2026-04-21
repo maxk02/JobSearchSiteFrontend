@@ -1,5 +1,5 @@
 import {
-    CompanyBalanceTransactionDto,
+    CompanyBalanceTransactionDto, CompanyDashboardStatsDto,
     CompanyDto,
     CompanyEmployeeDto, CompanyEmployeeInvitationDto,
     CompanyJobListItemDto,
@@ -104,6 +104,7 @@ export interface GetCompanyJobsResponse {
 
 export interface GetCompanyLastVisitedJobsResponse {
     jobs: CompanyJobListItemDto[];
+    dashboardStatsDto: CompanyDashboardStatsDto | null;
 }
 
 export interface GetCompanyManagementNavbarDtoResponse {

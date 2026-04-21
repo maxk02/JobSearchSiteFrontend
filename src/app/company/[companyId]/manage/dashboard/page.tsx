@@ -18,13 +18,14 @@ import {
     getCompanyLastVisitedJobs
 } from "@/lib/api/companies/companiesApi";
 import { SearchCompanySharedJobsRequest } from "@/lib/api/companies/companiesApiInterfaces";
+import {CompanyDashboardStatsDto} from "@/lib/api/companies/companiesApiDtos";
 
 
-const mockCounters = {
+const mockCounters: CompanyDashboardStatsDto = {
     jobViewsToday: 12,
     jobViewsLastWeek: 12,
-    applicationsToday: 53,
-    applicationsLastWeek: 53,
+    jobApplicationsToday: 53,
+    jobApplicationsLastWeek: 53,
 };
 
 
@@ -38,6 +39,7 @@ export default function CompanyDashboard() {
     const [jobSearchDialogOpen, setJobSearchDialogOpen] = useState(false);
 
     const [lastJobs, setLastJobs] = useState<LastVisitedCardItem[]>([]);
+    const [dashboardStats, setDashboardStats] = useState<CompanyDashboardStatsDto | null>(mockCounters);
 
     const fetchLastJobs = useCallback(async () => {
         const result = await getCompanyLastVisitedJobs(companyId);
@@ -49,6 +51,7 @@ export default function CompanyDashboard() {
                 );
 
             setLastJobs(mappedItems);
+            setDashboardStats(result.data.dashboardStatsDto)
         }
     }, [companyId]);
 
@@ -141,7 +144,7 @@ export default function CompanyDashboard() {
                         <Typography variant="h6">Wyświetlenia ofert</Typography>
                         <Typography variant="h6">(dzisiaj)</Typography>
                         <Typography variant="h4"
-                                    sx={{mt: 1, fontWeight: "500"}}>{mockCounters.jobViewsToday}</Typography>
+                                    sx={{mt: 1, fontWeight: "500"}}>{dashboardStats?.jobViewsToday ?? '-'}</Typography>
                     </Paper>
                 </Grid>
                 <Grid size={{xs: 12, sm: 6, md: 3}}>
@@ -149,7 +152,7 @@ export default function CompanyDashboard() {
                         <Typography variant="h6">Wyświetlenia ofert</Typography>
                         <Typography variant="h6">(ostatni tydzień)</Typography>
                         <Typography variant="h4"
-                                    sx={{mt: 1, fontWeight: "500"}}>{mockCounters.jobViewsLastWeek}</Typography>
+                                    sx={{mt: 1, fontWeight: "500"}}>{dashboardStats?.jobViewsLastWeek ?? '-'}</Typography>
                     </Paper>
                 </Grid>
                 <Grid size={{xs: 12, sm: 6, md: 3}}>
@@ -157,7 +160,7 @@ export default function CompanyDashboard() {
                         <Typography variant="h6">Nowe aplikacje</Typography>
                         <Typography variant="h6">(dzisiaj)</Typography>
                         <Typography variant="h4"
-                                    sx={{mt: 1, fontWeight: "500"}}>{mockCounters.applicationsToday}</Typography>
+                                    sx={{mt: 1, fontWeight: "500"}}>{dashboardStats?.jobApplicationsToday ?? '-'}</Typography>
                     </Paper>
                 </Grid>
                 <Grid size={{xs: 12, sm: 6, md: 3}}>
@@ -165,7 +168,7 @@ export default function CompanyDashboard() {
                         <Typography variant="h6">Nowe aplikacje</Typography>
                         <Typography variant="h6">(ostatni tydzień)</Typography>
                         <Typography variant="h4"
-                                    sx={{mt: 1, fontWeight: "500"}}>{mockCounters.applicationsLastWeek}</Typography>
+                                    sx={{mt: 1, fontWeight: "500"}}>{dashboardStats?.jobApplicationsLastWeek ?? '-'}</Typography>
                     </Paper>
                 </Grid>
             </Grid>
