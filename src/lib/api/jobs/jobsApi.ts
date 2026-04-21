@@ -3,6 +3,9 @@ import {
     AddJobResponse,
     GetApplicationsForJobRequest,
     GetApplicationsForJobResponse,
+    GetDailyApplicationsForJobForDateRangeRequest, GetDailyApplicationsForJobForDateRangeResponse,
+    GetDailyViewsForJobForDateRangeRequest,
+    GetDailyViewsForJobForDateRangeResponse,
     GetJobDataForCurrentAccountResponse,
     GetJobManagementDtoResponse,
     GetJobResponse,
@@ -23,6 +26,14 @@ export const deleteJob = async (id: number) => {
 
 export const getApplicationsForJob = async (id: number, req: GetApplicationsForJobRequest) => {
     return await fetchData<GetApplicationsForJobRequest, GetApplicationsForJobResponse>(`/jobs/${id}/applications`, "GET", req);
+};
+
+export const getDailyApplicationsForJobForDateRange = async (id: number, req: GetDailyApplicationsForJobForDateRangeRequest) => {
+    return await fetchData<GetDailyApplicationsForJobForDateRangeRequest, GetDailyApplicationsForJobForDateRangeResponse>(`/jobs/${id}/application-stats`, "GET", req);
+};
+
+export const getDailyViewsForJobForDateRange = async (id: number, req: GetDailyViewsForJobForDateRangeRequest) => {
+    return await fetchData<GetDailyViewsForJobForDateRangeRequest, GetDailyViewsForJobForDateRangeResponse>(`/jobs/${id}/view-stats`, "GET", req);
 };
 
 export const getJobDataForCurrentAccount = async (id: number) => {

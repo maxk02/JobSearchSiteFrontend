@@ -22,6 +22,24 @@ export interface AddJobResponse {
     id: number;
 }
 
+export interface GetDailyApplicationsForJobForDateRangeRequest {
+    startDate: string;
+    endDate: string;
+}
+
+export interface GetDailyApplicationsForJobForDateRangeResponse {
+    dailyApplications: Record<string, number>[];
+}
+
+export interface GetDailyViewsForJobForDateRangeRequest {
+    startDate: string;
+    endDate: string;
+}
+
+export interface GetDailyViewsForJobForDateRangeResponse {
+    dailyViews: Record<string, number>[];
+}
+
 export interface GetApplicationsForJobRequest {
     locationId: number;
     statusIds: number[];
