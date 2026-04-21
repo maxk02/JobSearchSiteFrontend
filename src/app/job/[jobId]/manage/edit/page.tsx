@@ -108,6 +108,9 @@ export default function EditJobPage() {
 
         if (updateJobResult.success) {
         }
+        else if (updateJobResult.error.details === "JOB_TIME_PERIOD_INSUFFICIENT_BALANCE") {
+            setTopUpNeededDialogOpen(() => true);
+        }
         else {
             console.log(`Failed (${updateJobResult.status})`)
         }

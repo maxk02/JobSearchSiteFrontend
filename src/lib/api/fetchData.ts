@@ -1,6 +1,7 @@
 import axiosClient from "@/lib/api/axiosClient";
 import { AxiosError } from "axios";
 
+
 type ApiResult<T> =
     | { success: true; data: NonNullable<T>; status: number }
     | {
@@ -62,12 +63,11 @@ export default async function fetchData<TRequest = unknown, TResponse = unknown>
             }
             return { success: true, data: response.data, status: response.status };
         } else {
-            // Handle non-2xx status codes as errors
             return {
                 success: false,
                 error: {
                     message: response.data?.message || "Request failed with unexpected status code",
-                    details: response.data?.details,
+                    details: response.data?.detail,
                 },
                 status: response.status,
             };

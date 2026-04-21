@@ -21,6 +21,7 @@ import {AddJobRequest} from "@/lib/api/jobs/jobsApiInterfaces";
 import {addJob} from "@/lib/api/jobs/jobsApi";
 import {useParams, useRouter} from "next/navigation";
 import {getCompany} from "@/lib/api/companies/companiesApi";
+import BasicInfoDialog from "@/app/_ui/BasicInfoDialog";
 
 
 export default function CreateJobPage() {
@@ -33,6 +34,8 @@ export default function CreateJobPage() {
 
     const [companyName, setCompanyName] = useState<string | null>(null);
     const [companyAvatarLink, setCompanyAvatarLink] = useState<string | null>(null);
+
+    const [topUpNeededDialogOpen, setTopUpNeededDialogOpen] = useState(false);
 
     useEffect(() => {
 
@@ -83,8 +86,8 @@ export default function CreateJobPage() {
             requirements: data.requirements ?? [],
             niceToHaves: data.niceToHaves ?? [],
             salaryInfo: data.salaryInfo ? {
-                minimum: data.salaryInfo.minWage ?? null,
-                maximum: data.salaryInfo.maxWage ?? null,
+                minimum: data.salaryInfo.minimum ?? null,
+                maximum: data.salaryInfo.maximum ?? null,
                 currencyId: 1,
                 unitOfTime: "Hour",
                 isAfterTaxes: data.salaryInfo.isAfterTaxes,
@@ -99,82 +102,93 @@ export default function CreateJobPage() {
         if (createJobResult.success) {
             router.push(`/job/${createJobResult.data.id}/manage/edit`);
         }
+        else if (createJobResult.error.details === "JOB_TIME_PERIOD_INSUFFICIENT_BALANCE") {
+            setTopUpNeededDialogOpen(() => true);
+        }
         else {
             console.log(`Failed (${createJobResult.status})`)
         }
     };
 
     return (
-        <Container maxWidth="xl" sx={{ mt: 2.5, mb: 2.5 }}>
+        <>
+            <Container maxWidth="xl" sx={{ mt: 2.5, mb: 2.5 }}>
 
-            <FormProvider {...methods}>
+                <FormProvider {...methods}>
 
-                <form noValidate onSubmit={methods.handleSubmit(onSubmit)}>
+                    <form noValidate onSubmit={methods.handleSubmit(onSubmit)}>
 
-                    <Grid container spacing={3.5}>
-                        <Grid size={{ xs: 12, md: 12, lg: 3.3 }}>
-                            <Box display="flex" flexDirection="column" gap={2}
-                                 sx={{
-                                     position: "sticky", top: 20, zIndex: 1,
-                                     maxHeight: "calc(100vh - 40px)", flex: 1
-                                 }}
-                            >
-                                {companyName && companyAvatarLink &&
-                                    <CreateManageJobNavigationCard
-                                        companyName={companyName}
-                                        companyLogoLink={companyAvatarLink}
-                                        returnToId={companyId}
+                        <Grid container spacing={3.5}>
+                            <Grid size={{ xs: 12, md: 12, lg: 3.3 }}>
+                                <Box display="flex" flexDirection="column" gap={2}
+                                     sx={{
+                                         position: "sticky", top: 20, zIndex: 1,
+                                         maxHeight: "calc(100vh - 40px)", flex: 1
+                                     }}
+                                >
+                                    {companyName && companyAvatarLink &&
+                                        <CreateManageJobNavigationCard
+                                            companyName={companyName}
+                                            companyLogoLink={companyAvatarLink}
+                                            returnToId={companyId}
+                                        />
+                                    }
+                                    <CreateEditJobAnchorCard />
+                                    <CreateJobButtons />
+                                </Box>
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 12, lg: 8.7 }}>
+                                <Box sx={{ width: "800px", maxWidth: "800px" }}>
+                                    <Typography variant="h4" fontWeight={600} color="primary">Nowa oferta pracy</Typography>
+                                    <Typography mt={0.7} sx={{ fontSize: "1.05em" }}>
+                                        Dodaj więcej informacji o ofercie, aby zwiększyć jej widoczność i przyciągnąć idealnych kandydatów. Im dokładniej opiszesz stanowisko, firmę i oczekiwania, tym lepiej Twoja oferta będzie dopasowana do właściwych osób.
+                                    </Typography>
+
+                                    <CreateEditJobBasicInfoCard />
+
+                                    <CreateEditJobLocationCard locations={[]} />
+
+                                    <CreateEditJobPublicationIntervalCard />
+
+                                    <CreateEditJobEmploymentOptionCard />
+
+                                    <CreateEditJobContractTypeCard />
+
+                                    <CreateEditJobSalaryDataCard />
+
+                                    <CreateEditJobListCard
+                                        cardTitle="Obowiązki"
+                                        fieldName="responsibilities"
+                                        infoText="Ta sekcja ma zawierać od 2 do 10 elementów."
                                     />
-                                }
-                                <CreateEditJobAnchorCard />
-                                <CreateJobButtons />
-                            </Box>
+
+                                    <CreateEditJobListCard
+                                        cardTitle="Wymogi"
+                                        fieldName="requirements"
+                                        infoText="Ta sekcja ma zawierać od 2 do 10 elementów."
+                                    />
+
+                                    <CreateEditJobListCard
+                                        cardTitle="Mile widziane"
+                                        fieldName="niceToHaves"
+                                        infoText="Ta sekcja jest opcjonalna. Możesz dodać do 10 elementów."
+                                    />
+
+                                </Box>
+                            </Grid>
                         </Grid>
 
-                        <Grid size={{ xs: 12, md: 12, lg: 8.7 }}>
-                            <Box sx={{ width: "800px", maxWidth: "800px" }}>
-                                <Typography variant="h4" fontWeight={600} color="primary">Nowa oferta pracy</Typography>
-                                <Typography mt={0.7} sx={{ fontSize: "1.05em" }}>
-                                    Dodaj więcej informacji o ofercie, aby zwiększyć jej widoczność i przyciągnąć idealnych kandydatów. Im dokładniej opiszesz stanowisko, firmę i oczekiwania, tym lepiej Twoja oferta będzie dopasowana do właściwych osób.
-                                </Typography>
+                    </form>
 
-                                <CreateEditJobBasicInfoCard />
-
-                                <CreateEditJobLocationCard locations={[]} />
-
-                                <CreateEditJobPublicationIntervalCard />
-
-                                <CreateEditJobEmploymentOptionCard />
-
-                                <CreateEditJobContractTypeCard />
-
-                                <CreateEditJobSalaryDataCard />
-
-                                <CreateEditJobListCard
-                                    cardTitle="Obowiązki"
-                                    fieldName="responsibilities"
-                                    infoText="Ta sekcja ma zawierać od 2 do 10 elementów."
-                                />
-
-                                <CreateEditJobListCard
-                                    cardTitle="Wymogi"
-                                    fieldName="requirements"
-                                    infoText="Ta sekcja ma zawierać od 2 do 10 elementów."
-                                />
-
-                                <CreateEditJobListCard
-                                    cardTitle="Mile widziane"
-                                    fieldName="niceToHaves"
-                                    infoText="Ta sekcja jest opcjonalna. Możesz dodać do 10 elementów."
-                                />
-
-                            </Box>
-                        </Grid>
-                    </Grid>
-
-                </form>
-
-            </FormProvider>
-        </Container>
+                </FormProvider>
+            </Container>
+            <BasicInfoDialog
+                title="Nie udało się utworzyć ogłoszenia"
+                text="Na koncie firmy brakuje środków do wykonania operacji."
+                open={topUpNeededDialogOpen}
+                onClose={() => setTopUpNeededDialogOpen(false)}
+            />
+        </>
     );
 }
